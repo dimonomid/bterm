@@ -1,0 +1,85 @@
+@startuml
+
+package "Core" {
+
+' HTermCore {{{
+class HTermCore {
+   -data_codec : HTDataCodec
+   -data_src : HTDataSrc
+}
+' }}}
+
+' HTDataSrc {{{
+class HTDataSrc <<interface>> {
+}
+
+class HTDataSrcQExtSp {
+}
+
+HTDataSrc <|-- HTDataSrcQExtSp
+' }}}
+
+' HTDataCodec {{{
+class HTDataCodec <<interface>> {
+}
+
+class HTDataCodecISO14230 {
+}
+
+class HTDataCodecMikas {
+}
+
+HTDataCodec <|-- HTDataCodecISO14230
+HTDataCodec <|-- HTDataCodecMikas
+' }}}
+
+' HTDataMsg {{{
+class HTDataMsg {
+}
+' }}}
+
+' HTEvent {{{
+class HTEvent <<interface>> {
+}
+
+class HTEventDataMsg {
+   -message : HTDataMsg
+   -direction : rx or tx
+}
+
+class HTEventSomething {
+}
+
+HTEvent <|-- HTEventDataMsg
+HTEvent <|-- HTEventSomething
+' }}}
+
+HTermCore o-- "1" HTDataCodec : data_codec
+HTermCore o-- "1" HTDataSrc : data_src
+HTermCore o-- "*" HTDataMsg : messages
+
+HTDataCodec ..> HTDataMsg : emit
+
+HTermCore ..> HTDataSrc   : listen for raw Rx data \n (QByteArray)
+HTermCore ..> HTDataCodec : put raw Rx data \n (QByteArray)
+HTermCore ..> HTDataCodec : listen for Rx \n HTDataMsg's
+HTermCore ..> HTDataCodec : encode data for Tx \n (put QByteArray, \n get HTDataMsg)
+HTermCore ..> HTDataSrc   : put raw data for Tx \n (QByteArray extracted \n from HTDataMsg)
+
+HTermCore ..> HTEvent : emit
+
+HTEventDataMsg o-- "1" HTDataMsg
+}
+
+package "Gui" {
+
+   class SomeGUI {
+   }
+
+}
+
+SomeGUI ..> HTermCore : listen for events \n (HTEvent)
+SomeGUI o-- "*" HTEvent : events
+
+
+@enduml
