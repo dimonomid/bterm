@@ -17,6 +17,10 @@
       len = fc;
    }
 
+   action test_err {
+      fhold; fgoto mylabel;
+   }
+
    fmt_with_len = (0x81..0xff);
    fmt_separate_len = (0x80 any);
    tgt = (any);
@@ -24,7 +28,7 @@
 
    main := 
             (
-             ( 'a'  'b' -> mylabel) ('c' (mylabel: 'd'))
+             ( 'arg' @err(test_err)  'b' -> mylabel) ('c' (mylabel: 'd'))
             )
       ;
 
