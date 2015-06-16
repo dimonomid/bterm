@@ -96,6 +96,7 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
    action message_received {
       /* TODO */
       printf("msg received\n");
+      emit messageDecoded(this->cur_rx_msg);
    }
 
    action message_error {
