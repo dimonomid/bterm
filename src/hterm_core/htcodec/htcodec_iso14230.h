@@ -41,6 +41,7 @@ private:
    int ragel_cs;
    int rx_user_data_len;
    int rx_user_data_got_len;
+   unsigned char rx_checksum;
 
 
    /****************************************************************************
@@ -55,6 +56,7 @@ public:
    void                  clearRawRxData ();
    vector<unsigned char> encodeMessage  (const vector<unsigned char> &data);
 
+private:
 
    /****************************************************************************
     * SIGNALS, SLOTS

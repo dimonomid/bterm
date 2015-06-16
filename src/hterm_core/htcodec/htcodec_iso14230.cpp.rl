@@ -9,6 +9,7 @@
 
 #include "htcodec_iso14230.h"
 
+#include <iostream>
 
 /*******************************************************************************
  * AUTO-GENERATED RAGEL DATA
@@ -25,8 +26,10 @@
  ******************************************************************************/
 
 HTCodec_ISO14230::HTCodec_ISO14230() :
-   cur_rx_msg(HTDataMsg()),
-   ragel_cs(0)
+   cur_rx_msg(),
+   ragel_cs(0),
+   rx_user_data_len(0),
+   rx_user_data_got_len(0)
 {
    this->clearRawRxData();
 }
@@ -52,42 +55,53 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
 
 %%{
    action message_reset {
-      /* TODO */
+      printf("reset\n");
+      this->clearRawRxData();
    }
 
    action got_fmt_with_len {
       rx_user_data_len = fc & ~0x80;
+      printf("fmt with len=%d\n", (int)rx_user_data_len);
    }
 
    action got_separate_len {
       rx_user_data_len = fc;
+      printf("separate len\n");
    }
 
    action got_tgt {
       //tgt = fc;
       //TODO
+      printf("tgt\n");
    }
 
    action got_src {
       //src = fc;
       //TODO
+      printf("src\n");
    }
 
    action got_service_byte {
       this->cur_rx_msg.addData(HTDataPart::Type::SERVICE, fc);
+      this->rx_checksum += fc;
+      printf("got service byte: 0x%x\n", fc);
    }
 
    action got_data_byte {
       this->cur_rx_msg.addData(HTDataPart::Type::USER, fc);
+      this->rx_checksum += fc;
+      printf("got data byte: 0x%x\n", fc);
    }
 
    action message_received {
       /* TODO */
+      printf("msg received\n");
    }
 
    action message_error {
       /* TODO */
-      fhold; fgoto msg_start;
+      printf("msg error\n");
+      /*fhold; */fgoto msg_start;
    }
 
 
@@ -108,11 +122,13 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
    }
 
    action is_waiting_for_data {
+      printf("waiting: rx_user_data_got_len=%d\n", rx_user_data_got_len),
       (rx_user_data_got_len++ < rx_user_data_len)
    }
 
    action is_checksum_correct {
-      1/*TODO*/
+      printf("is_checksum_correct\n"),
+      (this->rx_checksum == fc)/*TODO*/
    }
 
 
@@ -134,7 +150,7 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
        (src        when is_src_valid          @got_src       ) $got_service_byte
        (data       when is_waiting_for_data   @got_data_byte )*
        <:
-       (checksum   when is_checksum_correct   @message_received) $got_service_byte
+       (checksum   when is_checksum_correct   $got_service_byte @message_received)
       ) >to(message_reset) $err(message_error)
       ;
 
@@ -173,6 +189,10 @@ void HTCodec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 
 void HTCodec_ISO14230::clearRawRxData()
 {
+   this->rx_user_data_got_len = 0;
+   this->rx_user_data_len = 0;
+   this->rx_checksum = 0;
+
    this->cur_rx_msg.clear();
 
    {
