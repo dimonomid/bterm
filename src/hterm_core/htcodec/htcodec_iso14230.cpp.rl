@@ -154,13 +154,20 @@ main := (msg_start: message)*;
 
 void HTCodec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 {
+   //-- initialize variables necessary for ragel machine
+   //   (it is possible to set ragel to use different variable names,
+   //   but I find it more clear to just explicitly define needed variables)
    const unsigned char *p = data.data();
    const unsigned char *pe = p + data.size();
    int cs = this->ragel_cs;
    const unsigned char *eof = nullptr;
+
+   //-- execute machine
    %%{
       write exec;
    }%%
+
+   //-- remember ragel machine's current state
    ragel_cs = cs;
 }
 
