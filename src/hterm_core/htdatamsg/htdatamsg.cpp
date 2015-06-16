@@ -89,6 +89,11 @@ void HTDataMsg::addData(HTDataPart::Type type, const vector<unsigned char> &data
 
 }
 
+void HTDataMsg::clear()
+{
+   this->data_parts.clear();
+}
+
 
 /*******************************************************************************
  * SLOTS

@@ -54,6 +54,7 @@ public:
    void addData(HTDataPart::Type type, const vector<unsigned char> &data);
    void addData(HTDataPart::Type type, unsigned char byte);
 
+   void clear();
 
    /****************************************************************************
     * SIGNALS, SLOTS

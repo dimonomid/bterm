@@ -28,11 +28,7 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
    cur_rx_msg(HTDataMsg()),
    ragel_cs(0)
 {
-   int cs = ragel_cs;
-   %%{
-      write init;
-   }%%
-   ragel_cs = cs;
+   this->clearRawRxData();
 }
 
 
@@ -166,6 +162,24 @@ void HTCodec_ISO14230::addRawRxData(const vector<unsigned char> &data)
       write exec;
    }%%
    ragel_cs = cs;
+}
+
+void HTCodec_ISO14230::clearRawRxData()
+{
+   this->cur_rx_msg.clear();
+
+   {
+      int cs = ragel_cs;
+      %%{
+         write init;
+      }%%
+      ragel_cs = cs;
+   }
+}
+
+vector<unsigned char> HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data)
+{
+   return vector<unsigned char>();
 }
 
 /*******************************************************************************
