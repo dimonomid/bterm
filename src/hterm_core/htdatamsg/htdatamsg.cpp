@@ -12,6 +12,10 @@
 
 
 #include <vector>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -94,6 +98,40 @@ void HTDataMsg::clear()
    this->data_parts.clear();
 }
 
+std::string HTDataMsg::toString() const {
+
+   std::stringstream ss{};
+   bool empty = true;
+
+   for (auto data_part : this->data_parts){
+      for (int byte : data_part.data){
+         if (!empty){
+            ss << ", ";
+         }
+
+         switch (data_part.type){
+
+            case HTDataPart::Type::SERVICE:
+               ss << "*0x" << std::hex << byte << "*";
+               break;
+
+            case HTDataPart::Type::USER:
+               ss << "0x" << std::hex << byte;
+               break;
+
+            default:
+               std::cerr << "wrong data_part.type";
+               exit(1);
+               break;
+         }
+         empty = false;
+      }
+   }
+
+   return ss.str();
+
+   //return "data parts cnt=" + std::to_string(this->data_parts.size());
+}
 
 /*******************************************************************************
  * SLOTS
@@ -104,5 +142,11 @@ void HTDataMsg::clear()
 /* protected    */
 
 /* public       */
+
+
+
+
+
+
 
 
