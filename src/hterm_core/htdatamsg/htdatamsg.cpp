@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
@@ -133,6 +134,22 @@ std::string HTDataMsg::toString() const {
    //return "data parts cnt=" + std::to_string(this->data_parts.size());
 }
 
+vector<unsigned char> HTDataMsg::getUserData() const
+{
+   vector<unsigned char> ret{};
+
+   for (auto data_part : this->data_parts){
+      if (data_part.type == HTDataPart::Type::USER){
+         ret.insert(
+               ret.end(),
+               data_part.data.cbegin(), data_part.data.cend()
+               );
+      }
+   }
+
+   return ret;
+}
+
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/
@@ -142,10 +159,6 @@ std::string HTDataMsg::toString() const {
 /* protected    */
 
 /* public       */
-
-
-
-
 
 
 

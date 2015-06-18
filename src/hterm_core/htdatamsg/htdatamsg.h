@@ -57,6 +57,8 @@ public:
 
    void clear();
 
+   vector<unsigned char> getUserData() const;
+
    std::string toString() const;
 
    /****************************************************************************
@@ -68,6 +70,10 @@ public:
     * OPERATORS
     ******************************************************************************/
 
+public:
+   inline bool operator==(const HTDataMsg &other) const {
+      return (this->data_parts == other.data_parts);
+   }
 };
 
 
