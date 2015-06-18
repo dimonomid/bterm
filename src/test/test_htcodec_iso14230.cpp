@@ -131,6 +131,27 @@ void TestHTCodecISO14230::encode1()
       rx_msgs.pop();
    }
 
+   //-- check message with wrong checksum
+   {
+      data.push_back(0x80);
+      data.push_back(0x02);
+
+      codec.addRawRxData(data);
+      data.clear();
+
+      data.push_back(0x01);
+      data.push_back(0x02);
+      data.push_back(0x03);
+      data.push_back(0x04);
+      data.push_back(0x8d);
+
+      codec.addRawRxData(data);
+      data.clear();
+
+      //-- no messages should be received
+      QCOMPARE(rx_msgs.size(), (unsigned int)0);
+   }
+
 }
 
 void TestHTCodecISO14230::encode2()
@@ -144,8 +165,17 @@ void TestHTCodecISO14230::encode2()
  * BOILERPLATE TEST CODE
  ******************************************************************************/
 
-//-- expands to a simple main() function that runs all the test functions.
-QTEST_MAIN(TestHTCodecISO14230);
+int main(int argc, char **argv)
+{
+   int status = 0;
+
+   {
+      TestHTCodecISO14230 tc;
+      status |= QTest::qExec(&tc, argc, argv);
+   }
+
+   return status;
+}
 
 //-- when both declaration and implementation of class are in a .cpp file,
 //   we also need to include the generated moc file to make Qt's introspection
