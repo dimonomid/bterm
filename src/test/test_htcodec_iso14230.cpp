@@ -137,10 +137,17 @@ void TestHTCodecISO14230::decode_encoded()
    std::default_random_engine dre;
    std::uniform_int_distribution<unsigned char> di{0, 0xff};
 
-   HTCodec_ISO14230 tx_codec{0xf1, 0x10};
+   //-- we will use in-instance `codec` as rx codec,
+   //   let's set own and remote addresses
    codec.setOwnAddr(0x10);
    codec.setRemoteAddr(0xf1);
 
+   //-- create another instance of ico14230 codec for tx, with
+   //   reversed own and remote addresses, we will use it
+   //   for encoding messages
+   HTCodec_ISO14230 tx_codec{0xf1, 0x10};
+
+   //-- will be filled at each loop iteration
    vector<unsigned char> user_data{};
 
    //-- encode and decode messages of all possible sizes (1 .. 255 bytes)
@@ -148,12 +155,13 @@ void TestHTCodecISO14230::decode_encoded()
       //-- there should be no decoded messages at the moment
       QCOMPARE(rx_msgs.size(), (unsigned int)0);
 
+      //-- clear the message and fill it with random data
       user_data.clear();
-
       for (int i = 0; i < user_data_len; i++){
          user_data.push_back(di(dre));
       }
 
+      //-- encode message and feed encoded data as raw data to our rx codec
       vector<unsigned char> encoded_data = tx_codec.encodeMessage(user_data);
       codec.addRawRxData(encoded_data);
 
