@@ -37,11 +37,16 @@
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTCodec_ISO14230::HTCodec_ISO14230() :
+HTCodec_ISO14230::HTCodec_ISO14230(
+      unsigned char own_addr,
+      unsigned char remote_addr
+      ) :
    cur_rx_msg(),
    ragel_cs(0),
    rx_user_data_len(0),
-   rx_user_data_got_len(0)
+   rx_user_data_got_len(0),
+   own_addr(own_addr),
+   remote_addr(remote_addr)
 {
    this->clearRawRxData();
 }
@@ -217,10 +222,48 @@ void HTCodec_ISO14230::clearRawRxData()
    }
 }
 
-vector<unsigned char> HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data)
+vector<unsigned char> HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
 {
-   return vector<unsigned char>();
+   vector<unsigned char> ret{};
+
+   //-- put length
+   if (data.size() >= 0x40){
+      ret.push_back(0x80);
+      ret.push_back(data.size());
+   } else {
+      ret.push_back(0x80 | data.size());
+   }
+
+   ret.push_back(remote_addr);
+   ret.push_back(own_addr);
+
+   //-- push user data
+   ret.insert(ret.end(), data.begin(), data.end());
+
+   //-- calculate and push checksum
+   {
+      unsigned char checksum = 0;
+      for (auto byte : ret){
+         checksum += byte;
+      }
+      ret.push_back(checksum);
+   }
+
+   return ret;
 }
+
+
+void HTCodec_ISO14230::setOwnAddr(unsigned char own_addr)
+{
+   this->own_addr = own_addr;
+}
+
+void HTCodec_ISO14230::setRemoteAddr(unsigned char remote_addr)
+{
+   this->remote_addr = remote_addr;
+}
+
+
 
 /*******************************************************************************
  * SLOTS

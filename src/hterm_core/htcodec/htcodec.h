@@ -49,7 +49,7 @@ private:
 public:
    virtual void                  addRawRxData   (const vector<unsigned char> &data) = 0;
    virtual void                  clearRawRxData () = 0;
-   virtual vector<unsigned char> encodeMessage  (const vector<unsigned char> &data) = 0;
+   virtual vector<unsigned char> encodeMessage  (const vector<unsigned char> &data) const = 0;
 
 
    /******************************************************************************************

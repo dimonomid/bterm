@@ -32,7 +32,7 @@ class HTCodec_ISO14230 : public HTCodec
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTCodec_ISO14230();
+   explicit HTCodec_ISO14230(unsigned char own_addr, unsigned char remote_addr);
 
    /****************************************************************************
     * PRIVATE DATA
@@ -45,6 +45,11 @@ private:
    int rx_user_data_got_len;
    unsigned char rx_checksum;
 
+   //-- used as target for decoded messages, and source for encoded messages
+   unsigned char own_addr;
+   //-- used as source for decoded messages, and target for encoded messages
+   unsigned char remote_addr;
+
 
    /****************************************************************************
     * STATIC METHODS
@@ -54,11 +59,16 @@ private:
     * METHODS
     ***************************************************************************/
 public:
-   void                  addRawRxData   (const vector<unsigned char> &data);
-   void                  clearRawRxData ();
-   vector<unsigned char> encodeMessage  (const vector<unsigned char> &data);
+   virtual void                  addRawRxData   (const vector<unsigned char> &data) override;
+   virtual void                  clearRawRxData () override;
 
-private:
+   virtual vector<unsigned char> encodeMessage  (const vector<unsigned char> &data) const override;
+
+
+
+   void                  setOwnAddr(unsigned char own_addr);
+   void                  setRemoteAddr(unsigned char remote_addr);
+
 
    /****************************************************************************
     * SIGNALS, SLOTS
