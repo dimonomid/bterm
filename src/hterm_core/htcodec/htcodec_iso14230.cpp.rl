@@ -234,6 +234,7 @@ vector<unsigned char> HTCodec_ISO14230::encodeMessage(const vector<unsigned char
       ret.push_back(0x80 | data.size());
    }
 
+   //-- push target and source addresses
    ret.push_back(remote_addr);
    ret.push_back(own_addr);
 
