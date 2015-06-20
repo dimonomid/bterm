@@ -4,7 +4,7 @@
 
 QT += testlib
 TEMPLATE = app
-TARGET = test
+TARGET = hterm-test
 INCLUDEPATH += .
 
 QMAKE_CXXFLAGS += -std=c++11
