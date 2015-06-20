@@ -58,6 +58,7 @@ public:
    void clear();
 
    vector<unsigned char> getUserData() const;
+   vector<unsigned char> getRawData() const;
 
    std::string toString() const;
 

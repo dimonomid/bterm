@@ -62,7 +62,7 @@ public:
    virtual void                  addRawRxData   (const vector<unsigned char> &data) override;
    virtual void                  clearRawRxData () override;
 
-   virtual vector<unsigned char> encodeMessage  (const vector<unsigned char> &data) const override;
+   virtual HTDataMsg             encodeMessage  (const vector<unsigned char> &data) const override;
 
 
 

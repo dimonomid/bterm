@@ -150,6 +150,20 @@ vector<unsigned char> HTDataMsg::getUserData() const
    return ret;
 }
 
+vector<unsigned char> HTDataMsg::getRawData() const
+{
+   vector<unsigned char> ret{};
+
+   for (auto data_part : this->data_parts){
+      ret.insert(
+            ret.end(),
+            data_part.data.cbegin(), data_part.data.cend()
+            );
+   }
+
+   return ret;
+}
+
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/

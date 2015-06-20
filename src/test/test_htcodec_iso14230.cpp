@@ -123,7 +123,7 @@ void TestHTCodecISO14230::encode()
    vector<unsigned char> user_data{0x01, 0x02, 0x03};
    vector<unsigned char> encoded_expected{0x83, 0x02, 0x01, 0x01, 0x02, 0x03, 0x8c};
 
-   vector<unsigned char> encoded_data = codec.encodeMessage(user_data);
+   vector<unsigned char> encoded_data = codec.encodeMessage(user_data).getRawData();
 
    QCOMPARE(encoded_data, encoded_expected);
 }
@@ -162,7 +162,7 @@ void TestHTCodecISO14230::decode_encoded()
       }
 
       //-- encode message and feed encoded data as raw data to our rx codec
-      vector<unsigned char> encoded_data = tx_codec.encodeMessage(user_data);
+      vector<unsigned char> encoded_data = tx_codec.encodeMessage(user_data).getRawData();
       codec.addRawRxData(encoded_data);
 
       //-- messages should be already received

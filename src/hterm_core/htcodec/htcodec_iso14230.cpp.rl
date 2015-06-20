@@ -222,32 +222,34 @@ void HTCodec_ISO14230::clearRawRxData()
    }
 }
 
-vector<unsigned char> HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
+HTDataMsg HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
 {
-   vector<unsigned char> ret{};
+   HTDataMsg ret{};
 
    //-- put length
    if (data.size() >= 0x40){
-      ret.push_back(0x80);
-      ret.push_back(data.size());
+      ret.addData(HTDataPart::Type::SERVICE, 0x80);
+      ret.addData(HTDataPart::Type::SERVICE, data.size());
    } else {
-      ret.push_back(0x80 | data.size());
+      ret.addData(HTDataPart::Type::SERVICE, 0x80 | data.size());
    }
 
    //-- push target and source addresses
-   ret.push_back(remote_addr);
-   ret.push_back(own_addr);
+   ret.addData(HTDataPart::Type::SERVICE, remote_addr);
+   ret.addData(HTDataPart::Type::SERVICE, own_addr);
 
    //-- push user data
-   ret.insert(ret.end(), data.begin(), data.end());
+   for (auto user_byte : data){
+      ret.addData(HTDataPart::Type::USER, user_byte);
+   }
 
    //-- calculate and push checksum
    {
       unsigned char checksum = 0;
-      for (auto byte : ret){
+      for (auto byte : ret.getRawData()){
          checksum += byte;
       }
-      ret.push_back(checksum);
+      ret.addData(HTDataPart::Type::SERVICE, checksum);
    }
 
    return ret;
