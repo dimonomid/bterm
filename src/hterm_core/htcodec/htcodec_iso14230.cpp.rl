@@ -11,6 +11,18 @@
 
 #include <iostream>
 
+
+/*******************************************************************************
+ * MACROS
+ ******************************************************************************/
+
+//-- I have difficulties getting QT_NO_DEBUG_OUTPUT to work (and even more,
+//   it's project-wide, but I'd prefer it to be class-wide),
+//   so I just use simple macro here
+//#define  _DEBUG(...)    qDebug(__VA_ARGS__)
+#define  _DEBUG(...)    strlen("")
+
+
 /*******************************************************************************
  * AUTO-GENERATED RAGEL DATA
  ******************************************************************************/
@@ -55,53 +67,53 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
 
 %%{
    action message_reset {
-      printf("reset\n");
+      _DEBUG("reset");
       this->clearRawRxData();
    }
 
    action got_fmt_with_len {
       rx_user_data_len = fc & ~0x80;
-      printf("fmt with len=%d\n", (int)rx_user_data_len);
+      _DEBUG("fmt with len=%d", (int)rx_user_data_len);
    }
 
    action got_separate_len {
       rx_user_data_len = fc;
-      printf("separate len\n");
+      _DEBUG("separate len");
    }
 
    action got_tgt {
       //tgt = fc;
       //TODO
-      printf("tgt\n");
+      _DEBUG("tgt");
    }
 
    action got_src {
       //src = fc;
       //TODO
-      printf("src\n");
+      _DEBUG("src");
    }
 
    action got_service_byte {
       this->cur_rx_msg.addData(HTDataPart::Type::SERVICE, fc);
       this->rx_checksum += fc;
-      printf("got service byte: 0x%x\n", fc);
+      _DEBUG("got service byte: 0x%x", fc);
    }
 
    action got_data_byte {
       this->cur_rx_msg.addData(HTDataPart::Type::USER, fc);
       this->rx_checksum += fc;
-      printf("got data byte: 0x%x\n", fc);
+      _DEBUG("got data byte: 0x%x", fc);
    }
 
    action message_received {
       /* TODO */
-      printf("msg received\n");
+      _DEBUG("msg received");
       emit messageDecoded(this->cur_rx_msg);
    }
 
    action message_error {
       /* TODO */
-      printf("msg error\n");
+      _DEBUG("msg error");
       /*fhold; */fgoto msg_start;
    }
 
@@ -123,13 +135,13 @@ HTCodec_ISO14230::HTCodec_ISO14230() :
    }
 
    action is_waiting_for_data {
-      printf("waiting: rx_user_data_got_len=%d\n", rx_user_data_got_len),
+      _DEBUG("waiting: rx_user_data_got_len=%d", rx_user_data_got_len),
       (rx_user_data_got_len++ < rx_user_data_len)
    }
 
    action is_checksum_correct {
-      printf("is_checksum_correct\n"),
-      (this->rx_checksum == fc)/*TODO*/
+      _DEBUG("is_checksum_correct"),
+      (this->rx_checksum == fc)
    }
 
 

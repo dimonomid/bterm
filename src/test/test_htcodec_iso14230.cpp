@@ -50,8 +50,7 @@ private:
 
 
 private slots:
-   void encode1();
-   void encode2();
+   void encode_summary();
 
 public slots:
    void messageDecoded(const HTDataMsg &msg);
@@ -75,7 +74,7 @@ void TestHTCodecISO14230::messageDecoded(const HTDataMsg &msg)
  * TESTS IMPLEMENTATION
  ******************************************************************************/
 
-void TestHTCodecISO14230::encode1()
+void TestHTCodecISO14230::encode_summary()
 {
    vector<unsigned char> data{0x83, 0x01, 0x02};
    data.push_back(0x02);
@@ -93,7 +92,7 @@ void TestHTCodecISO14230::encode1()
    codec.addRawRxData(data);
    data.clear();
 
-   //-- messages should be already received
+   //-- message should be already received
    QCOMPARE(rx_msgs.size(), (unsigned int)1);
 
    {
@@ -104,8 +103,10 @@ void TestHTCodecISO14230::encode1()
       rx_msgs.pop();
    }
 
+   //-- add extra byte (garbage)
    data.push_back(0x02);
 
+   //-- new message starts
    data.push_back(0x80);
    data.push_back(0x02);
 
@@ -154,10 +155,6 @@ void TestHTCodecISO14230::encode1()
 
 }
 
-void TestHTCodecISO14230::encode2()
-{
-   cout << "test" << endl;
-}
 
 
 
