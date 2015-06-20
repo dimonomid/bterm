@@ -1,4 +1,7 @@
-
+/******************************************************************************
+ *   Description:   TODO
+ *
+ ******************************************************************************/
 
 /******************************************************************************
  * INCLUDED FILES
@@ -6,31 +9,22 @@
 
 #include <QtTest/QtTest>
 
-#include "test_htcodec_iso14230.h"
-#include "test_htdatamsg.h"
-
-
-
 
 /*******************************************************************************
- * PUBLIC FUNCTIONS
+ * TESTS CLASS
  ******************************************************************************/
 
-int main(int argc, char **argv)
+class TestHTDataMsg: public QObject
 {
-   int status = 0;
+Q_OBJECT
 
-   //-- run all tests
-   {
-      TestHTCodecISO14230 tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
+public:
 
-   {
-      TestHTDataMsg tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
+private slots:
+   void test1();
 
-   return status;
-}
+};
+
+
+
 

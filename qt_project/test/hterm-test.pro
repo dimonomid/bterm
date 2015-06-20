@@ -12,9 +12,11 @@ include(../common/hterm_core.pri)
 # Input
 
 SOURCES += ../../src/test/test_htcodec_iso14230.cpp
+SOURCES += ../../src/test/test_htdatamsg.cpp
 SOURCES += ../../src/test/test_main.cpp
 
 HEADERS += ../../src/test/test_htcodec_iso14230.h
+SOURCES += ../../src/test/test_htdatamsg.h
 
 
 
