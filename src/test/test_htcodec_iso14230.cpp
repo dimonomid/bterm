@@ -8,56 +8,13 @@
  ******************************************************************************/
 
 #include <QtTest/QtTest>
+#include "test_htcodec_iso14230.h"
+
 #include "htcodec_iso14230.h"
 
 #include <iostream>
 #include <queue>
 #include <random>
-
-
-/*******************************************************************************
- * TESTS CLASS
- ******************************************************************************/
-
-class TestHTCodecISO14230: public QObject
-{
-Q_OBJECT
-
-public:
-   TestHTCodecISO14230() :
-      codec(0x01, 0x02)
-   {
-   connect(
-         &codec, SIGNAL(messageDecoded(const HTDataMsg &)),
-         this, SLOT(messageDecoded(const HTDataMsg &))
-         );
-   cout << "constructed" << endl;
-   }
-
-
-   ~TestHTCodecISO14230()
-   {
-      disconnect(
-            &codec, SIGNAL(messageDecoded(const HTDataMsg &)),
-            this, SLOT(messageDecoded(const HTDataMsg &))
-            );
-
-      cout << "destructed" << endl;
-   }
-
-private:
-   HTCodec_ISO14230 codec;
-   std::queue<HTDataMsg> rx_msgs;
-
-
-private slots:
-   void decode_summary();
-   void encode();
-   void decode_encoded();
-
-public slots:
-   void messageDecoded(const HTDataMsg &msg);
-};
 
 
 
@@ -210,26 +167,5 @@ void TestHTCodecISO14230::decode_encoded()
 }
 
 
-
-/*******************************************************************************
- * BOILERPLATE TEST CODE
- ******************************************************************************/
-
-int main(int argc, char **argv)
-{
-   int status = 0;
-
-   {
-      TestHTCodecISO14230 tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
-
-   return status;
-}
-
-//-- when both declaration and implementation of class are in a .cpp file,
-//   we also need to include the generated moc file to make Qt's introspection
-//   work.
-#include "test_htcodec_iso14230.moc"
 
 
