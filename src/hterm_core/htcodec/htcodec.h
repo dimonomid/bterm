@@ -10,6 +10,8 @@
  * INCLUDED FILES
  *****************************************************************************************/
 
+#include <cstdint>
+
 #include <QObject>
 #include "htdatamsg.h"
 
@@ -47,9 +49,9 @@ private:
     * METHODS
     *****************************************************************************************/
 public:
-   virtual void                  addRawRxData   (const vector<unsigned char> &data) = 0;
+   virtual void                  addRawRxData   (const vector<uint8_t> &data) = 0;
    virtual void                  clearRawRxData () = 0;
-   virtual HTDataMsg             encodeMessage  (const vector<unsigned char> &data) const = 0;
+   virtual HTDataMsg             encodeMessage  (const vector<uint8_t> &data) const = 0;
 
 
    /******************************************************************************************

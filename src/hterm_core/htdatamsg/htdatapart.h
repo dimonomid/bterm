@@ -10,6 +10,8 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <cstdint>
+
 #include <vector>
 
 
@@ -32,14 +34,14 @@ public:
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTDataPart(Type type, const vector<unsigned char> &data);
-   explicit HTDataPart(Type type, vector<unsigned char> &&data);
+   explicit HTDataPart(Type type, const vector<uint8_t> &data);
+   explicit HTDataPart(Type type, vector<uint8_t> &&data);
 
    /****************************************************************************
     * PUBLIC DATA
     ***************************************************************************/
    Type type;
-   vector<unsigned char> data;
+   vector<uint8_t> data;
 
 
    /****************************************************************************

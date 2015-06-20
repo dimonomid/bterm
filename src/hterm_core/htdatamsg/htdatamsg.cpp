@@ -52,7 +52,7 @@ HTDataMsg::HTDataMsg() :
 
 /* public       */
 
-void HTDataMsg::addData(HTDataPart::Type type, unsigned char byte)
+void HTDataMsg::addData(HTDataPart::Type type, uint8_t byte)
 {
    if (this->data_parts.size() > 0 && type == this->data_parts.back().type){
       //-- type of new data is the same as previously added data, so, just
@@ -63,7 +63,7 @@ void HTDataMsg::addData(HTDataPart::Type type, unsigned char byte)
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
 
-      auto data = vector<unsigned char>();
+      auto data = vector<uint8_t>();
       data.push_back(byte);
 
       this->data_parts.push_back(
@@ -72,7 +72,7 @@ void HTDataMsg::addData(HTDataPart::Type type, unsigned char byte)
    }
 }
 
-void HTDataMsg::addData(HTDataPart::Type type, const vector<unsigned char> &data)
+void HTDataMsg::addData(HTDataPart::Type type, const vector<uint8_t> &data)
 {
    if (this->data_parts.size() > 0 && type == this->data_parts.back().type){
       //-- type of new data is the same as previously added data, so, just
@@ -134,9 +134,9 @@ std::string HTDataMsg::toString() const {
    //return "data parts cnt=" + std::to_string(this->data_parts.size());
 }
 
-vector<unsigned char> HTDataMsg::getUserData() const
+vector<uint8_t> HTDataMsg::getUserData() const
 {
-   vector<unsigned char> ret{};
+   vector<uint8_t> ret{};
 
    for (auto data_part : this->data_parts){
       if (data_part.type == HTDataPart::Type::USER){
@@ -150,9 +150,9 @@ vector<unsigned char> HTDataMsg::getUserData() const
    return ret;
 }
 
-vector<unsigned char> HTDataMsg::getRawData() const
+vector<uint8_t> HTDataMsg::getRawData() const
 {
-   vector<unsigned char> ret{};
+   vector<uint8_t> ret{};
 
    for (auto data_part : this->data_parts){
       ret.insert(

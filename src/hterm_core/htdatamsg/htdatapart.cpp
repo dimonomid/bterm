@@ -18,13 +18,13 @@ using namespace std;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTDataPart::HTDataPart(HTDataPart::Type type, const vector<unsigned char> &data)
+HTDataPart::HTDataPart(HTDataPart::Type type, const vector<uint8_t> &data)
 {
    this->type = type;
    this->data = data;
 }
 
-HTDataPart::HTDataPart(HTDataPart::Type type, vector<unsigned char> &&data)
+HTDataPart::HTDataPart(HTDataPart::Type type, vector<uint8_t> &&data)
 {
    this->type = type;
    this->data = data;

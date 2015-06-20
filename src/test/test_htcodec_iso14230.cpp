@@ -39,7 +39,7 @@ void TestHTCodecISO14230::messageDecoded(const HTDataMsg &msg)
  */
 void TestHTCodecISO14230::decode_summary()
 {
-   vector<unsigned char> data{0x83, 0x01, 0x02};
+   vector<uint8_t> data{0x83, 0x01, 0x02};
    data.push_back(0x02);
    data.push_back(0x02);
    data.push_back(0x02);
@@ -59,7 +59,7 @@ void TestHTCodecISO14230::decode_summary()
    QCOMPARE(rx_msgs.size(), (unsigned int)1);
 
    {
-      vector<unsigned char> expected_user_data{2, 2, 2};
+      vector<uint8_t> expected_user_data{2, 2, 2};
 
       //-- compare message contents
       QCOMPARE(rx_msgs.front().getUserData(), expected_user_data);
@@ -89,7 +89,7 @@ void TestHTCodecISO14230::decode_summary()
    QCOMPARE(rx_msgs.size(), (unsigned int)1);
 
    {
-      vector<unsigned char> expected_user_data{3, 4};
+      vector<uint8_t> expected_user_data{3, 4};
 
       QCOMPARE(rx_msgs.front().getUserData(), expected_user_data);
       rx_msgs.pop();
@@ -120,10 +120,10 @@ void TestHTCodecISO14230::decode_summary()
 
 void TestHTCodecISO14230::encode()
 {
-   vector<unsigned char> user_data{0x01, 0x02, 0x03};
-   vector<unsigned char> encoded_expected{0x83, 0x02, 0x01, 0x01, 0x02, 0x03, 0x8c};
+   vector<uint8_t> user_data{0x01, 0x02, 0x03};
+   vector<uint8_t> encoded_expected{0x83, 0x02, 0x01, 0x01, 0x02, 0x03, 0x8c};
 
-   vector<unsigned char> encoded_data = codec.encodeMessage(user_data).getRawData();
+   vector<uint8_t> encoded_data = codec.encodeMessage(user_data).getRawData();
 
    QCOMPARE(encoded_data, encoded_expected);
 }
@@ -135,7 +135,7 @@ void TestHTCodecISO14230::encode()
 void TestHTCodecISO14230::decode_encoded()
 {
    std::default_random_engine dre;
-   std::uniform_int_distribution<unsigned char> di{0, 0xff};
+   std::uniform_int_distribution<uint8_t> di{0, 0xff};
 
    //-- we will use in-instance `codec` as rx codec,
    //   let's set own and remote addresses
@@ -148,7 +148,7 @@ void TestHTCodecISO14230::decode_encoded()
    HTCodec_ISO14230 tx_codec{0xf1, 0x10};
 
    //-- will be filled at each loop iteration
-   vector<unsigned char> user_data{};
+   vector<uint8_t> user_data{};
 
    //-- encode and decode messages of all possible sizes (1 .. 255 bytes)
    for (int user_data_len = 1; user_data_len < 0xff; user_data_len++){
@@ -162,7 +162,7 @@ void TestHTCodecISO14230::decode_encoded()
       }
 
       //-- encode message and feed encoded data as raw data to our rx codec
-      vector<unsigned char> encoded_data = tx_codec.encodeMessage(user_data).getRawData();
+      vector<uint8_t> encoded_data = tx_codec.encodeMessage(user_data).getRawData();
       codec.addRawRxData(encoded_data);
 
       //-- messages should be already received

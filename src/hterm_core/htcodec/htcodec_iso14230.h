@@ -10,6 +10,8 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <cstdint>
+
 #include <QObject>
 
 #include "htdatamsg.h"
@@ -32,7 +34,7 @@ class HTCodec_ISO14230 : public HTCodec
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTCodec_ISO14230(unsigned char own_addr, unsigned char remote_addr);
+   explicit HTCodec_ISO14230(uint8_t own_addr, uint8_t remote_addr);
 
    /****************************************************************************
     * PRIVATE DATA
@@ -43,12 +45,12 @@ private:
    int ragel_cs;
    int rx_user_data_len;
    int rx_user_data_got_len;
-   unsigned char rx_checksum;
+   uint8_t rx_checksum;
 
    //-- used as target for decoded messages, and source for encoded messages
-   unsigned char own_addr;
+   uint8_t own_addr;
    //-- used as source for decoded messages, and target for encoded messages
-   unsigned char remote_addr;
+   uint8_t remote_addr;
 
 
    /****************************************************************************
@@ -59,15 +61,15 @@ private:
     * METHODS
     ***************************************************************************/
 public:
-   virtual void                  addRawRxData   (const vector<unsigned char> &data) override;
+   virtual void                  addRawRxData   (const vector<uint8_t> &data) override;
    virtual void                  clearRawRxData () override;
 
-   virtual HTDataMsg             encodeMessage  (const vector<unsigned char> &data) const override;
+   virtual HTDataMsg             encodeMessage  (const vector<uint8_t> &data) const override;
 
 
 
-   void                  setOwnAddr(unsigned char own_addr);
-   void                  setRemoteAddr(unsigned char remote_addr);
+   void                  setOwnAddr(uint8_t own_addr);
+   void                  setRemoteAddr(uint8_t remote_addr);
 
 
    /****************************************************************************

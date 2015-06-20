@@ -10,10 +10,13 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "htdatapart.h"
+#include <cstdint>
 
 #include <vector>
 #include <string>
+
+#include "htdatapart.h"
+
 
 using namespace std;
 
@@ -52,13 +55,13 @@ private:
     ***************************************************************************/
 
 public:
-   void addData(HTDataPart::Type type, const vector<unsigned char> &data);
-   void addData(HTDataPart::Type type, unsigned char byte);
+   void addData(HTDataPart::Type type, const vector<uint8_t> &data);
+   void addData(HTDataPart::Type type, uint8_t byte);
 
    void clear();
 
-   vector<unsigned char> getUserData() const;
-   vector<unsigned char> getRawData() const;
+   vector<uint8_t> getUserData() const;
+   vector<uint8_t> getRawData() const;
 
    std::string toString() const;
 
