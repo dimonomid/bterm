@@ -1,0 +1,6 @@
+
+[%dir_name(..)%]
+option:ctags_params = "--langmap=c++:.cpp.h --languages=c++"
+
+$INDEXER_PROJECT_ROOT/src
+
