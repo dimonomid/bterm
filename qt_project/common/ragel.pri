@@ -1,5 +1,7 @@
 
-ragel.output = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}    # output file (input filename without .rl)
+# where generated sources should be placed
+
+ragel.output = $$OUT_PWD/ragel_${QMAKE_FILE_IN_BASE}    # output file (input filename without .rl)
 ragel.input = RAGEL_FILES         # list of input files
 ragel.commands = ragel ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT}    #command
 ragel.variable_out = SOURCES    # where output files should be placed
