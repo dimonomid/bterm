@@ -11,28 +11,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = hterm
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++11
+include(../common/appl_common.pri)
+include(../common/hterm_core.pri)
 
-include(../common/ragel.pri)
-
-RAGEL_FILES += ../../src/hterm_core/htcodec/htcodec_iso14230.cpp.rl
 
 SOURCES += ../../src/main.cpp \
-    ../../src/gui/mainwindow/mainwindow.cpp \
-    ../../src/hterm_core/htdatamsg/htdatapart.cpp \
-    ../../src/hterm_core/htdatamsg/htdatamsg.cpp
+    ../../src/gui/mainwindow/mainwindow.cpp
 
-HEADERS += ../../src/gui/mainwindow/mainwindow.h \
-    ../../src/hterm_core/htdatamsg/htdatapart.h \
-    ../../src/hterm_core/htcodec/htcodec.h \
-    ../../src/hterm_core/htcodec/htcodec_iso14230.h
+HEADERS += ../../src/gui/mainwindow/mainwindow.h 
     
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui
 
-INCLUDEPATH += ../../src/gui/mainwindow \
-               ../../src/hterm_core/htdatamsg \
-               ../../src/hterm_core/htdatasrc \
-               ../../src/hterm_core/htcodec
+INCLUDEPATH += ../../src/gui/mainwindow 
 
