@@ -19,65 +19,53 @@
 
 TestHTDataMsg::TestHTDataMsg()
 {
+   //-- feed data byte-by-byte
    {
-      HTDataPart part{HTDataPart::DataType::SERVICE, {0x01, 0x02, 0x03}};
-      data_parts.push_back(part);
+      std::vector<uint8_t> data {0x01, 0x02, 0x03};
+
+      for (auto byte : data){
+         msg.addData(HTDataPart::DataType::SERVICE, byte);
+      }
    }
 
+   //-- feed USER data mixed: byte-by-byte and the vector at once
    {
-      HTDataPart part{HTDataPart::DataType::USER, {0x04, 0x05, 0x06, 0x07, 0x08}};
-      data_parts.push_back(part);
+      msg.addData(HTDataPart::DataType::USER, 0x04);
+
+      std::vector<uint8_t> data {0x05, 0x06, 0x07};
+      msg.addData(HTDataPart::DataType::USER, data);
+
+      msg.addData(HTDataPart::DataType::USER, 0x08);
    }
 
    {
       HTDataPart part{HTDataPart::DataType::SERVICE, {0x09}};
-      data_parts.push_back(part);
+      msg.addData(part);
    }
 
    {
       HTDataPart part{HTDataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
-      data_parts.push_back(part);
+      msg.addData(part);
    }
 
-   //-- combined data part
    {
       HTDataPart part{};
       part.addData(HTDataPart::DataType::SERVICE, {0xfe, 0xff});
       part.addData(HTDataPart::DataType::USER, 0x3f);
-      data_parts.push_back(part);
+      msg.addData(part);
    }
 
    {
       HTDataPart part{HTDataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
-      data_parts.push_back(part);
+      msg.addData(part);
    }
 
    {
       HTDataPart part{HTDataPart::DataType::SERVICE, {0x0d}};
-      data_parts.push_back(part);
+      msg.addData(part);
    }
 
-   for (size_t i = 0; i < data_parts.size(); i++){
-      auto part = data_parts[i];
-
-      switch (i){
-         case 0:
-            //-- first part: feed SERVICE data byte-by-byte
-            for (uint8_t byte : part.getData(HTDataPart::DataType::SERVICE)){
-               msg.addData(HTDataPart::DataType::SERVICE, byte);
-            }
-            break;
-         case 1:
-            //-- second part: feed USER data as vector
-            msg.addData(HTDataPart::DataType::USER, part.getData(HTDataPart::DataType::USER));
-            break;
-         default:
-            //-- any other part: feed data as data_part
-            msg.addData(part);
-            break;
-      }
-
-   }
+   this->data_parts = msg.getDataParts();
 }
 
 /*******************************************************************************
@@ -88,6 +76,11 @@ TestHTDataMsg::TestHTDataMsg()
 /*******************************************************************************
  * TESTS IMPLEMENTATION
  ******************************************************************************/
+
+void TestHTDataMsg::testDataParts()
+{
+   QCOMPARE(msg.getDataParts().size(), (size_t)7);
+}
 
 void TestHTDataMsg::testUserData()
 {
@@ -117,9 +110,9 @@ void TestHTDataMsg::testRawData()
    QCOMPARE(msg.getRawData(), user_data);
 }
 
+#if 0
 void TestHTDataMsg::testDataParts()
 {
-#if 0
    QCOMPARE(msg.getDataParts(), data_parts);
 
    //-- try to change type and make sure data parts aren't considered as equal anymore
@@ -133,9 +126,9 @@ void TestHTDataMsg::testDataParts()
    //-- push some extra data
    data_parts[0].data.push_back(0x01);
    QVERIFY(data_parts != msg.getDataParts());
-#endif
 
 }
+#endif
 
 
 

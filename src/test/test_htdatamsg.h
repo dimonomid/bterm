@@ -33,9 +33,9 @@ private:
    HTDataMsg msg;
 
 private slots:
+   void testDataParts();
    void testUserData();
    void testRawData();
-   void testDataParts();
 
 };
 
