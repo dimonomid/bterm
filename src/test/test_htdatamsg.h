@@ -13,6 +13,9 @@
 
 #include <QtTest/QtTest>
 
+#include <vector>
+
+#include "htdatamsg.h"
 
 /*******************************************************************************
  * TESTS CLASS
@@ -23,9 +26,15 @@ class TestHTDataMsg: public QObject
 Q_OBJECT
 
 public:
+   explicit TestHTDataMsg();
+
+private:
+   std::vector<std::vector<uint8_t>> data;
+   HTDataMsg msg;
 
 private slots:
-   void test1();
+   void testUserData();
+   void testRawData();
 
 };
 

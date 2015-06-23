@@ -63,6 +63,8 @@ public:
    vector<uint8_t> getUserData() const;
    vector<uint8_t> getRawData() const;
 
+   vector<HTDataPart> getDataParts() const;
+
    std::string toString() const;
 
    /****************************************************************************

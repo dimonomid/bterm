@@ -164,6 +164,11 @@ vector<uint8_t> HTDataMsg::getRawData() const
    return ret;
 }
 
+vector<HTDataPart> HTDataMsg::getDataParts() const
+{
+   return data_parts;
+}
+
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/
