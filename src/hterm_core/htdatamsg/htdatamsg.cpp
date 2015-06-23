@@ -52,13 +52,13 @@ HTDataMsg::HTDataMsg() :
 
 /* public       */
 
-void HTDataMsg::addData(HTDataPart::Type type, uint8_t byte)
+void HTDataMsg::addData(HTDataPart::DataType data_type, uint8_t byte)
 {
-   if (this->data_parts.size() > 0 && type == this->data_parts.back().type){
+   if (this->data_parts.size() > 0 && data_type == this->data_parts.back().getType()){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
-      this->data_parts.back().data.push_back(byte);
+      this->data_parts.back().addData(data_type, byte);
    } else {
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
@@ -67,31 +67,32 @@ void HTDataMsg::addData(HTDataPart::Type type, uint8_t byte)
       data.push_back(byte);
 
       this->data_parts.push_back(
-            HTDataPart(type, data)
+            HTDataPart(data_type, data)
             );
    }
 }
 
-void HTDataMsg::addData(HTDataPart::Type type, const vector<uint8_t> &data)
+void HTDataMsg::addData(HTDataPart::DataType data_type, const vector<uint8_t> &data)
 {
-   if (this->data_parts.size() > 0 && type == this->data_parts.back().type){
+   if (this->data_parts.size() > 0 && data_type == this->data_parts.back().getType()){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
-      this->data_parts.back().data.insert(
-            this->data_parts.back().data.end(),
-            data.begin(),
-            data.end()
-            );
+      this->data_parts.back().addData(data_type, data);
    } else {
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
 
       this->data_parts.push_back(
-            HTDataPart(type, data)
+            HTDataPart(data_type, data)
             );
    }
 
+}
+
+void HTDataMsg::addData(HTDataPart data_part)
+{
+   this->data_parts.push_back(data_part);
 }
 
 void HTDataMsg::clear()
@@ -102,6 +103,7 @@ void HTDataMsg::clear()
 std::string HTDataMsg::toString() const {
 
    std::stringstream ss{};
+#if 0
    bool empty = true;
 
    for (auto data_part : this->data_parts){
@@ -128,6 +130,7 @@ std::string HTDataMsg::toString() const {
          empty = false;
       }
    }
+#endif
 
    return ss.str();
 
@@ -139,12 +142,11 @@ vector<uint8_t> HTDataMsg::getUserData() const
    vector<uint8_t> ret{};
 
    for (auto data_part : this->data_parts){
-      if (data_part.type == HTDataPart::Type::USER){
-         ret.insert(
-               ret.end(),
-               data_part.data.cbegin(), data_part.data.cend()
-               );
-      }
+      vector<uint8_t> user_data_part = data_part.getData(HTDataPart::DataType::USER);
+      ret.insert(
+            ret.end(),
+            user_data_part.cbegin(), user_data_part.cend()
+            );
    }
 
    return ret;
@@ -155,9 +157,13 @@ vector<uint8_t> HTDataMsg::getRawData() const
    vector<uint8_t> ret{};
 
    for (auto data_part : this->data_parts){
+      vector<uint8_t> data_part_vector = data_part.getData(HTDataPart::DataType::SERVICE);
+      if (data_part_vector.size() == 0){
+         data_part_vector = data_part.getData(HTDataPart::DataType::USER);
+      }
       ret.insert(
             ret.end(),
-            data_part.data.cbegin(), data_part.data.cend()
+            data_part_vector.cbegin(), data_part_vector.cend()
             );
    }
 

@@ -12,7 +12,6 @@
 
 #include <cstdint>
 
-#include <initializer_list>
 #include <vector>
 
 
@@ -23,27 +22,28 @@ using namespace std;
  * CLASS DECLARATION
  ******************************************************************************/
 
-struct HTDataPart
+class HTDataPart
 {
    /****************************************************************************
     * TYPES
     ***************************************************************************/
 public:
-   enum class Type { SERVICE, USER };
+   enum class DataType { SERVICE, USER };
+   enum class PartType { SERVICE, USER, COMBINED, EMPTY };
 
    /****************************************************************************
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTDataPart(Type type, const vector<uint8_t> &data);
-   explicit HTDataPart(Type type, vector<uint8_t> &&data);
-   explicit HTDataPart(Type type, const std::initializer_list<uint8_t> &data);
+   explicit HTDataPart(DataType data_type, const vector<uint8_t> &data);
+   explicit HTDataPart(DataType data_type, vector<uint8_t> &&data);
 
    /****************************************************************************
-    * PUBLIC DATA
+    * PRIVATE DATA
     ***************************************************************************/
-   Type type;
-   vector<uint8_t> data;
+private:
+   vector<uint8_t> service_data;
+   vector<uint8_t> user_data;
 
 
    /****************************************************************************
@@ -53,6 +53,14 @@ public:
    /****************************************************************************
     * METHODS
     ***************************************************************************/
+public:
+
+   void addData(DataType data_type, const vector<uint8_t> &data);
+   void addData(DataType data_type, uint8_t byte);
+
+   vector<uint8_t> getData(DataType data_type) const;
+   PartType getType() const;
+
 
    /****************************************************************************
     * SIGNALS, SLOTS
@@ -65,9 +73,25 @@ public:
 
 public:
    inline bool operator==(const HTDataPart &other) const {
-      return (this->data == other.data && this->type == other.type);
+      return (this->user_data == other.user_data && this->service_data == other.service_data);
    }
 };
+
+/**
+ * Treat SERVICE and USER to be equal in both DataType and PartType, all other variants
+ * are non-equal
+ */
+inline bool operator==(const HTDataPart::DataType &data_type, const HTDataPart::PartType &part_type){
+   return (
+         (data_type == HTDataPart::DataType::SERVICE && part_type == HTDataPart::PartType::SERVICE)
+         ||
+         (data_type == HTDataPart::DataType::USER && part_type == HTDataPart::PartType::USER)
+         );
+}
+
+inline bool operator==(const HTDataPart::PartType &part_type, const HTDataPart::DataType &data_type){
+   return (data_type == part_type);
+}
 
 
 #endif // _HTDATAPART_H
