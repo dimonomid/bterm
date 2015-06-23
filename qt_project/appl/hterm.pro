@@ -16,15 +16,18 @@ include(../common/hterm_core.pri)
 
 
 SOURCES += ../../src/main.cpp \
-    ../../src/gui/mainwindow/mainwindow.cpp
+    ../../src/gui/mainwindow/mainwindow.cpp \
+    ../../src/appl/appl.cpp
 
-HEADERS += ../../src/gui/mainwindow/mainwindow.h 
+HEADERS += ../../src/gui/mainwindow/mainwindow.h \ 
+    ../../src/appl/appl.h
     
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui
 
 INCLUDEPATH += ../../src/gui/mainwindow \
+               ../../src/appl \
                ../../src/hterm_core/htcodec \
                ../../src/hterm_core/htdatamsg \
                ../../src/hterm_core/htdatasrc
