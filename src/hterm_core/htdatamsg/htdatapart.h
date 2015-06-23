@@ -87,23 +87,5 @@ public:
    }
 };
 
-/**
- * Treat SERVICE and USER to be equal in both DataType and PartType, all other variants
- * are non-equal
- */
-#if 0
-inline bool operator==(const HTDataPart::DataType &data_type, const HTDataPart::PartType &part_type){
-   return (
-         (data_type == HTDataPart::DataType::SERVICE && part_type == HTDataPart::PartType::SERVICE)
-         ||
-         (data_type == HTDataPart::DataType::USER && part_type == HTDataPart::PartType::USER)
-         );
-}
-
-inline bool operator==(const HTDataPart::PartType &part_type, const HTDataPart::DataType &data_type){
-   return (data_type == part_type);
-}
-#endif
-
 
 #endif // _HTDATAPART_H
