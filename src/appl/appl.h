@@ -10,10 +10,15 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <memory>
+
 #include <QObject>
 
 #include "mainwindow.h"
 
+#include "htcore.h"
+#include "htdatasrc.h"
+#include "htcodec.h"
 
 
 /*******************************************************************************
@@ -42,6 +47,10 @@ private:
 
    MainWindow main_window;
 
+   std::shared_ptr<HTCodec> p_codec;
+   std::shared_ptr<HTDataSrc> p_data_src;
+
+   HTCore htcore;
 
    /****************************************************************************
     * STATIC METHODS

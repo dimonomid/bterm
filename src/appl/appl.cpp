@@ -15,8 +15,14 @@
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-Appl::Appl()
+Appl::Appl() :
+   p_codec(nullptr),
+   p_data_src(nullptr),
+   htcore(p_codec, p_data_src)
 {
+
+
+
    this->main_window.show();
 }
 
