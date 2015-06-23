@@ -38,16 +38,19 @@ TestHTDataMsg::TestHTDataMsg()
       msg.addData(HTDataPart::DataType::USER, 0x08);
    }
 
+   //-- feed data as a complete data part
    {
       HTDataPart part{HTDataPart::DataType::SERVICE, {0x09}};
       msg.addData(part);
    }
 
+   //-- feed data as a complete data part
    {
       HTDataPart part{HTDataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
       msg.addData(part);
    }
 
+   //-- feed data as a complete data part
    {
       HTDataPart part{};
       part.addData(HTDataPart::DataType::SERVICE, {0xfe, 0xff});
@@ -55,13 +58,11 @@ TestHTDataMsg::TestHTDataMsg()
       msg.addData(part);
    }
 
-   //-- add empty part
+   //-- add empty part, and then feed data byte-by-byte
    {
       HTDataPart part{};
       msg.addData(part);
-   }
 
-   {
       std::vector<uint8_t> data {0x0a, 0x0b, 0x0c};
 
       for (auto byte : data){
@@ -69,9 +70,13 @@ TestHTDataMsg::TestHTDataMsg()
       }
    }
 
+   //-- add empty part, and then feed data as a vector
    {
-      HTDataPart part{HTDataPart::DataType::SERVICE, {0x0d}};
+      HTDataPart part{};
       msg.addData(part);
+
+      std::vector<uint8_t> data {0x0d};
+      msg.addData(HTDataPart::DataType::SERVICE, data);
    }
 
    this->data_parts = msg.getDataParts();
