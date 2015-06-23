@@ -12,6 +12,7 @@
 
 #include <cstdint>
 
+#include <initializer_list>
 #include <vector>
 
 
@@ -36,6 +37,7 @@ public:
 public:
    explicit HTDataPart(Type type, const vector<uint8_t> &data);
    explicit HTDataPart(Type type, vector<uint8_t> &&data);
+   explicit HTDataPart(Type type, const std::initializer_list<uint8_t> &data);
 
    /****************************************************************************
     * PUBLIC DATA

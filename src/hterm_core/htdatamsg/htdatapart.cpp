@@ -9,6 +9,7 @@
 
 #include "htdatapart.h"
 
+#include <initializer_list>
 #include <vector>
 
 
@@ -28,6 +29,12 @@ HTDataPart::HTDataPart(HTDataPart::Type type, vector<uint8_t> &&data)
 {
    this->type = type;
    this->data = data;
+}
+
+HTDataPart::HTDataPart(HTDataPart::Type type, const std::initializer_list<uint8_t> &data)
+{
+   this->type = type;
+   this->data = std::vector<uint8_t>{data};
 }
 
 

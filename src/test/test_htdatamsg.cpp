@@ -8,6 +8,7 @@
  ******************************************************************************/
 
 #include <QtTest/QtTest>
+
 #include "test_htdatamsg.h"
 #include "htdatamsg.h"
 
@@ -18,74 +19,51 @@
 
 TestHTDataMsg::TestHTDataMsg()
 {
-   std::vector<uint8_t> part;
+   {
+      HTDataPart part{HTDataPart::Type::SERVICE, {0x01, 0x02, 0x03}};
+      data_parts.push_back(part);
+   }
 
-   //-- service data
-   part.push_back(0x01);
-   part.push_back(0x02);
-   part.push_back(0x03);
+   {
+      HTDataPart part{HTDataPart::Type::USER, {0x04, 0x05, 0x06, 0x07, 0x08}};
+      data_parts.push_back(part);
+   }
 
-   data.push_back(part);
-   part.clear();
+   {
+      HTDataPart part{HTDataPart::Type::SERVICE, {0x09}};
+      data_parts.push_back(part);
+   }
 
-   //-- user data
-   part.push_back(0x04);
-   part.push_back(0x05);
-   part.push_back(0x06);
-   part.push_back(0x07);
-   part.push_back(0x08);
+   {
+      HTDataPart part{HTDataPart::Type::USER, {0x0a, 0x0b, 0x0c}};
+      data_parts.push_back(part);
+   }
 
-   data.push_back(part);
-   part.clear();
-
-   //-- service data
-   part.push_back(0x09);
-
-   data.push_back(part);
-   part.clear();
-
-   //-- user data
-   part.push_back(0x0a);
-   part.push_back(0x0b);
-   part.push_back(0x0c);
-
-   data.push_back(part);
-   part.clear();
-
-   //-- service data
-   part.push_back(0x0d);
-
-   data.push_back(part);
-   part.clear();
+   {
+      HTDataPart part{HTDataPart::Type::SERVICE, {0x0d}};
+      data_parts.push_back(part);
+   }
 
 
-
-   HTDataPart::Type cur_type = HTDataPart::Type::SERVICE;
    //-- first part of data will be fed byte-by-byte, others will be
    //   fed as vector at once
    //   (just to make sure that both feed methods work)
    bool firstPartFed = false;
 
-   for (auto part : data){
+   for (auto part : data_parts){
 
       if (!firstPartFed){
          //-- feed data byte-by-byte
-         for (uint8_t byte : part){
-            msg.addData(cur_type, byte);
+         for (uint8_t byte : part.data){
+            msg.addData(part.type, byte);
          }
 
          firstPartFed = true;
       } else {
          //-- feed the whole vector of bytes
-         msg.addData(cur_type, part);
+         msg.addData(part.type, part.data);
       }
-
-      //-- switch type (SERVICE / USER)
-      cur_type = (cur_type == HTDataPart::Type::SERVICE 
-            ? HTDataPart::Type::USER
-            : HTDataPart::Type::SERVICE);
    }
-
 }
 
 /*******************************************************************************

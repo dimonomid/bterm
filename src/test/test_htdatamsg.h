@@ -29,7 +29,7 @@ public:
    explicit TestHTDataMsg();
 
 private:
-   std::vector<std::vector<uint8_t>> data;
+   vector<HTDataPart> data_parts;
    HTDataMsg msg;
 
 private slots:
