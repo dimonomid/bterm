@@ -77,11 +77,18 @@ TestHTDataMsg::TestHTDataMsg()
  * TESTS IMPLEMENTATION
  ******************************************************************************/
 
+/**
+ * Check that there is correct number of data parts
+ * (addData() methods called earlier are responsible for that)
+ */
 void TestHTDataMsg::testDataParts()
 {
    QCOMPARE(msg.getDataParts().size(), (size_t)7);
 }
 
+/**
+ * Check that getUserData() does its job
+ */
 void TestHTDataMsg::testUserData()
 {
    std::vector<uint8_t> user_data {
@@ -95,6 +102,9 @@ void TestHTDataMsg::testUserData()
    QCOMPARE(msg.getUserData(), user_data);
 }
 
+/**
+ * Check that getRawData() does its job
+ */
 void TestHTDataMsg::testRawData()
 {
    std::vector<uint8_t> user_data {
@@ -108,6 +118,18 @@ void TestHTDataMsg::testRawData()
    };
 
    QCOMPARE(msg.getRawData(), user_data);
+}
+
+/**
+ * Check that clear() does its job
+ */
+void TestHTDataMsg::testClear()
+{
+   msg.clear();
+
+   QCOMPARE(msg.getUserData().size(), (size_t)0);
+   QCOMPARE(msg.getRawData().size(), (size_t)0);
+   QCOMPARE(msg.getDataParts().size(), (size_t)0);
 }
 
 #if 0
