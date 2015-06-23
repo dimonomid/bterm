@@ -54,7 +54,7 @@ HTDataMsg::HTDataMsg() :
 
 void HTDataMsg::addData(HTDataPart::DataType data_type, uint8_t byte)
 {
-   if (this->data_parts.size() > 0 && data_type == this->data_parts.back().getType()){
+   if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
@@ -74,7 +74,7 @@ void HTDataMsg::addData(HTDataPart::DataType data_type, uint8_t byte)
 
 void HTDataMsg::addData(HTDataPart::DataType data_type, const vector<uint8_t> &data)
 {
-   if (this->data_parts.size() > 0 && data_type == this->data_parts.back().getType()){
+   if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 

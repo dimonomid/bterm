@@ -124,6 +124,19 @@ HTDataPart::PartType HTDataPart::getType() const
    return ret;
 }
 
+bool HTDataPart::canDataBeAddedHomogeneously(HTDataPart::DataType data_type) const
+{
+   HTDataPart::PartType part_type = this->getType();
+
+   return (
+         part_type == HTDataPart::PartType::EMPTY
+         ||
+         (data_type == HTDataPart::DataType::SERVICE && part_type == HTDataPart::PartType::SERVICE)
+         ||
+         (data_type == HTDataPart::DataType::USER    && part_type == HTDataPart::PartType::USER)
+         );
+}
+
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/

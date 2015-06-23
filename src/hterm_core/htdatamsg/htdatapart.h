@@ -62,6 +62,15 @@ public:
    vector<uint8_t> getData(DataType data_type) const;
    PartType getType() const;
 
+   /**
+    * Returns whether data of given type could be added to the data part
+    * without breaking part's homogeneity.
+    *
+    * The part is homogeneous if it is either empty or contains
+    * data of only single type (SERVICE or USER), but not both.
+    */
+   bool canDataBeAddedHomogeneously(DataType data_type) const;
+
 
    /****************************************************************************
     * SIGNALS, SLOTS
@@ -82,6 +91,7 @@ public:
  * Treat SERVICE and USER to be equal in both DataType and PartType, all other variants
  * are non-equal
  */
+#if 0
 inline bool operator==(const HTDataPart::DataType &data_type, const HTDataPart::PartType &part_type){
    return (
          (data_type == HTDataPart::DataType::SERVICE && part_type == HTDataPart::PartType::SERVICE)
@@ -93,6 +103,7 @@ inline bool operator==(const HTDataPart::DataType &data_type, const HTDataPart::
 inline bool operator==(const HTDataPart::PartType &part_type, const HTDataPart::DataType &data_type){
    return (data_type == part_type);
 }
+#endif
 
 
 #endif // _HTDATAPART_H

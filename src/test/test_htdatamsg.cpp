@@ -55,9 +55,18 @@ TestHTDataMsg::TestHTDataMsg()
       msg.addData(part);
    }
 
+   //-- add empty part
    {
-      HTDataPart part{HTDataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
+      HTDataPart part{};
       msg.addData(part);
+   }
+
+   {
+      std::vector<uint8_t> data {0x0a, 0x0b, 0x0c};
+
+      for (auto byte : data){
+         msg.addData(HTDataPart::DataType::USER, byte);
+      }
    }
 
    {
