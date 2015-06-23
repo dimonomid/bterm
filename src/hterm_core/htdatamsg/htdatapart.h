@@ -65,7 +65,7 @@ public:
 
 public:
    inline bool operator==(const HTDataPart &other) const {
-      return (this->data == other.data);
+      return (this->data == other.data && this->type == other.type);
    }
 };
 

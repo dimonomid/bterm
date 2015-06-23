@@ -94,5 +94,23 @@ void TestHTDataMsg::testRawData()
    QCOMPARE(user_data, msg.getRawData());
 }
 
+void TestHTDataMsg::testDataParts()
+{
+   QCOMPARE(data_parts, msg.getDataParts());
+
+   //-- try to change type and make sure data parts aren't considered as equal anymore
+   data_parts[0].type = HTDataPart::Type::USER;
+   QVERIFY(data_parts != msg.getDataParts());
+
+   //-- revert back
+   data_parts[0].type = HTDataPart::Type::SERVICE;
+   QVERIFY(data_parts == msg.getDataParts());
+
+   //-- push some extra data
+   data_parts[0].data.push_back(0x01);
+   QVERIFY(data_parts != msg.getDataParts());
+
+}
+
 
 

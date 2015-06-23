@@ -35,6 +35,7 @@ private:
 private slots:
    void testUserData();
    void testRawData();
+   void testDataParts();
 
 };
 
