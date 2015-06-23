@@ -24,5 +24,9 @@ HEADERS += ../../src/gui/mainwindow/mainwindow.h
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui
 
-INCLUDEPATH += ../../src/gui/mainwindow 
+INCLUDEPATH += ../../src/gui/mainwindow \
+               ../../src/hterm_core/htcodec \
+               ../../src/hterm_core/htdatamsg \
+               ../../src/hterm_core/htdatasrc
+
 
