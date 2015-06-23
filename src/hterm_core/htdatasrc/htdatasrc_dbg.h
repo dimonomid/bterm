@@ -3,18 +3,20 @@
  *
  ******************************************************************************/
 
-#ifndef _HTDATAPART_H
-#define _HTDATAPART_H
+#ifndef _HTDATASRC_DBG_H
+#define _HTDATASRC_DBG_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <cstdint>
 
+#include <cstdint>
 #include <vector>
 
+#include <QTimer>
 
+#include "htdatasrc.h"
 
 using namespace std;
 
@@ -22,29 +24,33 @@ using namespace std;
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTDataPart
+class HTDataSrcDbg : public HTDataSrc
 {
+   Q_OBJECT
    /****************************************************************************
     * TYPES
     ***************************************************************************/
-public:
-   enum class DataType { SERVICE, USER };
-   enum class PartType { SERVICE, USER, COMBINED, EMPTY };
 
    /****************************************************************************
-    * CONSTRUCTOR, DESTRUCTOR
+    * CONSTRUCTOR, DESTRUCTOR, ASSIGNMENT
     ***************************************************************************/
 public:
-   explicit HTDataPart();
-   explicit HTDataPart(DataType data_type, const vector<uint8_t> &data);
-   explicit HTDataPart(DataType data_type, vector<uint8_t> &&data);
+   explicit HTDataSrcDbg();
+   virtual ~HTDataSrcDbg();
+
+   HTDataSrcDbg(const HTDataSrcDbg &other) = delete;
+   HTDataSrcDbg(HTDataSrcDbg &&other) = delete;
+
+   HTDataSrcDbg &operator=(const HTDataSrcDbg &other) = delete;
+   HTDataSrcDbg &operator=(HTDataSrcDbg &&other) = delete;
+
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
 private:
-   vector<uint8_t> service_data;
-   vector<uint8_t> user_data;
+   QTimer timer;
+   vector<uint8_t> cur_data;
 
 
    /****************************************************************************
@@ -56,39 +62,25 @@ private:
     ***************************************************************************/
 public:
 
-   void addData(DataType data_type, const vector<uint8_t> &data);
-   void addData(DataType data_type, uint8_t byte);
-
-   vector<uint8_t> getData(DataType data_type) const;
-   PartType getType() const;
-
-   /**
-    * Returns whether data of given type could be added to the data part
-    * without breaking part's homogeneity.
-    *
-    * If the part is already non-homogeneous, false is returned
-    * intependently of given data_type.
-    *
-    * The part is homogeneous if it is either empty or contains
-    * data of only single type (SERVICE or USER), but not both.
-    */
-   bool canDataBeAddedHomogeneously(DataType data_type) const;
+   vector<uint8_t> read() override;
+   void write(const vector<uint8_t> &data) override;
 
 
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+signals:
+   void readyRead(int bytes_available);
+
+private slots:
+   void nextMsgGenerate();
 
 
-   /*******************************************************************************
+   /****************************************************************************
     * OPERATORS
-    ******************************************************************************/
+    ***************************************************************************/
 
-public:
-   inline bool operator==(const HTDataPart &other) const {
-      return (this->user_data == other.user_data && this->service_data == other.service_data);
-   }
 };
 
 
-#endif // _HTDATAPART_H
+#endif // _HTDATASRC_DBG_H

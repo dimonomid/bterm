@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 #include <cstdint>
+#include <vector>
 
 #include <QObject>
 
@@ -18,7 +19,7 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class DTDataSrc : public QObject
+class HTDataSrc : public QObject
 {
 Q_OBJECT
    /*******************************************************************************
@@ -43,8 +44,8 @@ private:
     * METHODS
     ******************************************************************************/
 public:
-   virtual vector<uint8_t>    read() = 0;
-   virtual void               write(const vector<uint8_t> &data) = 0;
+   virtual std::vector<uint8_t>  read() = 0;
+   virtual void                  write(const std::vector<uint8_t> &data) = 0;
 
 
 
