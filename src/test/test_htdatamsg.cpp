@@ -39,6 +39,19 @@ TestHTDataMsg::TestHTDataMsg()
       data_parts.push_back(part);
    }
 
+   //-- combined data part
+   {
+      HTDataPart part{};
+      part.addData(HTDataPart::DataType::SERVICE, {0xfe, 0xff});
+      part.addData(HTDataPart::DataType::USER, 0x3f);
+      data_parts.push_back(part);
+   }
+
+   {
+      HTDataPart part{HTDataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
+      data_parts.push_back(part);
+   }
+
    {
       HTDataPart part{HTDataPart::DataType::SERVICE, {0x0d}};
       data_parts.push_back(part);
@@ -79,7 +92,11 @@ TestHTDataMsg::TestHTDataMsg()
 void TestHTDataMsg::testUserData()
 {
    std::vector<uint8_t> user_data {
-      0x04, 0x05, 0x06, 0x07, 0x08, /* service byte 0x09 skipped */ 0x0a, 0x0b, 0x0c
+      0x04, 0x05, 0x06, 0x07, 0x08, 
+         /* service byte 0x09 skipped */
+         0x0a, 0x0b, 0x0c,
+         0x3f,
+         0x0a, 0x0b, 0x0c,
    };
 
    QCOMPARE(msg.getUserData(), user_data);
@@ -88,8 +105,13 @@ void TestHTDataMsg::testUserData()
 void TestHTDataMsg::testRawData()
 {
    std::vector<uint8_t> user_data {
-      0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-      0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d
+      0x01, 0x02, 0x03,
+         0x04, 0x05, 0x06, 0x07, 0x08,
+         0x09,
+         0x0a, 0x0b, 0x0c,
+         0xfe, 0xff,
+         0x0a, 0x0b, 0x0c,
+         0x0d
    };
 
    QCOMPARE(msg.getRawData(), user_data);

@@ -19,6 +19,10 @@ using namespace std;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
+HTDataPart::HTDataPart()
+{
+}
+
 HTDataPart::HTDataPart(HTDataPart::DataType data_type, const vector<uint8_t> &data) :
    service_data(data_type == DataType::SERVICE ? data : std::vector<uint8_t>{}),
    user_data   (data_type == DataType::USER    ? data : std::vector<uint8_t>{})

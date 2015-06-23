@@ -35,6 +35,7 @@ public:
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
+   explicit HTDataPart();
    explicit HTDataPart(DataType data_type, const vector<uint8_t> &data);
    explicit HTDataPart(DataType data_type, vector<uint8_t> &&data);
 
