@@ -18,7 +18,7 @@
 Appl::Appl() :
    p_codec(nullptr),
    p_data_src(nullptr),
-   htcore(p_codec, p_data_src)
+   p_htcore(nullptr)
 {
 
 

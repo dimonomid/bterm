@@ -49,8 +49,7 @@ private:
 
    std::shared_ptr<HTCodec> p_codec;
    std::shared_ptr<HTDataSrc> p_data_src;
-
-   HTCore htcore;
+   std::unique_ptr<HTCore> p_htcore;
 
    /****************************************************************************
     * STATIC METHODS
