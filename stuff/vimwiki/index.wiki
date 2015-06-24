@@ -7,3 +7,7 @@
 * settings of `HTDataSrc` and `HTDataCodec`: they should return vector of `Field` instances, each field should be of some type (say, integer field is a subclass `FieldInt`), and may contain additional type-specific data. GUI should take this vector of `Field`s, display appropriate form, and get/set data. 
   More, `HTDataSrc` should have two sets of fields: one is "general", and the second one is "computer-specific". For example, baudrate is general, and port name is computer-specific.
 
+=== todo ===
+
+   * [ ] make HTDataMsg::toString() to return QString instead of std::string
+
