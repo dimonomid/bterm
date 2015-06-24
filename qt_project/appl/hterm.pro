@@ -27,10 +27,6 @@ FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui
 
 INCLUDEPATH += ../../src/gui/mainwindow \
-               ../../src/appl \
-               ../../src/hterm_core \
-               ../../src/hterm_core/htcodec \
-               ../../src/hterm_core/htdatamsg \
-               ../../src/hterm_core/htdatasrc
+               ../../src/appl
 
 
