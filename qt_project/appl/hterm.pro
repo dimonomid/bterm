@@ -17,16 +17,19 @@ include(../common/hterm_core.pri)
 
 SOURCES += ../../src/main.cpp \
     ../../src/gui/mainwindow/mainwindow.cpp \
-    ../../src/appl/appl.cpp
+    ../../src/appl/appl.cpp \
+    ../../src/appl/htevent_visitor/htevent_visitor_handle.cpp
 
 HEADERS += ../../src/gui/mainwindow/mainwindow.h \ 
-    ../../src/appl/appl.h
+    ../../src/appl/appl.h \
+    ../../src/appl/htevent_visitor/htevent_visitor_handle.h
     
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui
 
 INCLUDEPATH += ../../src/gui/mainwindow \
+               ../../src/appl/htevent_visitor \
                ../../src/appl
 
 
