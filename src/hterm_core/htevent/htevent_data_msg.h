@@ -53,7 +53,7 @@ public:
 
    const HTDataMsg getMsg() const;
 
-   virtual void accept(HTVisitor &visitor) override;
+   virtual void accept(HTEventVisitor &visitor) override;
 
 
    /****************************************************************************

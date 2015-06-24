@@ -11,7 +11,7 @@
 #include <cstdint>
 
 #include "htevent_data_raw.h"
-#include "htvisitor.h"
+#include "htevent_visitor.h"
 
 
 
@@ -52,7 +52,7 @@ const std::vector<uint8_t> HTEventDataRaw::getData() const
    return data;
 }
 
-void HTEventDataRaw::accept(HTVisitor &visitor)
+void HTEventDataRaw::accept(HTEventVisitor &visitor)
 {
    visitor.accept(*this);
 }

@@ -15,7 +15,7 @@
 
 
 
-class HTVisitor;
+class HTEventVisitor;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -49,7 +49,7 @@ private:
     ***************************************************************************/
 public:
 
-   virtual void accept(HTVisitor &visitor) = 0;
+   virtual void accept(HTEventVisitor &visitor) = 0;
 
 
 

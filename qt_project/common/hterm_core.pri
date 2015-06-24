@@ -30,6 +30,6 @@ INCLUDEPATH += ../../src/hterm_core \
                ../../src/hterm_core/htdatamsg \
                ../../src/hterm_core/htdatasrc \
                ../../src/hterm_core/htevent \
-               ../../src/hterm_core/htvisitor
+               ../../src/hterm_core/htevent/htevent_visitor
 
 

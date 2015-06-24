@@ -55,7 +55,7 @@ public:
 
    const std::vector<uint8_t> getData() const;
 
-   virtual void accept(HTVisitor &visitor) override;
+   virtual void accept(HTEventVisitor &visitor) override;
 
 
 

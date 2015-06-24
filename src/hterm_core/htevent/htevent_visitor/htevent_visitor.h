@@ -1,10 +1,13 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   HTEvent Visitor
+ *
+ *                  See visitor pattern, for example, on Wikipedia:
+ *                  https://en.wikipedia.org/wiki/Visitor_pattern
  *
  ******************************************************************************/
 
-#ifndef _HTVISITOR_H
-#define _HTVISITOR_H
+#ifndef _HTEVENT_VISITOR_H
+#define _HTEVENT_VISITOR_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -22,7 +25,7 @@ class HTEventDataMsg;
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTVisitor
+class HTEventVisitor
 {
    /****************************************************************************
     * TYPES
@@ -60,4 +63,4 @@ public:
 };
 
 
-#endif // _HTVISITOR_H
+#endif // _HTEVENT_VISITOR_H

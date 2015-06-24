@@ -11,7 +11,7 @@
 #include <cstdint>
 
 #include "htevent_data_msg.h"
-#include "htvisitor.h"
+#include "htevent_visitor.h"
 
 
 
@@ -52,7 +52,7 @@ const HTDataMsg HTEventDataMsg::getMsg() const
    return msg;
 }
 
-void HTEventDataMsg::accept(HTVisitor &visitor)
+void HTEventDataMsg::accept(HTEventVisitor &visitor)
 {
    visitor.accept(*this);
 }
