@@ -17,8 +17,10 @@
 
 #include "htdatasrc.h"
 #include "htcodec.h"
-#include "htdatamsg.h"
 
+
+class HTEvent;
+class HTDataMsg;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -63,6 +65,9 @@ private:
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+signals:
+   void event(const std::shared_ptr<HTEvent> &p_event);
+
 private slots:
    void onDataSrcReadyRead(int bytes_available);
    void onMessageDecoded(const HTDataMsg &msg);

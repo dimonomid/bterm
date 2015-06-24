@@ -20,6 +20,8 @@
 #include "htdatasrc.h"
 #include "htcodec.h"
 
+#include "htevent_visitor_handle.h"
+
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -51,6 +53,10 @@ private:
    std::shared_ptr<HTDataSrc> p_data_src;
    std::unique_ptr<HTCore> p_htcore;
 
+   HTEventVisitorHandle htevent_visitor_handle;
+
+
+
    /****************************************************************************
     * STATIC METHODS
     ***************************************************************************/
@@ -62,6 +68,9 @@ private:
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+private slots:
+
+   void onHTEvent(const std::shared_ptr<HTEvent> &);
 
 };
 

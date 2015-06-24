@@ -12,6 +12,8 @@
 #include <iostream>
 
 #include "htcore.h"
+#include "htevent_data_raw.h"
+#include "htevent_data_msg.h"
 
 
 /*******************************************************************************
@@ -88,6 +90,9 @@ void HTCore::onDataSrcReadyRead(int bytes_available)
    //-- get received data
    std::vector<uint8_t> data = p_data_src->read();
 
+   auto p_event = std::make_shared<HTEventDataRaw>(data);
+   emit (event(p_event));
+
 #if 0
    for (auto byte : data){
       qDebug(byte + " ");
@@ -101,6 +106,9 @@ void HTCore::onDataSrcReadyRead(int bytes_available)
 void HTCore::onMessageDecoded(const HTDataMsg &msg)
 {
    qDebug(msg.toString().c_str());
+
+   auto p_event = std::make_shared<HTEventDataMsg>(msg);
+   emit (event(p_event));
 }
 
 

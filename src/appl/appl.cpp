@@ -30,22 +30,31 @@
 Appl::Appl() :
    p_codec(nullptr),
    p_data_src(nullptr),
-   p_htcore(nullptr)
+   p_htcore(nullptr),
+   htevent_visitor_handle(*this)
 {
 
-   p_data_src = std::shared_ptr<HTDataSrcDbg>{new HTDataSrcDbg{}};
-   p_codec = std::shared_ptr<HTCodec_ISO14230>{new HTCodec_ISO14230{0x01, 0x02}};
+   p_data_src = std::make_shared<HTDataSrcDbg>();
+   p_codec = std::make_shared<HTCodec_ISO14230>(0x01, 0x02);
 
    p_htcore = std::unique_ptr<HTCore>{
       new HTCore{p_codec, p_data_src}
    };
+
+   connect(
+         p_htcore.get(), SIGNAL(event(const std::shared_ptr<HTEvent> &)),
+         this, SLOT(onHTEvent(const std::shared_ptr<HTEvent> &))
+         );
 
    this->main_window.show();
 }
 
 Appl::~Appl()
 {
-
+   disconnect(
+         p_htcore.get(), SIGNAL(event(const std::shared_ptr<HTEvent> &)),
+         this, SLOT(onHTEvent(const std::shared_ptr<HTEvent> &))
+         );
 }
 
 
@@ -75,6 +84,11 @@ Appl::~Appl()
  ******************************************************************************/
 
 /* private      */
+
+void Appl::onHTEvent(const std::shared_ptr<HTEvent> &p_event)
+{
+   p_event->accept(htevent_visitor_handle);
+}
 
 /* protected    */
 
