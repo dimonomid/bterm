@@ -76,8 +76,6 @@ void HTDataSrcDbg::write(const vector<uint8_t> &data)
 
 void HTDataSrcDbg::nextMsgGenerate()
 {
-   qDebug("here I am");
-
    vector<uint8_t> new_data;
 
    switch (stage){

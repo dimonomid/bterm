@@ -105,7 +105,7 @@ void HTCore::onDataSrcReadyRead(int bytes_available)
 
 void HTCore::onMessageDecoded(const HTDataMsg &msg)
 {
-   qDebug(msg.toString().c_str());
+   //qDebug(msg.toString().c_str());
 
    auto p_event = std::make_shared<HTEventDataMsg>(msg);
    emit (event(p_event));
