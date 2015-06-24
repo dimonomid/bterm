@@ -19,7 +19,7 @@
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTEventVisitorHandle::HTEventVisitorHandle(Appl &appl) : 
+HTEventVisitor_Handle::HTEventVisitor_Handle(Appl &appl) : 
    appl(appl)
 {
 }
@@ -47,7 +47,7 @@ HTEventVisitorHandle::HTEventVisitorHandle(Appl &appl) :
 
 /* public       */
 
-void HTEventVisitorHandle::accept(HTEventDataRaw &htevent_data_raw)
+void HTEventVisitor_Handle::accept(HTEventDataRaw &htevent_data_raw)
 {
    const std::vector<uint8_t> data = htevent_data_raw.getData();
    qDebug("handle data raw: ");
@@ -56,7 +56,7 @@ void HTEventVisitorHandle::accept(HTEventDataRaw &htevent_data_raw)
    }
 }
 
-void HTEventVisitorHandle::accept(HTEventDataMsg &htevent_data_msg)
+void HTEventVisitor_Handle::accept(HTEventDataMsg &htevent_data_msg)
 {
    qDebug(("handle data msg: " + htevent_data_msg.getMsg().toString()).c_str());
 }

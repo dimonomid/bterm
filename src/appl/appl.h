@@ -53,7 +53,7 @@ private:
    std::shared_ptr<HTDataSrc> p_data_src;
    std::unique_ptr<HTCore> p_htcore;
 
-   HTEventVisitorHandle htevent_visitor_handle;
+   HTEventVisitor_Handle htevent_visitor_handle;
 
 
 

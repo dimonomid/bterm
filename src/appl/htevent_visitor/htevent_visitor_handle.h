@@ -21,7 +21,7 @@ class Appl;
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTEventVisitorHandle : public HTEventVisitor
+class HTEventVisitor_Handle : public HTEventVisitor
 {
    /****************************************************************************
     * TYPES
@@ -31,7 +31,7 @@ class HTEventVisitorHandle : public HTEventVisitor
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   HTEventVisitorHandle(Appl &appl);
+   HTEventVisitor_Handle(Appl &appl);
 
    /****************************************************************************
     * PRIVATE DATA
