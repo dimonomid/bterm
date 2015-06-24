@@ -52,6 +52,8 @@ private:
    QTimer timer;
    vector<uint8_t> cur_data;
 
+   int stage;
+
 
    /****************************************************************************
     * STATIC METHODS

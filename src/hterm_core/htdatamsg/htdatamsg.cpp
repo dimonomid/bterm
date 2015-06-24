@@ -103,34 +103,35 @@ void HTDataMsg::clear()
 std::string HTDataMsg::toString() const {
 
    std::stringstream ss{};
-#if 0
-   bool empty = true;
 
    for (auto data_part : this->data_parts){
-      for (int byte : data_part.data){
-         if (!empty){
-            ss << ", ";
-         }
 
-         switch (data_part.type){
+      switch (data_part.getType()){
 
-            case HTDataPart::Type::SERVICE:
-               ss << "*0x" << std::hex << byte << "*";
-               break;
+         case HTDataPart::PartType::SERVICE:
+         case HTDataPart::PartType::COMBINED:
+            for (int byte : data_part.getData(HTDataPart::DataType::SERVICE)){
+               ss << "*0x" << std::hex << byte << "*, ";
+            }
+            break;
 
-            case HTDataPart::Type::USER:
-               ss << "0x" << std::hex << byte;
-               break;
+         case HTDataPart::PartType::USER:
+            for (int byte : data_part.getData(HTDataPart::DataType::USER)){
+               ss << "0x" << std::hex << byte << ", ";
+            }
+            break;
 
-            default:
-               std::cerr << "wrong data_part.type";
-               exit(1);
-               break;
-         }
-         empty = false;
+         case HTDataPart::PartType::EMPTY:
+            //-- do nothing
+            break;
+
+         default:
+            std::cerr << "wrong data_part.type";
+            exit(1);
+            break;
       }
+
    }
-#endif
 
    return ss.str();
 

@@ -63,6 +63,10 @@ private:
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+private slots:
+   void onDataSrcReadyRead(int bytes_available);
+   void onMessageDecoded(const HTDataMsg &msg);
+
 
 };
 

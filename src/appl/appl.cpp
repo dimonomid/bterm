@@ -7,7 +7,19 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <memory>
+
+
+
 #include "appl.h"
+
+#include "htcodec.h"
+#include "htcodec_iso14230.h"
+
+#include "htdatasrc.h"
+#include "htdatasrc_dbg.h"
+
+#include "htdatamsg.h"
 
 
 
@@ -21,7 +33,12 @@ Appl::Appl() :
    p_htcore(nullptr)
 {
 
+   p_data_src = std::shared_ptr<HTDataSrcDbg>{new HTDataSrcDbg{}};
+   p_codec = std::shared_ptr<HTCodec_ISO14230>{new HTCodec_ISO14230{0x01, 0x02}};
 
+   p_htcore = std::unique_ptr<HTCore>{
+      new HTCore{p_codec, p_data_src}
+   };
 
    this->main_window.show();
 }
