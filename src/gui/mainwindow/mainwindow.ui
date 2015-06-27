@@ -43,7 +43,7 @@
    <widget class="QWidget" name="dockWidgetContents_3">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPlainTextEdit" name="pte_raw_data"/>
+      <widget class="QPlainTextEdit_My" name="pte_raw_data"/>
      </item>
     </layout>
    </widget>
@@ -61,13 +61,20 @@
    <widget class="QWidget" name="dockWidgetContents_4">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QPlainTextEdit" name="pte_messages"/>
+      <widget class="QPlainTextEdit_My" name="pte_messages"/>
      </item>
     </layout>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QPlainTextEdit_My</class>
+   <extends>QPlainTextEdit</extends>
+   <header location="global">qplaintextedit_my.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
