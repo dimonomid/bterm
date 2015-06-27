@@ -17,6 +17,7 @@
 #include "mainwindow.h"
 
 #include "htcore.h"
+#include "htevents_acc.h"
 #include "htdatasrc.h"
 #include "htcodec.h"
 
@@ -50,6 +51,8 @@ private:
    std::shared_ptr<HTCodec> p_codec;
    std::shared_ptr<HTDataSrc> p_data_src;
    std::unique_ptr<HTCore> p_htcore;
+   std::unique_ptr<HTEventsAcc<HTEventDataRaw>> p_events_data_raw;
+   std::unique_ptr<HTEventsAcc<HTEventDataMsg>> p_events_data_msg;
 
    HTEventVisitor_Handle htevent_visitor_handle;
 
@@ -70,9 +73,9 @@ private:
     ***************************************************************************/
 private slots:
 
-   void onHTEvent(const std::shared_ptr<HTEvent> &);
-   void onNewDataRaw(const std::vector<uint8_t> &data);
-   void onNewDataMsg(const HTDataMsg &msg);
+   //void onHTEvent(const std::shared_ptr<HTEvent> &);
+   void onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event);
+   void onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
 
 
 

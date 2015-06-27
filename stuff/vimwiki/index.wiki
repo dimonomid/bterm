@@ -10,4 +10,5 @@
 === todo ===
 
    * [ ] make HTDataMsg::toString() to return QString instead of std::string
+   * [ ] remove visitor, since it isn't used
 

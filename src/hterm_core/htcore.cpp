@@ -91,7 +91,7 @@ void HTCore::onDataSrcReadyRead(int bytes_available)
    std::vector<uint8_t> data = p_data_src->read();
 
    auto p_event = std::make_shared<HTEventDataRaw>(data);
-   emit (event(p_event));
+   emit (eventDataRaw(p_event));
 
 #if 0
    for (auto byte : data){
@@ -108,7 +108,7 @@ void HTCore::onMessageDecoded(const HTDataMsg &msg)
    //qDebug(msg.toString().c_str());
 
    auto p_event = std::make_shared<HTEventDataMsg>(msg);
-   emit (event(p_event));
+   emit (eventDataMsg(p_event));
 }
 
 

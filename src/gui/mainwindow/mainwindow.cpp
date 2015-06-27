@@ -8,6 +8,9 @@
 
 #include "my_util.h"
 
+#include "htevent_data_raw.h"
+#include "htevent_data_msg.h"
+
 MainWindow::MainWindow(
       QWidget *parent
       ) :
@@ -30,9 +33,9 @@ MainWindow::~MainWindow()
 
 /* private      */
 
-void MainWindow::onNewDataRaw(const std::vector<uint8_t> &data)
+void MainWindow::onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &event_data_raw)
 {
-   QString text = MyUtil::byteArrayToHex(data) + "<br>";
+   QString text = MyUtil::byteArrayToHex(event_data_raw->getData()) + "<br>";
 
    this->ui->pte_raw_data->appendHtmlNoNL(text, true);
 
@@ -44,9 +47,9 @@ void MainWindow::onNewDataRaw(const std::vector<uint8_t> &data)
 #endif
 }
 
-void MainWindow::onNewDataMsg(const HTDataMsg &msg)
+void MainWindow::onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &event_data_msg)
 {
-   QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(msg.getUserData()) + "<br>";
+   QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(event_data_msg->getMsg().getUserData()) + "<br>";
 
    this->ui->pte_messages->appendHtmlNoNL(text, true);
 

@@ -23,7 +23,8 @@ HEADERS += ../../src/hterm_core/htdatamsg/htdatapart.h \
     $$PWD/../../src/hterm_core/htevent/htevent.h \
     $$PWD/../../src/hterm_core/htevent/htevent_data_raw.h \
     $$PWD/../../src/hterm_core/htevent/htevent_data_msg.h \
-    $$PWD/../../src/hterm_core/htevent/htevent_visitor/htevent_visitor.h
+    $$PWD/../../src/hterm_core/htevent/htevent_visitor/htevent_visitor.h \
+    $$PWD/../../src/hterm_core/htevents_acc.h
     
 INCLUDEPATH += ../../src/hterm_core \
                ../../src/hterm_core/htcodec \

@@ -19,7 +19,8 @@
 #include "htcodec.h"
 
 
-class HTEvent;
+class HTEventDataRaw;
+class HTEventDataMsg;
 class HTDataMsg;
 
 /*******************************************************************************
@@ -66,7 +67,8 @@ private:
     * SIGNALS, SLOTS
     ***************************************************************************/
 signals:
-   void event(const std::shared_ptr<HTEvent> &p_event);
+   void eventDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event);
+   void eventDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
 
 private slots:
    void onDataSrcReadyRead(int bytes_available);
