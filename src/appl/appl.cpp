@@ -31,7 +31,8 @@ Appl::Appl() :
    p_codec(nullptr),
    p_data_src(nullptr),
    p_htcore(nullptr),
-   htevent_visitor_handle(*this)
+   htevent_visitor_handle(*this),
+   main_window()
 {
 
    p_data_src = std::make_shared<HTDataSrcDbg>();
@@ -41,12 +42,37 @@ Appl::Appl() :
       new HTCore{p_codec, p_data_src}
    };
 
+   //-- connect HTCore's events to onHTEvent() handler, in which we 
+   //   use visitor
    connect(
          p_htcore.get(), SIGNAL(event(const std::shared_ptr<HTEvent> &)),
          this, SLOT(onHTEvent(const std::shared_ptr<HTEvent> &))
          );
 
+   //-- connect separate visitor's events to our slots
+   connect(
+         &htevent_visitor_handle, SIGNAL(newDataRaw(const std::vector<uint8_t> &)),
+         this, SLOT(onNewDataRaw(const std::vector<uint8_t> &))
+         );
+
+   connect(
+         &htevent_visitor_handle, SIGNAL(newDataMsg(const HTDataMsg &)),
+         this, SLOT(onNewDataMsg(const HTDataMsg &))
+         );
+
+   //-- connect separate visitor's events to mainwindow's slots
+   connect(
+         &htevent_visitor_handle, SIGNAL(newDataRaw(const std::vector<uint8_t> &)),
+         &main_window, SLOT(onNewDataRaw(const std::vector<uint8_t> &))
+         );
+
+   connect(
+         &htevent_visitor_handle, SIGNAL(newDataMsg(const HTDataMsg &)),
+         &main_window, SLOT(onNewDataMsg(const HTDataMsg &))
+         );
+
    this->main_window.show();
+
 }
 
 Appl::~Appl()
@@ -88,6 +114,16 @@ Appl::~Appl()
 void Appl::onHTEvent(const std::shared_ptr<HTEvent> &p_event)
 {
    p_event->accept(htevent_visitor_handle);
+}
+
+void Appl::onNewDataRaw(const std::vector<uint8_t> &data)
+{
+   //TODO
+}
+
+void Appl::onNewDataMsg(const HTDataMsg &msg)
+{
+   //TODO
 }
 
 /* protected    */

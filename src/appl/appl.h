@@ -47,13 +47,13 @@ public:
     ***************************************************************************/
 private:
 
-   MainWindow main_window;
-
    std::shared_ptr<HTCodec> p_codec;
    std::shared_ptr<HTDataSrc> p_data_src;
    std::unique_ptr<HTCore> p_htcore;
 
    HTEventVisitor_Handle htevent_visitor_handle;
+
+   MainWindow main_window;
 
 
 
@@ -71,6 +71,10 @@ private:
 private slots:
 
    void onHTEvent(const std::shared_ptr<HTEvent> &);
+   void onNewDataRaw(const std::vector<uint8_t> &data);
+   void onNewDataMsg(const HTDataMsg &msg);
+
+
 
 };
 

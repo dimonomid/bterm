@@ -1,7 +1,16 @@
+
+#include <QString>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+#include "htdatamsg.h"
+
+#include "my_util.h"
+
+MainWindow::MainWindow(
+      QWidget *parent
+      ) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -12,3 +21,37 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+
+/*******************************************************************************
+ * SLOTS
+ ******************************************************************************/
+
+/* private      */
+
+void MainWindow::onNewDataRaw(const std::vector<uint8_t> &data)
+{
+   QString text = MyUtil::byteArrayToHex(data);
+
+   QTextCursor cursor = QTextCursor(this->ui->pte_raw_data->document());
+   cursor.movePosition(QTextCursor::End);
+   cursor.insertHtml(text);
+   cursor.movePosition(QTextCursor::End);
+}
+
+void MainWindow::onNewDataMsg(const HTDataMsg &msg)
+{
+   QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(msg.getUserData()) + "<br>";
+
+   QTextCursor cursor = QTextCursor(this->ui->pte_messages->document());
+   cursor.movePosition(QTextCursor::End);
+   cursor.insertHtml(text);
+   cursor.movePosition(QTextCursor::End);
+}
+
+/* protected    */
+
+/* public       */
+
+
