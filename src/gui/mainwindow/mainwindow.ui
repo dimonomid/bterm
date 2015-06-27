@@ -43,7 +43,11 @@
    <widget class="QWidget" name="dockWidgetContents_3">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPlainTextEdit_My" name="pte_raw_data"/>
+      <widget class="QPlainTextEdit_My" name="pte_raw_data">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -61,7 +65,11 @@
    <widget class="QWidget" name="dockWidgetContents_4">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QPlainTextEdit_My" name="pte_messages"/>
+      <widget class="QPlainTextEdit_My" name="pte_messages">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
