@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <QMainWindow>
+#include <QSignalMapper>
 
 
 //class HTDataMsg;
@@ -25,7 +26,11 @@ public:
    ~MainWindow();
 
 private:
-   Ui::MainWindow *ui;
+   Ui::MainWindow   *ui;
+   QSignalMapper     windows_toggle_sigmap;
+
+   QAction          *p_act_raw_data;
+   QAction          *p_act_messages;
 
 
    /****************************************************************************
@@ -35,6 +40,12 @@ private slots:
 
    void onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &event_data_raw);
    void onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &event_data_msg);
+
+   void toolbarToggle(QWidget *p_widget);
+   void windowVisChanged(bool visible);
+
+   void mySaveState();
+   void myRestoreState();
 
 };
 

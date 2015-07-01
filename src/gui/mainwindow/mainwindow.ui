@@ -33,7 +33,7 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="dockwidg_raw_data">
    <property name="windowTitle">
     <string>Raw data</string>
    </property>
@@ -47,12 +47,15 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="maximumBlockCount">
+        <number>1000</number>
+       </property>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_2">
+  <widget class="QDockWidget" name="dockwidg_messages">
    <property name="enabled">
     <bool>true</bool>
    </property>
@@ -68,6 +71,9 @@
       <widget class="QPlainTextEdit_My" name="pte_messages">
        <property name="readOnly">
         <bool>true</bool>
+       </property>
+       <property name="maximumBlockCount">
+        <number>1000</number>
        </property>
       </widget>
      </item>
