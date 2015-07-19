@@ -20,22 +20,27 @@ SOURCES += ../../src/main.cpp \
     ../../src/appl/appl.cpp \
     ../../src/appl/htevent_visitor/htevent_visitor_handle.cpp \
     ../../src/util/my_util.cpp \
-    ../../src/gui/widgets/qplaintextedit_my.cpp
+    ../../src/gui/widgets/qplaintextedit_my.cpp \
+    ../../src/appl/htiodev/htiodev_dbg.cpp \
+
 
 HEADERS += ../../src/gui/mainwindow/mainwindow.h \ 
     ../../src/appl/appl.h \
     ../../src/appl/htevent_visitor/htevent_visitor_handle.h \
     ../../src/util/my_util.h \
-    ../../src/gui/widgets/qplaintextedit_my.h
-    
+    ../../src/gui/widgets/qplaintextedit_my.h \
+    ../../src/appl/htiodev/htiodev_dbg.h \
+
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui
 
-INCLUDEPATH += ../../src/gui/mainwindow \
-               ../../src/appl/htevent_visitor \
-               ../../src/appl \
-               ../../src/util \
-               ../../src/gui/widgets
+INCLUDEPATH += \
+    ../../src/gui/mainwindow \
+    ../../src/appl/htiodev \
+    ../../src/appl/htevent_visitor \
+    ../../src/appl \
+    ../../src/util \
+    ../../src/gui/widgets \
 
 

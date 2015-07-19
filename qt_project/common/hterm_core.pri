@@ -7,7 +7,6 @@ RAGEL_FILES += ../../src/hterm_core/htcodec/htcodec_iso14230.cpp.rl
 SOURCES += \
     ../../src/hterm_core/htdatamsg/htdatapart.cpp \
     ../../src/hterm_core/htdatamsg/htdatamsg.cpp \
-    $$PWD/../../src/hterm_core/htiodev/htiodev_dbg.cpp \
     $$PWD/../../src/hterm_core/htcore.cpp \
     $$PWD/../../src/hterm_core/htevent/htevent.cpp \
     $$PWD/../../src/hterm_core/htevent/htevent_data_raw.cpp \
@@ -17,7 +16,6 @@ SOURCES += \
 HEADERS += ../../src/hterm_core/htdatamsg/htdatapart.h \
     ../../src/hterm_core/htcodec/htcodec.h \
     ../../src/hterm_core/htcodec/htcodec_iso14230.h \
-    $$PWD/../../src/hterm_core/htiodev/htiodev_dbg.h \
     $$PWD/../../src/hterm_core/htiodev/htiodev.h \
     $$PWD/../../src/hterm_core/htcore.h \
     $$PWD/../../src/hterm_core/htevent/htevent.h \
