@@ -1,11 +1,11 @@
 @startuml
 
 participant HTermCore
-participant HTDataSrc
+participant HTIODev
 participant HTDataCodec
 participant GUI
 
-HTDataSrc -> HTermCore: some data received
+HTIODev -> HTermCore: some data received
 activate HTermCore
 HTermCore -> GUI: create and emit event \n HTEventDataRaw
 HTermCore -> HTDataCodec: some data received
@@ -14,7 +14,7 @@ activate HTDataCodec
 HTDataCodec -> HTDataCodec: feed data to Rx buffer, \n check if message is ready. \n no messages.
 deactivate HTDataCodec
 
-HTDataSrc -> HTermCore: some data received
+HTIODev -> HTermCore: some data received
 activate HTermCore
 HTermCore -> GUI: create and emit event \n HTEventDataRaw
 HTermCore -> HTDataCodec: some data received
@@ -23,7 +23,7 @@ activate HTDataCodec
 HTDataCodec -> HTDataCodec: feed data to Rx buffer, \n check if message is ready. \n no messages.
 deactivate HTDataCodec
 
-HTDataSrc -> HTermCore: some data received
+HTIODev -> HTermCore: some data received
 activate HTermCore
 HTermCore -> GUI: create and emit event \n HTEventDataRaw
 HTermCore -> HTDataCodec: some data received
@@ -48,7 +48,7 @@ HTermCore -> GUI: create and emit event HTEventDataMsg (tx)
 
 HTermCore -> HTermCore: remember data to send (HTDataMsg), \n needed to handle "echo"
 
-HTermCore -> HTDataSrc: send data
+HTermCore -> HTIODev: send data
 deactivate HTermCore
 
 @enduml

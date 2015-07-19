@@ -7,7 +7,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "htdatasrc_dbg.h"
+#include "htiodev_dbg.h"
 
 #include <vector>
 #include <stdexcept>
@@ -18,7 +18,7 @@
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTDataSrcDbg::HTDataSrcDbg() :
+HTIODevDbg::HTIODevDbg() :
    timer(this),
    cur_data(),
    stage(0)
@@ -27,7 +27,7 @@ HTDataSrcDbg::HTDataSrcDbg() :
    timer.start(200);
 }
 
-HTDataSrcDbg::~HTDataSrcDbg()
+HTIODevDbg::~HTIODevDbg()
 {
    disconnect(&timer, SIGNAL(timeout()), this, SLOT(nextMsgGenerate()));
 }
@@ -55,14 +55,14 @@ HTDataSrcDbg::~HTDataSrcDbg()
 
 /* public       */
 
-vector<uint8_t> HTDataSrcDbg::read()
+vector<uint8_t> HTIODevDbg::read()
 {
    vector<uint8_t> ret = std::move(cur_data);
    cur_data = vector<uint8_t>{};
    return ret;
 }
 
-void HTDataSrcDbg::write(const vector<uint8_t> &data)
+void HTIODevDbg::write(const vector<uint8_t> &data)
 {
    std::ignore = data;
 }
@@ -74,7 +74,7 @@ void HTDataSrcDbg::write(const vector<uint8_t> &data)
 
 /* private      */
 
-void HTDataSrcDbg::nextMsgGenerate()
+void HTIODevDbg::nextMsgGenerate()
 {
    vector<uint8_t> new_data;
 

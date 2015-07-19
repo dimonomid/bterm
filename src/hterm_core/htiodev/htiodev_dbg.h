@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HTDATASRC_DBG_H
-#define _HTDATASRC_DBG_H
+#ifndef _HTIODEV_DBG_H
+#define _HTIODEV_DBG_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -16,7 +16,7 @@
 
 #include <QTimer>
 
-#include "htdatasrc.h"
+#include "htiodev.h"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ using namespace std;
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTDataSrcDbg : public HTDataSrc
+class HTIODevDbg : public HTIODev
 {
    Q_OBJECT
    /****************************************************************************
@@ -35,14 +35,14 @@ class HTDataSrcDbg : public HTDataSrc
     * CONSTRUCTOR, DESTRUCTOR, ASSIGNMENT
     ***************************************************************************/
 public:
-   explicit HTDataSrcDbg();
-   virtual ~HTDataSrcDbg();
+   explicit HTIODevDbg();
+   virtual ~HTIODevDbg();
 
-   HTDataSrcDbg(const HTDataSrcDbg &other) = delete;
-   HTDataSrcDbg(HTDataSrcDbg &&other) = delete;
+   HTIODevDbg(const HTIODevDbg &other) = delete;
+   HTIODevDbg(HTIODevDbg &&other) = delete;
 
-   HTDataSrcDbg &operator=(const HTDataSrcDbg &other) = delete;
-   HTDataSrcDbg &operator=(HTDataSrcDbg &&other) = delete;
+   HTIODevDbg &operator=(const HTIODevDbg &other) = delete;
+   HTIODevDbg &operator=(HTIODevDbg &&other) = delete;
 
 
    /****************************************************************************
@@ -85,4 +85,4 @@ private slots:
 };
 
 
-#endif // _HTDATASRC_DBG_H
+#endif // _HTIODEV_DBG_H

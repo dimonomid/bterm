@@ -5,18 +5,18 @@ package "Core" {
 ' HTermCore {{{
 class HTermCore {
    -data_codec : HTDataCodec
-   -data_src : HTDataSrc
+   -data_src : HTIODev
 }
 ' }}}
 
-' HTDataSrc {{{
-class HTDataSrc <<interface>> {
+' HTIODev {{{
+class HTIODev <<interface>> {
 }
 
-class HTDataSrcQExtSp {
+class HTIODevQExtSp {
 }
 
-HTDataSrc <|-- HTDataSrcQExtSp
+HTIODev <|-- HTIODevQExtSp
 ' }}}
 
 ' HTDataCodec {{{
@@ -55,16 +55,16 @@ HTEvent <|-- HTEventSomething
 ' }}}
 
 HTermCore o-- "1" HTDataCodec : data_codec
-HTermCore o-- "1" HTDataSrc : data_src
+HTermCore o-- "1" HTIODev : data_src
 HTermCore o-- "*" HTDataMsg : messages
 
 HTDataCodec ..> HTDataMsg : emit
 
-HTermCore ..> HTDataSrc   : listen for raw Rx data \n (QByteArray)
+HTermCore ..> HTIODev   : listen for raw Rx data \n (QByteArray)
 HTermCore ..> HTDataCodec : put raw Rx data \n (QByteArray)
 HTermCore ..> HTDataCodec : listen for Rx \n HTDataMsg's
 HTermCore ..> HTDataCodec : encode data for Tx \n (put QByteArray, \n get HTDataMsg)
-HTermCore ..> HTDataSrc   : put raw data for Tx \n (QByteArray extracted \n from HTDataMsg)
+HTermCore ..> HTIODev   : put raw data for Tx \n (QByteArray extracted \n from HTDataMsg)
 
 HTermCore ..> HTEvent : emit
 

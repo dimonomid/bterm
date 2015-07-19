@@ -15,7 +15,7 @@
 #include <QObject>
 
 
-#include "htdatasrc.h"
+#include "htiodev.h"
 #include "htcodec.h"
 
 
@@ -41,7 +41,7 @@ class HTCore : public QObject
 public:
    explicit HTCore(
          const std::shared_ptr<HTCodec> &p_codec,
-         const std::shared_ptr<HTDataSrc> &p_data_src
+         const std::shared_ptr<HTIODev> &p_data_src
          );
 
    virtual ~HTCore();
@@ -52,7 +52,7 @@ public:
 private:
 
    std::shared_ptr<HTCodec> p_codec;
-   std::shared_ptr<HTDataSrc> p_data_src;
+   std::shared_ptr<HTIODev> p_data_src;
 
 
    /****************************************************************************

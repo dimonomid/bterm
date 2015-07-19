@@ -22,7 +22,7 @@
 
 HTCore::HTCore(
       const std::shared_ptr<HTCodec> &p_codec,
-      const std::shared_ptr<HTDataSrc> &p_data_src
+      const std::shared_ptr<HTIODev> &p_data_src
       ) :
    p_codec(p_codec),
    p_data_src(p_data_src)

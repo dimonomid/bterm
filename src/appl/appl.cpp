@@ -16,8 +16,8 @@
 #include "htcodec.h"
 #include "htcodec_iso14230.h"
 
-#include "htdatasrc.h"
-#include "htdatasrc_dbg.h"
+#include "htiodev.h"
+#include "htiodev_dbg.h"
 
 #include "htdatamsg.h"
 
@@ -37,7 +37,7 @@ Appl::Appl() :
    main_window()
 {
 
-   p_data_src = std::make_shared<HTDataSrcDbg>();
+   p_data_src = std::make_shared<HTIODevDbg>();
    p_codec = std::make_shared<HTCodec_ISO14230>(0x01, 0x02);
 
    p_htcore = std::unique_ptr<HTCore>{
