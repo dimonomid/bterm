@@ -40,11 +40,6 @@ public:
 
    ~TestHTCodecISO14230()
    {
-      disconnect(
-            &codec, SIGNAL(messageDecoded(const HTDataMsg &)),
-            this, SLOT(messageDecoded(const HTDataMsg &))
-            );
-
       std::cout << "destructed" << std::endl;
    }
 

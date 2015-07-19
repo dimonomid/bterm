@@ -29,7 +29,6 @@ HTIODevDbg::HTIODevDbg() :
 
 HTIODevDbg::~HTIODevDbg()
 {
-   disconnect(&timer, SIGNAL(timeout()), this, SLOT(nextMsgGenerate()));
 }
 
 

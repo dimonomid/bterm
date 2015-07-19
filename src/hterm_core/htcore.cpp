@@ -42,17 +42,6 @@ HTCore::HTCore(
 
 HTCore::~HTCore()
 {
-
-   disconnect(
-         p_io_dev.get(), SIGNAL(readyRead(int)),
-         this, SLOT(onDataSrcReadyRead(int))
-         );
-
-   disconnect(
-         p_codec.get(), SIGNAL(messageDecoded(const HTDataMsg &)),
-         this, SLOT(onMessageDecoded(const HTDataMsg &))
-         );
-
 }
 
 

@@ -83,15 +83,6 @@ Appl::Appl() :
 
 Appl::~Appl()
 {
-   disconnect(
-         p_htcore.get(), SIGNAL(eventDataMsg(const std::shared_ptr<HTEventDataMsg> &)),
-         this, SLOT(onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &))
-         );
-
-   disconnect(
-         p_htcore.get(), SIGNAL(eventDataRaw(const std::shared_ptr<HTEventDataRaw> &)),
-         this, SLOT(onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &))
-         );
 }
 
 
