@@ -22,14 +22,14 @@
 
 HTCore::HTCore(
       const std::shared_ptr<HTCodec> &p_codec,
-      const std::shared_ptr<HTIODev> &p_data_src
+      const std::shared_ptr<HTIODev> &p_io_dev
       ) :
    p_codec(p_codec),
-   p_data_src(p_data_src)
+   p_io_dev(p_io_dev)
 {
 
    connect(
-         p_data_src.get(), SIGNAL(readyRead(int)),
+         p_io_dev.get(), SIGNAL(readyRead(int)),
          this, SLOT(onDataSrcReadyRead(int))
          );
 
@@ -44,7 +44,7 @@ HTCore::~HTCore()
 {
 
    disconnect(
-         p_data_src.get(), SIGNAL(readyRead(int)),
+         p_io_dev.get(), SIGNAL(readyRead(int)),
          this, SLOT(onDataSrcReadyRead(int))
          );
 
@@ -88,7 +88,7 @@ void HTCore::onDataSrcReadyRead(int bytes_available)
    std::ignore = bytes_available;
 
    //-- get received data
-   std::vector<uint8_t> data = p_data_src->read();
+   std::vector<uint8_t> data = p_io_dev->read();
 
    auto p_event = std::make_shared<HTEventDataRaw>(data);
    emit (eventDataRaw(p_event));

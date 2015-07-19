@@ -31,17 +31,17 @@
 
 Appl::Appl() :
    p_codec(nullptr),
-   p_data_src(nullptr),
+   p_io_dev(nullptr),
    p_htcore(nullptr),
    htevent_visitor_handle(*this),
    main_window()
 {
 
-   p_data_src = std::make_shared<HTIODevDbg>();
+   p_io_dev = std::make_shared<HTIODevDbg>();
    p_codec = std::make_shared<HTCodec_ISO14230>(0x01, 0x02);
 
    p_htcore = std::unique_ptr<HTCore>{
-      new HTCore{p_codec, p_data_src}
+      new HTCore{p_codec, p_io_dev}
    };
 
    p_events_data_raw = std::unique_ptr<HTEventsAcc<HTEventDataRaw>>{

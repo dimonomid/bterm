@@ -49,7 +49,7 @@ public:
 private:
 
    std::shared_ptr<HTCodec> p_codec;
-   std::shared_ptr<HTIODev> p_data_src;
+   std::shared_ptr<HTIODev> p_io_dev;
    std::unique_ptr<HTCore> p_htcore;
    std::unique_ptr<HTEventsAcc<HTEventDataRaw>> p_events_data_raw;
    std::unique_ptr<HTEventsAcc<HTEventDataMsg>> p_events_data_msg;

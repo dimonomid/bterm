@@ -5,7 +5,7 @@ package "Core" {
 ' HTermCore {{{
 class HTermCore {
    -data_codec : HTDataCodec
-   -data_src : HTIODev
+   -io_dev : HTIODev
 }
 ' }}}
 
@@ -55,7 +55,7 @@ HTEvent <|-- HTEventSomething
 ' }}}
 
 HTermCore o-- "1" HTDataCodec : data_codec
-HTermCore o-- "1" HTIODev : data_src
+HTermCore o-- "1" HTIODev : io_dev
 HTermCore o-- "*" HTDataMsg : messages
 
 HTDataCodec ..> HTDataMsg : emit
