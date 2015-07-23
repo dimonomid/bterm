@@ -55,13 +55,13 @@ Appl::Appl() :
 
 
    connect(
-         p_htcore.get(), SIGNAL(eventDataRaw(const std::shared_ptr<HTEventDataRaw> &)),
-         this, SLOT(onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &))
+         p_htcore.get(), &HTCore::eventDataRaw,
+         this, &Appl::onNewDataRaw
          );
 
    connect(
-         p_htcore.get(), SIGNAL(eventDataMsg(const std::shared_ptr<HTEventDataMsg> &)),
-         this, SLOT(onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &))
+         p_htcore.get(), &HTCore::eventDataMsg,
+         this, &Appl::onNewDataMsg
          );
 
 

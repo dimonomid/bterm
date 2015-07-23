@@ -31,8 +31,8 @@ public:
       codec(0x01, 0x02)
    {
    connect(
-         &codec, SIGNAL(messageDecoded(const HTDataMsg &)),
-         this, SLOT(messageDecoded(const HTDataMsg &))
+         &codec, &HTCodec_ISO14230::messageDecoded,
+         this, &TestHTCodecISO14230::messageDecoded
          );
    std::cout << "constructed" << std::endl;
    }

@@ -4,6 +4,7 @@
 #include <QAction>
 #include <QSettings>
 #include <QMenu>
+#include <QSignalMapper>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -16,6 +17,8 @@
 
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
+
+#include "mainwindow.h"
 
 MainWindow::MainWindow(
       Appl &appl,
@@ -31,22 +34,26 @@ MainWindow::MainWindow(
     //-- test save/restore state
     {
        QAction *saveStateAction = new QAction(tr("&Save State"), this);
-       connect(saveStateAction, SIGNAL(triggered()), this, SLOT(mySaveState()));
+       connect(saveStateAction, &QAction::triggered, this, &MainWindow::mySaveState);
 
        QAction *restoreStateAction = new QAction(tr("&Restore State"), this);
-       connect(restoreStateAction, SIGNAL(triggered()), this, SLOT(myRestoreState()));
+       connect(restoreStateAction, &QAction::triggered, this, &MainWindow::myRestoreState);
 
        QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
        fileMenu->addAction(saveStateAction);
        fileMenu->addAction(restoreStateAction);
     }
 
+
     //-- init toolbars menu {{{
     {
 
        connect(
-             &this->windows_toggle_sigmap, SIGNAL(mapped(QWidget *)),
-             this, SLOT(toolbarToggle(QWidget *))
+             &this->windows_toggle_sigmap,
+             static_cast<void (QSignalMapper::*)(QWidget *)>(
+                &QSignalMapper::mapped
+                ),
+             this, &MainWindow::toolbarToggle
              );
 
        QMenu *p_toolbars = menuBar()->addMenu(tr("&Toolbars"));
@@ -56,15 +63,18 @@ MainWindow::MainWindow(
           p_act_raw_data = new QAction(tr("&Raw data"), this);
           p_act_raw_data->setCheckable(true);
           connect(
-                p_act_raw_data, SIGNAL(triggered()),
-                &this->windows_toggle_sigmap, SLOT(map())
+                p_act_raw_data, &QAction::triggered,
+                &this->windows_toggle_sigmap, 
+                static_cast<void (QSignalMapper::*)()>(
+                   &QSignalMapper::map
+                   )
                 );
           this->windows_toggle_sigmap.setMapping(p_act_raw_data, this->ui->dockwidg_raw_data);
           p_toolbars->addAction(p_act_raw_data);
 
           connect(
-                this->ui->dockwidg_raw_data, SIGNAL(visibilityChanged(bool)),
-                this, SLOT(windowVisChanged(bool))
+                this->ui->dockwidg_raw_data, &QDockWidget::visibilityChanged,
+                this, &MainWindow::windowVisChanged
                 );
 
        }
@@ -74,15 +84,18 @@ MainWindow::MainWindow(
           p_act_messages = new QAction(tr("&Messages"), this);
           p_act_messages->setCheckable(true);
           connect(
-                p_act_messages, SIGNAL(triggered()),
-                &this->windows_toggle_sigmap, SLOT(map())
+                p_act_messages, &QAction::triggered,
+                &this->windows_toggle_sigmap,
+                static_cast<void (QSignalMapper::*)()>(
+                   &QSignalMapper::map
+                   )
                 );
           this->windows_toggle_sigmap.setMapping(p_act_messages, this->ui->dockwidg_messages);
           p_toolbars->addAction(p_act_messages);
 
           connect(
-                this->ui->dockwidg_messages, SIGNAL(visibilityChanged(bool)),
-                this, SLOT(windowVisChanged(bool))
+                this->ui->dockwidg_messages, &QDockWidget::visibilityChanged,
+                this, &MainWindow::windowVisChanged
                 );
 
        }

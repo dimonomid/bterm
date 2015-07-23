@@ -29,13 +29,13 @@ HTCore::HTCore(
 {
 
    connect(
-         p_io_dev.get(), SIGNAL(readyRead(int)),
-         this, SLOT(onDataSrcReadyRead(int))
+         p_io_dev.get(), &HTIODev::readyRead,
+         this, &HTCore::onDataSrcReadyRead
          );
 
    connect(
-         p_codec.get(), SIGNAL(messageDecoded(const HTDataMsg &)),
-         this, SLOT(onMessageDecoded(const HTDataMsg &))
+         p_codec.get(), &HTCodec::messageDecoded,
+         this, &HTCore::onMessageDecoded
          );
 
 }

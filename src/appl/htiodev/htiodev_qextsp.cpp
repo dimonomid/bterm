@@ -87,8 +87,10 @@ void DTDataSrcQExtSP::reopen()
    }
 
    if (this->p_port->open(QIODevice::ReadWrite) == true) {
-      connect(p_port, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
-      //connect(p_port, SIGNAL(dsrChanged(bool)), this, SLOT(onDsrChanged(bool)));
+      connect(
+            p_port, &QextSerialPort::readyRead,
+            this, &DTDataSrcQExtSP::onReadyRead
+            );
       if (!(p_port->lineStatus() & LS_DSR))
          qDebug() << "warning: device is not turned on";
       qDebug() << "listening for data on" << p_port->portName();

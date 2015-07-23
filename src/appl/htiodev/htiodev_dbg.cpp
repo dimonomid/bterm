@@ -23,7 +23,7 @@ HTIODevDbg::HTIODevDbg() :
    cur_data(),
    stage(0)
 {
-   connect(&timer, SIGNAL(timeout()), this, SLOT(nextMsgGenerate()));
+   connect(&timer, &QTimer::timeout, this, &HTIODevDbg::nextMsgGenerate);
    timer.start(200);
 }
 
@@ -99,7 +99,7 @@ void HTIODevDbg::nextMsgGenerate()
          new_data.cbegin(), new_data.cend()
          );
 
-   emit(readyRead(cur_data.size()));
+   emit readyRead(cur_data.size());
 }
 
 /* protected    */

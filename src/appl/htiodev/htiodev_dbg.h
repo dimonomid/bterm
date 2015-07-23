@@ -72,7 +72,12 @@ public:
     * SIGNALS, SLOTS
     ***************************************************************************/
 signals:
-   void readyRead(int bytes_available);
+   //NOTE: we should NOT define signals in subclasses,
+   //      since if we do, then function pointer-based
+   //      connect() syntax will not generate any errors,
+   //      but it will just not work silently.
+   //
+   //void readyRead(int bytes_available);
 
 private slots:
    void nextMsgGenerate();
