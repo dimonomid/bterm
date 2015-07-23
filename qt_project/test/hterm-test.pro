@@ -7,7 +7,7 @@ TEMPLATE = app
 TARGET = hterm-test
 
 include(../common/appl_common.pri)
-include(../common/hterm_core.pri)
+include(../common/htcore.pri)
 
 # Input
 

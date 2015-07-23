@@ -12,7 +12,7 @@ TARGET = hterm
 TEMPLATE = app
 
 include(../common/appl_common.pri)
-include(../common/hterm_core.pri)
+include(../common/htcore.pri)
 
 
 SOURCES += ../../src/main.cpp \
