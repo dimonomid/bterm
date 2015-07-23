@@ -10,12 +10,13 @@
 #include "htrespgen.h"
 
 
+using namespace HTCore;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTRespGen::HTRespGen(
+RespGen::RespGen(
       QString name,
       std::shared_ptr<QScriptEngine> p_engine
       ) :
@@ -48,7 +49,7 @@ HTRespGen::HTRespGen(
 
 /* public       */
 
-QString HTRespGen::getName() const
+QString RespGen::getName() const
 {
    return name;
 }

@@ -21,11 +21,15 @@ class QScriptEngine;
  * CLASS DECLARATION
  ******************************************************************************/
 
+namespace HTCore {
+   class RespGen;
+}
+
 /**
  * Response generator
  * TODO
  */
-class HTRespGen
+class HTCore::RespGen
 {
    /****************************************************************************
     * TYPES
@@ -35,7 +39,7 @@ class HTRespGen
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   HTRespGen(
+   RespGen(
          QString name,
          std::shared_ptr<QScriptEngine> p_engine
          );
