@@ -7,7 +7,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "htrespgen.h"
+#include "htreqhandler.h"
 
 
 using namespace HTCore;
@@ -16,7 +16,7 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-RespGen::RespGen(
+ReqHandler::ReqHandler(
       QString name,
       std::shared_ptr<QScriptEngine> p_engine
       ) :
@@ -49,7 +49,7 @@ RespGen::RespGen(
 
 /* public       */
 
-QString RespGen::getName() const
+QString ReqHandler::getName() const
 {
    return name;
 }

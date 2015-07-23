@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HTRESPGEN_H
-#define _HTRESPGEN_H
+#ifndef _HTREQHANDLER_H
+#define _HTREQHANDLER_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -22,14 +22,14 @@ class QScriptEngine;
  ******************************************************************************/
 
 namespace HTCore {
-   class RespGen;
+   class ReqHandler;
 }
 
 /**
  * Response generator
  * TODO
  */
-class HTCore::RespGen
+class HTCore::ReqHandler
 {
    /****************************************************************************
     * TYPES
@@ -39,7 +39,7 @@ class HTCore::RespGen
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   RespGen(
+   ReqHandler(
          QString name,
          std::shared_ptr<QScriptEngine> p_engine
          );
@@ -73,4 +73,4 @@ public:
 };
 
 
-#endif // _HTRESPGEN_H
+#endif // _HTREQHANDLER_H
