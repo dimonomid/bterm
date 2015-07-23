@@ -42,7 +42,7 @@ Appl::Appl() :
 {
 
    p_io_dev = std::make_shared<HTIODevDbg>();
-   p_codec = std::make_shared<HTCodec_ISO14230>(0x01, 0x02);
+   p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
 
    p_project = std::unique_ptr<Project>{
       new Project{p_codec, p_io_dev}

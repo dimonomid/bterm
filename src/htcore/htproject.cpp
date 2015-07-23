@@ -23,7 +23,7 @@ using namespace HTCore;
  ******************************************************************************/
 
 Project::Project(
-      std::shared_ptr<HTCodec> p_codec,
+      std::shared_ptr<Codec> p_codec,
       std::shared_ptr<HTIODev> p_io_dev
       ) :
    p_codec(p_codec),
@@ -36,7 +36,7 @@ Project::Project(
          );
 
    connect(
-         p_codec.get(), &HTCodec::messageDecoded,
+         p_codec.get(), &Codec::messageDecoded,
          this, &Project::onMessageDecoded
          );
 

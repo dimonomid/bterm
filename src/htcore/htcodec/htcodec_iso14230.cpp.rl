@@ -13,6 +13,7 @@
 
 
 using namespace std;
+using namespace HTCore;
 
 /*******************************************************************************
  * MACROS
@@ -39,7 +40,7 @@ using namespace std;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTCodec_ISO14230::HTCodec_ISO14230(
+Codec_ISO14230::Codec_ISO14230(
       unsigned char own_addr,
       unsigned char remote_addr
       ) :
@@ -188,7 +189,7 @@ main := (msg_start: message)*;
 
 /* public       */
 
-void HTCodec_ISO14230::addRawRxData(const vector<unsigned char> &data)
+void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 {
    //-- initialize variables necessary for ragel machine
    //   (it is possible to set ragel to use different variable names,
@@ -207,7 +208,7 @@ void HTCodec_ISO14230::addRawRxData(const vector<unsigned char> &data)
    ragel_cs = cs;
 }
 
-void HTCodec_ISO14230::clearRawRxData()
+void Codec_ISO14230::clearRawRxData()
 {
    this->rx_user_data_got_len = 0;
    this->rx_user_data_len = 0;
@@ -224,7 +225,7 @@ void HTCodec_ISO14230::clearRawRxData()
    }
 }
 
-HTDataMsg HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
+HTDataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
 {
    HTDataMsg ret{};
 
@@ -258,12 +259,12 @@ HTDataMsg HTCodec_ISO14230::encodeMessage(const vector<unsigned char> &data) con
 }
 
 
-void HTCodec_ISO14230::setOwnAddr(unsigned char own_addr)
+void Codec_ISO14230::setOwnAddr(unsigned char own_addr)
 {
    this->own_addr = own_addr;
 }
 
-void HTCodec_ISO14230::setRemoteAddr(unsigned char remote_addr)
+void Codec_ISO14230::setRemoteAddr(unsigned char remote_addr)
 {
    this->remote_addr = remote_addr;
 }

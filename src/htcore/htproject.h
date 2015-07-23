@@ -45,7 +45,7 @@ class HTCore::Project : public QObject
     ***************************************************************************/
 public:
    explicit Project(
-         std::shared_ptr<HTCodec> p_codec,
+         std::shared_ptr<Codec> p_codec,
          std::shared_ptr<HTIODev> p_io_dev
          );
 
@@ -56,7 +56,7 @@ public:
     ***************************************************************************/
 private:
 
-   std::shared_ptr<HTCodec> p_codec;
+   std::shared_ptr<Codec> p_codec;
    std::shared_ptr<HTIODev> p_io_dev;
 
 

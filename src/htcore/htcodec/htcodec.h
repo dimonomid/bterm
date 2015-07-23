@@ -22,7 +22,11 @@
  * CLASS DECLARATION
  *****************************************************************************************/
 
-class HTCodec : public QObject
+namespace HTCore {
+   class Codec;
+}
+
+class HTCore::Codec : public QObject
 {
    Q_OBJECT
 

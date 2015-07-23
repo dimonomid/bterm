@@ -22,7 +22,11 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTCodec_ISO14230 : public HTCodec
+namespace HTCore {
+   class Codec_ISO14230;
+}
+
+class HTCore::Codec_ISO14230 : public HTCore::Codec
 {
    Q_OBJECT
 
@@ -34,7 +38,7 @@ class HTCodec_ISO14230 : public HTCodec
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTCodec_ISO14230(uint8_t own_addr, uint8_t remote_addr);
+   explicit Codec_ISO14230(uint8_t own_addr, uint8_t remote_addr);
 
    /****************************************************************************
     * PRIVATE DATA
