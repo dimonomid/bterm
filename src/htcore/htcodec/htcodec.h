@@ -17,7 +17,6 @@
 
 #include <vector>
 
-using namespace std;
 
 /******************************************************************************************
  * CLASS DECLARATION
@@ -49,9 +48,9 @@ private:
     * METHODS
     *****************************************************************************************/
 public:
-   virtual void                  addRawRxData   (const vector<uint8_t> &data) = 0;
+   virtual void                  addRawRxData   (const std::vector<uint8_t> &data) = 0;
    virtual void                  clearRawRxData () = 0;
-   virtual HTDataMsg             encodeMessage  (const vector<uint8_t> &data) const = 0;
+   virtual HTDataMsg             encodeMessage  (const std::vector<uint8_t> &data) const = 0;
 
 
    /******************************************************************************************

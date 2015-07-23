@@ -18,7 +18,7 @@
 
 #include "htiodev.h"
 
-using namespace std;
+
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -50,7 +50,7 @@ public:
     ***************************************************************************/
 private:
    QTimer timer;
-   vector<uint8_t> cur_data;
+   std::vector<uint8_t> cur_data;
 
    int stage;
 
@@ -64,8 +64,8 @@ private:
     ***************************************************************************/
 public:
 
-   vector<uint8_t> read() override;
-   void write(const vector<uint8_t> &data) override;
+   std::vector<uint8_t> read() override;
+   void write(const std::vector<uint8_t> &data) override;
 
 
    /****************************************************************************

@@ -16,8 +16,6 @@
 
 
 
-using namespace std;
-
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
@@ -36,15 +34,15 @@ public:
     ***************************************************************************/
 public:
    explicit HTDataPart();
-   explicit HTDataPart(DataType data_type, const vector<uint8_t> &data);
-   explicit HTDataPart(DataType data_type, vector<uint8_t> &&data);
+   explicit HTDataPart(DataType data_type, const std::vector<uint8_t> &data);
+   explicit HTDataPart(DataType data_type, std::vector<uint8_t> &&data);
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
 private:
-   vector<uint8_t> service_data;
-   vector<uint8_t> user_data;
+   std::vector<uint8_t> service_data;
+   std::vector<uint8_t> user_data;
 
 
    /****************************************************************************
@@ -56,10 +54,10 @@ private:
     ***************************************************************************/
 public:
 
-   void addData(DataType data_type, const vector<uint8_t> &data);
+   void addData(DataType data_type, const std::vector<uint8_t> &data);
    void addData(DataType data_type, uint8_t byte);
 
-   vector<uint8_t> getData(DataType data_type) const;
+   std::vector<uint8_t> getData(DataType data_type) const;
    PartType getType() const;
 
    /**

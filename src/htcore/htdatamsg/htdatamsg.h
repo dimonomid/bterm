@@ -18,8 +18,6 @@
 #include "htdatapart.h"
 
 
-using namespace std;
-
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -43,7 +41,7 @@ public:
     ***************************************************************************/
 private:
 
-   vector<HTDataPart> data_parts;
+   std::vector<HTDataPart> data_parts;
 
 
    /****************************************************************************
@@ -55,16 +53,16 @@ private:
     ***************************************************************************/
 
 public:
-   void addData(HTDataPart::DataType data_type, const vector<uint8_t> &data);
+   void addData(HTDataPart::DataType data_type, const std::vector<uint8_t> &data);
    void addData(HTDataPart::DataType data_type, uint8_t byte);
    void addData(HTDataPart data_part);
 
    void clear();
 
-   vector<uint8_t> getUserData() const;
-   vector<uint8_t> getRawData() const;
+   std::vector<uint8_t> getUserData() const;
+   std::vector<uint8_t> getRawData() const;
 
-   vector<HTDataPart> getDataParts() const;
+   std::vector<HTDataPart> getDataParts() const;
 
    std::string toString() const;
 
