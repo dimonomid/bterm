@@ -98,6 +98,8 @@ void HTCore::onMessageDecoded(const HTDataMsg &msg)
 
    auto p_event = std::make_shared<HTEventDataMsg>(msg);
    emit (eventDataMsg(p_event));
+
+   //TODO: handle response rules, generate response if necessary
 }
 
 
