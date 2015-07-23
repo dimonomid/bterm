@@ -34,7 +34,7 @@ Appl::Appl() :
    p_io_dev(nullptr),
    p_htcore(nullptr),
    htevent_visitor_handle(*this),
-   main_window()
+   p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
 
    p_io_dev = std::make_shared<HTIODevDbg>();
@@ -66,18 +66,7 @@ Appl::Appl() :
 
 
 
-   //-- connect separate visitor's events to mainwindow's slots
-   connect(
-         p_htcore.get(), SIGNAL(eventDataRaw(const std::shared_ptr<HTEventDataRaw> &)),
-         &main_window, SLOT(onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &))
-         );
-
-   connect(
-         p_htcore.get(), SIGNAL(eventDataMsg(const std::shared_ptr<HTEventDataMsg> &)),
-         &main_window, SLOT(onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &))
-         );
-
-   this->main_window.show();
+   this->p_main_window->show();
 
 }
 
@@ -123,11 +112,15 @@ void Appl::onHTEvent(const std::shared_ptr<HTEvent> &p_event)
 void Appl::onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event)
 {
    p_events_data_raw->addEvent(p_event);
+
+   emit eventDataRaw(p_event);
 }
 
 void Appl::onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event)
 {
    p_events_data_msg->addEvent(p_event);
+
+   emit eventDataMsg(p_event);
 }
 
 

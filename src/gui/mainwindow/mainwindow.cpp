@@ -10,16 +10,20 @@
 
 #include "htdatamsg.h"
 
+#include "appl.h"
+
 #include "my_util.h"
 
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
 
 MainWindow::MainWindow(
+      Appl &appl,
       QWidget *parent
       ) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    appl(appl),
     windows_toggle_sigmap(this)
 {
     ui->setupUi(this);
@@ -85,6 +89,16 @@ MainWindow::MainWindow(
 
     }
     // }}}
+
+    connect(
+          &appl, &Appl::eventDataRaw,
+          this, &MainWindow::onNewDataRaw
+          );
+
+    connect(
+          &appl, &Appl::eventDataMsg,
+          this, &MainWindow::onNewDataMsg
+          );
 }
 
 MainWindow::~MainWindow()

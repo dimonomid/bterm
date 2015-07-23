@@ -14,19 +14,27 @@ class HTEventDataRaw;
 class HTEventDataMsg;
 
 namespace Ui {
-class MainWindow;
+   class MainWindow;
 }
+
+class Appl;
+
 
 class MainWindow : public QMainWindow
 {
 Q_OBJECT
 
 public:
-   explicit MainWindow(QWidget *parent = 0);
+   explicit MainWindow(
+         Appl &appl,
+         QWidget *parent = 0
+         );
    ~MainWindow();
 
 private:
    Ui::MainWindow   *ui;
+   Appl &appl;
+
    QSignalMapper     windows_toggle_sigmap;
 
    QAction          *p_act_raw_data;

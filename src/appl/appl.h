@@ -56,7 +56,7 @@ private:
 
    HTEventVisitor_Handle htevent_visitor_handle;
 
-   MainWindow main_window;
+   std::unique_ptr<MainWindow>  p_main_window;
 
 
 
@@ -78,6 +78,9 @@ private slots:
    void onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
 
 
+signals:
+   void eventDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event);
+   void eventDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
 
 };
 
