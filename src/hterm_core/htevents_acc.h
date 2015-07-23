@@ -104,7 +104,7 @@ public:
    }
 
 
-   void addEvent(const std::shared_ptr<T> &p_event)
+   void addEvent(std::shared_ptr<T> p_event)
    {
       events.push_back(p_event);
       last_event_num++;

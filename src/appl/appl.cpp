@@ -109,14 +109,14 @@ void Appl::onHTEvent(const std::shared_ptr<HTEvent> &p_event)
 }
 #endif
 
-void Appl::onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event)
+void Appl::onNewDataRaw(std::shared_ptr<HTEventDataRaw> p_event)
 {
    p_events_data_raw->addEvent(p_event);
 
    emit eventDataRaw(p_event);
 }
 
-void Appl::onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event)
+void Appl::onNewDataMsg(std::shared_ptr<HTEventDataMsg> p_event)
 {
    p_events_data_msg->addEvent(p_event);
 

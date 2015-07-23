@@ -21,8 +21,8 @@
  ******************************************************************************/
 
 HTCore::HTCore(
-      const std::shared_ptr<HTCodec> &p_codec,
-      const std::shared_ptr<HTIODev> &p_io_dev
+      std::shared_ptr<HTCodec> p_codec,
+      std::shared_ptr<HTIODev> p_io_dev
       ) :
    p_codec(p_codec),
    p_io_dev(p_io_dev)

@@ -46,8 +46,8 @@ private:
     ***************************************************************************/
 private slots:
 
-   void onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &event_data_raw);
-   void onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &event_data_msg);
+   void onNewDataRaw(std::shared_ptr<HTEventDataRaw> event_data_raw);
+   void onNewDataMsg(std::shared_ptr<HTEventDataMsg> event_data_msg);
 
    void toolbarToggle(QWidget *p_widget);
    void windowVisChanged(bool visible);

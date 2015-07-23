@@ -40,8 +40,8 @@ class HTCore : public QObject
     ***************************************************************************/
 public:
    explicit HTCore(
-         const std::shared_ptr<HTCodec> &p_codec,
-         const std::shared_ptr<HTIODev> &p_io_dev
+         std::shared_ptr<HTCodec> p_codec,
+         std::shared_ptr<HTIODev> p_io_dev
          );
 
    virtual ~HTCore();
@@ -67,8 +67,8 @@ private:
     * SIGNALS, SLOTS
     ***************************************************************************/
 signals:
-   void eventDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event);
-   void eventDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
+   void eventDataRaw(std::shared_ptr<HTEventDataRaw> p_event);
+   void eventDataMsg(std::shared_ptr<HTEventDataMsg> p_event);
 
 private slots:
    void onDataSrcReadyRead(int bytes_available);

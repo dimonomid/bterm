@@ -74,13 +74,13 @@ private:
 private slots:
 
    //void onHTEvent(const std::shared_ptr<HTEvent> &);
-   void onNewDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event);
-   void onNewDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
+   void onNewDataRaw(std::shared_ptr<HTEventDataRaw> p_event);
+   void onNewDataMsg(std::shared_ptr<HTEventDataMsg> p_event);
 
 
 signals:
-   void eventDataRaw(const std::shared_ptr<HTEventDataRaw> &p_event);
-   void eventDataMsg(const std::shared_ptr<HTEventDataMsg> &p_event);
+   void eventDataRaw(std::shared_ptr<HTEventDataRaw> p_event);
+   void eventDataMsg(std::shared_ptr<HTEventDataMsg> p_event);
 
 };
 
