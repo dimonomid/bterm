@@ -25,6 +25,11 @@ namespace HTCore {
    class ByteArr;
 }
 
+/*
+ * TODO: implement the fill byte
+ *       implement unit tests
+ */
+
 /**
  * TODO
  */
@@ -65,6 +70,7 @@ public:
 
 public slots:
 
+   unsigned int getU08(unsigned int index);
    void putU08(unsigned int index, unsigned int val);
 
 

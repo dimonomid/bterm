@@ -85,6 +85,39 @@ Appl::Appl() :
       QScriptEngine engine;
       QScriptValue result;
 
+      ByteArr *baIn = new ByteArr();
+      ByteArr *baOut = new ByteArr();
+
+      QScriptValue baInValue = engine.newQObject(baIn);
+      QScriptValue baOutValue = engine.newQObject(baOut);
+
+      baIn->putU08(0, 0x61);
+      baIn->putU08(1, 0x01);
+
+      QScriptValue func = engine.evaluate(
+            "(function(inputArr, outputArr){ "
+            "     if (inputArr.getU08(0) === 0x61){"
+            "        outputArr.putU08(4, 0x10);"
+            "        outputArr.putU08(1, 0xff);"
+            "     }"
+            " })"
+      );
+      func.call(
+            QScriptValue(),
+            QScriptValueList() << baInValue << baOutValue
+            );
+
+      qDebug() << "in: "  << MyUtil::byteArrayToHex(*baIn->getData());
+      qDebug() << "out: " << MyUtil::byteArrayToHex(*baOut->getData());
+
+}
+#endif
+
+#if 0
+   {
+      QScriptEngine engine;
+      QScriptValue result;
+
       ByteArr *bytearr = new ByteArr;
       QScriptValue bytearrValue = engine.newQObject(bytearr);
       engine.globalObject().setProperty("byteArr", bytearrValue);

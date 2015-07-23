@@ -44,6 +44,16 @@ ByteArr::ByteArr() :
 
 /* public       */
 
+unsigned int ByteArr::getU08(unsigned int index)
+{
+   unsigned int ret = 0x100;
+   if (p_data->size() > index){
+      ret = (*p_data)[index];
+   }
+
+   return ret;
+}
+
 void ByteArr::putU08(unsigned int index, unsigned int val)
 {
    if (p_data->size() <= index){
