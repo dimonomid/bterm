@@ -61,10 +61,10 @@ private:
     * METHODS
     ***************************************************************************/
 public:
-   virtual void                  addRawRxData   (const vector<uint8_t> &data) override;
+   virtual void                  addRawRxData   (const std::vector<uint8_t> &data) override;
    virtual void                  clearRawRxData () override;
 
-   virtual HTDataMsg             encodeMessage  (const vector<uint8_t> &data) const override;
+   virtual HTDataMsg             encodeMessage  (const std::vector<uint8_t> &data) const override;
 
 
 

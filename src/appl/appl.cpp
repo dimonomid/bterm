@@ -27,6 +27,7 @@
 
 
 using namespace HTCore;
+using namespace std;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
