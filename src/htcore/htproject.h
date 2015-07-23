@@ -49,7 +49,7 @@ class HTCore::Project : public QObject
 public:
    explicit Project(
          std::shared_ptr<Codec> p_codec,
-         std::shared_ptr<HTIODev> p_io_dev
+         std::shared_ptr<IODev> p_io_dev
          );
 
    virtual ~Project();
@@ -60,7 +60,7 @@ public:
 private:
 
    std::shared_ptr<Codec> p_codec;
-   std::shared_ptr<HTIODev> p_io_dev;
+   std::shared_ptr<IODev> p_io_dev;
 
 
    /****************************************************************************

@@ -24,14 +24,14 @@ using namespace HTCore;
 
 Project::Project(
       std::shared_ptr<Codec> p_codec,
-      std::shared_ptr<HTIODev> p_io_dev
+      std::shared_ptr<IODev> p_io_dev
       ) :
    p_codec(p_codec),
    p_io_dev(p_io_dev)
 {
 
    connect(
-         p_io_dev.get(), &HTIODev::readyRead,
+         p_io_dev.get(), &IODev::readyRead,
          this, &Project::onDataSrcReadyRead
          );
 

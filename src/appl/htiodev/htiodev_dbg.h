@@ -24,7 +24,7 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTIODevDbg : public HTIODev
+class IODevDbg : public HTCore::IODev
 {
    Q_OBJECT
    /****************************************************************************
@@ -35,14 +35,14 @@ class HTIODevDbg : public HTIODev
     * CONSTRUCTOR, DESTRUCTOR, ASSIGNMENT
     ***************************************************************************/
 public:
-   explicit HTIODevDbg();
-   virtual ~HTIODevDbg();
+   explicit IODevDbg();
+   virtual ~IODevDbg();
 
-   HTIODevDbg(const HTIODevDbg &other) = delete;
-   HTIODevDbg(HTIODevDbg &&other) = delete;
+   IODevDbg(const IODevDbg &other) = delete;
+   IODevDbg(IODevDbg &&other) = delete;
 
-   HTIODevDbg &operator=(const HTIODevDbg &other) = delete;
-   HTIODevDbg &operator=(HTIODevDbg &&other) = delete;
+   IODevDbg &operator=(const IODevDbg &other) = delete;
+   IODevDbg &operator=(IODevDbg &&other) = delete;
 
 
    /****************************************************************************

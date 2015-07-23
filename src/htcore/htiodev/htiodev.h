@@ -19,7 +19,11 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTIODev : public QObject
+namespace HTCore {
+   class IODev;
+}
+
+class HTCore::IODev : public QObject
 {
 Q_OBJECT
    /*******************************************************************************

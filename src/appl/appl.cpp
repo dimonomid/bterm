@@ -41,7 +41,7 @@ Appl::Appl() :
    p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
 
-   p_io_dev = std::make_shared<HTIODevDbg>();
+   p_io_dev = std::make_shared<IODevDbg>();
    p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
 
    p_project = std::unique_ptr<Project>{

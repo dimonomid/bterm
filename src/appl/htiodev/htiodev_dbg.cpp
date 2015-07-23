@@ -20,16 +20,16 @@ using namespace std;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTIODevDbg::HTIODevDbg() :
+IODevDbg::IODevDbg() :
    timer(this),
    cur_data(),
    stage(0)
 {
-   connect(&timer, &QTimer::timeout, this, &HTIODevDbg::nextMsgGenerate);
+   connect(&timer, &QTimer::timeout, this, &IODevDbg::nextMsgGenerate);
    timer.start(200);
 }
 
-HTIODevDbg::~HTIODevDbg()
+IODevDbg::~IODevDbg()
 {
 }
 
@@ -56,14 +56,14 @@ HTIODevDbg::~HTIODevDbg()
 
 /* public       */
 
-vector<uint8_t> HTIODevDbg::read()
+vector<uint8_t> IODevDbg::read()
 {
    vector<uint8_t> ret = std::move(cur_data);
    cur_data = vector<uint8_t>{};
    return ret;
 }
 
-void HTIODevDbg::write(const vector<uint8_t> &data)
+void IODevDbg::write(const vector<uint8_t> &data)
 {
    std::ignore = data;
 }
@@ -75,7 +75,7 @@ void HTIODevDbg::write(const vector<uint8_t> &data)
 
 /* private      */
 
-void HTIODevDbg::nextMsgGenerate()
+void IODevDbg::nextMsgGenerate()
 {
    vector<uint8_t> new_data;
 

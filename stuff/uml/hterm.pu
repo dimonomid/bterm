@@ -5,18 +5,18 @@ package "Core" {
 ' HTermCore {{{
 class HTermCore {
    -data_codec : HTDataCodec
-   -io_dev : HTIODev
+   -io_dev : IODev
 }
 ' }}}
 
-' HTIODev {{{
-class HTIODev <<interface>> {
+' IODev {{{
+class IODev <<interface>> {
 }
 
-class HTIODevQExtSp {
+class IODevQExtSp {
 }
 
-HTIODev <|-- HTIODevQExtSp
+IODev <|-- IODevQExtSp
 ' }}}
 
 ' HTDataCodec {{{
@@ -55,16 +55,16 @@ Event <|-- EventSomething
 ' }}}
 
 HTermCore o-- "1" HTDataCodec : data_codec
-HTermCore o-- "1" HTIODev : io_dev
+HTermCore o-- "1" IODev : io_dev
 HTermCore o-- "*" DataMsg : messages
 
 HTDataCodec ..> DataMsg : emit
 
-HTermCore ..> HTIODev   : listen for raw Rx data \n (QByteArray)
+HTermCore ..> IODev   : listen for raw Rx data \n (QByteArray)
 HTermCore ..> HTDataCodec : put raw Rx data \n (QByteArray)
 HTermCore ..> HTDataCodec : listen for Rx \n DataMsg's
 HTermCore ..> HTDataCodec : encode data for Tx \n (put QByteArray, \n get DataMsg)
-HTermCore ..> HTIODev   : put raw data for Tx \n (QByteArray extracted \n from DataMsg)
+HTermCore ..> IODev   : put raw data for Tx \n (QByteArray extracted \n from DataMsg)
 
 HTermCore ..> Event : emit
 
