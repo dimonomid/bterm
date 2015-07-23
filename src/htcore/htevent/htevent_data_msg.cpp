@@ -15,11 +15,13 @@
 
 
 
+using namespace HTCore;
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTEventDataMsg::HTEventDataMsg(const HTDataMsg &msg) :
+EventDataMsg::EventDataMsg(const DataMsg &msg) :
    msg(msg)
 {
 }
@@ -47,12 +49,12 @@ HTEventDataMsg::HTEventDataMsg(const HTDataMsg &msg) :
 
 /* public       */
 
-const HTDataMsg HTEventDataMsg::getMsg() const
+const DataMsg EventDataMsg::getMsg() const
 {
    return msg;
 }
 
-void HTEventDataMsg::accept(HTEventVisitor &visitor)
+void EventDataMsg::accept(EventVisitor &visitor)
 {
    visitor.accept(*this);
 }

@@ -15,11 +15,13 @@
 #include "htevent_data_msg.h"
 
 
+using namespace HTCore;
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTEventVisitor_Handle::HTEventVisitor_Handle(Appl &appl) : 
+EventVisitor_Handle::EventVisitor_Handle(Appl &appl) : 
    appl(appl)
 {
 }
@@ -47,7 +49,7 @@ HTEventVisitor_Handle::HTEventVisitor_Handle(Appl &appl) :
 
 /* public       */
 
-void HTEventVisitor_Handle::accept(HTEventDataRaw &htevent_data_raw)
+void EventVisitor_Handle::accept(EventDataRaw &htevent_data_raw)
 {
    const std::vector<uint8_t> data = htevent_data_raw.getData();
    emit(newDataRaw(data));
@@ -59,7 +61,7 @@ void HTEventVisitor_Handle::accept(HTEventDataRaw &htevent_data_raw)
 #endif
 }
 
-void HTEventVisitor_Handle::accept(HTEventDataMsg &htevent_data_msg)
+void EventVisitor_Handle::accept(EventDataMsg &htevent_data_msg)
 {
    //qDebug(("handle data msg: " + htevent_data_msg.getMsg().toString()).c_str());
    emit(

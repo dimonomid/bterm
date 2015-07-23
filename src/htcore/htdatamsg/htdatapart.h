@@ -20,7 +20,12 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTDataPart
+namespace HTCore {
+   class DataPart;
+}
+
+
+class HTCore::DataPart
 {
    /****************************************************************************
     * TYPES
@@ -33,9 +38,9 @@ public:
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTDataPart();
-   explicit HTDataPart(DataType data_type, const std::vector<uint8_t> &data);
-   explicit HTDataPart(DataType data_type, std::vector<uint8_t> &&data);
+   explicit DataPart();
+   explicit DataPart(DataType data_type, const std::vector<uint8_t> &data);
+   explicit DataPart(DataType data_type, std::vector<uint8_t> &&data);
 
    /****************************************************************************
     * PRIVATE DATA
@@ -83,7 +88,7 @@ public:
     ******************************************************************************/
 
 public:
-   inline bool operator==(const HTDataPart &other) const {
+   inline bool operator==(const DataPart &other) const {
       return (this->user_data == other.user_data && this->service_data == other.service_data);
    }
 };

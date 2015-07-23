@@ -48,12 +48,12 @@ Appl::Appl() :
       new Project{p_codec, p_io_dev}
    };
 
-   p_events_data_raw = std::unique_ptr<EventsAcc<HTEventDataRaw>>{
-      new EventsAcc<HTEventDataRaw>(1000/*TODO: settings*/)
+   p_events_data_raw = std::unique_ptr<EventsAcc<EventDataRaw>>{
+      new EventsAcc<EventDataRaw>(1000/*TODO: settings*/)
    };
 
-   p_events_data_msg = std::unique_ptr<EventsAcc<HTEventDataMsg>>{
-      new EventsAcc<HTEventDataMsg>(1000/*TODO: settings*/)
+   p_events_data_msg = std::unique_ptr<EventsAcc<EventDataMsg>>{
+      new EventsAcc<EventDataMsg>(1000/*TODO: settings*/)
    };
 
 
@@ -107,20 +107,20 @@ Appl::~Appl()
 /* private      */
 
 #if 0
-void Appl::onHTEvent(const std::shared_ptr<HTEvent> &p_event)
+void Appl::onEvent(const std::shared_ptr<Event> &p_event)
 {
    p_event->accept(htevent_visitor_handle);
 }
 #endif
 
-void Appl::onNewDataRaw(std::shared_ptr<HTEventDataRaw> p_event)
+void Appl::onNewDataRaw(std::shared_ptr<EventDataRaw> p_event)
 {
    p_events_data_raw->addEvent(p_event);
 
    emit eventDataRaw(p_event);
 }
 
-void Appl::onNewDataMsg(std::shared_ptr<HTEventDataMsg> p_event)
+void Appl::onNewDataMsg(std::shared_ptr<EventDataMsg> p_event)
 {
    p_events_data_msg->addEvent(p_event);
 
@@ -137,7 +137,7 @@ void Appl::onNewDataRaw(const std::vector<uint8_t> &data)
    //TODO
 }
 
-void Appl::onNewDataMsg(const HTDataMsg &msg)
+void Appl::onNewDataMsg(const DataMsg &msg)
 {
    //TODO
 }

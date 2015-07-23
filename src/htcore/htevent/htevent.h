@@ -15,13 +15,19 @@
 
 
 
-class HTEventVisitor;
+namespace HTCore {
+   class EventVisitor;
+}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTEvent
+namespace HTCore {
+   class Event;
+}
+
+class HTCore::Event
 {
    /****************************************************************************
     * TYPES
@@ -31,8 +37,8 @@ class HTEvent
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTEvent(/*TODO: time*/);
-   virtual ~HTEvent();
+   explicit Event(/*TODO: time*/);
+   virtual ~Event();
 
 
    /****************************************************************************
@@ -49,7 +55,7 @@ private:
     ***************************************************************************/
 public:
 
-   virtual void accept(HTEventVisitor &visitor) = 0;
+   virtual void accept(EventVisitor &visitor) = 0;
 
 
 

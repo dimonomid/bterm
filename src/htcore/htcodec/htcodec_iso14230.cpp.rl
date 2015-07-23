@@ -102,13 +102,13 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action got_service_byte {
-      this->cur_rx_msg.addData(HTDataPart::DataType::SERVICE, fc);
+      this->cur_rx_msg.addData(DataPart::DataType::SERVICE, fc);
       this->rx_checksum += fc;
       _DEBUG("got service byte: 0x%x", fc);
    }
 
    action got_data_byte {
-      this->cur_rx_msg.addData(HTDataPart::DataType::USER, fc);
+      this->cur_rx_msg.addData(DataPart::DataType::USER, fc);
       this->rx_checksum += fc;
       _DEBUG("got data byte: 0x%x", fc);
    }
@@ -225,25 +225,25 @@ void Codec_ISO14230::clearRawRxData()
    }
 }
 
-HTDataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
+DataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
 {
-   HTDataMsg ret{};
+   DataMsg ret{};
 
    //-- put length
    if (data.size() >= 0x40){
-      ret.addData(HTDataPart::DataType::SERVICE, 0x80);
-      ret.addData(HTDataPart::DataType::SERVICE, data.size());
+      ret.addData(DataPart::DataType::SERVICE, 0x80);
+      ret.addData(DataPart::DataType::SERVICE, data.size());
    } else {
-      ret.addData(HTDataPart::DataType::SERVICE, 0x80 | data.size());
+      ret.addData(DataPart::DataType::SERVICE, 0x80 | data.size());
    }
 
    //-- push target and source addresses
-   ret.addData(HTDataPart::DataType::SERVICE, remote_addr);
-   ret.addData(HTDataPart::DataType::SERVICE, own_addr);
+   ret.addData(DataPart::DataType::SERVICE, remote_addr);
+   ret.addData(DataPart::DataType::SERVICE, own_addr);
 
    //-- push user data
    for (auto user_byte : data){
-      ret.addData(HTDataPart::DataType::USER, user_byte);
+      ret.addData(DataPart::DataType::USER, user_byte);
    }
 
    //-- calculate and push checksum
@@ -252,7 +252,7 @@ HTDataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
       for (auto byte : ret.getRawData()){
          checksum += byte;
       }
-      ret.addData(HTDataPart::DataType::SERVICE, checksum);
+      ret.addData(DataPart::DataType::SERVICE, checksum);
    }
 
    return ret;

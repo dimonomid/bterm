@@ -23,7 +23,13 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTDataMsg
+namespace HTCore {
+   class DataMsg;
+}
+
+
+
+class HTCore::DataMsg
 {
    /****************************************************************************
     * TYPES
@@ -33,7 +39,7 @@ class HTDataMsg
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTDataMsg();
+   explicit DataMsg();
 
 
    /****************************************************************************
@@ -41,7 +47,7 @@ public:
     ***************************************************************************/
 private:
 
-   std::vector<HTDataPart> data_parts;
+   std::vector<DataPart> data_parts;
 
 
    /****************************************************************************
@@ -53,16 +59,16 @@ private:
     ***************************************************************************/
 
 public:
-   void addData(HTDataPart::DataType data_type, const std::vector<uint8_t> &data);
-   void addData(HTDataPart::DataType data_type, uint8_t byte);
-   void addData(HTDataPart data_part);
+   void addData(DataPart::DataType data_type, const std::vector<uint8_t> &data);
+   void addData(DataPart::DataType data_type, uint8_t byte);
+   void addData(DataPart data_part);
 
    void clear();
 
    std::vector<uint8_t> getUserData() const;
    std::vector<uint8_t> getRawData() const;
 
-   std::vector<HTDataPart> getDataParts() const;
+   std::vector<DataPart> getDataParts() const;
 
    std::string toString() const;
 
@@ -76,7 +82,7 @@ public:
     ******************************************************************************/
 
 public:
-   inline bool operator==(const HTDataMsg &other) const {
+   inline bool operator==(const DataMsg &other) const {
       return (this->data_parts == other.data_parts);
    }
 };

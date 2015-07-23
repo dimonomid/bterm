@@ -22,7 +22,7 @@
  * SLOTS
  ******************************************************************************/
 
-void TestHTCodecISO14230::messageDecoded(const HTDataMsg &msg)
+void TestHTCodecISO14230::messageDecoded(const DataMsg &msg)
 {
    //cout << std::string("decoded: ") << msg.toString() << std::string("\n");
    rx_msgs.push(msg);

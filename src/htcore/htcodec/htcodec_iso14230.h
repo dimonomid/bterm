@@ -45,7 +45,7 @@ public:
     ***************************************************************************/
 
 private:
-   HTDataMsg cur_rx_msg;
+   DataMsg cur_rx_msg;
    int ragel_cs;
    int rx_user_data_len;
    int rx_user_data_got_len;
@@ -68,7 +68,7 @@ public:
    virtual void                  addRawRxData   (const std::vector<uint8_t> &data) override;
    virtual void                  clearRawRxData () override;
 
-   virtual HTDataMsg             encodeMessage  (const std::vector<uint8_t> &data) const override;
+   virtual DataMsg             encodeMessage  (const std::vector<uint8_t> &data) const override;
 
 
 
@@ -85,7 +85,7 @@ signals:
    //      connect() syntax will not generate any errors,
    //      but it will just not work silently.
    //
-   //void messageDecoded(const HTDataMsg &msg);
+   //void messageDecoded(const DataMsg &msg);
 
 };
 

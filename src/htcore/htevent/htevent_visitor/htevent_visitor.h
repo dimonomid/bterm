@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   Description:   HTEvent Visitor
+ *   Description:   Event Visitor
  *
  *                  See visitor pattern, for example, on Wikipedia:
  *                  https://en.wikipedia.org/wiki/Visitor_pattern
@@ -18,14 +18,20 @@
 
 
 
-class HTEventDataRaw;
-class HTEventDataMsg;
+namespace HTCore {
+   class EventDataRaw;
+   class EventDataMsg;
+}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTEventVisitor : public QObject
+namespace HTCore {
+   class EventVisitor;
+}
+
+class HTCore::EventVisitor : public QObject
 {
 Q_OBJECT
    /****************************************************************************
@@ -51,8 +57,8 @@ private:
     ***************************************************************************/
 public:
 
-   virtual void accept(HTEventDataRaw &) = 0;
-   virtual void accept(HTEventDataMsg &) = 0;
+   virtual void accept(EventDataRaw &) = 0;
+   virtual void accept(EventDataMsg &) = 0;
 
 
 

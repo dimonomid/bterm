@@ -10,16 +10,19 @@
 #include "htevent.h"
 
 
+
+using namespace HTCore;
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTEvent::HTEvent(/*TODO: time*/)
+Event::Event(/*TODO: time*/)
 {
 
 }
 
-HTEvent::~HTEvent()
+Event::~Event()
 {
 }
 

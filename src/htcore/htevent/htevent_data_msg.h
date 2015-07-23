@@ -20,7 +20,12 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTEventDataMsg : public HTEvent
+namespace HTCore {
+   class EventDataMsg;
+}
+
+
+class HTCore::EventDataMsg : public HTCore::Event
 {
    /****************************************************************************
     * TYPES
@@ -31,7 +36,7 @@ class HTEventDataMsg : public HTEvent
     ***************************************************************************/
 public:
 
-   HTEventDataMsg(const HTDataMsg &msg);
+   EventDataMsg(const DataMsg &msg);
 
 
    /****************************************************************************
@@ -39,7 +44,7 @@ public:
     ***************************************************************************/
 private:
 
-   HTDataMsg msg;
+   DataMsg msg;
 
 
    /****************************************************************************
@@ -51,9 +56,9 @@ private:
     ***************************************************************************/
 public:
 
-   const HTDataMsg getMsg() const;
+   const DataMsg getMsg() const;
 
-   virtual void accept(HTEventVisitor &visitor) override;
+   virtual void accept(EventVisitor &visitor) override;
 
 
    /****************************************************************************

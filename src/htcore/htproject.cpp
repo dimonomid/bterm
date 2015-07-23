@@ -81,7 +81,7 @@ void Project::onDataSrcReadyRead(int bytes_available)
    //-- get received data
    std::vector<uint8_t> data = p_io_dev->read();
 
-   auto p_event = std::make_shared<HTEventDataRaw>(data);
+   auto p_event = std::make_shared<EventDataRaw>(data);
    emit (eventDataRaw(p_event));
 
 #if 0
@@ -94,11 +94,11 @@ void Project::onDataSrcReadyRead(int bytes_available)
    p_codec->addRawRxData( data );
 }
 
-void Project::onMessageDecoded(const HTDataMsg &msg)
+void Project::onMessageDecoded(const DataMsg &msg)
 {
    //qDebug(msg.toString().c_str());
 
-   auto p_event = std::make_shared<HTEventDataMsg>(msg);
+   auto p_event = std::make_shared<EventDataMsg>(msg);
    emit (eventDataMsg(p_event));
 
    //TODO: handle response rules, generate response if necessary

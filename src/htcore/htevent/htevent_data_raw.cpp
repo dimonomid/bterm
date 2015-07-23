@@ -15,11 +15,13 @@
 
 
 
+using namespace HTCore;
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTEventDataRaw::HTEventDataRaw(const std::vector<uint8_t> &data) :
+EventDataRaw::EventDataRaw(const std::vector<uint8_t> &data) :
    data(data)
 {
 }
@@ -47,12 +49,12 @@ HTEventDataRaw::HTEventDataRaw(const std::vector<uint8_t> &data) :
 
 /* public       */
 
-const std::vector<uint8_t> HTEventDataRaw::getData() const
+const std::vector<uint8_t> EventDataRaw::getData() const
 {
    return data;
 }
 
-void HTEventDataRaw::accept(HTEventVisitor &visitor)
+void EventDataRaw::accept(EventVisitor &visitor)
 {
    visitor.accept(*this);
 }

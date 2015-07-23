@@ -19,15 +19,18 @@
 #include "htcodec.h"
 
 
-class HTEventDataRaw;
-class HTEventDataMsg;
-class HTDataMsg;
+
+namespace HTCore {
+   class EventDataRaw;
+   class EventDataMsg;
+   class DataMsg;
+}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-namespace HTCore{
+namespace HTCore {
    class Project;
 }
 
@@ -72,12 +75,12 @@ private:
     * SIGNALS, SLOTS
     ***************************************************************************/
 signals:
-   void eventDataRaw(std::shared_ptr<HTEventDataRaw> p_event);
-   void eventDataMsg(std::shared_ptr<HTEventDataMsg> p_event);
+   void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
+   void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
 
 private slots:
    void onDataSrcReadyRead(int bytes_available);
-   void onMessageDecoded(const HTDataMsg &msg);
+   void onMessageDecoded(const DataMsg &msg);
 
 
 };

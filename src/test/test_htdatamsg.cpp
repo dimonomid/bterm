@@ -17,66 +17,66 @@
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-TestHTDataMsg::TestHTDataMsg()
+TestDataMsg::TestDataMsg()
 {
    //-- feed data byte-by-byte
    {
       std::vector<uint8_t> data {0x01, 0x02, 0x03};
 
       for (auto byte : data){
-         msg.addData(HTDataPart::DataType::SERVICE, byte);
+         msg.addData(DataPart::DataType::SERVICE, byte);
       }
    }
 
    //-- feed USER data mixed: byte-by-byte and the vector at once
    {
-      msg.addData(HTDataPart::DataType::USER, 0x04);
+      msg.addData(DataPart::DataType::USER, 0x04);
 
       std::vector<uint8_t> data {0x05, 0x06, 0x07};
-      msg.addData(HTDataPart::DataType::USER, data);
+      msg.addData(DataPart::DataType::USER, data);
 
-      msg.addData(HTDataPart::DataType::USER, 0x08);
+      msg.addData(DataPart::DataType::USER, 0x08);
    }
 
    //-- feed data as a complete data part
    {
-      HTDataPart part{HTDataPart::DataType::SERVICE, {0x09}};
+      DataPart part{DataPart::DataType::SERVICE, {0x09}};
       msg.addData(part);
    }
 
    //-- feed data as a complete data part
    {
-      HTDataPart part{HTDataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
+      DataPart part{DataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
       msg.addData(part);
    }
 
    //-- feed data as a complete data part
    {
-      HTDataPart part{};
-      part.addData(HTDataPart::DataType::SERVICE, {0xfe, 0xff});
-      part.addData(HTDataPart::DataType::USER, 0x3f);
+      DataPart part{};
+      part.addData(DataPart::DataType::SERVICE, {0xfe, 0xff});
+      part.addData(DataPart::DataType::USER, 0x3f);
       msg.addData(part);
    }
 
    //-- add empty part, and then feed data byte-by-byte
    {
-      HTDataPart part{};
+      DataPart part{};
       msg.addData(part);
 
       std::vector<uint8_t> data {0x0a, 0x0b, 0x0c};
 
       for (auto byte : data){
-         msg.addData(HTDataPart::DataType::USER, byte);
+         msg.addData(DataPart::DataType::USER, byte);
       }
    }
 
    //-- add empty part, and then feed data as a vector
    {
-      HTDataPart part{};
+      DataPart part{};
       msg.addData(part);
 
       std::vector<uint8_t> data {0x0d};
-      msg.addData(HTDataPart::DataType::SERVICE, data);
+      msg.addData(DataPart::DataType::SERVICE, data);
    }
 
    this->data_parts = msg.getDataParts();
@@ -95,7 +95,7 @@ TestHTDataMsg::TestHTDataMsg()
  * Check that there is correct number of data parts
  * (addData() methods called earlier are responsible for that)
  */
-void TestHTDataMsg::testDataParts()
+void TestDataMsg::testDataParts()
 {
    QCOMPARE(msg.getDataParts().size(), (size_t)7);
 }
@@ -103,7 +103,7 @@ void TestHTDataMsg::testDataParts()
 /**
  * Check that getUserData() does its job
  */
-void TestHTDataMsg::testUserData()
+void TestDataMsg::testUserData()
 {
    std::vector<uint8_t> user_data {
       0x04, 0x05, 0x06, 0x07, 0x08,
@@ -119,7 +119,7 @@ void TestHTDataMsg::testUserData()
 /**
  * Check that getRawData() does its job
  */
-void TestHTDataMsg::testRawData()
+void TestDataMsg::testRawData()
 {
    std::vector<uint8_t> user_data {
       0x01, 0x02, 0x03,
@@ -137,7 +137,7 @@ void TestHTDataMsg::testRawData()
 /**
  * Check that clear() does its job
  */
-void TestHTDataMsg::testClear()
+void TestDataMsg::testClear()
 {
    msg.clear();
 
@@ -147,16 +147,16 @@ void TestHTDataMsg::testClear()
 }
 
 #if 0
-void TestHTDataMsg::testDataParts()
+void TestDataMsg::testDataParts()
 {
    QCOMPARE(msg.getDataParts(), data_parts);
 
    //-- try to change type and make sure data parts aren't considered as equal anymore
-   data_parts[0].type = HTDataPart::Type::USER;
+   data_parts[0].type = DataPart::Type::USER;
    QVERIFY(data_parts != msg.getDataParts());
 
    //-- revert back
-   data_parts[0].type = HTDataPart::Type::SERVICE;
+   data_parts[0].type = DataPart::Type::SERVICE;
    QVERIFY(data_parts == msg.getDataParts());
 
    //-- push some extra data

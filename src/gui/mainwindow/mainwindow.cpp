@@ -20,6 +20,9 @@
 
 #include "mainwindow.h"
 
+using namespace HTCore;
+
+
 MainWindow::MainWindow(
       Appl &appl,
       QWidget *parent
@@ -127,7 +130,7 @@ MainWindow::~MainWindow()
 
 /* private      */
 
-void MainWindow::onNewDataRaw(std::shared_ptr<HTEventDataRaw> event_data_raw)
+void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 {
    QString text = MyUtil::byteArrayToHex(event_data_raw->getData()) + "<br>";
 
@@ -141,7 +144,7 @@ void MainWindow::onNewDataRaw(std::shared_ptr<HTEventDataRaw> event_data_raw)
 #endif
 }
 
-void MainWindow::onNewDataMsg(std::shared_ptr<HTEventDataMsg> event_data_msg)
+void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
 {
    QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(event_data_msg->getMsg().getUserData()) + "<br>";
 

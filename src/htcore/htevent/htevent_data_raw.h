@@ -22,7 +22,11 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTEventDataRaw : public HTEvent
+namespace HTCore {
+   class EventDataRaw;
+}
+
+class HTCore::EventDataRaw : public HTCore::Event
 {
    /****************************************************************************
     * TYPES
@@ -33,7 +37,7 @@ class HTEventDataRaw : public HTEvent
     ***************************************************************************/
 public:
 
-   HTEventDataRaw(const std::vector<uint8_t> &data);
+   EventDataRaw(const std::vector<uint8_t> &data);
 
 
    /****************************************************************************
@@ -55,7 +59,7 @@ public:
 
    const std::vector<uint8_t> getData() const;
 
-   virtual void accept(HTEventVisitor &visitor) override;
+   virtual void accept(EventVisitor &visitor) override;
 
 
 

@@ -21,16 +21,16 @@
  * TESTS CLASS
  ******************************************************************************/
 
-class TestHTDataMsg: public QObject
+class TestDataMsg: public QObject
 {
 Q_OBJECT
 
 public:
-   explicit TestHTDataMsg();
+   explicit TestDataMsg();
 
 private:
-   vector<HTDataPart> data_parts;
-   HTDataMsg msg;
+   vector<DataPart> data_parts;
+   DataMsg msg;
 
 private slots:
    void testDataParts();

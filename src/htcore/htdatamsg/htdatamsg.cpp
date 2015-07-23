@@ -19,13 +19,14 @@
 #include <algorithm>
 
 using namespace std;
+using namespace HTCore;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTDataMsg::HTDataMsg() :
-   data_parts(vector<HTDataPart>())
+DataMsg::DataMsg() :
+   data_parts(vector<DataPart>())
 {
 
 }
@@ -52,7 +53,7 @@ HTDataMsg::HTDataMsg() :
 
 /* public       */
 
-void HTDataMsg::addData(HTDataPart::DataType data_type, uint8_t byte)
+void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
 {
    if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
@@ -67,12 +68,12 @@ void HTDataMsg::addData(HTDataPart::DataType data_type, uint8_t byte)
       data.push_back(byte);
 
       this->data_parts.push_back(
-            HTDataPart(data_type, data)
+            DataPart(data_type, data)
             );
    }
 }
 
-void HTDataMsg::addData(HTDataPart::DataType data_type, const vector<uint8_t> &data)
+void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 {
    if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
@@ -84,23 +85,23 @@ void HTDataMsg::addData(HTDataPart::DataType data_type, const vector<uint8_t> &d
       //   (or we haven't any data yet), so, add new data part
 
       this->data_parts.push_back(
-            HTDataPart(data_type, data)
+            DataPart(data_type, data)
             );
    }
 
 }
 
-void HTDataMsg::addData(HTDataPart data_part)
+void DataMsg::addData(DataPart data_part)
 {
    this->data_parts.push_back(data_part);
 }
 
-void HTDataMsg::clear()
+void DataMsg::clear()
 {
    this->data_parts.clear();
 }
 
-std::string HTDataMsg::toString() const {
+std::string DataMsg::toString() const {
 
    std::stringstream ss{};
 
@@ -108,20 +109,20 @@ std::string HTDataMsg::toString() const {
 
       switch (data_part.getType()){
 
-         case HTDataPart::PartType::SERVICE:
-         case HTDataPart::PartType::COMBINED:
-            for (int byte : data_part.getData(HTDataPart::DataType::SERVICE)){
+         case DataPart::PartType::SERVICE:
+         case DataPart::PartType::COMBINED:
+            for (int byte : data_part.getData(DataPart::DataType::SERVICE)){
                ss << "*0x" << std::hex << byte << "*, ";
             }
             break;
 
-         case HTDataPart::PartType::USER:
-            for (int byte : data_part.getData(HTDataPart::DataType::USER)){
+         case DataPart::PartType::USER:
+            for (int byte : data_part.getData(DataPart::DataType::USER)){
                ss << "0x" << std::hex << byte << ", ";
             }
             break;
 
-         case HTDataPart::PartType::EMPTY:
+         case DataPart::PartType::EMPTY:
             //-- do nothing
             break;
 
@@ -138,12 +139,12 @@ std::string HTDataMsg::toString() const {
    //return "data parts cnt=" + std::to_string(this->data_parts.size());
 }
 
-vector<uint8_t> HTDataMsg::getUserData() const
+vector<uint8_t> DataMsg::getUserData() const
 {
    vector<uint8_t> ret{};
 
    for (auto data_part : this->data_parts){
-      vector<uint8_t> user_data_part = data_part.getData(HTDataPart::DataType::USER);
+      vector<uint8_t> user_data_part = data_part.getData(DataPart::DataType::USER);
       ret.insert(
             ret.end(),
             user_data_part.cbegin(), user_data_part.cend()
@@ -153,14 +154,14 @@ vector<uint8_t> HTDataMsg::getUserData() const
    return ret;
 }
 
-vector<uint8_t> HTDataMsg::getRawData() const
+vector<uint8_t> DataMsg::getRawData() const
 {
    vector<uint8_t> ret{};
 
    for (auto data_part : this->data_parts){
-      vector<uint8_t> data_part_vector = data_part.getData(HTDataPart::DataType::SERVICE);
+      vector<uint8_t> data_part_vector = data_part.getData(DataPart::DataType::SERVICE);
       if (data_part_vector.size() == 0){
-         data_part_vector = data_part.getData(HTDataPart::DataType::USER);
+         data_part_vector = data_part.getData(DataPart::DataType::USER);
       }
       ret.insert(
             ret.end(),
@@ -171,7 +172,7 @@ vector<uint8_t> HTDataMsg::getRawData() const
    return ret;
 }
 
-vector<HTDataPart> HTDataMsg::getDataParts() const
+vector<DataPart> DataMsg::getDataParts() const
 {
    return data_parts;
 }

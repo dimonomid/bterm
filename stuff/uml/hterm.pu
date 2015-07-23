@@ -33,42 +33,42 @@ HTDataCodec <|-- HTDataCodecISO14230
 HTDataCodec <|-- HTDataCodecMikas
 ' }}}
 
-' HTDataMsg {{{
-class HTDataMsg {
+' DataMsg {{{
+class DataMsg {
 }
 ' }}}
 
-' HTEvent {{{
-class HTEvent <<interface>> {
+' Event {{{
+class Event <<interface>> {
 }
 
-class HTEventDataMsg {
-   -message : HTDataMsg
+class EventDataMsg {
+   -message : DataMsg
    -direction : rx or tx
 }
 
-class HTEventSomething {
+class EventSomething {
 }
 
-HTEvent <|-- HTEventDataMsg
-HTEvent <|-- HTEventSomething
+Event <|-- EventDataMsg
+Event <|-- EventSomething
 ' }}}
 
 HTermCore o-- "1" HTDataCodec : data_codec
 HTermCore o-- "1" HTIODev : io_dev
-HTermCore o-- "*" HTDataMsg : messages
+HTermCore o-- "*" DataMsg : messages
 
-HTDataCodec ..> HTDataMsg : emit
+HTDataCodec ..> DataMsg : emit
 
 HTermCore ..> HTIODev   : listen for raw Rx data \n (QByteArray)
 HTermCore ..> HTDataCodec : put raw Rx data \n (QByteArray)
-HTermCore ..> HTDataCodec : listen for Rx \n HTDataMsg's
-HTermCore ..> HTDataCodec : encode data for Tx \n (put QByteArray, \n get HTDataMsg)
-HTermCore ..> HTIODev   : put raw data for Tx \n (QByteArray extracted \n from HTDataMsg)
+HTermCore ..> HTDataCodec : listen for Rx \n DataMsg's
+HTermCore ..> HTDataCodec : encode data for Tx \n (put QByteArray, \n get DataMsg)
+HTermCore ..> HTIODev   : put raw data for Tx \n (QByteArray extracted \n from DataMsg)
 
-HTermCore ..> HTEvent : emit
+HTermCore ..> Event : emit
 
-HTEventDataMsg o-- "1" HTDataMsg
+EventDataMsg o-- "1" DataMsg
 }
 
 package "Gui" {
@@ -78,8 +78,8 @@ package "Gui" {
 
 }
 
-SomeGUI ..> HTermCore : listen for events \n (HTEvent)
-SomeGUI o-- "*" HTEvent : events
+SomeGUI ..> HTermCore : listen for events \n (Event)
+SomeGUI o-- "*" Event : events
 
 
 @enduml

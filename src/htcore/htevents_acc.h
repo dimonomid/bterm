@@ -1,10 +1,10 @@
 /*******************************************************************************
- *   Description:   Accumulator of HTEvent-s
+ *   Description:   Accumulator of Event-s
  *
  ******************************************************************************/
 
-#ifndef _TPL_H
-#define _TPL_H
+#ifndef _HTEVENTS_ACC_H
+#define _HTEVENTS_ACC_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -127,4 +127,4 @@ public:
 };
 
 
-#endif // _TPL_H
+#endif // _HTEVENTS_ACC_H

@@ -45,7 +45,7 @@ public:
 
 private:
    HTCodec_ISO14230 codec;
-   std::queue<HTDataMsg> rx_msgs;
+   std::queue<DataMsg> rx_msgs;
 
 
 private slots:
@@ -54,7 +54,7 @@ private slots:
    void decode_encoded();
 
 public slots:
-   void messageDecoded(const HTDataMsg &msg);
+   void messageDecoded(const DataMsg &msg);
 };
 
 

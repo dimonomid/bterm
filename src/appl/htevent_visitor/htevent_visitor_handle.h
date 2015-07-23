@@ -16,13 +16,19 @@
 
 
 class Appl;
-class HTDataMsg;
+
+namespace HTCore {
+   class DataMsg;
+   class EventDataRaw;
+   class EventDataMsg;
+}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTEventVisitor_Handle : public HTEventVisitor
+
+class EventVisitor_Handle : public HTCore::EventVisitor
 {
    Q_OBJECT
    /****************************************************************************
@@ -33,7 +39,7 @@ class HTEventVisitor_Handle : public HTEventVisitor
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   HTEventVisitor_Handle(Appl &appl);
+   EventVisitor_Handle(Appl &appl);
 
    /****************************************************************************
     * PRIVATE DATA
@@ -51,8 +57,8 @@ private:
     ***************************************************************************/
 public:
 
-   virtual void accept(HTEventDataRaw &htevent_data_raw) override;
-   virtual void accept(HTEventDataMsg &htevent_data_msg) override;
+   virtual void accept(HTCore::EventDataRaw &htevent_data_raw) override;
+   virtual void accept(HTCore::EventDataMsg &htevent_data_msg) override;
 
 
    /****************************************************************************
@@ -61,7 +67,7 @@ public:
 signals:
 
    void newDataRaw(const std::vector<uint8_t> &data);
-   void newDataMsg(const HTDataMsg &msg);
+   void newDataMsg(const HTCore::DataMsg &msg);
 
 };
 
