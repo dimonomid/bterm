@@ -32,7 +32,7 @@
 Appl::Appl() :
    p_codec(nullptr),
    p_io_dev(nullptr),
-   p_htcore(nullptr),
+   p_project(nullptr),
    htevent_visitor_handle(*this),
    p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
@@ -40,8 +40,8 @@ Appl::Appl() :
    p_io_dev = std::make_shared<HTIODevDbg>();
    p_codec = std::make_shared<HTCodec_ISO14230>(0x01, 0x02);
 
-   p_htcore = std::unique_ptr<HTCore>{
-      new HTCore{p_codec, p_io_dev}
+   p_project = std::unique_ptr<HTCore::Project>{
+      new HTCore::Project{p_codec, p_io_dev}
    };
 
    p_events_data_raw = std::unique_ptr<HTEventsAcc<HTEventDataRaw>>{
@@ -55,12 +55,12 @@ Appl::Appl() :
 
 
    connect(
-         p_htcore.get(), &HTCore::eventDataRaw,
+         p_project.get(), &HTCore::Project::eventDataRaw,
          this, &Appl::onNewDataRaw
          );
 
    connect(
-         p_htcore.get(), &HTCore::eventDataMsg,
+         p_project.get(), &HTCore::Project::eventDataMsg,
          this, &Appl::onNewDataMsg
          );
 

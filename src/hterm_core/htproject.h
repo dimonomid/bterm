@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HTCORE_H
-#define _HTCORE_H
+#ifndef _HTPROJECT_H
+#define _HTPROJECT_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -27,7 +27,12 @@ class HTDataMsg;
  * CLASS DECLARATION
  ******************************************************************************/
 
-class HTCore : public QObject
+namespace HTCore{
+   class Project;
+}
+
+
+class HTCore::Project : public QObject
 {
    Q_OBJECT;
 
@@ -39,12 +44,12 @@ class HTCore : public QObject
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit HTCore(
+   explicit Project(
          std::shared_ptr<HTCodec> p_codec,
          std::shared_ptr<HTIODev> p_io_dev
          );
 
-   virtual ~HTCore();
+   virtual ~Project();
 
    /****************************************************************************
     * PRIVATE DATA
@@ -78,4 +83,4 @@ private slots:
 };
 
 
-#endif // _HTCORE_H
+#endif // _HTPROJECT_H

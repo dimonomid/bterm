@@ -11,16 +11,18 @@
 
 #include <iostream>
 
-#include "htcore.h"
+#include "htproject.h"
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
 
+
+using namespace HTCore;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HTCore::HTCore(
+Project::Project(
       std::shared_ptr<HTCodec> p_codec,
       std::shared_ptr<HTIODev> p_io_dev
       ) :
@@ -30,17 +32,17 @@ HTCore::HTCore(
 
    connect(
          p_io_dev.get(), &HTIODev::readyRead,
-         this, &HTCore::onDataSrcReadyRead
+         this, &Project::onDataSrcReadyRead
          );
 
    connect(
          p_codec.get(), &HTCodec::messageDecoded,
-         this, &HTCore::onMessageDecoded
+         this, &Project::onMessageDecoded
          );
 
 }
 
-HTCore::~HTCore()
+Project::~Project()
 {
 }
 
@@ -72,7 +74,7 @@ HTCore::~HTCore()
 
 /* private      */
 
-void HTCore::onDataSrcReadyRead(int bytes_available)
+void Project::onDataSrcReadyRead(int bytes_available)
 {
    std::ignore = bytes_available;
 
@@ -92,7 +94,7 @@ void HTCore::onDataSrcReadyRead(int bytes_available)
    p_codec->addRawRxData( data );
 }
 
-void HTCore::onMessageDecoded(const HTDataMsg &msg)
+void Project::onMessageDecoded(const HTDataMsg &msg)
 {
    //qDebug(msg.toString().c_str());
 

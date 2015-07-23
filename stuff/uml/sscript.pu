@@ -24,8 +24,8 @@ package SScript {
    SScriptCompiler ..> SScriptItem : compile
 }
 
-package HTCore {
-   class HTCore {
+package Project {
+   class Project {
 
    }
    note left
@@ -33,7 +33,7 @@ package HTCore {
       function names. The SScriptCompiler and
       SScriptItem-s are just "dumb" data
       structures, they do not know how to actually
-      execute the script. HTCore does.
+      execute the script. Project does.
 
       It has buffers (input, output), and it knows
       what to do when it meets SScriptItemFuncCall
@@ -44,6 +44,6 @@ package HTCore {
    end note
 }
 
-HTCore ..> SScriptItem : exec
+Project ..> SScriptItem : exec
 
 @enduml
