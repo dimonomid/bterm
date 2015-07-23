@@ -25,6 +25,9 @@
 //#include "htevent_data_msg.h"
 
 
+
+using namespace HTCore;
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
@@ -40,27 +43,27 @@ Appl::Appl() :
    p_io_dev = std::make_shared<HTIODevDbg>();
    p_codec = std::make_shared<HTCodec_ISO14230>(0x01, 0x02);
 
-   p_project = std::unique_ptr<HTCore::Project>{
-      new HTCore::Project{p_codec, p_io_dev}
+   p_project = std::unique_ptr<Project>{
+      new Project{p_codec, p_io_dev}
    };
 
-   p_events_data_raw = std::unique_ptr<HTEventsAcc<HTEventDataRaw>>{
-      new HTEventsAcc<HTEventDataRaw>(1000/*TODO: settings*/)
+   p_events_data_raw = std::unique_ptr<EventsAcc<HTEventDataRaw>>{
+      new EventsAcc<HTEventDataRaw>(1000/*TODO: settings*/)
    };
 
-   p_events_data_msg = std::unique_ptr<HTEventsAcc<HTEventDataMsg>>{
-      new HTEventsAcc<HTEventDataMsg>(1000/*TODO: settings*/)
+   p_events_data_msg = std::unique_ptr<EventsAcc<HTEventDataMsg>>{
+      new EventsAcc<HTEventDataMsg>(1000/*TODO: settings*/)
    };
 
 
 
    connect(
-         p_project.get(), &HTCore::Project::eventDataRaw,
+         p_project.get(), &Project::eventDataRaw,
          this, &Appl::onNewDataRaw
          );
 
    connect(
-         p_project.get(), &HTCore::Project::eventDataMsg,
+         p_project.get(), &Project::eventDataMsg,
          this, &Appl::onNewDataMsg
          );
 

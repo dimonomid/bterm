@@ -22,8 +22,13 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
+namespace HTCore {
+   template<typename T>
+   class EventsAcc;
+}
+
 template<typename T>
-class HTEventsAcc
+class HTCore::EventsAcc
 {
    /****************************************************************************
     * TYPES
@@ -34,7 +39,7 @@ class HTEventsAcc
     ***************************************************************************/
 public:
 
-   explicit HTEventsAcc(size_t max_events_cnt) :
+   explicit EventsAcc(size_t max_events_cnt) :
       max_events_cnt(max_events_cnt),
       events(),
       last_event_num(0)
