@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _BYTEARR_H
-#define _BYTEARR_H
+#ifndef _BYTEARR_READ_H
+#define _BYTEARR_READ_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -22,7 +22,7 @@
  ******************************************************************************/
 
 namespace HTCore {
-   class ByteArr;
+   class ByteArrRead;
 }
 
 /*
@@ -33,7 +33,7 @@ namespace HTCore {
 /**
  * TODO
  */
-class HTCore::ByteArr : public QObject
+class HTCore::ByteArrRead : public QObject
 {
    Q_OBJECT
    /****************************************************************************
@@ -44,15 +44,16 @@ class HTCore::ByteArr : public QObject
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit ByteArr();
+   explicit ByteArrRead(const std::vector<uint8_t> &data);
 
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
-private:
+protected:
 
    std::shared_ptr<std::vector<uint8_t>> p_data;
+
 
 
    /****************************************************************************
@@ -71,7 +72,6 @@ public:
 public slots:
 
    unsigned int getU08(unsigned int index);
-   void putU08(unsigned int index, unsigned int val);
 
 
    /****************************************************************************
@@ -81,4 +81,4 @@ public slots:
 };
 
 
-#endif // _BYTEARR_H
+#endif // _BYTEARR_READ_H

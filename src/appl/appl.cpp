@@ -31,7 +31,8 @@
 #include <QScriptValue>
 #include <QVariant>
 #include <QDebug>
-#include "bytearr.h"
+#include "bytearr_read.h"
+#include "bytearr_read_write.h"
 #include "my_util.h"
 
 using namespace HTCore;
@@ -85,15 +86,14 @@ Appl::Appl() :
       QScriptEngine engine;
       QScriptValue result;
 
-      ByteArr ba_in {};
-      ByteArr ba_out {};
+      std::vector<uint8_t> in_data{0x61, 0x01};
+
+      ByteArrRead ba_in {in_data};
+      ByteArrReadWrite ba_out {};
 
       QScriptValue ba_in_scrval = engine.newQObject(&ba_in);
       QScriptValue ba_out_scrval = engine.newQObject(&ba_out);
       QScriptValue chain_data_scrval = engine.evaluate("({})");
-
-      ba_in.putU08(0, 0x61);
-      ba_in.putU08(1, 0x01);
 
       QScriptValue func = engine.evaluate(
             "(function(inputArr, outputArr){ "

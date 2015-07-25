@@ -7,7 +7,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "bytearr.h"
+#include "bytearr_read.h"
 
 
 using namespace HTCore;
@@ -16,8 +16,8 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-ByteArr::ByteArr() :
-   p_data(new std::vector<uint8_t>())
+ByteArrRead::ByteArrRead(const std::vector<uint8_t> &data) :
+   p_data(std::make_shared<std::vector<uint8_t>>(data))
 {
 }
 
@@ -44,7 +44,7 @@ ByteArr::ByteArr() :
 
 /* public       */
 
-unsigned int ByteArr::getU08(unsigned int index)
+unsigned int ByteArrRead::getU08(unsigned int index)
 {
    unsigned int ret = 0x100;
    if (p_data->size() > index){
@@ -54,17 +54,9 @@ unsigned int ByteArr::getU08(unsigned int index)
    return ret;
 }
 
-void ByteArr::putU08(unsigned int index, unsigned int val)
-{
-   if (p_data->size() <= index){
-      p_data->resize(index + 1);
-   }
-
-   (*p_data)[index] = val;
-}
 
 
-std::shared_ptr<const std::vector<uint8_t>> ByteArr::getData() const
+std::shared_ptr<const std::vector<uint8_t>> ByteArrRead::getData() const
 {
    return p_data;
 }
