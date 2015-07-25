@@ -8,12 +8,15 @@
  ******************************************************************************/
 
 #include <QDebug>
+#include <QScriptEngine>
 
 #include <iostream>
 
 #include "htproject.h"
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
+
+#include "my_util.h"
 
 
 using namespace HTCore;
@@ -27,7 +30,9 @@ Project::Project(
       std::shared_ptr<IODev> p_io_dev
       ) :
    p_codec(p_codec),
-   p_io_dev(p_io_dev)
+   p_io_dev(p_io_dev),
+   p_engine(std::make_shared<QScriptEngine>()),
+   handlers()
 {
 
    connect(
@@ -38,6 +43,63 @@ Project::Project(
    connect(
          p_codec.get(), &Codec::messageDecoded,
          this, &Project::onMessageDecoded
+         );
+
+   handlers.push_back(
+         ReqHandler(
+            "handler 1",
+            p_engine,
+            "(function(inputArr, outputArr){ "
+            "     var handled = false;"
+
+            "     if (inputArr.getU08(0) === 0x03){"
+            "        outputArr.putU08(1, 0x04);"
+            "        handled = true;"
+            "     };"
+
+            "     return {"
+            "        handled: handled"
+            "     };"
+            " })"
+            )
+         );
+
+   handlers.push_back(
+         ReqHandler(
+            "handler 2",
+            p_engine,
+            "(function(inputArr, outputArr){ "
+            "     var handled = false;"
+
+            "     if (inputArr.getU08(0) === 0x04){"
+            "        outputArr.putU08(1, 0xaa);"
+            "        handled = true;"
+            "     };"
+
+            "     return {"
+            "        handled: handled"
+            "     };"
+            " })"
+            )
+         );
+
+   handlers.push_back(
+         ReqHandler(
+            "handler 3",
+            p_engine,
+            "(function(inputArr, outputArr){ "
+            "     var handled = false;"
+
+            "     if (inputArr.getU08(0) === 0x04){"
+            "        outputArr.putU08(1, 0xff);"
+            "        handled = true;"
+            "     };"
+
+            "     return {"
+            "        handled: handled"
+            "     };"
+            " })"
+            )
          );
 
 }
@@ -100,6 +162,45 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
    auto p_event = std::make_shared<EventDataMsg>(msg);
    emit (eventDataMsg(p_event));
+
+   std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
+
+   QScriptValue chain_data = p_engine->evaluate("({})");
+
+   for (auto req_handler : handlers){
+      ReqHandler::Result res = req_handler.handle(
+            p_req_data,
+            chain_data
+            );
+
+
+      qDebug() << "handler: " << req_handler.getName();
+
+      switch (res){
+         case ReqHandler::Result::UNKNOWN:
+            qDebug("unknown result: should never be here");
+            break;
+
+         case ReqHandler::Result::OK_NOT_HANDLED:
+            qDebug() << "not handled";
+            break;
+
+         case ReqHandler::Result::OK_HANDLED:
+            qDebug() << "handled, response: " << MyUtil::byteArrayToHex(
+                  *req_handler.getResponse()
+                  );
+            break;
+
+         case ReqHandler::Result::ERROR:
+            qDebug() << "error";
+            break;
+      }
+
+      if (res == ReqHandler::Result::OK_HANDLED){
+         break;
+      }
+   }
+
 
    //TODO: handle response rules, generate response if necessary
 }

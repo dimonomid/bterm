@@ -26,7 +26,7 @@ using namespace HTCore;
  ******************************************************************************/
 
 DataMsg::DataMsg() :
-   data_parts(vector<DataPart>())
+   p_data_parts(make_shared<vector<DataPart>>())
 {
 
 }
@@ -55,11 +55,11 @@ DataMsg::DataMsg() :
 
 void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
 {
-   if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
+   if (this->p_data_parts->size() > 0 && this->p_data_parts->back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
-      this->data_parts.back().addData(data_type, byte);
+      this->p_data_parts->back().addData(data_type, byte);
    } else {
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
@@ -67,7 +67,7 @@ void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
       auto data = vector<uint8_t>();
       data.push_back(byte);
 
-      this->data_parts.push_back(
+      this->p_data_parts->push_back(
             DataPart(data_type, data)
             );
    }
@@ -75,16 +75,16 @@ void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
 
 void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 {
-   if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
+   if (this->p_data_parts->size() > 0 && this->p_data_parts->back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
-      this->data_parts.back().addData(data_type, data);
+      this->p_data_parts->back().addData(data_type, data);
    } else {
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
 
-      this->data_parts.push_back(
+      this->p_data_parts->push_back(
             DataPart(data_type, data)
             );
    }
@@ -93,19 +93,19 @@ void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 
 void DataMsg::addData(DataPart data_part)
 {
-   this->data_parts.push_back(data_part);
+   this->p_data_parts->push_back(data_part);
 }
 
 void DataMsg::clear()
 {
-   this->data_parts.clear();
+   this->p_data_parts->clear();
 }
 
 std::string DataMsg::toString() const {
 
    std::stringstream ss{};
 
-   for (auto data_part : this->data_parts){
+   for (auto data_part : *this->p_data_parts){
 
       switch (data_part.getType()){
 
@@ -136,45 +136,45 @@ std::string DataMsg::toString() const {
 
    return ss.str();
 
-   //return "data parts cnt=" + std::to_string(this->data_parts.size());
+   //return "data parts cnt=" + std::to_string(this->p_data_parts->size());
 }
 
-vector<uint8_t> DataMsg::getUserData() const
+std::shared_ptr<vector<uint8_t>> DataMsg::getUserData() const
 {
-   vector<uint8_t> ret{};
+   auto p_ret = std::make_shared<vector<uint8_t>>();
 
-   for (auto data_part : this->data_parts){
+   for (auto data_part : *this->p_data_parts){
       vector<uint8_t> user_data_part = data_part.getData(DataPart::DataType::USER);
-      ret.insert(
-            ret.end(),
+      p_ret->insert(
+            p_ret->end(),
             user_data_part.cbegin(), user_data_part.cend()
             );
    }
 
-   return ret;
+   return p_ret;
 }
 
-vector<uint8_t> DataMsg::getRawData() const
+std::shared_ptr<vector<uint8_t>> DataMsg::getRawData() const
 {
-   vector<uint8_t> ret{};
+   auto p_ret = std::make_shared<vector<uint8_t>>();
 
-   for (auto data_part : this->data_parts){
+   for (auto data_part : *this->p_data_parts){
       vector<uint8_t> data_part_vector = data_part.getData(DataPart::DataType::SERVICE);
       if (data_part_vector.size() == 0){
          data_part_vector = data_part.getData(DataPart::DataType::USER);
       }
-      ret.insert(
-            ret.end(),
+      p_ret->insert(
+            p_ret->end(),
             data_part_vector.cbegin(), data_part_vector.cend()
             );
    }
 
-   return ret;
+   return p_ret;
 }
 
-vector<DataPart> DataMsg::getDataParts() const
+std::shared_ptr<vector<DataPart>> DataMsg::getDataParts() const
 {
-   return data_parts;
+   return p_data_parts;
 }
 
 /*******************************************************************************

@@ -86,7 +86,7 @@ ReqHandler::Result ReqHandler::handle(
    p_response = std::make_shared<ByteArrReadWrite>();
 
    QScriptValue ba_in_scrval = p_engine->newQObject(&ba_in);
-   QScriptValue ba_out_scrval = p_engine->newQObject(p_response);
+   QScriptValue ba_out_scrval = p_engine->newQObject(p_response.get());
 
    QScriptValue func = p_engine->evaluate(script_func_code);
 
@@ -129,6 +129,10 @@ ReqHandler::Result ReqHandler::handle(
    return ret;
 }
 
+std::shared_ptr<const std::vector<uint8_t>> ReqHandler::getResponse()
+{
+   return p_response->getData();
+}
 
 /*******************************************************************************
  * SLOTS

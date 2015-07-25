@@ -14,9 +14,9 @@
 
 #include <QObject>
 
-
 #include "htiodev.h"
 #include "htcodec.h"
+#include "htreqhandler.h"
 
 
 
@@ -25,6 +25,8 @@ namespace HTCore {
    class EventDataMsg;
    class DataMsg;
 }
+
+class QScriptEngine;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -61,6 +63,10 @@ private:
 
    std::shared_ptr<Codec> p_codec;
    std::shared_ptr<IODev> p_io_dev;
+
+   std::shared_ptr<QScriptEngine> p_engine;
+
+   std::vector<ReqHandler> handlers;
 
 
    /****************************************************************************

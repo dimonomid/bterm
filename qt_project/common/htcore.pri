@@ -13,6 +13,7 @@ SOURCES += \
     $$PWD/../../src/htcore/htevent/htevent.cpp \
     $$PWD/../../src/htcore/htevent/htevent_data_raw.cpp \
     $$PWD/../../src/htcore/htevent/htevent_data_msg.cpp \
+    $$PWD/../../src/htcore/htreqhandler/htreqhandler.cpp \
     $$PWD/../../src/htcore/scripts/bytearr_read.cpp \
     $$PWD/../../src/htcore/scripts/bytearr_read_write.cpp \
 
@@ -27,6 +28,7 @@ HEADERS += ../../src/htcore/htdatamsg/htdatapart.h \
     $$PWD/../../src/htcore/htevent/htevent_data_msg.h \
     $$PWD/../../src/htcore/htevent/htevent_visitor/htevent_visitor.h \
     $$PWD/../../src/htcore/htevents_acc.h \
+    $$PWD/../../src/htcore/htreqhandler/htreqhandler.h \
     $$PWD/../../src/htcore/scripts/bytearr_read.h \
     $$PWD/../../src/htcore/scripts/bytearr_read_write.h \
 
@@ -38,6 +40,7 @@ INCLUDEPATH += ../../src/htcore \
                ../../src/htcore/htiodev \
                ../../src/htcore/htevent \
                ../../src/htcore/htevent/htevent_visitor \
+               ../../src/htcore/htreqhandler \
                ../../src/htcore/scripts \
 
 

@@ -14,6 +14,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "htdatapart.h"
 
@@ -47,7 +48,7 @@ public:
     ***************************************************************************/
 private:
 
-   std::vector<DataPart> data_parts;
+   std::shared_ptr<std::vector<DataPart>> p_data_parts;
 
 
    /****************************************************************************
@@ -65,10 +66,10 @@ public:
 
    void clear();
 
-   std::vector<uint8_t> getUserData() const;
-   std::vector<uint8_t> getRawData() const;
+   std::shared_ptr<std::vector<uint8_t>> getUserData() const;
+   std::shared_ptr<std::vector<uint8_t>> getRawData() const;
 
-   std::vector<DataPart> getDataParts() const;
+   std::shared_ptr<std::vector<DataPart>> getDataParts() const;
 
    std::string toString() const;
 
@@ -83,7 +84,7 @@ public:
 
 public:
    inline bool operator==(const DataMsg &other) const {
-      return (this->data_parts == other.data_parts);
+      return (*this->p_data_parts == *other.p_data_parts);
    }
 };
 

@@ -146,7 +146,9 @@ void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 
 void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
 {
-   QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(event_data_msg->getMsg().getUserData()) + "<br>";
+   QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(
+         *event_data_msg->getMsg().getUserData()
+         ) + "<br>";
 
    this->ui->pte_messages->appendHtmlNoNL(text, true);
 
