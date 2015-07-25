@@ -90,12 +90,15 @@ Appl::Appl() :
 
       QScriptValue baInValue = engine.newQObject(baIn);
       QScriptValue baOutValue = engine.newQObject(baOut);
+      QScriptValue chainDataValue = engine.evaluate("({})");
 
       baIn->putU08(0, 0x61);
       baIn->putU08(1, 0x01);
 
       QScriptValue func = engine.evaluate(
             "(function(inputArr, outputArr){ "
+            "     this.c = 123;"
+
             "     if (inputArr.getU08(0) === 0x61){"
             "        outputArr.putU08(4, 0x10);"
             "        outputArr.putU08(1, 0xff);"
@@ -106,129 +109,24 @@ Appl::Appl() :
             " })"
       );
       QScriptValue returned = func.call(
-            QScriptValue(),
-            QScriptValueList() << baInValue << baOutValue
+            chainDataValue,
+            QScriptValueList() << baInValue << baOutValue << chainDataValue
             );
 
       qDebug() << "in: "  << MyUtil::byteArrayToHex(*baIn->getData());
       qDebug() << "out: " << MyUtil::byteArrayToHex(*baOut->getData());
+      qDebug() << "chainData: " << chainDataValue.toVariant().toMap();
 
       if (engine.hasUncaughtException()){
          qDebug() << "exception: " << returned.toVariant();
       } else {
-         qDebug() << "returned: " << returned.toVariant().toMap()["handled"].toBool();
+         qDebug() << "returned: " << returned.toVariant();
+         qDebug() << "returned handled: " << returned.toVariant().toMap()["handled"].toBool();
       }
 
 }
 #endif
 
-#if 0
-   {
-      QScriptEngine engine;
-      QScriptValue result;
-
-      ByteArr *bytearr = new ByteArr;
-      QScriptValue bytearrValue = engine.newQObject(bytearr);
-      engine.globalObject().setProperty("byteArr", bytearrValue);
-
-      qDebug() << MyUtil::byteArrayToHex(*bytearr->getData());
-
-
-      QScriptValue val = engine.evaluate(
-            "(function(){ "
-            "     byteArr.putU08(4, 0x10);"
-            "     byteArr.putU08(1, 0xff);"
-            " })();"
-            );
-      qDebug() << val.toVariant();
-
-      qDebug() << MyUtil::byteArrayToHex(*bytearr->getData());
-
-   }
-#endif
-
-#if 0
-   {
-      QScriptEngine engine;
-      QScriptValue result;
-
-      QScriptValue val = engine.newArray(3);
-      val.setProperty(0, 10);
-      val.setProperty(1, 11);
-      val.setProperty(2, 12);
-
-#if 1
-      {
-         QScriptValue myCreate = engine.evaluate(
-               "(function(){ "
-               "     var a = 10;"
-               "     var b = 11;"
-               "     var that = {};"
-               "     that.getA = function(){ return a; };"
-               "     that.getB = function(){ return b; };"
-               "     return that;"
-               " })"
-               );
-         engine.globalObject().setProperty("myCreate", myCreate);
-
-         result = engine.evaluate(""
-               "myCreate = null;"
-               );
-
-         engine.globalObject().setProperty("myCreate", myCreate);
-         result = engine.evaluate(""
-               "var test = new myCreate();"
-               "test.getA();"
-               );
-
-      }
-#endif
-
-#if 0
-      {
-         QScriptValue myCtor = engine.evaluate(
-               "(function(){ this.a = 1; this.b = 2; })"
-               );
-         engine.globalObject().setProperty("MyCtor", myCtor);
-
-         result = engine.evaluate(""
-               "MyCtor = null;"
-               );
-
-         engine.globalObject().setProperty("MyCtor", myCtor);
-         result = engine.evaluate(""
-               "var test = new MyCtor();"
-               "test"
-               );
-
-      }
-#endif
-
-#if 0
-      engine.globalObject().setProperty("input", val);
-      //engine.pushContext();
-      //result = engine.evaluate("var qwe = 123;");
-      //engine.popContext();
-      result = engine.evaluate(QString("")
-            + "(function(){ "
-            + "   print('sdf');"
-            + "   var ret = [];"
-            + "   ret[5] = 0xff;"
-            + "   return ret;"
-            //+ "   return input.map(function(n){"
-            //+ "      return n * 2;"
-            //+ "   });"
-            + "})();"
-            );
-#endif
-
-      if (engine.hasUncaughtException()){
-         qDebug() << "exception: " << result.toVariant();
-      } else {
-         qDebug() << "the result is is:" << result.toVariant();
-      }
-   }
-#endif
 }
 
 Appl::~Appl()
