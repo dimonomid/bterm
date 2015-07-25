@@ -85,15 +85,15 @@ Appl::Appl() :
       QScriptEngine engine;
       QScriptValue result;
 
-      ByteArr *baIn = new ByteArr();
-      ByteArr *baOut = new ByteArr();
+      ByteArr ba_in {};
+      ByteArr ba_out {};
 
-      QScriptValue baInValue = engine.newQObject(baIn);
-      QScriptValue baOutValue = engine.newQObject(baOut);
-      QScriptValue chainDataValue = engine.evaluate("({})");
+      QScriptValue ba_in_scrval = engine.newQObject(&ba_in);
+      QScriptValue ba_out_scrval = engine.newQObject(&ba_out);
+      QScriptValue chain_data_scrval = engine.evaluate("({})");
 
-      baIn->putU08(0, 0x61);
-      baIn->putU08(1, 0x01);
+      ba_in.putU08(0, 0x61);
+      ba_in.putU08(1, 0x01);
 
       QScriptValue func = engine.evaluate(
             "(function(inputArr, outputArr){ "
@@ -109,13 +109,13 @@ Appl::Appl() :
             " })"
       );
       QScriptValue returned = func.call(
-            chainDataValue,
-            QScriptValueList() << baInValue << baOutValue << chainDataValue
+            chain_data_scrval,
+            QScriptValueList() << ba_in_scrval << ba_out_scrval << chain_data_scrval
             );
 
-      qDebug() << "in: "  << MyUtil::byteArrayToHex(*baIn->getData());
-      qDebug() << "out: " << MyUtil::byteArrayToHex(*baOut->getData());
-      qDebug() << "chainData: " << chainDataValue.toVariant().toMap();
+      qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
+      qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
+      qDebug() << "chainData: " << chain_data_scrval.toVariant().toMap();
 
       if (engine.hasUncaughtException()){
          qDebug() << "exception: " << returned.toVariant();
