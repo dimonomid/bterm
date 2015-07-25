@@ -99,16 +99,25 @@ Appl::Appl() :
             "     if (inputArr.getU08(0) === 0x61){"
             "        outputArr.putU08(4, 0x10);"
             "        outputArr.putU08(1, 0xff);"
-            "     }"
+            "     };"
+            "     return {"
+            "        handled: true"
+            "     };"
             " })"
       );
-      func.call(
+      QScriptValue returned = func.call(
             QScriptValue(),
             QScriptValueList() << baInValue << baOutValue
             );
 
       qDebug() << "in: "  << MyUtil::byteArrayToHex(*baIn->getData());
       qDebug() << "out: " << MyUtil::byteArrayToHex(*baOut->getData());
+
+      if (engine.hasUncaughtException()){
+         qDebug() << "exception: " << returned.toVariant();
+      } else {
+         qDebug() << "returned: " << returned.toVariant().toMap()["handled"].toBool();
+      }
 
 }
 #endif
