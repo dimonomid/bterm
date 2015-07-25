@@ -100,6 +100,7 @@ Appl::Appl() :
             "     this.c = 123;"
 
             "     if (inputArr.getU08(0) === 0x61){"
+            "        outputArr.setFillByte(0xaa);"
             "        outputArr.putU08(4, 0x10);"
             "        outputArr.putU08(1, 0xff);"
             "     };"
@@ -108,20 +109,25 @@ Appl::Appl() :
             "     };"
             " })"
       );
-      QScriptValue returned = func.call(
-            chain_data_scrval,
-            QScriptValueList() << ba_in_scrval << ba_out_scrval << chain_data_scrval
-            );
-
-      qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
-      qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
-      qDebug() << "chainData: " << chain_data_scrval.toVariant().toMap();
 
       if (engine.hasUncaughtException()){
-         qDebug() << "exception: " << returned.toVariant();
+         qDebug() << "exception: " << func.toVariant();
       } else {
-         qDebug() << "returned: " << returned.toVariant();
-         qDebug() << "returned handled: " << returned.toVariant().toMap()["handled"].toBool();
+         QScriptValue returned = func.call(
+               chain_data_scrval,
+               QScriptValueList() << ba_in_scrval << ba_out_scrval << chain_data_scrval
+               );
+
+         qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
+         qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
+         qDebug() << "chainData: " << chain_data_scrval.toVariant().toMap();
+
+         if (engine.hasUncaughtException()){
+            qDebug() << "exception: " << returned.toVariant();
+         } else {
+            qDebug() << "returned: " << returned.toVariant();
+            qDebug() << "returned handled: " << returned.toVariant().toMap()["handled"].toBool();
+         }
       }
 
 }

@@ -19,17 +19,20 @@ using namespace HTCore;
  ******************************************************************************/
 
 ByteArrReadWrite::ByteArrReadWrite() :
-   ByteArrRead(std::vector<uint8_t>())
+   ByteArrRead(std::vector<uint8_t>()),
+   fill_byte(0x00)
 {
 }
 
 ByteArrReadWrite::ByteArrReadWrite(const std::vector<uint8_t> &data) :
-   ByteArrRead(data)
+   ByteArrRead(data),
+   fill_byte(0x00)
 {
 }
 
 ByteArrReadWrite::ByteArrReadWrite(size_t size, uint8_t fill_byte) :
-   ByteArrRead(std::vector<uint8_t>(size, fill_byte))
+   ByteArrRead(std::vector<uint8_t>(size, fill_byte)),
+   fill_byte(fill_byte)
 {
 }
 
