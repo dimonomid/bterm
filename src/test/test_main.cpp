@@ -8,6 +8,7 @@
 
 #include "test_htcodec_iso14230.h"
 #include "test_htdatamsg.h"
+#include "test_htbytearr.h"
 
 
 
@@ -28,6 +29,11 @@ int main(int argc, char **argv)
 
    {
       TestDataMsg tc;
+      status |= QTest::qExec(&tc, argc, argv);
+   }
+
+   {
+      TestByteArr tc;
       status |= QTest::qExec(&tc, argc, argv);
    }
 
