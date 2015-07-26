@@ -90,7 +90,7 @@ public:
     * TODO
     */
    Result handle(
-         std::shared_ptr<std::vector<uint8_t>> p_data,
+         const std::vector<uint8_t> &data,
          QScriptValue chain_data
          );
 

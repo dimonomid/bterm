@@ -174,7 +174,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
    for (auto req_handler : handlers){
 
       ReqHandler::Result res = req_handler.handle(
-            p_req_data,
+            *p_req_data,
             chain_data
             );
 

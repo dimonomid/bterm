@@ -72,7 +72,7 @@ void ReqHandler::setScript(QString script_func_code)
 }
 
 ReqHandler::Result ReqHandler::handle(
-      std::shared_ptr<std::vector<uint8_t>> p_data,
+      const std::vector<uint8_t> &data,
       QScriptValue chain_data
       )
 {
@@ -86,7 +86,7 @@ ReqHandler::Result ReqHandler::handle(
 
    QScriptValue result;
 
-   ByteArrRead ba_in {*p_data};
+   ByteArrRead ba_in {data};
    p_response = std::make_shared<ByteArrReadWrite>();
 
    QScriptValue ba_in_scrval = p_engine->newQObject(&ba_in);
