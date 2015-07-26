@@ -124,7 +124,7 @@ void TestReqHandler::errorsTest()
          "     return {"
          "        handled: handled"
          "     };"
-         " }"
+         " }"//NOTE: no closing bracket, causes parse error
          );
 
    {
@@ -140,7 +140,7 @@ void TestReqHandler::errorsTest()
          "(function(inputArr, outputArr){ "
          "     var handled = false;"
 
-         "     outputArr.someFunction(1, 0x04);"
+         "     outputArr.someFunction(1, 0x04);"//NOTE: non-existing function someFunction
 
          "     return {"
          "        handled: handled"
