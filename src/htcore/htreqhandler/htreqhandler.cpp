@@ -33,7 +33,8 @@ ReqHandler::ReqHandler(
    p_engine(p_engine),
    script_func_code(script_func_code),
    last_error(Error::UNKNOWN),
-   p_response()
+   p_response(),
+   last_exception_details()
 {
 
 }
@@ -83,6 +84,7 @@ ReqHandler::Result ReqHandler::handle(
    ReqHandler::Result ret = Result::UNKNOWN;
 
    last_error = Error::UNKNOWN;
+   last_exception_details = QVariantMap();
 
    QScriptValue result;
 
@@ -98,8 +100,8 @@ ReqHandler::Result ReqHandler::handle(
 
       ret = Result::ERROR;
       last_error = Error::EXCEPTION;
-      //TODO: save exception
-      qDebug() << "exception: " << func.toVariant();
+      last_exception_details = func.toVariant().toMap();
+      qDebug() << "exception 1: " << func.toVariant();
 
    } else if (!func.isFunction()){
 
@@ -116,8 +118,8 @@ ReqHandler::Result ReqHandler::handle(
       if (p_engine->hasUncaughtException()){
          ret = Result::ERROR;
          last_error = Error::EXCEPTION;
-         //TODO: save exception
-         qDebug() << "exception: " << func.toVariant();
+         last_exception_details = func.toVariant().toMap();
+         qDebug() << "exception 2: " << func.toVariant();
       } else {
          bool handled = returned.toVariant().toMap()["handled"].toBool();
          if (handled){
@@ -131,6 +133,16 @@ ReqHandler::Result ReqHandler::handle(
    }
 
    return ret;
+}
+
+ReqHandler::Error ReqHandler::getLastError()
+{
+   return last_error;
+}
+
+QVariantMap ReqHandler::getLastExceptionDetails()
+{
+   return last_exception_details;
 }
 
 std::shared_ptr<const std::vector<uint8_t>> ReqHandler::getResponse()

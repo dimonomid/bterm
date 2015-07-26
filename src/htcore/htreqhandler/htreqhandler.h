@@ -12,6 +12,7 @@
 
 #include <QString>
 #include <QScriptValue>
+#include <QVariantMap>
 
 #include <memory>
 
@@ -72,6 +73,7 @@ private:
    QString script_func_code;
    Error last_error;
    std::shared_ptr<ByteArrReadWrite> p_response;
+   QVariantMap last_exception_details;
 
 
    /****************************************************************************
@@ -93,6 +95,10 @@ public:
          const std::vector<uint8_t> &data,
          QScriptValue chain_data
          );
+
+   Error getLastError();
+
+   QVariantMap getLastExceptionDetails();
 
    /**
     * If latest `#HTCore::ReqHandler::handle()` call returned
