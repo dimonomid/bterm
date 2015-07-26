@@ -160,58 +160,69 @@ void TestReqHandler::errorsTest()
 
 void TestReqHandler::chainDataTest()
 {
-   ReqHandler handler("handler", p_engine, "");
    QScriptValue chain_data = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    vector<uint8_t> input_data = {};
 
-   handler.setScript(
-         "(function(inputArr, outputArr){ "
-         "     var handled = false;"
-
-         "     this.testValue = 0xaa;"
-
-         "     return {"
-         "        handled: handled"
-         "     };"
-         " })"
-         );
-
-   result = handler.handle(input_data, chain_data);
-   QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
-
-   handler.setScript(
-         "(function(inputArr, outputArr){ "
-         "     var handled = false;"
-
-         "     this.testValue2 = 0x12345678;"
-
-         "     return {"
-         "        handled: handled"
-         "     };"
-         " })"
-         );
-
-   result = handler.handle(input_data, chain_data);
-   QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
-
-   handler.setScript(
-         "(function(inputArr, outputArr){ "
-         "     outputArr.putU08(0, this.testValue);"
-         "     outputArr.putU32(4, this.testValue2, BIG_END);"
-         "     outputArr.putU32(8, this.testValue,  LITTLE_END);"
-
-         "     return {"
-         "        handled: true"
-         "     };"
-         " })"
-         );
-
-   result = handler.handle(input_data, chain_data);
-   QCOMPARE(result, ReqHandler::Result::OK_HANDLED);
-
+   //-- sets variable testValue in "this"
    {
+      ReqHandler handler("handler", p_engine, "");
+      handler.setScript(
+            "(function(inputArr, outputArr){ "
+            "     var handled = false;"
+
+            "     this.testValue = 0xaa;"
+
+            "     return {"
+            "        handled: handled"
+            "     };"
+            " })"
+            );
+
+      result = handler.handle(input_data, chain_data);
+      QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
+   }
+
+   //-- sets variable testValue2 in "this"
+   {
+      ReqHandler handler("handler", p_engine, "");
+      handler.setScript(
+            "(function(inputArr, outputArr){ "
+            "     var handled = false;"
+
+            "     this.testValue2 = 0x12345678;"
+
+            "     return {"
+            "        handled: handled"
+            "     };"
+            " })"
+            );
+
+      result = handler.handle(input_data, chain_data);
+      QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
+   }
+
+   //-- uses both variables testValue and testValue2, that were set
+   //   in previous handlers
+   {
+      ReqHandler handler("handler", p_engine, "");
+      handler.setScript(
+            "(function(inputArr, outputArr){ "
+            "     outputArr.putU08(0, this.testValue);"
+            "     outputArr.putU32(4, this.testValue2, BIG_END);"
+            "     outputArr.putU32(8, this.testValue,  LITTLE_END);"
+
+            "     return {"
+            "        handled: true"
+            "     };"
+            " })"
+            );
+
+      result = handler.handle(input_data, chain_data);
+      QCOMPARE(result, ReqHandler::Result::OK_HANDLED);
+
+
       auto p_resp = handler.getResponse();
 
       //-- check response
