@@ -10,7 +10,6 @@
 #include "htdatamsg.h"
 
 
-
 #include <vector>
 #include <iostream>
 #include <string>
@@ -26,7 +25,7 @@ using namespace HTCore;
  ******************************************************************************/
 
 DataMsg::DataMsg() :
-   p_data_parts(make_shared<vector<DataPart>>())
+   data_parts()
 {
 
 }
@@ -55,11 +54,11 @@ DataMsg::DataMsg() :
 
 void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
 {
-   if (this->p_data_parts->size() > 0 && this->p_data_parts->back().canDataBeAddedHomogeneously(data_type)){
+   if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
-      this->p_data_parts->back().addData(data_type, byte);
+      this->data_parts.back().addData(data_type, byte);
    } else {
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
@@ -67,7 +66,7 @@ void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
       auto data = vector<uint8_t>();
       data.push_back(byte);
 
-      this->p_data_parts->push_back(
+      this->data_parts.push_back(
             DataPart(data_type, data)
             );
    }
@@ -75,16 +74,16 @@ void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
 
 void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 {
-   if (this->p_data_parts->size() > 0 && this->p_data_parts->back().canDataBeAddedHomogeneously(data_type)){
+   if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
       //-- type of new data is the same as previously added data, so, just
       //   append it to last data part
 
-      this->p_data_parts->back().addData(data_type, data);
+      this->data_parts.back().addData(data_type, data);
    } else {
       //-- type of new data differs from that of previously added data
       //   (or we haven't any data yet), so, add new data part
 
-      this->p_data_parts->push_back(
+      this->data_parts.push_back(
             DataPart(data_type, data)
             );
    }
@@ -93,19 +92,19 @@ void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 
 void DataMsg::addData(DataPart data_part)
 {
-   this->p_data_parts->push_back(data_part);
+   this->data_parts.push_back(data_part);
 }
 
 void DataMsg::clear()
 {
-   this->p_data_parts->clear();
+   this->data_parts.clear();
 }
 
 std::string DataMsg::toString() const {
 
    std::stringstream ss{};
 
-   for (auto data_part : *this->p_data_parts){
+   for (auto data_part : this->data_parts){
 
       switch (data_part.getType()){
 
@@ -136,14 +135,14 @@ std::string DataMsg::toString() const {
 
    return ss.str();
 
-   //return "data parts cnt=" + std::to_string(this->p_data_parts->size());
+   //return "data parts cnt=" + std::to_string(this->data_parts.size());
 }
 
 std::shared_ptr<vector<uint8_t>> DataMsg::getUserData() const
 {
    auto p_ret = std::make_shared<vector<uint8_t>>();
 
-   for (auto data_part : *this->p_data_parts){
+   for (auto data_part : this->data_parts){
       vector<uint8_t> user_data_part = data_part.getData(DataPart::DataType::USER);
       p_ret->insert(
             p_ret->end(),
@@ -158,7 +157,7 @@ std::shared_ptr<vector<uint8_t>> DataMsg::getRawData() const
 {
    auto p_ret = std::make_shared<vector<uint8_t>>();
 
-   for (auto data_part : *this->p_data_parts){
+   for (auto data_part : this->data_parts){
       vector<uint8_t> data_part_vector = data_part.getData(DataPart::DataType::SERVICE);
       if (data_part_vector.size() == 0){
          data_part_vector = data_part.getData(DataPart::DataType::USER);
@@ -172,9 +171,9 @@ std::shared_ptr<vector<uint8_t>> DataMsg::getRawData() const
    return p_ret;
 }
 
-std::shared_ptr<vector<DataPart>> DataMsg::getDataParts() const
+vector<DataPart> DataMsg::getDataParts() const
 {
-   return p_data_parts;
+   return data_parts;
 }
 
 /*******************************************************************************

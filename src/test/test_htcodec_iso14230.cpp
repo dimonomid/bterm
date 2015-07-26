@@ -17,12 +17,14 @@
 #include <random>
 
 
+using namespace HTCore;
+using namespace std;
 
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/
 
-void TestHTCodecISO14230::messageDecoded(const DataMsg &msg)
+void TestCodecISO14230::messageDecoded(const DataMsg &msg)
 {
    //cout << std::string("decoded: ") << msg.toString() << std::string("\n");
    rx_msgs.push(msg);
@@ -37,7 +39,7 @@ void TestHTCodecISO14230::messageDecoded(const DataMsg &msg)
 /**
  * Try to feed some data, including garbage, and verify that everything as expected
  */
-void TestHTCodecISO14230::decode_summary()
+void TestCodecISO14230::decode_summary()
 {
    vector<uint8_t> data{0x83, 0x01, 0x02};
    data.push_back(0x02);
@@ -62,7 +64,8 @@ void TestHTCodecISO14230::decode_summary()
       vector<uint8_t> expected_user_data{2, 2, 2};
 
       //-- compare message contents
-      QCOMPARE(rx_msgs.front().getUserData(), expected_user_data);
+      std::shared_ptr<vector<uint8_t>> p_user_data = rx_msgs.front().getUserData();
+      QCOMPARE(*p_user_data, expected_user_data);
       rx_msgs.pop();
    }
 
@@ -91,7 +94,8 @@ void TestHTCodecISO14230::decode_summary()
    {
       vector<uint8_t> expected_user_data{3, 4};
 
-      QCOMPARE(rx_msgs.front().getUserData(), expected_user_data);
+      std::shared_ptr<vector<uint8_t>> p_user_data = rx_msgs.front().getUserData();
+      QCOMPARE(*p_user_data, expected_user_data);
       rx_msgs.pop();
    }
 
@@ -118,21 +122,21 @@ void TestHTCodecISO14230::decode_summary()
 
 }
 
-void TestHTCodecISO14230::encode()
+void TestCodecISO14230::encode()
 {
    vector<uint8_t> user_data{0x01, 0x02, 0x03};
    vector<uint8_t> encoded_expected{0x83, 0x02, 0x01, 0x01, 0x02, 0x03, 0x8c};
 
-   vector<uint8_t> encoded_data = codec.encodeMessage(user_data).getRawData();
+   std::shared_ptr<vector<uint8_t>> p_encoded_data = codec.encodeMessage(user_data).getRawData();
 
-   QCOMPARE(encoded_data, encoded_expected);
+   QCOMPARE(*p_encoded_data, encoded_expected);
 }
 
 /**
  * Encode random data and decode it for all possible message lengths: [1 .. 255].
  * We should get the same user data as we encoded.
  */
-void TestHTCodecISO14230::decode_encoded()
+void TestCodecISO14230::decode_encoded()
 {
    std::default_random_engine dre;
    std::uniform_int_distribution<uint8_t> di{0, 0xff};
@@ -145,7 +149,7 @@ void TestHTCodecISO14230::decode_encoded()
    //-- create another instance of ico14230 codec for tx, with
    //   reversed own and remote addresses, we will use it
    //   for encoding messages
-   HTCodec_ISO14230 tx_codec{0xf1, 0x10};
+   Codec_ISO14230 tx_codec{0xf1, 0x10};
 
    //-- will be filled at each loop iteration
    vector<uint8_t> user_data{};
@@ -162,14 +166,14 @@ void TestHTCodecISO14230::decode_encoded()
       }
 
       //-- encode message and feed encoded data as raw data to our rx codec
-      vector<uint8_t> encoded_data = tx_codec.encodeMessage(user_data).getRawData();
-      codec.addRawRxData(encoded_data);
+      std::shared_ptr<vector<uint8_t>> p_encoded_data = tx_codec.encodeMessage(user_data).getRawData();
+      codec.addRawRxData(*p_encoded_data);
 
       //-- messages should be already received
       QCOMPARE(rx_msgs.size(), (unsigned int)1);
 
       //-- compare data
-      QCOMPARE(rx_msgs.front().getUserData(), user_data);
+      QCOMPARE(*rx_msgs.front().getUserData(), user_data);
       rx_msgs.pop();
    }
 }

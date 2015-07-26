@@ -22,12 +22,12 @@ int main(int argc, char **argv)
 
    //-- run all tests
    {
-      TestHTCodecISO14230 tc;
+      TestCodecISO14230 tc;
       status |= QTest::qExec(&tc, argc, argv);
    }
 
    {
-      TestHTDataMsg tc;
+      TestDataMsg tc;
       status |= QTest::qExec(&tc, argc, argv);
    }
 

@@ -249,7 +249,8 @@ DataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
    //-- calculate and push checksum
    {
       unsigned char checksum = 0;
-      for (auto byte : ret.getRawData()){
+      std::shared_ptr<vector<uint8_t>> p_raw_data = ret.getRawData();
+      for (auto byte : *p_raw_data){
          checksum += byte;
       }
       ret.addData(DataPart::DataType::SERVICE, checksum);

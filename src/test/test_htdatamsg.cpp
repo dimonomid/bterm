@@ -13,6 +13,10 @@
 #include "test_htdatamsg.h"
 #include "htdatamsg.h"
 
+
+using namespace HTCore;
+using namespace std;
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
@@ -113,7 +117,7 @@ void TestDataMsg::testUserData()
          0x0a, 0x0b, 0x0c,
    };
 
-   QCOMPARE(msg.getUserData(), user_data);
+   QCOMPARE(*msg.getUserData(), user_data);
 }
 
 /**
@@ -131,7 +135,7 @@ void TestDataMsg::testRawData()
          0x0d
    };
 
-   QCOMPARE(msg.getRawData(), user_data);
+   QCOMPARE(*msg.getRawData(), user_data);
 }
 
 /**
@@ -141,8 +145,8 @@ void TestDataMsg::testClear()
 {
    msg.clear();
 
-   QCOMPARE(msg.getUserData().size(), (size_t)0);
-   QCOMPARE(msg.getRawData().size(), (size_t)0);
+   QCOMPARE(msg.getUserData()->size(), (size_t)0);
+   QCOMPARE(msg.getRawData()->size(), (size_t)0);
    QCOMPARE(msg.getDataParts().size(), (size_t)0);
 }
 

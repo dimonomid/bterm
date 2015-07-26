@@ -48,7 +48,7 @@ public:
     ***************************************************************************/
 private:
 
-   std::shared_ptr<std::vector<DataPart>> p_data_parts;
+   std::vector<DataPart> data_parts;
 
 
    /****************************************************************************
@@ -69,7 +69,7 @@ public:
    std::shared_ptr<std::vector<uint8_t>> getUserData() const;
    std::shared_ptr<std::vector<uint8_t>> getRawData() const;
 
-   std::shared_ptr<std::vector<DataPart>> getDataParts() const;
+   std::vector<DataPart> getDataParts() const;
 
    std::string toString() const;
 
@@ -84,7 +84,7 @@ public:
 
 public:
    inline bool operator==(const DataMsg &other) const {
-      return (*this->p_data_parts == *other.p_data_parts);
+      return (this->data_parts == other.data_parts);
    }
 };
 

@@ -29,8 +29,8 @@ public:
    explicit TestDataMsg();
 
 private:
-   vector<DataPart> data_parts;
-   DataMsg msg;
+   std::vector<HTCore::DataPart> data_parts;
+   HTCore::DataMsg msg;
 
 private slots:
    void testDataParts();

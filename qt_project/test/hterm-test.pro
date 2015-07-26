@@ -11,12 +11,20 @@ include(../common/htcore.pri)
 
 # Input
 
-SOURCES += ../../src/test/test_htcodec_iso14230.cpp
-SOURCES += ../../src/test/test_htdatamsg.cpp
-SOURCES += ../../src/test/test_main.cpp
+SOURCES += \
+   ../../src/util/my_util.cpp \
+   ../../src/test/test_htcodec_iso14230.cpp \
+   ../../src/test/test_htdatamsg.cpp \
+   ../../src/test/test_main.cpp \
 
-HEADERS += ../../src/test/test_htcodec_iso14230.h
-HEADERS += ../../src/test/test_htdatamsg.h
 
+HEADERS += \
+   ../../src/util/my_util.h \
+   ../../src/test/test_htcodec_iso14230.h \
+   ../../src/test/test_htdatamsg.h \
+
+
+INCLUDEPATH += \
+   ../../src/util \
 
 
