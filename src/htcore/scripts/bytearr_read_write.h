@@ -73,13 +73,13 @@ public slots:
 
    void setFillByte(unsigned int fill_byte);
 
-   void putU08(unsigned int index, int val);
-   void putU16(unsigned int index, int val, int end = LITTLE_END);
-   void putU32(unsigned int index, int val, int end = LITTLE_END);
+   void putU08(unsigned int index, long val);
+   void putU16(unsigned int index, long val, int end = LITTLE_END);
+   void putU32(unsigned int index, long val, int end = LITTLE_END);
 
-   void putS08(unsigned int index, int val);
-   void putS16(unsigned int index, int val, int end = LITTLE_END);
-   void putS32(unsigned int index, int val, int end = LITTLE_END);
+   void putS08(unsigned int index, long val);
+   void putS16(unsigned int index, long val, int end = LITTLE_END);
+   void putS32(unsigned int index, long val, int end = LITTLE_END);
 
 
 

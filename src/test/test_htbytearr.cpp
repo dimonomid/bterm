@@ -117,7 +117,82 @@ void TestByteArr::putGetTest()
 
    byte_arr.putU08(5, 0xa0);
 
-   QCOMPARE(byte_arr.getU08(5), 0xa0);
+   QCOMPARE(byte_arr.getU08(4), (long)0x00L);
+   QCOMPARE(byte_arr.getU08(5), (long)0xa0L);
+   QCOMPARE(byte_arr.getU08(6), (long)0xffL); //-- out of range: should be 0xff
+
+   QCOMPARE(byte_arr.getU16(6), (long)0xffffL);
+   QCOMPARE(byte_arr.getU16(5), (long)0xffffL);
+   QCOMPARE(byte_arr.getU16(4), (long)0xa000L);
+   QCOMPARE(byte_arr.getU16(4, ByteArrRead::BIG_END), 0x00a0L);
+
+   QCOMPARE(byte_arr.getU32(6), (long)0xffffffffL);
+   QCOMPARE(byte_arr.getU32(5), (long)0xffffffffL);
+   QCOMPARE(byte_arr.getU32(4), (long)0xffffffffL);
+   QCOMPARE(byte_arr.getU32(3), (long)0xffffffffL);
+   QCOMPARE(byte_arr.getU32(2), (long)0xa0000000L);
+   QCOMPARE(byte_arr.getU32(2, ByteArrRead::BIG_END), (long)0xa0);
+
+   byte_arr.putU16(6, 0x1234);
+   {
+      vector<uint8_t> expected_data = {
+         0x00, 0x00, 0x00, 0x00, 0x00, 0xa0, 0x34, 0x12
+      };
+      auto p_actual_data = byte_arr.getData();
+      QCOMPARE(*p_actual_data, expected_data);
+   }
+
+   byte_arr.putU16(6, 0x1234, ByteArrReadWrite::BIG_END);
+   {
+      vector<uint8_t> expected_data = {
+         0x00, 0x00, 0x00, 0x00, 0x00, 0xa0, 0x12, 0x34
+      };
+      auto p_actual_data = byte_arr.getData();
+      QCOMPARE(*p_actual_data, expected_data);
+   }
+
+   byte_arr.putU32(6, 0x12345678);
+   {
+      vector<uint8_t> expected_data = {
+         0x00, 0x00, 0x00, 0x00, 0x00, 0xa0, 0x78, 0x56, 0x34, 0x12
+      };
+      auto p_actual_data = byte_arr.getData();
+      QCOMPARE(*p_actual_data, expected_data);
+   }
+
+   byte_arr.putU32(6, 0x12345678, ByteArrReadWrite::BIG_END);
+   {
+      vector<uint8_t> expected_data = {
+         0x00, 0x00, 0x00, 0x00, 0x00, 0xa0, 0x12, 0x34, 0x56, 0x78
+      };
+      auto p_actual_data = byte_arr.getData();
+      QCOMPARE(*p_actual_data, expected_data);
+   }
+
+   byte_arr.putU08(0, 0x12);
+   QCOMPARE(byte_arr.getU08(0), (long)0x12);
+
+   byte_arr.putU16(0, 0x1234);
+   QCOMPARE(byte_arr.getU16(0), (long)0x1234);
+
+   byte_arr.putU32(0, 0x12345678);
+   QCOMPARE(byte_arr.getU32(0), (long)0x12345678);
+
+   byte_arr.putS08(0, 2);
+   QCOMPARE(byte_arr.getU08(0), (long)2);
+   byte_arr.putS08(0, -2);
+   QCOMPARE(byte_arr.getS08(0), (long)-2);
+
+   byte_arr.putS16(0, 2);
+   QCOMPARE(byte_arr.getU16(0), (long)2);
+   byte_arr.putS16(0, -2);
+   QCOMPARE(byte_arr.getS16(0), (long)-2);
+
+   byte_arr.putS32(0, 2);
+   QCOMPARE(byte_arr.getU32(0), (long)2);
+   byte_arr.putS32(0, -2);
+   QCOMPARE(byte_arr.getS32(0), (long)-2);
+
 }
 
 

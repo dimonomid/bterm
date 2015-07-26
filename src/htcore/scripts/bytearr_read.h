@@ -77,13 +77,13 @@ public:
 
 public slots:
 
-   int getU08(unsigned int index);
-   int getU16(unsigned int index, int end = LITTLE_END);
-   int getU32(unsigned int index, int end = LITTLE_END);
+   long getU08(unsigned int index);
+   long getU16(unsigned int index, int end = LITTLE_END);
+   long getU32(unsigned int index, int end = LITTLE_END);
 
-   int getS08(unsigned int index);
-   int getS16(unsigned int index, int end = LITTLE_END);
-   int getS32(unsigned int index, int end = LITTLE_END);
+   long getS08(unsigned int index);
+   long getS16(unsigned int index, int end = LITTLE_END);
+   long getS32(unsigned int index, int end = LITTLE_END);
 
 
 
