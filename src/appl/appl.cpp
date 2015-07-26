@@ -81,7 +81,7 @@ Appl::Appl() :
 
    this->p_main_window->show();
 
-#if 0
+#if 1
    {
       QScriptEngine engine;
       QScriptValue result;

@@ -108,4 +108,16 @@ void TestByteArr::fillAndResizeTest()
    doFillTest(0x11);
 }
 
+void TestByteArr::putGetTest()
+{
+   ByteArrReadWrite byte_arr {};
+
+   //-- length should be 0 now
+   QCOMPARE(byte_arr.getData()->size(), 0U);
+
+   byte_arr.putU08(5, 0xa0);
+
+   QCOMPARE(byte_arr.getU08(5), 0xa0);
+}
+
 

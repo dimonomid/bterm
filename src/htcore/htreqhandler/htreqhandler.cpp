@@ -76,6 +76,10 @@ ReqHandler::Result ReqHandler::handle(
       QScriptValue chain_data
       )
 {
+   //-- before handling, set global properties
+   p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
+   p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
+
    ReqHandler::Result ret = Result::UNKNOWN;
 
    last_error = Error::UNKNOWN;

@@ -78,12 +78,98 @@ void ByteArrReadWrite::setFillByte(unsigned int fill_byte)
 }
 
 
-void ByteArrReadWrite::putU08(unsigned int index, unsigned int val)
+void ByteArrReadWrite::putU08(unsigned int index, int val)
 {
-   ensureSize(index + sizeof(uint8_t));
+   uint8_t actual_val = val;
+   ensureSize(index + sizeof(actual_val));
 
    (*p_data)[index] = val;
 }
+
+void ByteArrReadWrite::putU16(unsigned int index, int val, int/*Endianness*/ end)
+{
+   uint16_t actual_val = val;
+   ensureSize(index + sizeof(actual_val));
+
+   switch (end){
+      case LITTLE_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
+         break;
+      case BIG_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[1];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[0];
+         break;
+   }
+}
+
+void ByteArrReadWrite::putU32(unsigned int index, int val, int/*Endianness*/ end)
+{
+   uint32_t actual_val = val;
+   ensureSize(index + sizeof(actual_val));
+
+   switch (end){
+      case LITTLE_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
+         (*p_data)[index + 2] = ((uint8_t *)(&actual_val))[2];
+         (*p_data)[index + 3] = ((uint8_t *)(&actual_val))[3];
+         break;
+      case BIG_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[3];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[2];
+         (*p_data)[index + 2] = ((uint8_t *)(&actual_val))[1];
+         (*p_data)[index + 3] = ((uint8_t *)(&actual_val))[0];
+         break;
+   }
+}
+
+void ByteArrReadWrite::putS08(unsigned int index, int val)
+{
+   int8_t actual_val = val;
+   ensureSize(index + sizeof(actual_val));
+
+   (*p_data)[index] = val;
+}
+
+void ByteArrReadWrite::putS16(unsigned int index, int val, int/*Endianness*/ end)
+{
+   int16_t actual_val = val;
+   ensureSize(index + sizeof(actual_val));
+
+   switch (end){
+      case LITTLE_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
+         break;
+      case BIG_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[1];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[0];
+         break;
+   }
+}
+
+void ByteArrReadWrite::putS32(unsigned int index, int val, int/*Endianness*/ end)
+{
+   int32_t actual_val = val;
+   ensureSize(index + sizeof(actual_val));
+
+   switch (end){
+      case LITTLE_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
+         (*p_data)[index + 2] = ((uint8_t *)(&actual_val))[2];
+         (*p_data)[index + 3] = ((uint8_t *)(&actual_val))[3];
+         break;
+      case BIG_END:
+         (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[3];
+         (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[2];
+         (*p_data)[index + 2] = ((uint8_t *)(&actual_val))[1];
+         (*p_data)[index + 3] = ((uint8_t *)(&actual_val))[0];
+         break;
+   }
+}
+
 
 
 

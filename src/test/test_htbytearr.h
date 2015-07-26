@@ -33,6 +33,7 @@ private:
 
 private slots:
    void fillAndResizeTest();
+   void putGetTest();
 
 };
 

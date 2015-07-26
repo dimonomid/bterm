@@ -35,10 +35,16 @@ namespace HTCore {
  */
 class HTCore::ByteArrRead : public QObject
 {
-   Q_OBJECT
+Q_OBJECT
    /****************************************************************************
     * TYPES
     ***************************************************************************/
+
+public:
+   enum Endianness {
+      LITTLE_END,
+      BIG_END
+   };
 
    /****************************************************************************
     * CONSTRUCTOR, DESTRUCTOR
@@ -71,7 +77,14 @@ public:
 
 public slots:
 
-   unsigned int getU08(unsigned int index);
+   int getU08(unsigned int index);
+   int getU16(unsigned int index, int end = LITTLE_END);
+   int getU32(unsigned int index, int end = LITTLE_END);
+
+   int getS08(unsigned int index);
+   int getS16(unsigned int index, int end = LITTLE_END);
+   int getS32(unsigned int index, int end = LITTLE_END);
+
 
 
    /****************************************************************************

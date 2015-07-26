@@ -18,6 +18,8 @@
 
 #include "my_util.h"
 
+#include "bytearr_read.h"
+
 
 using namespace HTCore;
 
@@ -72,7 +74,9 @@ Project::Project(
             "     var handled = false;"
 
             "     if (inputArr.getU08(0) === 0x04){"
-            "        outputArr.putU08(1, 0xaa);"
+            "        outputArr.putU16(1, 0x1234);"
+            "        outputArr.putU16(5, 0x1234, LITTLE_END);"
+            "        outputArr.putU16(10, 0x1234, BIG_END);"
             "        handled = true;"
             "     };"
 
@@ -168,6 +172,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
    QScriptValue chain_data = p_engine->evaluate("({})");
 
    for (auto req_handler : handlers){
+
       ReqHandler::Result res = req_handler.handle(
             p_req_data,
             chain_data
