@@ -9,10 +9,19 @@
 
 === todo ===
 
+   * [ ] project load/save
+   * [ ] script editing
+   * [ ] real data exchange
+   * [ ] other protocols:
+      * [ ] mikas
+      * [ ] just cs
+      * [ ] aldl
+   * [ ] position save/restore
+
    * [ ] make HTDataMsg::toString() to return QString instead of std::string
    * [ ] remove visitor, since it isn't used
-   * [ ] write tests
-      * [ ] ByteArrRead
-      * [ ] ByteArrReadWrite
-      * [ ] ReqHandler
+   * [X] write tests
+      * [X] ByteArrRead
+      * [X] ByteArrReadWrite
+      * [X] ReqHandler
 
