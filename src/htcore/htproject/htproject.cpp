@@ -54,18 +54,18 @@ Project::Project(
          make_shared<ReqHandler>(
             "handler 1",
             p_engine,
-            "(function(inputArr, outputArr){ "
-            "     var handled = false;"
+            "(function(inputArr, outputArr){\n"
+            "     var handled = false;\n"
 
-            "     if (inputArr.getU08(0) === 0x03){"
-            "        outputArr.putU08(1, 0x04);"
-            "        handled = true;"
-            "     };"
+            "     if (inputArr.getU08(0) === 0x03){\n"
+            "        outputArr.putU08(1, 0x04);\n"
+            "        handled = true;\n"
+            "     };\n"
 
-            "     return {"
-            "        handled: handled"
-            "     };"
-            " })"
+            "     return {\n"
+            "        handled: handled\n"
+            "     };\n"
+            " })\n"
             )
          );
 
@@ -73,20 +73,20 @@ Project::Project(
          make_shared<ReqHandler>(
             "handler 2",
             p_engine,
-            "(function(inputArr, outputArr){ "
-            "     var handled = false;"
+            "(function(inputArr, outputArr){ \n"
+            "     var handled = false;\n"
 
-            "     if (inputArr.getU08(0) === 0x04){"
-            "        outputArr.putU16(1, 0x1234);"
-            "        outputArr.putU16(5, 0x1234, LITTLE_END);"
-            "        outputArr.putU16(10, 0x1234, BIG_END);"
-            "        handled = true;"
-            "     };"
+            "     if (inputArr.getU08(0) === 0x04){\n"
+            "        outputArr.putU16(1, 0x1234);\n"
+            "        outputArr.putU16(5, 0x1234, LITTLE_END);\n"
+            "        outputArr.putU16(10, 0x1234, BIG_END);\n"
+            "        handled = true;\n"
+            "     };\n"
 
-            "     return {"
-            "        handled: handled"
-            "     };"
-            " })"
+            "     return {\n"
+            "        handled: handled\n"
+            "     };\n"
+            " })\n"
             )
          );
 
@@ -94,18 +94,18 @@ Project::Project(
          make_shared<ReqHandler>(
             "handler 3",
             p_engine,
-            "(function(inputArr, outputArr){ "
-            "     var handled = false;"
+            "(function(inputArr, outputArr){ \n"
+            "     var handled = false;\n"
 
-            "     if (inputArr.getU08(0) === 0x04){"
-            "        outputArr.putU08(1, 0xff);"
-            "        handled = true;"
-            "     };"
+            "     if (inputArr.getU08(0) === 0x04){\n"
+            "        outputArr.putU08(1, 0xff);\n"
+            "        handled = true;\n"
+            "     };\n"
 
-            "     return {"
-            "        handled: handled"
-            "     };"
-            " })"
+            "     return {\n"
+            "        handled: handled\n"
+            "     };\n"
+            " })\n"
             )
          );
 

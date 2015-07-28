@@ -86,6 +86,7 @@ private:
 public:
 
    QString getName() const;
+   QString getScript() const;
    void setScript(QString script_func_code);
 
    /**

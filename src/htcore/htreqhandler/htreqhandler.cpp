@@ -67,9 +67,9 @@ QString ReqHandler::getName() const
    return name;
 }
 
-void ReqHandler::setScript(QString script_func_code)
+QString ReqHandler::getScript() const
 {
-   this->script_func_code = script_func_code;
+   return script_func_code;
 }
 
 ReqHandler::Result ReqHandler::handle(

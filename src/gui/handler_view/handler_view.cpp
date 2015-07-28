@@ -63,8 +63,8 @@ QWidget *HandlerView::createWidget() const
    }
 
    {
-      QLabel *p_label = new QLabel("Handler: " + p_handler->getName());
-      p_lay->addWidget(p_label);
+      QPlainTextEdit *p_code = new QPlainTextEdit(p_handler->getScript());
+      p_lay->addWidget(p_code);
    }
 
    p_widg->setLayout(p_lay);
