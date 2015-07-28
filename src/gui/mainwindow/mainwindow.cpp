@@ -147,10 +147,12 @@ void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
 {
    QString dir_text = "";
+   QString color = "black";
 
    switch (event_data_msg->getDir()){
       case EventDataMsg::Direction::TX:
          dir_text = "Tx";
+         color = "blue";
          break;
       case EventDataMsg::Direction::RX:
          dir_text = "Rx";
@@ -160,9 +162,9 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
          break;
    }
 
-   QString text = "<b>msg " + dir_text + ":</b> " + MyUtil::byteArrayToHex(
+   QString text = "<font color='" + color + "'><b>msg " + dir_text + ":</b> " + MyUtil::byteArrayToHex(
          *event_data_msg->getMsg().getUserData()
-         ) + "<br>";
+         ) + "</font><br>";
 
    this->ui->pte_messages->appendHtmlNoNL(text, true);
 
