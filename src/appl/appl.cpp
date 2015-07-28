@@ -93,7 +93,7 @@ Appl::Appl() :
 
       QScriptValue ba_in_scrval = engine.newQObject(&ba_in);
       QScriptValue ba_out_scrval = engine.newQObject(&ba_out);
-      QScriptValue chain_data_scrval = engine.evaluate("({})");
+      QScriptValue script_ctx = engine.evaluate("({})");
 
       QScriptValue func = engine.evaluate(
             "(function(inputArr, outputArr){ "
@@ -114,13 +114,13 @@ Appl::Appl() :
          qDebug() << "exception: " << func.toVariant();
       } else {
          QScriptValue returned = func.call(
-               chain_data_scrval,
-               QScriptValueList() << ba_in_scrval << ba_out_scrval << chain_data_scrval
+               script_ctx,
+               QScriptValueList() << ba_in_scrval << ba_out_scrval << script_ctx
                );
 
          qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
          qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
-         qDebug() << "chainData: " << chain_data_scrval.toVariant().toMap();
+         qDebug() << "script_ctx: " << script_ctx.toVariant().toMap();
 
          if (engine.hasUncaughtException()){
             qDebug() << "exception: " << returned.toVariant();

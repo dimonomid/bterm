@@ -35,7 +35,7 @@ private:
 private slots:
    void generalTest();
    void errorsTest();
-   void chainDataTest();
+   void scriptCtxTest();
 
 };
 

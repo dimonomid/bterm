@@ -93,7 +93,7 @@ public:
     */
    Result handle(
          const std::vector<uint8_t> &data,
-         QScriptValue chain_data
+         QScriptValue script_ctx
          );
 
    Error getLastError();

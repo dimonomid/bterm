@@ -74,7 +74,7 @@ void ReqHandler::setScript(QString script_func_code)
 
 ReqHandler::Result ReqHandler::handle(
       const std::vector<uint8_t> &data,
-      QScriptValue chain_data
+      QScriptValue script_ctx
       )
 {
    //-- before handling, set global properties
@@ -111,7 +111,7 @@ ReqHandler::Result ReqHandler::handle(
    } else {
 
       QScriptValue returned = func.call(
-            chain_data,
+            script_ctx,
             QScriptValueList() << ba_in_scrval << ba_out_scrval
             );
 

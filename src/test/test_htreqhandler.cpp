@@ -46,7 +46,7 @@ TestReqHandler::TestReqHandler() :
 void TestReqHandler::generalTest()
 {
    ReqHandler handler("handler", p_engine, "");
-   QScriptValue chain_data = p_engine->evaluate("({})");
+   QScriptValue script_ctx = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    handler.setScript(
@@ -68,7 +68,7 @@ void TestReqHandler::generalTest()
       vector<uint8_t> input_data = {
          0x03, 0x02, 0x03, 0x04, 0x05
       };
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::OK_HANDLED);
       auto p_resp = handler.getResponse();
 
@@ -83,7 +83,7 @@ void TestReqHandler::generalTest()
       vector<uint8_t> input_data = {
          0x01, 0x02, 0x03, 0x04, 0x05
       };
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
       auto p_resp = handler.getResponse();
 
@@ -97,7 +97,7 @@ void TestReqHandler::generalTest()
 void TestReqHandler::errorsTest()
 {
    ReqHandler handler("handler", p_engine, "");
-   QScriptValue chain_data = p_engine->evaluate("({})");
+   QScriptValue script_ctx = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    handler.setScript(
@@ -106,7 +106,7 @@ void TestReqHandler::errorsTest()
 
    {
       vector<uint8_t> input_data = {};
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::ERROR);
       QCOMPARE(handler.getLastError(), ReqHandler::Error::SCRIPT_IS_NOT_FUNCTION);
       auto p_resp = handler.getResponse();
@@ -129,7 +129,7 @@ void TestReqHandler::errorsTest()
 
    {
       vector<uint8_t> input_data = {};
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::ERROR);
       QCOMPARE(handler.getLastError(), ReqHandler::Error::EXCEPTION);
       QCOMPARE(handler.getLastExceptionDetails()["lineNumber"].toInt(), 1);
@@ -150,7 +150,7 @@ void TestReqHandler::errorsTest()
 
    {
       vector<uint8_t> input_data = {};
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::ERROR);
       QCOMPARE(handler.getLastError(), ReqHandler::Error::EXCEPTION);
       auto p_resp = handler.getResponse();
@@ -158,9 +158,9 @@ void TestReqHandler::errorsTest()
 
 }
 
-void TestReqHandler::chainDataTest()
+void TestReqHandler::scriptCtxTest()
 {
-   QScriptValue chain_data = p_engine->evaluate("({})");
+   QScriptValue script_ctx = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    vector<uint8_t> input_data = {};
@@ -180,7 +180,7 @@ void TestReqHandler::chainDataTest()
             " })"
             );
 
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
    }
 
@@ -199,7 +199,7 @@ void TestReqHandler::chainDataTest()
             " })"
             );
 
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::OK_NOT_HANDLED);
    }
 
@@ -219,7 +219,7 @@ void TestReqHandler::chainDataTest()
             " })"
             );
 
-      result = handler.handle(input_data, chain_data);
+      result = handler.handle(input_data, script_ctx);
       QCOMPARE(result, ReqHandler::Result::OK_HANDLED);
 
 

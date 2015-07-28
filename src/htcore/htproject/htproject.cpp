@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QScriptEngine>
+#include <QScriptValue>
 
 #include <iostream>
 
@@ -34,7 +35,8 @@ Project::Project(
    p_codec(p_codec),
    p_io_dev(p_io_dev),
    p_engine(std::make_shared<QScriptEngine>()),
-   handlers()
+   handlers(),
+   script_ctx(p_engine->evaluate("({})"))
 {
 
    connect(
@@ -169,13 +171,11 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
    std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
 
-   QScriptValue chain_data = p_engine->evaluate("({})");
-
    for (auto req_handler : handlers){
 
       ReqHandler::Result res = req_handler.handle(
             *p_req_data,
-            chain_data
+            script_ctx
             );
 
 

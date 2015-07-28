@@ -67,6 +67,7 @@ private:
    std::shared_ptr<QScriptEngine> p_engine;
 
    std::vector<ReqHandler> handlers;
+   QScriptValue script_ctx;
 
 
    /****************************************************************************
