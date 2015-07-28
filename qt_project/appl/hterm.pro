@@ -22,6 +22,7 @@ SOURCES += ../../src/main.cpp \
     ../../src/util/my_util.cpp \
     ../../src/gui/widgets/qplaintextedit_my.cpp \
     ../../src/appl/htiodev/htiodev_dbg.cpp \
+    ../../src/gui/handler_view/handler_view.cpp \
 
 
 HEADERS += ../../src/gui/mainwindow/mainwindow.h \ 
@@ -30,6 +31,7 @@ HEADERS += ../../src/gui/mainwindow/mainwindow.h \
     ../../src/util/my_util.h \
     ../../src/gui/widgets/qplaintextedit_my.h \
     ../../src/appl/htiodev/htiodev_dbg.h \
+    ../../src/gui/handler_view/handler_view.h \
 
 
 FORMS    += \
@@ -42,5 +44,6 @@ INCLUDEPATH += \
     ../../src/appl \
     ../../src/util \
     ../../src/gui/widgets \
+    ../../src/gui/handler_view \
 
 

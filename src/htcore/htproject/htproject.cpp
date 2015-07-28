@@ -23,6 +23,7 @@
 
 
 using namespace HTCore;
+using namespace std;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
@@ -50,7 +51,7 @@ Project::Project(
          );
 
    handlers.push_back(
-         ReqHandler(
+         make_shared<ReqHandler>(
             "handler 1",
             p_engine,
             "(function(inputArr, outputArr){ "
@@ -69,7 +70,7 @@ Project::Project(
          );
 
    handlers.push_back(
-         ReqHandler(
+         make_shared<ReqHandler>(
             "handler 2",
             p_engine,
             "(function(inputArr, outputArr){ "
@@ -90,7 +91,7 @@ Project::Project(
          );
 
    handlers.push_back(
-         ReqHandler(
+         make_shared<ReqHandler>(
             "handler 3",
             p_engine,
             "(function(inputArr, outputArr){ "
@@ -136,6 +137,17 @@ Project::~Project()
 
 /* public       */
 
+std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
+{
+   return handlers[index];
+}
+
+size_t Project::getHandlersCnt() const
+{
+   return handlers.size();
+}
+
+
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/
@@ -171,16 +183,16 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
    std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
 
-   for (auto req_handler : handlers){
+   for (auto p_req_handler : handlers){
 
-      ReqHandler::Result res = req_handler.handle(
+      ReqHandler::Result res = p_req_handler->handle(
             *p_req_data,
             script_ctx
             );
 
 
 #if 0
-      qDebug() << "handler: " << req_handler.getName();
+      qDebug() << "handler: " << p_req_handler->getName();
 #endif
 
       switch (res){
@@ -196,7 +208,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
          case ReqHandler::Result::OK_HANDLED:
             {
-               auto p_data_tx = req_handler.getResponse();
+               auto p_data_tx = p_req_handler->getResponse();
                DataMsg msg_tx = p_codec->encodeMessage(*p_data_tx);
                auto p_data_raw_tx = msg_tx.getRawData();
                p_io_dev->write(*p_data_raw_tx);
@@ -206,7 +218,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
             }
 #if 0
             qDebug() << "handled, response: " << MyUtil::byteArrayToHex(
-                  *req_handler.getResponse()
+                  *p_req_handler->getResponse()
                   );
 #endif
             break;

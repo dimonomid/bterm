@@ -6,6 +6,9 @@
 #include <QMenu>
 #include <QSignalMapper>
 
+#include <QListWidget>
+#include <QListWidgetItem>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -18,9 +21,14 @@
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
 
+#include "handler_view.h"
+
 #include "mainwindow.h"
 
+
+
 using namespace HTCore;
+using namespace std;
 
 
 MainWindow::MainWindow(
@@ -30,7 +38,8 @@ MainWindow::MainWindow(
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     appl(appl),
-    windows_toggle_sigmap(this)
+    windows_toggle_sigmap(this),
+    p_dw_handlers(new QDockWidget("Handlers"))
 {
     ui->setupUi(this);
 
@@ -106,6 +115,56 @@ MainWindow::MainWindow(
     }
     // }}}
 
+
+    addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
+
+
+#if 0
+    {
+       QDockWidget *p_dw;
+
+       p_dw = new QDockWidget("dock");
+
+
+       QListWidget *p_list = new QListWidget(this);
+
+       p_dw->setWidget(p_list);
+
+       {
+          QListWidgetItem *newItem = new QListWidgetItem;
+          newItem->setText("one");
+          p_list->insertItem(0, newItem);
+       }
+
+       {
+          QListWidgetItem *newItem = new QListWidgetItem;
+          newItem->setText("two");
+          p_list->insertItem(0, newItem);
+       }
+
+       {
+          QListWidgetItem *newItem = new QListWidgetItem;
+          newItem->setText("three");
+          p_list->insertItem(0, newItem);
+       }
+
+       addDockWidget(Qt::TopDockWidgetArea, p_dw);
+    }
+#endif
+
+#if 0
+    {
+       QWidget *p_widg = new QWidget();
+
+       QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
+
+
+
+       p_widg->setLayout(p_lay);
+    }
+#endif
+
+
     connect(
           &appl, &Appl::eventDataRaw,
           this, &MainWindow::onNewDataRaw
@@ -115,6 +174,8 @@ MainWindow::MainWindow(
           &appl, &Appl::eventDataMsg,
           this, &MainWindow::onNewDataMsg
           );
+
+    connect(&appl, &Appl::projectOpened, this, &MainWindow::onProjectOpened);
 }
 
 MainWindow::~MainWindow()
@@ -123,12 +184,48 @@ MainWindow::~MainWindow()
 }
 
 
+/*******************************************************************************
+ * METHODS
+ ******************************************************************************/
+
+/* private      */
+
+void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
+{
+   QWidget *p_widg = new QWidget();
+
+   QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
+
+
+   for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
+
+      auto p_handler_view = make_shared<HandlerView>(p_project->getHandler(i));
+      QWidget *p_cur_widg = p_handler_view->createWidget();
+
+      p_lay->addWidget(p_cur_widg);
+
+   }
+
+
+
+   p_widg->setLayout(p_lay);
+
+   p_dw_handlers->setWidget(p_widg);
+}
+
+
+
 
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/
 
 /* private      */
+
+void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
+{
+   populateWithProject(p_project);
+}
 
 void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 {

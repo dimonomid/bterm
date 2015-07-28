@@ -53,10 +53,6 @@ Appl::Appl() :
    p_io_dev = std::make_shared<IODevDbg>();
    p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
 
-   p_project = std::unique_ptr<Project>{
-      new Project{p_codec, p_io_dev}
-   };
-
    p_events_data_raw = std::unique_ptr<EventsAcc<EventDataRaw>>{
       new EventsAcc<EventDataRaw>(1000/*TODO: settings*/)
    };
@@ -67,21 +63,8 @@ Appl::Appl() :
 
 
 
-   connect(
-         p_project.get(), &Project::eventDataRaw,
-         this, &Appl::onNewDataRaw
-         );
 
-   connect(
-         p_project.get(), &Project::eventDataMsg,
-         this, &Appl::onNewDataMsg
-         );
-
-
-
-   this->p_main_window->show();
-
-#if 1
+#if 0
    {
       QScriptEngine engine;
       QScriptValue result;
@@ -130,8 +113,13 @@ Appl::Appl() :
          }
       }
 
-}
+   }
 #endif
+
+
+   openProject("dummy");
+
+   this->p_main_window->show();
 
 }
 
@@ -160,6 +148,28 @@ Appl::~Appl()
 /* protected    */
 
 /* public       */
+
+void Appl::openProject(QString filename)
+{
+   // TODO: really open project
+   std::ignore = filename;
+
+   p_project = std::make_shared<Project>(p_codec, p_io_dev);
+
+   connect(
+         p_project.get(), &Project::eventDataRaw,
+         this, &Appl::onNewDataRaw
+         );
+
+   connect(
+         p_project.get(), &Project::eventDataMsg,
+         this, &Appl::onNewDataMsg
+         );
+
+
+
+   emit projectOpened(p_project);
+}
 
 /*******************************************************************************
  * SLOTS

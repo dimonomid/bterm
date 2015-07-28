@@ -50,7 +50,7 @@ private:
 
    std::shared_ptr<HTCore::Codec> p_codec;
    std::shared_ptr<HTCore::IODev> p_io_dev;
-   std::unique_ptr<HTCore::Project> p_project;
+   std::shared_ptr<HTCore::Project> p_project;
    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataRaw>> p_events_data_raw;
    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataMsg>> p_events_data_msg;
 
@@ -67,6 +67,13 @@ private:
    /****************************************************************************
     * METHODS
     ***************************************************************************/
+public:
+
+   /**
+    * Open project from XML file
+    */
+   void openProject(QString filename);
+
 
    /****************************************************************************
     * SIGNALS, SLOTS
@@ -81,6 +88,11 @@ private slots:
 signals:
    void eventDataRaw(std::shared_ptr<HTCore::EventDataRaw> p_event);
    void eventDataMsg(std::shared_ptr<HTCore::EventDataMsg> p_event);
+
+   /**
+    * Emitted just after project has been opened
+    */
+   void projectOpened(std::shared_ptr<HTCore::Project> p_project);
 
 };
 

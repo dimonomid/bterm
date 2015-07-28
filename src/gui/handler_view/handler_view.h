@@ -1,46 +1,34 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
-#ifndef _HTPROJECT_H
-#define _HTPROJECT_H
+#ifndef _HANDLER_VIEW_H
+#define _HANDLER_VIEW_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <memory>
-
 #include <QObject>
-
-#include "htiodev.h"
-#include "htcodec.h"
-#include "htreqhandler.h"
+#include <memory>
 
 
 
 namespace HTCore {
-   class EventDataRaw;
-   class EventDataMsg;
-   class DataMsg;
+   class ReqHandler;
 }
-
-class QScriptEngine;
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-namespace HTCore {
-   class Project;
-}
-
-
-class HTCore::Project : public QObject
+/**
+ * TODO
+ */
+class HandlerView : public QObject
 {
-   Q_OBJECT;
-
+Q_OBJECT
    /****************************************************************************
     * TYPES
     ***************************************************************************/
@@ -49,25 +37,17 @@ class HTCore::Project : public QObject
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit Project(
-         std::shared_ptr<Codec> p_codec,
-         std::shared_ptr<IODev> p_io_dev
+   HandlerView(
+         std::shared_ptr<HTCore::ReqHandler> p_handler
          );
 
-   virtual ~Project();
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
 private:
 
-   std::shared_ptr<Codec> p_codec;
-   std::shared_ptr<IODev> p_io_dev;
-
-   std::shared_ptr<QScriptEngine> p_engine;
-
-   std::vector<std::shared_ptr<ReqHandler>> handlers;
-   QScriptValue script_ctx;
+   std::shared_ptr<HTCore::ReqHandler> p_handler;
 
 
    /****************************************************************************
@@ -79,24 +59,14 @@ private:
     ***************************************************************************/
 public:
 
-   std::shared_ptr<ReqHandler> getHandler(size_t index);
-   size_t getHandlersCnt() const;
-
+   QWidget *createWidget() const;
 
 
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
-signals:
-   void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
-   void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
-
-private slots:
-   void onDataSrcReadyRead(int bytes_available);
-   void onMessageDecoded(const DataMsg &msg);
-
 
 };
 
 
-#endif // _HTPROJECT_H
+#endif // _HANDLER_VIEW_H
