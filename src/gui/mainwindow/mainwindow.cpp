@@ -146,7 +146,21 @@ void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 
 void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
 {
-   QString text = "<b>msg: </b>" + MyUtil::byteArrayToHex(
+   QString dir_text = "";
+
+   switch (event_data_msg->getDir()){
+      case EventDataMsg::Direction::TX:
+         dir_text = "Tx";
+         break;
+      case EventDataMsg::Direction::RX:
+         dir_text = "Rx";
+         break;
+      default:
+         //-- should never be here
+         break;
+   }
+
+   QString text = "<b>msg " + dir_text + ":</b> " + MyUtil::byteArrayToHex(
          *event_data_msg->getMsg().getUserData()
          ) + "<br>";
 

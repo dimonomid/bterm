@@ -31,12 +31,20 @@ class HTCore::EventDataMsg : public HTCore::Event
     * TYPES
     ***************************************************************************/
 
+public:
+
+   enum class Direction {
+      RX,
+      TX,
+   };
+
+
    /****************************************************************************
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
 
-   EventDataMsg(const DataMsg &msg);
+   EventDataMsg(const DataMsg &msg, Direction dir);
 
 
    /****************************************************************************
@@ -45,6 +53,7 @@ public:
 private:
 
    DataMsg msg;
+   Direction dir;
 
 
    /****************************************************************************
@@ -57,6 +66,7 @@ private:
 public:
 
    const DataMsg getMsg() const;
+   Direction getDir() const;
 
    virtual void accept(EventVisitor &visitor) override;
 

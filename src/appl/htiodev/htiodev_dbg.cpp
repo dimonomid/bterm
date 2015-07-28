@@ -7,7 +7,10 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QDebug>
+
 #include "htiodev_dbg.h"
+#include "my_util.h"
 
 #include <vector>
 #include <stdexcept>
@@ -65,7 +68,8 @@ vector<uint8_t> IODevDbg::read()
 
 void IODevDbg::write(const vector<uint8_t> &data)
 {
-   std::ignore = data;
+   //std::ignore = data;
+   qDebug() << "write: " << MyUtil::byteArrayToHex(data);
 }
 
 

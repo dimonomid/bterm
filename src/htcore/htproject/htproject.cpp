@@ -164,7 +164,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
 {
    //qDebug(msg.toString().c_str());
 
-   auto p_event = std::make_shared<EventDataMsg>(msg);
+   auto p_event = std::make_shared<EventDataMsg>(msg, EventDataMsg::Direction::RX);
    emit (eventDataMsg(p_event));
 
    std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
@@ -179,7 +179,9 @@ void Project::onMessageDecoded(const DataMsg &msg)
             );
 
 
+#if 0
       qDebug() << "handler: " << req_handler.getName();
+#endif
 
       switch (res){
          case ReqHandler::Result::UNKNOWN:
@@ -187,13 +189,26 @@ void Project::onMessageDecoded(const DataMsg &msg)
             break;
 
          case ReqHandler::Result::OK_NOT_HANDLED:
+#if 0
             qDebug() << "not handled";
+#endif
             break;
 
          case ReqHandler::Result::OK_HANDLED:
+            {
+               auto p_data_tx = req_handler.getResponse();
+               DataMsg msg_tx = p_codec->encodeMessage(*p_data_tx);
+               auto p_data_raw_tx = msg_tx.getRawData();
+               p_io_dev->write(*p_data_raw_tx);
+
+               auto p_event = std::make_shared<EventDataMsg>(msg_tx, EventDataMsg::Direction::TX);
+               emit (eventDataMsg(p_event));
+            }
+#if 0
             qDebug() << "handled, response: " << MyUtil::byteArrayToHex(
                   *req_handler.getResponse()
                   );
+#endif
             break;
 
          case ReqHandler::Result::ERROR:
