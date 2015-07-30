@@ -19,6 +19,8 @@ namespace HTCore {
    class ReqHandler;
 }
 
+class MainWindow;
+
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
@@ -38,6 +40,7 @@ Q_OBJECT
     ***************************************************************************/
 public:
    HandlerView(
+         MainWindow &mainwindow,
          std::shared_ptr<HTCore::ReqHandler> p_handler
          );
 
@@ -47,7 +50,9 @@ public:
     ***************************************************************************/
 private:
 
+   MainWindow &mainwindow;
    std::shared_ptr<HTCore::ReqHandler> p_handler;
+
 
 
    /****************************************************************************
@@ -59,12 +64,25 @@ private:
     ***************************************************************************/
 public:
 
-   QWidget *createWidget() const;
+   QWidget *createListItemWidget() const;
+
+
+
+private:
+
+   QWidget *createEditWidget() const;
+
 
 
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+
+private slots:
+
+   void onEditButtonPressed();
+
+
 
 };
 

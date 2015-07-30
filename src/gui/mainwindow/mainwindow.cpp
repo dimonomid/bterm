@@ -39,7 +39,8 @@ MainWindow::MainWindow(
     ui(new Ui::MainWindow),
     appl(appl),
     windows_toggle_sigmap(this),
-    p_dw_handlers(new QDockWidget("Handlers"))
+    p_dw_handlers(new QDockWidget("Handlers")),
+    handler_views()
 {
     ui->setupUi(this);
 
@@ -199,11 +200,12 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 
    for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
 
-      auto p_handler_view = make_shared<HandlerView>(p_project->getHandler(i));
-      QWidget *p_cur_widg = p_handler_view->createWidget();
+      auto p_handler_view = make_shared<HandlerView>(*this, p_project->getHandler(i));
+      QWidget *p_cur_widg = p_handler_view->createListItemWidget();
 
       p_lay->addWidget(p_cur_widg);
 
+      handler_views.push_back(p_handler_view);
    }
 
 
@@ -211,6 +213,22 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
    p_widg->setLayout(p_lay);
 
    p_dw_handlers->setWidget(p_widg);
+}
+
+
+
+/* public */
+
+void MainWindow::addHandlerEditWidget(
+      std::shared_ptr<HTCore::ReqHandler> p_handler,
+      QWidget *p_widg
+      )
+{
+   QDockWidget *p_dw = new QDockWidget("Handler " + p_handler->getName());
+
+   p_dw->setWidget(p_widg);
+
+   addDockWidget(Qt::TopDockWidgetArea, p_dw);
 }
 
 

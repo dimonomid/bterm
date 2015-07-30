@@ -14,6 +14,7 @@ namespace HTCore {
    class EventDataRaw;
    class EventDataMsg;
    class Project;
+   class ReqHandler;
 }
 
 namespace Ui {
@@ -21,6 +22,7 @@ namespace Ui {
 }
 
 class Appl;
+class HandlerView;
 
 
 class MainWindow : public QMainWindow
@@ -45,10 +47,22 @@ private:
 
    QDockWidget      *p_dw_handlers;
 
+   std::vector<std::shared_ptr<HandlerView>> handler_views;
+
+
 
    /****************************************************************************
     * METHODS
     ***************************************************************************/
+
+public:
+
+   void addHandlerEditWidget(
+         std::shared_ptr<HTCore::ReqHandler> p_handler,
+         QWidget *p_widg
+         );
+
+
 
 private:
 
