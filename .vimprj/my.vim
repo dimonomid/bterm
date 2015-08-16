@@ -91,7 +91,7 @@ let g:vimwiki_list[0] =
          \     'template_default': '',
          \     'nested_syntaxes': {},
          \     'diary_sort': 'desc',
-         \     'path': s:sProjectPath.'/stuff/docs/vimwiki/',
+         \     'path': s:sProjectPath.'/stuff/vimwiki/',
          \     'diary_link_fmt': '%Y-%m-%d',
          \     'template_ext': '',
          \     'syntax': 'default',
