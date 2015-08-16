@@ -8,8 +8,8 @@
  ******************************************************************************/
 
 #include <QDebug>
-#include <QScriptEngine>
-#include <QScriptValue>
+#include <QJSEngine>
+#include <QJSValue>
 
 #include <iostream>
 
@@ -35,7 +35,7 @@ Project::Project(
       ) :
    p_codec(p_codec),
    p_io_dev(p_io_dev),
-   p_engine(std::make_shared<QScriptEngine>()),
+   p_engine(std::make_shared<QJSEngine>()),
    handlers(),
    script_ctx(p_engine->evaluate("({})"))
 {

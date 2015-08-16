@@ -15,6 +15,8 @@
 #include <cstdint>
 
 #include <QString>
+#include <QVariant>
+#include <QJSValue>
 
 namespace MyUtil
 {
@@ -23,6 +25,7 @@ namespace MyUtil
     ***************************************************************************/
 
    QString byteArrayToHex(const std::vector<uint8_t> &data);
+   QVariantMap qjsErrorToVariant(const QJSValue &valError);
 
 };
 

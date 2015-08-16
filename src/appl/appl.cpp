@@ -27,8 +27,8 @@
 
 
 //TODO: remove
-#include <QScriptEngine>
-#include <QScriptValue>
+#include <QJSEngine>
+#include <QJSValue>
 #include <QVariant>
 #include <QDebug>
 #include "bytearr_read.h"
@@ -62,23 +62,67 @@ Appl::Appl() :
    };
 
 
+#if 0
+   {
+      QJSEngine engine;
+
+      QJSValue val = engine.evaluate(
+            "({a: 1, b: 2});"
+            );
+
+      qDebug() << "val: " << val.toVariant();
+   }
+#endif
+
+#if 0
+   {
+      QJSEngine engine;
+      QJSValue val = engine.evaluate(
+            "test();"
+            );
+
+      if (val.isError()){
+         qDebug() << "error, variant: " << val.toVariant();
+
+         qDebug() << "message: " << val.property("message").toString();
+         qDebug() << "lineNumber: " << val.property("lineNumber").toString();
+      }
+      qDebug() << "val: " << val.toVariant();
+   }
+#endif
+
+#if 0
+   {
+      QJSEngine engine;
+
+      QJSValue val = engine.evaluate(
+            "print('123');"
+            );
+
+      if (val.isError()){
+         qDebug() << "error: " << val.toString();
+      }
+
+      qDebug() << "val: " << val.toVariant();
+   }
+#endif
 
 
 #if 0
    {
-      QScriptEngine engine;
-      QScriptValue result;
+      QJSEngine engine;
+      QJSValue result;
 
       std::vector<uint8_t> in_data{0x61, 0x01};
 
       ByteArrRead ba_in {in_data};
       ByteArrReadWrite ba_out {};
 
-      QScriptValue ba_in_scrval = engine.newQObject(&ba_in);
-      QScriptValue ba_out_scrval = engine.newQObject(&ba_out);
-      QScriptValue script_ctx = engine.evaluate("({})");
+      QJSValue ba_in_scrval = engine.newQObject(&ba_in);
+      QJSValue ba_out_scrval = engine.newQObject(&ba_out);
+      QJSValue script_ctx = engine.evaluate("({})");
 
-      QScriptValue func = engine.evaluate(
+      QJSValue func = engine.evaluate(
             "(function(inputArr, outputArr){ "
             "     this.c = 123;"
 
@@ -96,9 +140,9 @@ Appl::Appl() :
       if (engine.hasUncaughtException()){
          qDebug() << "exception: " << func.toVariant();
       } else {
-         QScriptValue returned = func.call(
+         QJSValue returned = func.call(
                script_ctx,
-               QScriptValueList() << ba_in_scrval << ba_out_scrval << script_ctx
+               QJSValueList() << ba_in_scrval << ba_out_scrval << script_ctx
                );
 
          qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());

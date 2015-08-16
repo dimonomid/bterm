@@ -16,7 +16,7 @@
 #include <memory>
 
 
-class QScriptEngine;
+class QJSEngine;
 
 /*******************************************************************************
  * TESTS CLASS
@@ -30,7 +30,7 @@ public:
    explicit TestReqHandler();
 
 private:
-   std::shared_ptr<QScriptEngine> p_engine;
+   std::shared_ptr<QJSEngine> p_engine;
 
 private slots:
    void generalTest();

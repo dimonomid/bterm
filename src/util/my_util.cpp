@@ -29,3 +29,14 @@ QString MyUtil::byteArrayToHex(const std::vector<uint8_t> &data)
    return text;
 }
 
+QVariantMap MyUtil::qjsErrorToVariant(const QJSValue &valError)
+{
+   return QVariantMap{
+      {"lineNumber", valError.property("lineNumber").toVariant()},
+         {"name", valError.property("name").toVariant()},
+         {"fileName", valError.property("fileName").toVariant()},
+         {"stack", valError.property("stack").toVariant()},
+         {"message", valError.property("message").toVariant()}
+   };
+}
+

@@ -7,8 +7,8 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <QScriptEngine>
-#include <QScriptValue>
+#include <QJSEngine>
+#include <QJSValue>
 #include <QVariant>
 #include <QDebug>
 
@@ -26,7 +26,7 @@ using namespace HTCore;
 
 ReqHandler::ReqHandler(
       QString name,
-      std::shared_ptr<QScriptEngine> p_engine,
+      std::shared_ptr<QJSEngine> p_engine,
       QString script_func_code
       ) :
    name(name),
@@ -72,9 +72,14 @@ QString ReqHandler::getScript() const
    return script_func_code;
 }
 
+void ReqHandler::setScript(QString script_func_code)
+{
+   this->script_func_code = script_func_code;
+}
+
 ReqHandler::Result ReqHandler::handle(
       const std::vector<uint8_t> &data,
-      QScriptValue script_ctx
+      QJSValue script_ctx
       )
 {
    //-- before handling, set global properties
@@ -86,40 +91,40 @@ ReqHandler::Result ReqHandler::handle(
    last_error = Error::UNKNOWN;
    last_exception_details = QVariantMap();
 
-   QScriptValue result;
+   QJSValue result;
 
    ByteArrRead ba_in {data};
    p_response = std::make_shared<ByteArrReadWrite>();
 
-   QScriptValue ba_in_scrval = p_engine->newQObject(&ba_in);
-   QScriptValue ba_out_scrval = p_engine->newQObject(p_response.get());
+   QJSValue ba_in_scrval = p_engine->newQObject(&ba_in);
+   QJSValue ba_out_scrval = p_engine->newQObject(p_response.get());
 
-   QScriptValue func = p_engine->evaluate(script_func_code);
+   QJSValue func = p_engine->evaluate(script_func_code);
 
-   if (p_engine->hasUncaughtException()){
+   if (func.isError()){
 
       ret = Result::ERROR;
       last_error = Error::EXCEPTION;
-      last_exception_details = func.toVariant().toMap();
-      qDebug() << "exception 1: " << func.toVariant();
+      last_exception_details = MyUtil::qjsErrorToVariant(func);
+      qDebug() << "exception 1: " << last_exception_details;
 
-   } else if (!func.isFunction()){
+   } else if (!func.isCallable()){
 
       ret = Result::ERROR;
       last_error = Error::SCRIPT_IS_NOT_FUNCTION;
 
    } else {
 
-      QScriptValue returned = func.call(
+      QJSValue returned = func.callWithInstance(
             script_ctx,
-            QScriptValueList() << ba_in_scrval << ba_out_scrval
+            QJSValueList() << ba_in_scrval << ba_out_scrval
             );
 
-      if (p_engine->hasUncaughtException()){
+      if (returned.isError()){
          ret = Result::ERROR;
          last_error = Error::EXCEPTION;
-         last_exception_details = func.toVariant().toMap();
-         qDebug() << "exception 2: " << func.toVariant();
+         last_exception_details = MyUtil::qjsErrorToVariant(returned);
+         qDebug() << "exception 2: " << last_exception_details;
       } else {
          bool handled = returned.toVariant().toMap()["handled"].toBool();
          if (handled){

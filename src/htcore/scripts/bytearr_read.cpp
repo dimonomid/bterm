@@ -44,7 +44,7 @@ ByteArrRead::ByteArrRead(const std::vector<uint8_t> &data) :
 
 /* public       */
 
-long ByteArrRead::getU08(unsigned int index)
+double ByteArrRead::getU08(unsigned int index)
 {
    uint8_t ret;
 
@@ -58,7 +58,7 @@ long ByteArrRead::getU08(unsigned int index)
    return ret;
 }
 
-long ByteArrRead::getU16(unsigned int index, int/*Endianness*/ end)
+double ByteArrRead::getU16(unsigned int index, int/*Endianness*/ end)
 {
    uint16_t ret;
 
@@ -81,7 +81,7 @@ long ByteArrRead::getU16(unsigned int index, int/*Endianness*/ end)
    return ret;
 }
 
-long ByteArrRead::getU32(unsigned int index, int/*Endianness*/ end)
+double ByteArrRead::getU32(unsigned int index, int/*Endianness*/ end)
 {
    uint32_t ret;
 
@@ -108,7 +108,7 @@ long ByteArrRead::getU32(unsigned int index, int/*Endianness*/ end)
    return ret;
 }
 
-long ByteArrRead::getS08(unsigned int index)
+double ByteArrRead::getS08(unsigned int index)
 {
    int8_t ret;
 
@@ -122,7 +122,7 @@ long ByteArrRead::getS08(unsigned int index)
    return ret;
 }
 
-long ByteArrRead::getS16(unsigned int index, int/*Endianness*/ end)
+double ByteArrRead::getS16(unsigned int index, int/*Endianness*/ end)
 {
    int16_t ret;
 
@@ -145,7 +145,7 @@ long ByteArrRead::getS16(unsigned int index, int/*Endianness*/ end)
    return ret;
 }
 
-long ByteArrRead::getS32(unsigned int index, int/*Endianness*/ end)
+double ByteArrRead::getS32(unsigned int index, int/*Endianness*/ end)
 {
    int32_t ret;
 

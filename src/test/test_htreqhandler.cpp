@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 #include <QtTest/QtTest>
-#include <QScriptEngine>
+#include <QJSEngine>
 
 #include "test_htreqhandler.h"
 #include "htreqhandler.h"
@@ -22,7 +22,7 @@ using namespace std;
  ******************************************************************************/
 
 TestReqHandler::TestReqHandler() :
-   p_engine(std::make_shared<QScriptEngine>())
+   p_engine(std::make_shared<QJSEngine>())
 {
 }
 
@@ -46,7 +46,7 @@ TestReqHandler::TestReqHandler() :
 void TestReqHandler::generalTest()
 {
    ReqHandler handler("handler", p_engine, "");
-   QScriptValue script_ctx = p_engine->evaluate("({})");
+   QJSValue script_ctx = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    handler.setScript(
@@ -97,7 +97,7 @@ void TestReqHandler::generalTest()
 void TestReqHandler::errorsTest()
 {
    ReqHandler handler("handler", p_engine, "");
-   QScriptValue script_ctx = p_engine->evaluate("({})");
+   QJSValue script_ctx = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    handler.setScript(
@@ -160,7 +160,7 @@ void TestReqHandler::errorsTest()
 
 void TestReqHandler::scriptCtxTest()
 {
-   QScriptValue script_ctx = p_engine->evaluate("({})");
+   QJSValue script_ctx = p_engine->evaluate("({})");
    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
    vector<uint8_t> input_data = {};

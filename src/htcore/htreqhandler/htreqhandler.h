@@ -11,13 +11,13 @@
  ******************************************************************************/
 
 #include <QString>
-#include <QScriptValue>
+#include <QJSValue>
 #include <QVariantMap>
 
 #include <memory>
 
 
-class QScriptEngine;
+class QJSEngine;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -58,7 +58,7 @@ public:
 public:
    ReqHandler(
          QString name,
-         std::shared_ptr<QScriptEngine> p_engine,
+         std::shared_ptr<QJSEngine> p_engine,
          QString script_func_code = ""
          );
 
@@ -69,7 +69,7 @@ public:
 private:
 
    QString name;
-   std::shared_ptr<QScriptEngine> p_engine;
+   std::shared_ptr<QJSEngine> p_engine;
    QString script_func_code;
    Error last_error;
    std::shared_ptr<ByteArrReadWrite> p_response;
@@ -94,7 +94,7 @@ public:
     */
    Result handle(
          const std::vector<uint8_t> &data,
-         QScriptValue script_ctx
+         QJSValue script_ctx
          );
 
    Error getLastError();

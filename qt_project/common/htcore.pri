@@ -2,7 +2,7 @@
 include(../common/appl_common.pri)
 include(../common/ragel.pri)
 
-QT += script
+QT += qml
 
 RAGEL_FILES += ../../src/htcore/htcodec/htcodec_iso14230.cpp.rl
 

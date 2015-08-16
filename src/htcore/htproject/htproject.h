@@ -26,7 +26,7 @@ namespace HTCore {
    class DataMsg;
 }
 
-class QScriptEngine;
+class QJSEngine;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -64,10 +64,10 @@ private:
    std::shared_ptr<Codec> p_codec;
    std::shared_ptr<IODev> p_io_dev;
 
-   std::shared_ptr<QScriptEngine> p_engine;
+   std::shared_ptr<QJSEngine> p_engine;
 
    std::vector<std::shared_ptr<ReqHandler>> handlers;
-   QScriptValue script_ctx;
+   QJSValue script_ctx;
 
 
    /****************************************************************************
