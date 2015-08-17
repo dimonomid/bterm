@@ -62,6 +62,56 @@ Appl::Appl() :
    };
 
 
+#if 1
+   {
+      QJSEngine engine;
+
+      QJSValue myCodec = engine.evaluate(
+            R"(
+
+         (function() {
+
+            var rawData;
+
+            reset();
+
+            return {
+               feedRawData: feedRawData,
+               getTest: function() {
+                  return rawData.length;
+               }
+            };
+
+
+            function feedRawData(num) {
+               rawData.push(num);
+            };
+
+            function reset() {
+               rawData = [];
+            };
+
+         })();
+
+         )"
+            );
+
+
+
+         myCodec.property("feedRawData").call(
+               QJSValueList() << (double)1
+               );
+         qDebug() << "test: " << myCodec.property("getTest").call().toString();
+         myCodec.property("feedRawData").call(
+               QJSValueList() << (double)1
+               );
+         qDebug() << "test: " << myCodec.property("getTest").call().toString();
+
+      qDebug() << "t1: " << myCodec.property("feedRawData").toString();
+   }
+#endif
+
+
 #if 0
    {
       QJSEngine engine;
