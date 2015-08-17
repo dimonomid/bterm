@@ -1,0 +1,54 @@
+
+== HTerm / Scripts organization ==
+
+The codec should be defined by javascript file. It should look like:
+
+{{{
+(function() {
+
+   var rawData;
+
+   return {
+      /* ... */
+      feedRawData: feedRawData
+   };
+
+
+   function feedRawData(num) {
+      rawData.push(num);
+   };
+
+   function reset() {
+      rawData = [];
+   };
+
+   /* ... */
+
+})();
+}}}
+
+Probably feedRawData should return handling results, or we should have different function, like getCurrentMsg(), not sure. Whatever the case, when message received,object like this should be returned:
+
+{{{
+
+   {
+      /* TODO:
+      think of it.
+      probably, the structure of this object should be completely
+      codec-specific, this object will be given to all handlers, and it's up
+      to handlers to interpret the object of codec which they are intended
+      to work with.
+
+      For ISO14230, for example, we should have something like this:
+      */
+      headerData: {
+         srcAddr: 0xf0,
+         dstAddr: 0x10
+      },
+      msgData: /* this is ByteArr; read below some details */
+   }
+
+}}}
+
+So, the script should be able to create ByteArr. I can't find in docs how would script create new QObject-s, so, the way it should work is to create something like `ByteArrFactory`, expose this object to script, and script should use methods of factory to create instances of `ByteArr`.
+

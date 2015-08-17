@@ -1,6 +1,10 @@
 
 == HTerm ==
 
+* [[scripts_organization]]
+
+
+
 * main design UML: see hterm.pu
 * Rx-Tx sequence UML: see rxrx.pu
 
