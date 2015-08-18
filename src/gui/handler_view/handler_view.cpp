@@ -75,7 +75,7 @@ HandlerView::HandlerView(
 
 /* private      */
 
-QWidget *HandlerView::createEditWidget() const
+QWidget *HandlerView::createEditWidget()
 {
     QWidget *p_widg = new QWidget();
 
@@ -85,13 +85,19 @@ QWidget *HandlerView::createEditWidget() const
         QLineEdit *p_title = new QLineEdit(p_handler->getName());
         p_vert_lay->addWidget(p_title);
 
+        p_script_edit = new QPlainTextEdit(p_handler->getScript());
+        p_vert_lay->addWidget(p_script_edit);
+
         connect(
                 p_title, &QLineEdit::textChanged,
                 this, &HandlerView::onTitleChangedByUser
                );
 
-        QPlainTextEdit *p_code = new QPlainTextEdit(p_handler->getScript());
-        p_vert_lay->addWidget(p_code);
+        connect(
+                p_script_edit, &QPlainTextEdit::textChanged,
+                this, &HandlerView::onScriptChangedByUser
+               );
+
     }
 
     p_widg->setLayout(p_vert_lay);
@@ -190,6 +196,11 @@ void HandlerView::onEditButtonPressed()
 void HandlerView::onTitleChangedByUser(const QString &text)
 {
     p_handler->setName(text);
+}
+
+void HandlerView::onScriptChangedByUser()
+{
+    p_handler->setScript(p_script_edit->toPlainText());
 }
 
 void HandlerView::onReqHandlerNameChanged(const QString &text)

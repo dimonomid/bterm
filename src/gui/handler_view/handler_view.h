@@ -23,6 +23,7 @@ namespace HTCore {
 class MainWindow;
 class QDockWidget;
 class QLabel;
+class QPlainTextEdit;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -67,6 +68,7 @@ private:
 
     QWidget *p_list_item_widget;
     QLabel *p_list_item_label_name;
+    QPlainTextEdit *p_script_edit;
 
 
     /****************************************************************************
@@ -85,7 +87,7 @@ public:
 
 private:
 
-    QWidget *createEditWidget() const;
+    QWidget *createEditWidget();
     /**
      * NOTE: each time this function is called, the same widget is returned,
      * and the caller is responsible to delete it eventually.
@@ -109,6 +111,7 @@ private slots:
 
     void onEditButtonPressed();
     void onTitleChangedByUser(const QString &text);
+    void onScriptChangedByUser();
     void onReqHandlerNameChanged(const QString &text);
     //void updateListItemTitle(const QString &text);
 
