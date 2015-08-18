@@ -55,6 +55,12 @@ private:
 
    std::vector<std::shared_ptr<HandlerView>> handler_views;
 
+   static const QString SETT_KEY__MAINWINDOW;
+   static const QString SETT_KEY__MAINWINDOW__GEOMETRY;
+   static const QString SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED;
+   static const QString SETT_KEY__MAINWINDOW__MAXIMIZED;
+   static const QString SETT_KEY__MAINWINDOW__PROJ_STATE;
+
 
 
    /****************************************************************************
@@ -73,8 +79,11 @@ public:
 private:
 
    void populateWithProject(std::shared_ptr<HTCore::Project> p_project);
+   void initSettings();
 
 
+private:
+   void closeEvent(QCloseEvent *p_event) override;
 
    /****************************************************************************
     * SIGNALS, SLOTS
@@ -89,6 +98,10 @@ private slots:
    void mySaveState();
    void myRestoreState();
 
+   void saveProjectState();
+   void restoreProjectState();
+
+   QString getTagnameFromFilename(QString filename);
 };
 
 #endif // MAINWINDOW_H

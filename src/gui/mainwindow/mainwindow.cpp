@@ -14,6 +14,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "xmlsettings.h"
+
 #include "htdatamsg.h"
 
 #include "appl.h"
@@ -32,6 +34,24 @@
 
 using namespace HTCore;
 using namespace std;
+
+
+
+/*******************************************************************************
+ * STATIC DATA
+ ******************************************************************************/
+
+const QString MainWindow::SETT_KEY__MAINWINDOW = "mainwindow";
+const QString MainWindow::SETT_KEY__MAINWINDOW__GEOMETRY =
+      SETT_KEY__MAINWINDOW + "/geometry";
+const QString MainWindow::SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED =
+      SETT_KEY__MAINWINDOW + "/geometry_maximized";
+const QString MainWindow::SETT_KEY__MAINWINDOW__MAXIMIZED =
+      SETT_KEY__MAINWINDOW + "/maximized";
+const QString MainWindow::SETT_KEY__MAINWINDOW__PROJ_STATE =
+      SETT_KEY__MAINWINDOW + "/proj_state";
+
+
 
 
 MainWindow::MainWindow(
@@ -55,18 +75,9 @@ MainWindow::MainWindow(
     //   contain only a single row.
     this->setDockNestingEnabled(true);
 
-    //-- test save/restore state
-    {
-       QAction *saveStateAction = new QAction(tr("&Save State"), this);
-       connect(saveStateAction, &QAction::triggered, this, &MainWindow::mySaveState);
+    initSettings();
 
-       QAction *restoreStateAction = new QAction(tr("&Restore State"), this);
-       connect(restoreStateAction, &QAction::triggered, this, &MainWindow::myRestoreState);
-
-       QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-       fileMenu->addAction(saveStateAction);
-       fileMenu->addAction(restoreStateAction);
-    }
+    myRestoreState();
 
     //-- populate raw data dockwidget
     {
@@ -187,6 +198,15 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
    p_dw_handlers->setWidget(p_widg);
 }
 
+void MainWindow::initSettings()
+{
+   auto p_sett = appl.settings();
+   p_sett->value(SETT_KEY__MAINWINDOW__GEOMETRY, QByteArray());
+   p_sett->value(SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED, QByteArray());
+   p_sett->value(SETT_KEY__MAINWINDOW__PROJ_STATE, QByteArray());
+   p_sett->value(SETT_KEY__MAINWINDOW__MAXIMIZED, false);
+}
+
 
 
 /* public */
@@ -215,6 +235,8 @@ void MainWindow::addHandlerEditWidget(
 void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 {
    populateWithProject(p_project);
+
+   restoreProjectState();
 }
 
 void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
@@ -270,17 +292,72 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
 
 void MainWindow::mySaveState()
 {
-   QSettings settings("Test", "Test Dock Problem");
-   settings.setValue("MainWindow/State", saveState());
-   settings.setValue("MainWindow/Geometry", geometry());
+   auto p_sett = appl.settings();
+   if (!this->isMaximized()){
+      p_sett->setValue(SETT_KEY__MAINWINDOW__GEOMETRY, this->geometry());
+      p_sett->setValue(SETT_KEY__MAINWINDOW__MAXIMIZED, false);
+   } else {
+      p_sett->setValue(SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED, this->geometry());
+      p_sett->setValue(SETT_KEY__MAINWINDOW__MAXIMIZED, true);
+   }
 }
 
 void MainWindow::myRestoreState()
 {
-   QSettings settings("Test", "Test Dock Problem");
-   restoreState(settings.value("MainWindow/State").toByteArray());
-   setGeometry(settings.value("MainWindow/Geometry").toRect());
-   show();
+   auto p_sett = appl.settings();
+
+   QString geometry_key = SETT_KEY__MAINWINDOW__GEOMETRY;
+   if (p_sett->value(SETT_KEY__MAINWINDOW__MAXIMIZED).toBool()){
+      geometry_key = SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED;
+   }
+
+   QRect rect = p_sett->value(geometry_key).toRect();
+   if (rect.width() != 0 && rect.height() != 0){
+      setGeometry( rect );
+   }
+}
+
+void MainWindow::saveProjectState()
+{
+   auto p_sett = appl.settings();
+   QString proj_filename = appl.getProjectFilename();
+
+   if (!proj_filename.isEmpty()){
+      p_sett->setValue(
+            SETT_KEY__MAINWINDOW__PROJ_STATE + "/" + getTagnameFromFilename(proj_filename),
+            this->saveState()
+            );
+   }
+}
+
+void MainWindow::restoreProjectState()
+{
+   auto p_sett = appl.settings();
+   QString proj_filename = appl.getProjectFilename();
+
+   if (!proj_filename.isEmpty()){
+      QByteArray proj_state = p_sett->value(
+            SETT_KEY__MAINWINDOW__PROJ_STATE + "/" + getTagnameFromFilename(proj_filename)
+            ).toByteArray();
+
+      restoreState(proj_state);
+
+   }
+}
+
+QString MainWindow::getTagnameFromFilename(QString filename)
+{
+   QRegularExpression re {"[^a-zA-Z0-9_]"};
+   return filename.replace(re, "_");
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *p_event)
+{
+   mySaveState();
+   saveProjectState();
+
+   QMainWindow::closeEvent(p_event);
 }
 
 

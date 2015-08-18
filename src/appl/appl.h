@@ -57,6 +57,8 @@ private:
    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataRaw>> p_events_data_raw;
    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataMsg>> p_events_data_msg;
 
+   QString proj_filename;
+
    EventVisitor_Handle htevent_visitor_handle;
 
    std::unique_ptr<MainWindow>  p_main_window;
@@ -86,6 +88,11 @@ public:
     */
    std::shared_ptr<XmlSettings> settings() const { return p_sett; };
 
+   /**
+    * Returns filename of the currently opened project. If no project is opened,
+    * an empty string is returned.
+    */
+   QString getProjectFilename() const;
 
 
 private:

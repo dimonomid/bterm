@@ -60,6 +60,9 @@ Appl::Appl() :
    p_codec(nullptr),
    p_io_dev(nullptr),
    p_project(nullptr),
+
+   proj_filename(""),
+
    htevent_visitor_handle(*this),
    p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
@@ -301,8 +304,14 @@ void Appl::initSettings()
 
 void Appl::openProject(QString filename)
 {
+   auto file = std::make_shared<QFile>(filename);
+   QFileInfo fileinfo {*file};
+
    // TODO: really open project
-   std::ignore = filename;
+   proj_filename = fileinfo.absoluteFilePath();
+   this->p_sett->setValue(
+         SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
+         );
 
    p_project = std::make_shared<Project>(p_codec, p_io_dev);
 
@@ -320,6 +329,13 @@ void Appl::openProject(QString filename)
 
    emit projectOpened(p_project);
 }
+
+QString Appl::getProjectFilename() const
+{
+   return proj_filename;
+}
+
+
 
 /*******************************************************************************
  * SLOTS
