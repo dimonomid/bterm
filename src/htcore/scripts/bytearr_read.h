@@ -74,20 +74,19 @@ public:
 
    std::shared_ptr<const std::vector<uint8_t>> getData() const;
 
+   Q_INVOKABLE double getU08(unsigned int index);
+   Q_INVOKABLE double getU16(unsigned int index, int end = LITTLE_END);
+   Q_INVOKABLE double getU32(unsigned int index, int end = LITTLE_END);
+
+   Q_INVOKABLE double getS08(unsigned int index);
+   Q_INVOKABLE double getS16(unsigned int index, int end = LITTLE_END);
+   Q_INVOKABLE double getS32(unsigned int index, int end = LITTLE_END);
+
 
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
 
-public slots:
-
-   double getU08(unsigned int index);
-   double getU16(unsigned int index, int end = LITTLE_END);
-   double getU32(unsigned int index, int end = LITTLE_END);
-
-   double getS08(unsigned int index);
-   double getS16(unsigned int index, int end = LITTLE_END);
-   double getS32(unsigned int index, int end = LITTLE_END);
 
 
 

@@ -68,18 +68,16 @@ private:
     * METHODS
     ***************************************************************************/
 
+public:
+   Q_INVOKABLE void setFillByte(unsigned int fill_byte);
 
-public slots:
+   Q_INVOKABLE void putU08(unsigned int index, double val);
+   Q_INVOKABLE void putU16(unsigned int index, double val, int end = LITTLE_END);
+   Q_INVOKABLE void putU32(unsigned int index, double val, int end = LITTLE_END);
 
-   void setFillByte(unsigned int fill_byte);
-
-   void putU08(unsigned int index, double val);
-   void putU16(unsigned int index, double val, int end = LITTLE_END);
-   void putU32(unsigned int index, double val, int end = LITTLE_END);
-
-   void putS08(unsigned int index, double val);
-   void putS16(unsigned int index, double val, int end = LITTLE_END);
-   void putS32(unsigned int index, double val, int end = LITTLE_END);
+   Q_INVOKABLE void putS08(unsigned int index, double val);
+   Q_INVOKABLE void putS16(unsigned int index, double val, int end = LITTLE_END);
+   Q_INVOKABLE void putS32(unsigned int index, double val, int end = LITTLE_END);
 
 
 
