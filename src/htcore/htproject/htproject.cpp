@@ -39,7 +39,7 @@ Project::Project(
    p_codec(p_codec),
    p_io_dev(p_io_dev),
    handlers(),
-   script_ctx(p_engine->evaluate("({})"))
+   script_ctx_jsval(p_engine->evaluate("({})"))
 {
    //TODO: comment these registrations
    //
@@ -195,20 +195,20 @@ void Project::onMessageDecoded(const DataMsg &msg)
    std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
 
    //-- create an object that will be given to handlers as input message
-   QJSValue decoded_msg_jsval = p_engine->newObject();
+   QJSValue input_msg_jsval = p_engine->newObject();
 
    //-- actual input byte array
    ByteArrRead ba_in {*p_req_data};
    QJSValue ba_in_jsval = p_engine->newQObject(&ba_in);
    QQmlEngine::setObjectOwnership(&ba_in, QQmlEngine::CppOwnership);
 
-   decoded_msg_jsval.setProperty("byteArr", ba_in_jsval);
+   input_msg_jsval.setProperty("byteArr", ba_in_jsval);
 
    for (auto p_req_handler : handlers){
 
       ReqHandler::Result res = p_req_handler->handle(
-            decoded_msg_jsval,
-            script_ctx
+            input_msg_jsval,
+            script_ctx_jsval
             );
 
 

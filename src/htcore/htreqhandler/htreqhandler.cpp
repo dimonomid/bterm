@@ -79,8 +79,8 @@ void ReqHandler::setScript(QString script_func_code)
 }
 
 ReqHandler::Result ReqHandler::handle(
-      QJSValue input_msg,
-      QJSValue script_ctx
+      QJSValue input_msg_jsval,
+      QJSValue script_ctx_jsval
       )
 {
    //-- before handling, set global properties
@@ -117,8 +117,8 @@ ReqHandler::Result ReqHandler::handle(
    } else {
 
       QJSValue returned = func.callWithInstance(
-            script_ctx,
-            QJSValueList() << input_msg << ba_out_scrval
+            script_ctx_jsval,
+            QJSValueList() << input_msg_jsval << ba_out_scrval
             );
 
       if (returned.isError()){

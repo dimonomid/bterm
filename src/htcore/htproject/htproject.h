@@ -67,7 +67,7 @@ private:
    std::shared_ptr<IODev> p_io_dev;
 
    std::vector<std::shared_ptr<ReqHandler>> handlers;
-   QJSValue script_ctx;
+   QJSValue script_ctx_jsval;
 
 
    /****************************************************************************

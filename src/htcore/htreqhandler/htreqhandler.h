@@ -93,8 +93,8 @@ public:
     * TODO
     */
    Result handle(
-         QJSValue input_msg,
-         QJSValue script_ctx
+         QJSValue input_msg_jsval,
+         QJSValue script_ctx_jsval
          );
 
    Error getLastError();
