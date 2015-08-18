@@ -80,9 +80,6 @@ private slots:
    void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
    void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
 
-   void toolbarToggle(QWidget *p_widget);
-   void windowVisChanged(bool visible);
-
    void mySaveState();
    void myRestoreState();
 
