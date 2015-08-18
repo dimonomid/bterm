@@ -243,7 +243,11 @@ void Project::onMessageDecoded(const DataMsg &msg)
                     auto p_data_raw_tx = msg_tx.getRawData();
                     p_io_dev->write(*p_data_raw_tx);
 
-                    auto p_event = std::make_shared<EventDataMsg>(msg_tx, EventDataMsg::Direction::TX);
+                    auto p_event = std::make_shared<EventDataMsg>(
+                            msg_tx,
+                            EventDataMsg::Direction::TX,
+                            p_req_handler
+                            );
                     emit (eventDataMsg(p_event));
                 }
 #if 0

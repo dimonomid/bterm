@@ -21,9 +21,15 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-EventDataMsg::EventDataMsg(const DataMsg &msg, Direction dir) :
+EventDataMsg::EventDataMsg(
+        const DataMsg &msg,
+        Direction dir,
+        std::shared_ptr<ReqHandler> p_handler
+        )
+    :
     msg(msg),
-    dir(dir)
+    dir(dir),
+    p_handler(p_handler)
 {
 }
 
@@ -59,6 +65,12 @@ EventDataMsg::Direction EventDataMsg::getDir() const
 {
     return dir;
 }
+
+std::shared_ptr<ReqHandler> EventDataMsg::getHandler() const
+{
+    return p_handler;
+}
+
 
 void EventDataMsg::accept(EventVisitor &visitor)
 {

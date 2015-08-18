@@ -22,6 +22,7 @@
 
 namespace HTCore {
     class EventDataMsg;
+    class ReqHandler;
 }
 
 
@@ -44,7 +45,16 @@ public:
      ***************************************************************************/
 public:
 
-    EventDataMsg(const DataMsg &msg, Direction dir);
+    /**
+     * @param p_handler
+     *      Used if only dir == Direction::TX. Represents a handler that
+     *      generated a message.
+     */
+    EventDataMsg(
+            const DataMsg &msg,
+            Direction dir,
+            std::shared_ptr<HTCore::ReqHandler> p_handler = nullptr
+            );
 
 
     /****************************************************************************
@@ -54,6 +64,7 @@ private:
 
     DataMsg msg;
     Direction dir;
+    std::shared_ptr<ReqHandler> p_handler;
 
 
     /****************************************************************************
@@ -67,6 +78,7 @@ public:
 
     const DataMsg getMsg() const;
     Direction getDir() const;
+    std::shared_ptr<ReqHandler> getHandler() const;
 
     virtual void accept(EventVisitor &visitor) override;
 

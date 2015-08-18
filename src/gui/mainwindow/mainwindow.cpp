@@ -410,12 +410,14 @@ void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
 {
     QString dir_text = "";
+    QString handler_text = "";
     QString color = "black";
 
     switch (event_data_msg->getDir()){
         case EventDataMsg::Direction::TX:
             dir_text = "Tx";
             color = "blue";
+            handler_text = " (" + event_data_msg->getHandler()->getName() + ")";
             break;
         case EventDataMsg::Direction::RX:
             dir_text = "Rx";
@@ -425,7 +427,7 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
             break;
     }
 
-    QString text = "<font color='" + color + "'><b>msg " + dir_text + ":</b> " + MyUtil::byteArrayToHex(
+    QString text = "<font color='" + color + "'><b>msg " + dir_text + ":</b>" + handler_text + " " + MyUtil::byteArrayToHex(
             *event_data_msg->getMsg().getUserData()
             ) + "</font><br>";
 
