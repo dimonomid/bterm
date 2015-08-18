@@ -7,11 +7,14 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QDebug>
+
 #include <QWidget>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QPlainTextEdit>
+#include <QLineEdit>
 #include <QDockWidget>
 
 #include "handler_view.h"
@@ -73,6 +76,14 @@ QWidget *HandlerView::createEditWidget() const
     QBoxLayout *p_vert_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
     {
+        QLineEdit *p_title = new QLineEdit(p_handler->getName());
+        p_vert_lay->addWidget(p_title);
+
+        connect(
+                p_title, &QLineEdit::textChanged,
+                this, &HandlerView::onTitleChanged
+               );
+
         QPlainTextEdit *p_code = new QPlainTextEdit(p_handler->getScript());
         p_vert_lay->addWidget(p_code);
     }
@@ -155,6 +166,11 @@ void HandlerView::onEditButtonPressed()
             p_edit_widg
             );
 #endif
+}
+
+void HandlerView::onTitleChanged(const QString &text)
+{
+    p_handler->setName(text);
 }
 
 

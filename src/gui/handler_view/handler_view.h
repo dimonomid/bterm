@@ -100,6 +100,7 @@ private:
 private slots:
 
     void onEditButtonPressed();
+    void onTitleChanged(const QString &text);
 
 
 
