@@ -5,6 +5,8 @@
 #include <QSettings>
 #include <QMenu>
 #include <QSignalMapper>
+#include <QDockWidget>
+#include <QBoxLayout>
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -41,6 +43,7 @@ MainWindow::MainWindow(
     appl(appl),
     windows_toggle_sigmap(this),
     p_raw_data_pte(new QPlainTextEdit_My(NULL)),
+    p_log_pte(new QPlainTextEdit_My(NULL)),
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
     handler_views()
@@ -70,6 +73,15 @@ MainWindow::MainWindow(
        p_dw_raw_data->setWidget(p_widg);
     }
 
+    //-- populate central widget (with log)
+    {
+       QWidget *p_widg = new QWidget();
+       QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
+       p_lay->addWidget(p_log_pte);
+
+       p_widg->setLayout(p_lay);
+       setCentralWidget(p_widg);
+    }
 
     addDockWidget(Qt::LeftDockWidgetArea, p_dw_raw_data);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
@@ -237,7 +249,8 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
          *event_data_msg->getMsg().getUserData()
          ) + "</font><br>";
 
-   this->ui->pte_messages->appendHtmlNoNL(text, true);
+   //this->ui->pte_messages->appendHtmlNoNL(text, true);
+   this->p_log_pte->appendHtmlNoNL(text, true);
 
 
 #if 0

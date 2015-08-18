@@ -48,6 +48,7 @@ private:
 
 
    QPlainTextEdit_My   *p_raw_data_pte;
+   QPlainTextEdit_My   *p_log_pte;
 
    QDockWidget      *p_dw_raw_data;
    QDockWidget      *p_dw_handlers;
