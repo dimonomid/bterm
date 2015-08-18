@@ -33,7 +33,7 @@ let g:indexer_ctagsCommandLineOptions = '--c++-kinds=+p+l --c-kinds=+l --fields=
 " инклудить ui-файлы. Эти ui_xxx.h файлы размещаются как раз в
 " build-директории.
 let s:sProjectName = 'dterminal_qt'
-let s:sBuildPath = $INDEXER_PROJECT_ROOT.'/../build-hterm-Desktop_Qt_5_4_1_GCC_32bit-Debug'
+let s:sBuildPath = $INDEXER_PROJECT_ROOT.'/../build-hterm-Desktop_Qt_5_5_0_GCC_32bit-Debug'
 
 if isdirectory(s:sBuildPath)
    let s:o_dir = s:sBuildPath.'/compiled_in_vim'

@@ -24,6 +24,8 @@
 #include "htevent_visitor_handle.h"
 
 
+class XmlSettings;
+
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
@@ -48,6 +50,7 @@ public:
     ***************************************************************************/
 private:
 
+   std::shared_ptr<XmlSettings> p_sett;
    std::shared_ptr<HTCore::Codec> p_codec;
    std::shared_ptr<HTCore::IODev> p_io_dev;
    std::shared_ptr<HTCore::Project> p_project;
@@ -58,6 +61,10 @@ private:
 
    std::unique_ptr<MainWindow>  p_main_window;
 
+
+
+   static const QString SETT_KEY__APPL;
+   static const QString SETT_KEY__APPL__LAST_PROJECT_FILENAME;
 
 
    /****************************************************************************
@@ -73,6 +80,18 @@ public:
     * Open project from XML file
     */
    void openProject(QString filename);
+
+   /**
+    * Returns pointer to settings instance
+    */
+   std::shared_ptr<XmlSettings> settings() const { return p_sett; };
+
+
+
+private:
+
+   void initSettings();
+
 
 
    /****************************************************************************

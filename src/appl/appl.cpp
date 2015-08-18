@@ -12,6 +12,7 @@
 
 
 #include "appl.h"
+#include "xmlsettings.h"
 
 #include "htcodec.h"
 #include "htcodec_iso14230.h"
@@ -41,16 +42,28 @@ using namespace HTCore;
 using namespace std;
 
 /*******************************************************************************
+ * STATIC DATA
+ ******************************************************************************/
+
+const QString Appl::SETT_KEY__APPL = "appl";
+const QString Appl::SETT_KEY__APPL__LAST_PROJECT_FILENAME =
+SETT_KEY__APPL + "/last_project_filename";
+
+
+
+/*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
 Appl::Appl() :
+   p_sett(std::make_shared<XmlSettings>("hterm_sett.xml")),
    p_codec(nullptr),
    p_io_dev(nullptr),
    p_project(nullptr),
    htevent_visitor_handle(*this),
    p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
+   initSettings();
 
    p_io_dev = std::make_shared<IODevDbg>();
    p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
@@ -274,6 +287,13 @@ Appl::~Appl()
  ******************************************************************************/
 
 /* private      */
+
+void Appl::initSettings()
+{
+   this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME,  "");
+}
+
+
 
 /* protected    */
 

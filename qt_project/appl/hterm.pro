@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,6 +23,7 @@ SOURCES += ../../src/main.cpp \
     ../../src/gui/widgets/qplaintextedit_my.cpp \
     ../../src/appl/htiodev/htiodev_dbg.cpp \
     ../../src/gui/handler_view/handler_view.cpp \
+    ../../src/util/xmlsettings/xmlsettings.cpp \
 
 
 HEADERS += ../../src/gui/mainwindow/mainwindow.h \ 
@@ -32,6 +33,7 @@ HEADERS += ../../src/gui/mainwindow/mainwindow.h \
     ../../src/gui/widgets/qplaintextedit_my.h \
     ../../src/appl/htiodev/htiodev_dbg.h \
     ../../src/gui/handler_view/handler_view.h \
+    ../../src/util/xmlsettings/xmlsettings.h \
 
 
 FORMS    += \
@@ -45,5 +47,6 @@ INCLUDEPATH += \
     ../../src/util \
     ../../src/gui/widgets \
     ../../src/gui/handler_view \
+    ../../src/util/xmlsettings \
 
 
