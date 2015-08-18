@@ -1,30 +1,23 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
-#ifndef _HTPROJECT_H
-#define _HTPROJECT_H
+#ifndef _HTCODEC_H
+#define _HTCODEC_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <memory>
+#include <cstdint>
 
 #include <QObject>
+#include "htdatamsg.h"
 
-#include "htiodev.h"
-#include "htcodec.h"
-#include "htreqhandler.h"
-
+#include <vector>
 
 
-namespace HTCore {
-   class EventDataRaw;
-   class EventDataMsg;
-   class DataMsg;
-}
 
 class QJSEngine;
 
@@ -33,13 +26,15 @@ class QJSEngine;
  ******************************************************************************/
 
 namespace HTCore {
-   class Project;
+   class Codec;
 }
 
-
-class HTCore::Project : public QObject
+/**
+ * TODO
+ */
+class HTCore::Codec : public QObject
 {
-   Q_OBJECT;
+Q_OBJECT
 
    /****************************************************************************
     * TYPES
@@ -49,12 +44,10 @@ class HTCore::Project : public QObject
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit Project(
-         std::shared_ptr<Codec> p_codec,
-         std::shared_ptr<IODev> p_io_dev
-         );
+   Codec(
+         std::shared_ptr<QJSEngine> p_engine
+        );
 
-   virtual ~Project();
 
    /****************************************************************************
     * PRIVATE DATA
@@ -62,12 +55,7 @@ public:
 private:
 
    std::shared_ptr<QJSEngine> p_engine;
-
-   std::shared_ptr<Codec> p_codec;
-   std::shared_ptr<IODev> p_io_dev;
-
-   std::vector<std::shared_ptr<ReqHandler>> handlers;
-   QJSValue script_ctx;
+   QJSValue codec_js;
 
 
    /****************************************************************************
@@ -78,25 +66,21 @@ private:
     * METHODS
     ***************************************************************************/
 public:
-
-   std::shared_ptr<ReqHandler> getHandler(size_t index);
-   size_t getHandlersCnt() const;
-
+   void     addRawRxData   (const std::vector<uint8_t> &data);
+   void     clearRawRxData ();
+   DataMsg  encodeMessage  (const std::vector<uint8_t> &data) const;
 
 
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+
 signals:
-   void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
-   void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
-
-private slots:
-   void onDataSrcReadyRead(int bytes_available);
-   void onMessageDecoded(const DataMsg &msg);
-
+   void messageDecoded(const DataMsg &msg);
+   //void curMessageChanged(const DTMsg &msg);
+   //void invalidDataDetected(const QByteArray &data);
 
 };
 
 
-#endif // _HTPROJECT_H
+#endif // _HTCODEC_H

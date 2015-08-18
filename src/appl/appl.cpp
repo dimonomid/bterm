@@ -14,7 +14,7 @@
 #include "appl.h"
 
 #include "htcodec.h"
-//#include "htcodec_iso14230.h"
+#include "htcodec_iso14230.h"
 
 #include "htiodev.h"
 #include "htiodev_dbg.h"
@@ -45,7 +45,7 @@ using namespace std;
  ******************************************************************************/
 
 Appl::Appl() :
-   //p_codec(nullptr),
+   p_codec(nullptr),
    p_io_dev(nullptr),
    p_project(nullptr),
    htevent_visitor_handle(*this),
@@ -53,7 +53,7 @@ Appl::Appl() :
 {
 
    p_io_dev = std::make_shared<IODevDbg>();
-   //p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
+   p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
 
    p_events_data_raw = std::unique_ptr<EventsAcc<EventDataRaw>>{
       new EventsAcc<EventDataRaw>(1000/*TODO: settings*/)
@@ -284,7 +284,7 @@ void Appl::openProject(QString filename)
    // TODO: really open project
    std::ignore = filename;
 
-   p_project = std::make_shared<Project>(/*p_codec, */p_io_dev);
+   p_project = std::make_shared<Project>(p_codec, p_io_dev);
 
    connect(
          p_project.get(), &Project::eventDataRaw,

@@ -8,6 +8,7 @@
  ******************************************************************************/
 
 #include <QDebug>
+#include <QtQml>
 #include <QJSEngine>
 #include <QJSValue>
 
@@ -20,6 +21,7 @@
 #include "my_util.h"
 
 #include "bytearr_read.h"
+#include "bytearr_read_write.h"
 
 
 using namespace HTCore;
@@ -30,15 +32,20 @@ using namespace std;
  ******************************************************************************/
 
 Project::Project(
+      std::shared_ptr<Codec> p_codec,
       std::shared_ptr<IODev> p_io_dev
       ) :
    p_engine(std::make_shared<QJSEngine>()),
-   p_codec(std::make_shared<Codec>(p_engine)),
+   p_codec(p_codec),
    p_io_dev(p_io_dev),
    handlers(),
    script_ctx(p_engine->evaluate("({})"))
 {
-   qmlRegisterType<ByteArrRead>     ("", 1, 0, "ByteArrRead");
+   //TODO: comment these registrations
+   //
+   //   It seems, we register ByteArrRead as non-instantiable type,
+   //   and ByteArrReadWrite as instantiable
+   qmlRegisterType<ByteArrRead>     ();
    qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
 
    connect(
