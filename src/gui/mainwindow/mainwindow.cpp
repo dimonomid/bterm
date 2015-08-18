@@ -16,6 +16,7 @@
 #include <QSignalMapper>
 #include <QDockWidget>
 #include <QBoxLayout>
+#include <QTimer>
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -79,7 +80,8 @@ MainWindow::MainWindow(
     p_log_pte(new QPlainTextEdit_My(NULL)),
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
-    handler_views()
+    handler_views(),
+    need_to_restore_non_maximized_geometry(false)
 {
     ui->setupUi(this);
 
@@ -200,6 +202,52 @@ void MainWindow::addHandlerEditWidget(
     addDockWidget(Qt::TopDockWidgetArea, p_dw);
 }
 #endif
+
+void MainWindow::showInRestoredState()
+{
+    auto p_sett = appl.settings();
+    if (p_sett->value(SETT_KEY__MAINWINDOW__MAXIMIZED).toBool()){
+        this->showMaximized();
+
+        //-- because window is actually shown later (when the command
+        //   is dispatched from the queue), we need to set flag
+        //   not right now, but later.
+        QTimer::singleShot(
+                100 /* ms */,
+                [this](){ need_to_restore_non_maximized_geometry = true; }
+                );
+    } else {
+        show();
+    }
+}
+
+bool MainWindow::event(QEvent *e)
+{
+    bool ret = QMainWindow::event(e);
+
+    if (e->type() == QEvent::WindowStateChange){
+        //-- window was just maximized or minimized.
+        //   If it is minimized, then we should restore geometry that window
+        //   had last time when it was minimized.
+        //
+        //   All this mess is needed because size of central widget (the log)
+        //   is not saved as part of the state, and when we restore
+        //   maximized window, we should set the geometry to occupy the whole
+        //   screen.
+
+        auto p_sett = appl.settings();
+        if (!isMaximized() && need_to_restore_non_maximized_geometry){
+            QRect rect = p_sett->value(SETT_KEY__MAINWINDOW__GEOMETRY).toRect();
+            if (rect.width() != 0 && rect.height() != 0){
+                setGeometry( rect );
+            }
+            need_to_restore_non_maximized_geometry = false;
+        }
+
+    }
+
+    return ret;
+}
 
 
 

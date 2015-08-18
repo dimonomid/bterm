@@ -265,7 +265,7 @@ qDebug() << "test: " << myCodec.property("getTest").call().toString();
 
     openProject("dummy");
 
-    this->p_main_window->show();
+    this->p_main_window->showInRestoredState();
 
 }
 

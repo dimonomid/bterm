@@ -92,6 +92,18 @@ private:
 
     std::vector<std::shared_ptr<HandlerView>> handler_views;
 
+
+
+    //-- A hack that is needed for the case when application was closed in
+    //   maximized state. When it is reopened, in order for central widget
+    //   to have the same geometry as it had before, we need to set geometry
+    //   of window for the whole screen. But, when window is unmaximized,
+    //   we need to restore actual non-maximized geometry.
+    //
+    //   See usage in mainwindow.cpp
+    bool need_to_restore_non_maximized_geometry;
+
+
     static const QString SETT_KEY__MAINWINDOW;
     static const QString SETT_KEY__MAINWINDOW__GEOMETRY;
     static const QString SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED;
@@ -117,6 +129,12 @@ public:
             );
 #endif
 
+    /**
+     * if last state was maximized, then calls `showMaximized()`,
+     * otherwise, calls `show()`.
+     */
+    void showInRestoredState();
+    bool event(QEvent *e) override;
 
 
 private:
