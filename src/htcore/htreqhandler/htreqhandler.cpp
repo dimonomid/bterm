@@ -7,6 +7,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QtQml>
 #include <QJSEngine>
 #include <QJSValue>
 #include <QVariant>
@@ -97,7 +98,11 @@ ReqHandler::Result ReqHandler::handle(
    p_response = std::make_shared<ByteArrReadWrite>();
 
    QJSValue ba_in_scrval = p_engine->newQObject(&ba_in);
+   QQmlEngine::setObjectOwnership(&ba_in, QQmlEngine::CppOwnership);
+
    QJSValue ba_out_scrval = p_engine->newQObject(p_response.get());
+   QQmlEngine::setObjectOwnership(p_response.get(), QQmlEngine::CppOwnership);
+
 
    QJSValue func = p_engine->evaluate(script_func_code);
 
