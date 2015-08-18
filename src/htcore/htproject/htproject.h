@@ -39,57 +39,57 @@ namespace HTCore {
 
 class HTCore::Project : public QObject
 {
-Q_OBJECT;
+Q_OBJECT
 
     /****************************************************************************
      * TYPES
      ***************************************************************************/
 
-/****************************************************************************
- * CONSTRUCTOR, DESTRUCTOR
- ***************************************************************************/
+    /****************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR
+     ***************************************************************************/
 public:
-explicit Project(
-        std::shared_ptr<Codec> p_codec,
-        std::shared_ptr<IODev> p_io_dev
-        );
+    explicit Project(
+            std::shared_ptr<Codec> p_codec,
+            std::shared_ptr<IODev> p_io_dev
+            );
 
-virtual ~Project();
+    virtual ~Project();
 
-/****************************************************************************
- * PRIVATE DATA
- ***************************************************************************/
+    /****************************************************************************
+     * PRIVATE DATA
+     ***************************************************************************/
 private:
 
-std::shared_ptr<QJSEngine> p_engine;
+    std::shared_ptr<QJSEngine> p_engine;
 
-std::shared_ptr<Codec> p_codec;
-std::shared_ptr<IODev> p_io_dev;
+    std::shared_ptr<Codec> p_codec;
+    std::shared_ptr<IODev> p_io_dev;
 
-std::vector<std::shared_ptr<ReqHandler>> handlers;
-QJSValue script_ctx_jsval;
+    std::vector<std::shared_ptr<ReqHandler>> handlers;
+    QJSValue script_ctx_jsval;
 
 
-/****************************************************************************
- * STATIC METHODS
- ***************************************************************************/
+    /****************************************************************************
+     * STATIC METHODS
+     ***************************************************************************/
 
-/****************************************************************************
- * METHODS
- ***************************************************************************/
+    /****************************************************************************
+     * METHODS
+     ***************************************************************************/
 public:
 
-std::shared_ptr<ReqHandler> getHandler(size_t index);
-size_t getHandlersCnt() const;
+    std::shared_ptr<ReqHandler> getHandler(size_t index);
+    size_t getHandlersCnt() const;
 
 
 
-/****************************************************************************
- * SIGNALS, SLOTS
- ***************************************************************************/
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 signals:
-void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
-void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
+    void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
+    void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
 
 private slots:
     void onDataSrcReadyRead(int bytes_available);
