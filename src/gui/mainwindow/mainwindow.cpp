@@ -212,23 +212,28 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
 
-    //-- iterate all handlers: for each of them, add a row in the handlers view,
-    //   and create (hidden) dockwidget
+    //-- iterate all handlers: 
+    //   for each of them, create the view and display it:
+    //   add a row in the handlers view, and create (hidden) dockwidget
     for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
 
+        //-- create view
         auto p_handler_view = make_shared<HandlerView>(*this, p_project->getHandler(i));
-        QWidget *p_cur_widg = p_handler_view->createListItemWidget();
 
+        //-- create row view
+        QWidget *p_cur_widg = p_handler_view->createListItemWidget();
         p_lay->addWidget(p_cur_widg);
+
+        //-- create and add hidden dockwidget
         {
             QDockWidget *p_dock = p_handler_view->getEditDockWidget();
             addDockWidget(Qt::TopDockWidgetArea, p_dock);
             p_dock->hide();
         }
 
+        //-- store the handler in the vector
         handler_views.push_back(p_handler_view);
     }
-
 
 
     p_widg->setLayout(p_lay);
