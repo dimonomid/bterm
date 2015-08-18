@@ -64,7 +64,7 @@ Appl::Appl() :
    };
 
 
-#if 1
+#if 0
    {
       qmlRegisterType<ByteArrReadWrite>("test", 1, 0, "ByteArrReadWrite");
 
