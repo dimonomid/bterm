@@ -263,9 +263,9 @@ qDebug() << "test: " << myCodec.property("getTest").call().toString();
 #endif
 
 
-openProject("dummy");
+    openProject("dummy");
 
-this->p_main_window->show();
+    this->p_main_window->show();
 
 }
 
