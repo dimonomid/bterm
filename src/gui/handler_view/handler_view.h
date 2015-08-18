@@ -19,8 +19,10 @@ namespace HTCore {
     class ReqHandler;
 }
 
+
 class MainWindow;
 class QDockWidget;
+class QLabel;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -63,6 +65,9 @@ private:
     //   for the same reason: Qt doesn't delete it.
     std::shared_ptr<QDockWidget> p_dock;
 
+    QWidget *p_list_item_widget;
+    QLabel *p_list_item_label_name;
+
 
     /****************************************************************************
      * STATIC METHODS
@@ -73,23 +78,26 @@ private:
      ***************************************************************************/
 public:
 
-    /**
-     * NOTE: each time this function is called, new widget is created, and the
-     * caller is responsible to delete it eventually.
-     *
-     * Usually it is done just by adding widget to some other widget as a child,
-     * so that Qt will take care of all this.
-     *
-     * We don't
-     */
-    QWidget *createListItemWidget() const;
     QDockWidget *getEditDockWidget() const;
+    QWidget *getListItemWidget();
 
 
 
 private:
 
     QWidget *createEditWidget() const;
+    /**
+     * NOTE: each time this function is called, the same widget is returned,
+     * and the caller is responsible to delete it eventually.
+     *
+     * Widget will be actually created at the first call, so if this method
+     * never called, then widget is not created at all.
+     */
+    QWidget *createListItemWidget();
+    //void applyReqName();
+
+    QString getEditDockWidgetTitle() const;
+    QString getListItemWidgetTitle() const;
 
 
 
@@ -100,7 +108,9 @@ private:
 private slots:
 
     void onEditButtonPressed();
-    void onTitleChanged(const QString &text);
+    void onTitleChangedByUser(const QString &text);
+    void onReqHandlerNameChanged(const QString &text);
+    //void updateListItemTitle(const QString &text);
 
 
 

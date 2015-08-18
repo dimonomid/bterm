@@ -325,6 +325,12 @@ void Appl::openProject(QString filename)
             this, &Appl::onNewDataMsg
            );
 
+    //-- just forward reqHandlerNameChanged() signal
+    connect(
+            p_project.get(), &Project::reqHandlerNameChanged,
+            this, &Appl::reqHandlerNameChanged
+           );
+
 
 
     emit projectOpened(p_project);
@@ -363,6 +369,16 @@ void Appl::onNewDataMsg(std::shared_ptr<EventDataMsg> p_event)
 
     emit eventDataMsg(p_event);
 }
+
+#if 0
+void Appl::onHandlerNameChanged(
+        const ReqHandler *p_handler,
+        const QString &name
+        )
+{
+    emit eventDataMsg(p_event);
+}
+#endif
 
 
 

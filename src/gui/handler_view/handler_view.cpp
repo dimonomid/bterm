@@ -36,17 +36,23 @@ HandlerView::HandlerView(
         ) :
     mainwindow(mainwindow),
     p_handler(p_handler),
-    p_dock()
+    p_dock(),
+    p_list_item_widget(nullptr)
 {
 
 
     //-- setup edit dockwidget
     {
         QWidget *p_edit_widg = createEditWidget();
-        p_dock = make_shared<QDockWidget>("Handler " + p_handler->getName());
+        p_dock = make_shared<QDockWidget>(getEditDockWidgetTitle());
         //TODO: probably use some unique key instead of human-readable name
         p_dock->setObjectName("handler: " + p_handler->getName());
         p_dock->setWidget(p_edit_widg);
+
+        connect(
+                p_handler.get(), &HTCore::ReqHandler::nameChanged,
+                this, &HandlerView::onReqHandlerNameChanged
+               );
     }
 }
 
@@ -81,7 +87,7 @@ QWidget *HandlerView::createEditWidget() const
 
         connect(
                 p_title, &QLineEdit::textChanged,
-                this, &HandlerView::onTitleChanged
+                this, &HandlerView::onTitleChangedByUser
                );
 
         QPlainTextEdit *p_code = new QPlainTextEdit(p_handler->getScript());
@@ -93,19 +99,15 @@ QWidget *HandlerView::createEditWidget() const
     return p_widg;
 }
 
-/* protected    */
-
-/* public       */
-
-QWidget *HandlerView::createListItemWidget() const
+QWidget *HandlerView::createListItemWidget()
 {
     QWidget *p_widg = new QWidget();
 
     QBoxLayout *p_vert_lay = new QBoxLayout(QBoxLayout::LeftToRight);
 
     {
-        QLabel *p_label = new QLabel("Handler: " + p_handler->getName());
-        p_vert_lay->addWidget(p_label);
+        p_list_item_label_name = new QLabel(getListItemWidgetTitle());
+        p_vert_lay->addWidget(p_list_item_label_name);
     }
 
     {
@@ -118,23 +120,40 @@ QWidget *HandlerView::createListItemWidget() const
                );
     }
 
-    //TODO: make button like "edit", and when it's pressed, new dock widget
-    //      should be created.
-    //
-    //      Need to think how to account these dock widgets: the GUI
-    //      should be prepared to handle event when scripts are changed
-    //      from outside (although it is not going to happen, but anyway)
-#if 0
-    {
-        QPlainTextEdit *p_code = new QPlainTextEdit(p_handler->getScript());
-        p_vert_lay->addWidget(p_code);
-        p_code->setHidden(true);
-    }
-#endif
-
     p_widg->setLayout(p_vert_lay);
 
     return p_widg;
+}
+
+#if 0
+void HandlerView::applyReqName()
+{
+    p_dock->setWindowTitle("Handler " + p_handler->getName());
+}
+#endif
+
+QString HandlerView::getEditDockWidgetTitle() const
+{
+    return "Handler #x: " + p_handler->getName();
+}
+
+QString HandlerView::getListItemWidgetTitle() const
+{
+    return p_handler->getName();
+}
+
+
+/* protected    */
+
+/* public       */
+
+QWidget *HandlerView::getListItemWidget()
+{
+    if (p_list_item_widget == nullptr){
+        p_list_item_widget = createListItemWidget();
+    }
+
+    return p_list_item_widget;
 }
 
 QDockWidget *HandlerView::getEditDockWidget() const
@@ -168,9 +187,17 @@ void HandlerView::onEditButtonPressed()
 #endif
 }
 
-void HandlerView::onTitleChanged(const QString &text)
+void HandlerView::onTitleChangedByUser(const QString &text)
 {
     p_handler->setName(text);
+}
+
+void HandlerView::onReqHandlerNameChanged(const QString &text)
+{
+    std::ignore = text;
+
+    p_dock->setWindowTitle(getEditDockWidgetTitle());
+    p_list_item_label_name->setText(getListItemWidgetTitle());
 }
 
 

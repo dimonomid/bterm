@@ -97,6 +97,10 @@ signals:
     void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
     void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
 
+    void reqHandlerNameChanged(const ReqHandler *p_handler, const QString &name);
+
+
+
 private slots:
     void onDataSrcReadyRead(int bytes_available);
     void onMessageDecoded(const DataMsg &msg);

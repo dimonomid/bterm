@@ -270,7 +270,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
 void Project::onReqHandlerNameChanged(const QString &name)
 {
     ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
-    qDebug() << name;
+    emit reqHandlerNameChanged(p_handler, name);
 }
 
 

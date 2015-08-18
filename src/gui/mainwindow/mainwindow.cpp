@@ -8,6 +8,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QDebug>
 #include <QString>
 
 #include <QAction>
@@ -270,7 +271,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
         auto p_handler_view = make_shared<HandlerView>(*this, p_project->getHandler(i));
 
         //-- create row view
-        QWidget *p_cur_widg = p_handler_view->createListItemWidget();
+        QWidget *p_cur_widg = p_handler_view->getListItemWidget();
         p_lay->addWidget(p_cur_widg);
 
         //-- create and add hidden dockwidget
@@ -439,7 +440,6 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
     cursor.movePosition(QTextCursor::End);
 #endif
 }
-
 
 
 

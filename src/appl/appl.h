@@ -108,7 +108,8 @@ private slots:
 
     //void onEvent(const std::shared_ptr<Event> &);
     void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> p_event);
-void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> p_event);
+    void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> p_event);
+    //void onHandlerNameChanged(const ReqHandler *p_handler, const QString &name);
 
 
 signals:
@@ -120,6 +121,10 @@ signals:
      */
     void projectOpened(std::shared_ptr<HTCore::Project> p_project);
 
+    void reqHandlerNameChanged(
+            const HTCore::ReqHandler *p_handler,
+            const QString &name
+            );
 };
 
 

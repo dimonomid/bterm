@@ -164,8 +164,8 @@ private slots:
 
     void onProjectOpened(std::shared_ptr<HTCore::Project> p_project);
 
-void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
-void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
+    void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
+    void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
 
 };
 
