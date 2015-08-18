@@ -3,18 +3,14 @@
  *
  ******************************************************************************/
 
-#ifndef _BYTEARR_READ_H
-#define _BYTEARR_READ_H
+#ifndef _BYTEARR_FACTORY_H
+#define _BYTEARR_FACTORY_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <QObject>
-
-#include <memory>
-#include <vector>
-#include <cstdint>
+#include "bytearr_read_write.h"
 
 
 /*******************************************************************************
@@ -22,45 +18,29 @@
  ******************************************************************************/
 
 namespace HTCore {
-   class ByteArrRead;
+   class ByteArrFactory;
 }
 
-/*
- * TODO: implement the fill byte
- *       implement unit tests
- */
 
 /**
  * TODO
  */
-class HTCore::ByteArrRead : public QObject
+class HTCore::ByteArrFactory : public QObject
 {
 Q_OBJECT
    /****************************************************************************
     * TYPES
     ***************************************************************************/
 
-public:
-   enum Endianness {
-      LITTLE_END,
-      BIG_END
-   };
-
    /****************************************************************************
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-   explicit ByteArrRead(const std::vector<uint8_t> &data);
-
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
-protected:
-
-   std::shared_ptr<std::vector<uint8_t>> p_data;
-
-
+private:
 
    /****************************************************************************
     * STATIC METHODS
@@ -70,32 +50,14 @@ protected:
     * METHODS
     ***************************************************************************/
 
-public:
-
-   std::shared_ptr<const std::vector<uint8_t>> getData() const;
-
-
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
-
 public slots:
 
-   double getU08(unsigned int index);
-   double getU16(unsigned int index, int end = LITTLE_END);
-   double getU32(unsigned int index, int end = LITTLE_END);
-
-   double getS08(unsigned int index);
-   double getS16(unsigned int index, int end = LITTLE_END);
-   double getS32(unsigned int index, int end = LITTLE_END);
-
-
-
-   /****************************************************************************
-    * SIGNALS, SLOTS
-    ***************************************************************************/
+   HTCore::ByteArrReadWrite *createByteArrReadWrite();
 
 };
 
 
-#endif // _BYTEARR_READ_H
+#endif // _BYTEARR_FACTORY_H

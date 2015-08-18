@@ -27,12 +27,14 @@
 
 
 //TODO: remove
+#include <QtQml>
 #include <QJSEngine>
 #include <QJSValue>
 #include <QVariant>
 #include <QDebug>
 #include "bytearr_read.h"
 #include "bytearr_read_write.h"
+#include "bytearr_factory.h"
 #include "my_util.h"
 
 using namespace HTCore;
@@ -63,6 +65,42 @@ Appl::Appl() :
 
 
 #if 1
+   {
+      qmlRegisterType<ByteArrReadWrite>("test", 1, 0, "ByteArrReadWrite");
+
+
+      QJSEngine engine;
+
+      ByteArrFactory ba_factory {};
+      QJSValue ba_factory_jsval = engine.newQObject(&ba_factory);
+
+      QJSValue func = engine.evaluate(
+            R"(
+
+         (function(baFactory) {
+
+          var ba = baFactory.createByteArrReadWrite();
+          ba.putU08(2, 0x08);
+
+          return ba;
+
+         });
+
+         )"
+            );
+
+      qDebug() << "func: " << func.toString();
+
+      QJSValue ba_jsval = func.call(
+            QJSValueList() << ba_factory_jsval
+            );
+
+      qDebug() << "isQObject: " << ba_jsval.isQObject();
+      qDebug() << "toString: " << ba_jsval.toString();
+   }
+#endif
+
+#if 0
    {
       QJSEngine engine;
 
@@ -106,8 +144,6 @@ Appl::Appl() :
                QJSValueList() << (double)1
                );
          qDebug() << "test: " << myCodec.property("getTest").call().toString();
-
-      qDebug() << "t1: " << myCodec.property("feedRawData").toString();
    }
 #endif
 
