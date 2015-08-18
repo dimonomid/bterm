@@ -84,6 +84,12 @@ public:
 
 
 
+private:
+
+    void addHandler(std::shared_ptr<ReqHandler> p_handler);
+
+
+
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
@@ -94,6 +100,8 @@ signals:
 private slots:
     void onDataSrcReadyRead(int bytes_available);
     void onMessageDecoded(const DataMsg &msg);
+
+    void onReqHandlerNameChanged(const QString &name);
 
 
 };

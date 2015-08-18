@@ -32,8 +32,9 @@ namespace HTCore {
  * Response generator
  * TODO
  */
-class HTCore::ReqHandler
+class HTCore::ReqHandler : public QObject
 {
+Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
@@ -113,6 +114,10 @@ public:
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
+
+signals:
+
+    void nameChanged(const QString &name);
 
 };
 

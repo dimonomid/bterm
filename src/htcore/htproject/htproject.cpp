@@ -58,7 +58,7 @@ Project::Project(
             this, &Project::onMessageDecoded
            );
 
-    handlers.push_back(
+    addHandler(
             make_shared<ReqHandler>(
                 "handler 1",
                 p_engine,
@@ -78,7 +78,7 @@ Project::Project(
                 )
             );
 
-    handlers.push_back(
+    addHandler(
             make_shared<ReqHandler>(
                 "handler 2",
                 p_engine,
@@ -100,7 +100,7 @@ Project::Project(
                 )
             );
 
-    handlers.push_back(
+    addHandler(
             make_shared<ReqHandler>(
                 "handler 3",
                 p_engine,
@@ -144,6 +144,16 @@ Project::~Project()
 
 /* private      */
 
+void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
+{
+    handlers.push_back(p_handler);
+    connect(
+            p_handler.get(), &ReqHandler::nameChanged,
+            this, &Project::onReqHandlerNameChanged
+           );
+}
+
+
 /* protected    */
 
 /* public       */
@@ -157,7 +167,6 @@ size_t Project::getHandlersCnt() const
 {
     return handlers.size();
 }
-
 
 /*******************************************************************************
  * SLOTS
@@ -256,6 +265,12 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
 
     //TODO: handle response rules, generate response if necessary
+}
+
+void Project::onReqHandlerNameChanged(const QString &name)
+{
+    ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
+    qDebug() << name;
 }
 
 

@@ -71,6 +71,7 @@ QString ReqHandler::getName() const
 void ReqHandler::setName(const QString &name)
 {
     this->name = name;
+    emit nameChanged(name);
 }
 
 QString ReqHandler::getScript() const
