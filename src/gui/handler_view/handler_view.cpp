@@ -12,12 +12,16 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QPlainTextEdit>
+#include <QDockWidget>
 
 #include "handler_view.h"
 #include "mainwindow.h"
 
 
 #include "htreqhandler.h"
+
+
+using namespace std;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
@@ -28,8 +32,19 @@ HandlerView::HandlerView(
         std::shared_ptr<HTCore::ReqHandler> p_handler
         ) :
     mainwindow(mainwindow),
-    p_handler(p_handler)
+    p_handler(p_handler),
+    p_dock()
 {
+
+
+    //-- setup edit dockwidget
+    {
+        QWidget *p_edit_widg = createEditWidget();
+        p_dock = shared_ptr<QDockWidget>(
+                new QDockWidget("Handler " + p_handler->getName())
+                );
+        p_dock->setWidget(p_edit_widg);
+    }
 }
 
 
@@ -66,7 +81,6 @@ QWidget *HandlerView::createEditWidget() const
 
     return p_widg;
 }
-
 
 /* protected    */
 
@@ -112,6 +126,11 @@ QWidget *HandlerView::createListItemWidget() const
     return p_widg;
 }
 
+QDockWidget *HandlerView::getEditDockWidget() const
+{
+    return p_dock.get();
+}
+
 
 
 /*******************************************************************************
@@ -122,12 +141,20 @@ QWidget *HandlerView::createListItemWidget() const
 
 void HandlerView::onEditButtonPressed()
 {
+    if (p_dock->isHidden()){
+        p_dock->show();
+    } else {
+        p_dock->hide();
+    }
+
+#if 0
     //qDebug("pressed");
     QWidget *p_edit_widg = createEditWidget();
     mainwindow.addHandlerEditWidget(
             p_handler,
             p_edit_widg
             );
+#endif
 }
 
 

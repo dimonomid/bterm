@@ -83,6 +83,13 @@ private:
     QDockWidget      *p_dw_raw_data;
     QDockWidget      *p_dw_handlers;
 
+    //-- NOTE: we use shared_ptr here instead of raw pointers, because
+    //   docs say that when we remove dockwidget from mainwindow by calling
+    //   removeDockWidget(), the dockwidget is NOT deleted (unlike other GUI
+    //   stuff in Qt). So, let the lifetime to be managed by shared_ptr, then.
+    std::list<std::shared_ptr<QDockWidget>>   handler_docks;
+
+
     std::vector<std::shared_ptr<HandlerView>> handler_views;
 
     static const QString SETT_KEY__MAINWINDOW;
@@ -103,10 +110,12 @@ private:
 
 public:
 
+#if 0
     void addHandlerEditWidget(
             std::shared_ptr<HTCore::ReqHandler> p_handler,
             QWidget *p_widg
             );
+#endif
 
 
 

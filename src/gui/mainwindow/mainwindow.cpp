@@ -187,6 +187,7 @@ MainWindow::~MainWindow()
 
 /* public */
 
+#if 0
 void MainWindow::addHandlerEditWidget(
         std::shared_ptr<HTCore::ReqHandler> p_handler,
         QWidget *p_widg
@@ -198,6 +199,7 @@ void MainWindow::addHandlerEditWidget(
 
     addDockWidget(Qt::TopDockWidgetArea, p_dw);
 }
+#endif
 
 
 
@@ -210,12 +212,19 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
 
+    //-- iterate all handlers: for each of them, add a row in the handlers view,
+    //   and create (hidden) dockwidget
     for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
 
         auto p_handler_view = make_shared<HandlerView>(*this, p_project->getHandler(i));
         QWidget *p_cur_widg = p_handler_view->createListItemWidget();
 
         p_lay->addWidget(p_cur_widg);
+        {
+            QDockWidget *p_dock = p_handler_view->getEditDockWidget();
+            addDockWidget(Qt::TopDockWidgetArea, p_dock);
+            p_dock->hide();
+        }
 
         handler_views.push_back(p_handler_view);
     }
