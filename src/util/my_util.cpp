@@ -9,6 +9,7 @@
 
 #include "my_util.h"
 
+#include <QFile>
 
 
 
@@ -38,5 +39,15 @@ QVariantMap MyUtil::qjsErrorToVariant(const QJSValue &valError)
          {"stack", valError.property("stack").toVariant()},
          {"message", valError.property("message").toVariant()}
    };
+}
+
+QString MyUtil::readFile(QString filename)
+{
+   QFile file(filename);
+   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+      return QString();
+   }
+
+   return QString(file.readAll());
 }
 

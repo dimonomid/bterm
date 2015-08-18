@@ -27,7 +27,7 @@ The codec should be defined by javascript file. It should look like:
 })();
 }}}
 
-Probably feedRawData should return handling results, or we should have different function, like getCurrentMsg(), not sure. Whatever the case, when message received,object like this should be returned:
+Probably feedRawData should return handling results, or we should have different function, like getCurrentMsg(), not sure. Whatever the case, when message received, object like this should be returned:
 
 {{{
 

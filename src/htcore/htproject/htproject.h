@@ -50,7 +50,7 @@ class HTCore::Project : public QObject
     ***************************************************************************/
 public:
    explicit Project(
-         std::shared_ptr<Codec> p_codec,
+         //std::shared_ptr<Codec> p_codec,
          std::shared_ptr<IODev> p_io_dev
          );
 
@@ -61,10 +61,10 @@ public:
     ***************************************************************************/
 private:
 
+   std::shared_ptr<QJSEngine> p_engine;
+
    std::shared_ptr<Codec> p_codec;
    std::shared_ptr<IODev> p_io_dev;
-
-   std::shared_ptr<QJSEngine> p_engine;
 
    std::vector<std::shared_ptr<ReqHandler>> handlers;
    QJSValue script_ctx;

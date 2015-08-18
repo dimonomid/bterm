@@ -26,6 +26,7 @@ namespace MyUtil
 
    QString byteArrayToHex(const std::vector<uint8_t> &data);
    QVariantMap qjsErrorToVariant(const QJSValue &valError);
+   QString readFile(QString filename);
 
 };
 

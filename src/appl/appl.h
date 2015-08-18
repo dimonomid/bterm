@@ -48,7 +48,7 @@ public:
     ***************************************************************************/
 private:
 
-   std::shared_ptr<HTCore::Codec> p_codec;
+   //std::shared_ptr<HTCore::Codec> p_codec;
    std::shared_ptr<HTCore::IODev> p_io_dev;
    std::shared_ptr<HTCore::Project> p_project;
    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataRaw>> p_events_data_raw;
