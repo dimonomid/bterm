@@ -27,34 +27,34 @@ class TestCodecISO14230: public QObject
 Q_OBJECT
 
 public:
-   TestCodecISO14230() :
-      codec(0x01, 0x02)
-   {
-   connect(
-         &codec, &HTCore::Codec_ISO14230::messageDecoded,
-         this, &TestCodecISO14230::messageDecoded
-         );
-   std::cout << "constructed" << std::endl;
-   }
+    TestCodecISO14230() :
+        codec(0x01, 0x02)
+    {
+    connect(
+            &codec, &HTCore::Codec_ISO14230::messageDecoded,
+            this, &TestCodecISO14230::messageDecoded
+           );
+    std::cout << "constructed" << std::endl;
+    }
 
 
-   ~TestCodecISO14230()
-   {
-      std::cout << "destructed" << std::endl;
-   }
+    ~TestCodecISO14230()
+    {
+        std::cout << "destructed" << std::endl;
+    }
 
 private:
-   HTCore::Codec_ISO14230 codec;
-   std::queue<HTCore::DataMsg> rx_msgs;
+    HTCore::Codec_ISO14230 codec;
+    std::queue<HTCore::DataMsg> rx_msgs;
 
 
 private slots:
-   void decode_summary();
-   void encode();
-   void decode_encoded();
+    void decode_summary();
+    void encode();
+    void decode_encoded();
 
 public slots:
-   void messageDecoded(const HTCore::DataMsg &msg);
+    void messageDecoded(const HTCore::DataMsg &msg);
 };
 
 

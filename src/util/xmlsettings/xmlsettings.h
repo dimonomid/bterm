@@ -34,60 +34,60 @@ class QIODevice;
 class XmlSettings
 {
 
-   /******************************************************************************************
-    * TYPES
-    *****************************************************************************************/
+    /******************************************************************************************
+     * TYPES
+     *****************************************************************************************/
 
-   /******************************************************************************************
-    * CONSTRUCTOR, DESTRUCTOR
-    *****************************************************************************************/
+    /******************************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR
+     *****************************************************************************************/
 public:
-   explicit XmlSettings( QString fname = "" );
+    explicit XmlSettings( QString fname = "" );
 
 
-   /******************************************************************************************
-    * PRIVATE DATA
-    *****************************************************************************************/
+    /******************************************************************************************
+     * PRIVATE DATA
+     *****************************************************************************************/
 private:
-   std::shared_ptr<QSettings> p_settings;
+    std::shared_ptr<QSettings> p_settings;
 
-   static const QString XML_TAG_NAME__ROOT;
+    static const QString XML_TAG_NAME__ROOT;
 
-   static const QString XML_ATTR_NAME__ITEM__VALUE;
+    static const QString XML_ATTR_NAME__ITEM__VALUE;
 
-   /******************************************************************************************
-    * STATIC METHODS
-    *****************************************************************************************/
+    /******************************************************************************************
+     * STATIC METHODS
+     *****************************************************************************************/
 private:
-   static bool readXmlFile(QIODevice &device, QSettings::SettingsMap &map);
-   static bool writeXmlFile(QIODevice &device, const QSettings::SettingsMap &map);
-   static void processWriteKey( QDomDocument& doc, QDomElement& domElement, QString key, const QVariant& value );
-   static void processReadKey( QString key, QSettings::SettingsMap &map, QDomElement& domElement );
+    static bool readXmlFile(QIODevice &device, QSettings::SettingsMap &map);
+    static bool writeXmlFile(QIODevice &device, const QSettings::SettingsMap &map);
+    static void processWriteKey( QDomDocument& doc, QDomElement& domElement, QString key, const QVariant& value );
+    static void processReadKey( QString key, QSettings::SettingsMap &map, QDomElement& domElement );
 
-   /*
-    * Following 3 functions are copied from Qt src/corelib/io/qsettings.cpp
-    */
-   static QString  variantToString(const QVariant &v);
-   static QVariant stringToVariant(const QString  &s);
-   static QStringList splitArgs(const QString &s, int idx);
+    /*
+     * Following 3 functions are copied from Qt src/corelib/io/qsettings.cpp
+     */
+    static QString  variantToString(const QVariant &v);
+    static QVariant stringToVariant(const QString  &s);
+    static QStringList splitArgs(const QString &s, int idx);
 
 
-   /******************************************************************************************
-    * METHODS
-    *****************************************************************************************/
+    /******************************************************************************************
+     * METHODS
+     *****************************************************************************************/
 public:
 
-   inline QSettings& settings() const { return *p_settings; }
+    inline QSettings& settings() const { return *p_settings; }
 
-   // при использовании XmlSettings::value конфиг создастся автоматически, если его не было
-   QVariant value( const QString & key, const QVariant & defaultValue = QVariant() );
-   void setValue ( const QString & key, const QVariant & value );
+    // при использовании XmlSettings::value конфиг создастся автоматически, если его не было
+    QVariant value( const QString & key, const QVariant & defaultValue = QVariant() );
+    void setValue ( const QString & key, const QVariant & value );
 
 
 
-   /******************************************************************************************
-    * SIGNALS, SLOTS
-    *****************************************************************************************/
+    /******************************************************************************************
+     * SIGNALS, SLOTS
+     *****************************************************************************************/
 
 };
 

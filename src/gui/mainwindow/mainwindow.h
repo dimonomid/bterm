@@ -19,14 +19,14 @@
 
 
 namespace HTCore {
-   class EventDataRaw;
-   class EventDataMsg;
-   class Project;
-   class ReqHandler;
+    class EventDataRaw;
+    class EventDataMsg;
+    class Project;
+    class ReqHandler;
 }
 
 namespace Ui {
-   class MainWindow;
+    class MainWindow;
 }
 
 class Appl;
@@ -47,98 +47,98 @@ class MainWindow : public QMainWindow
 {
 Q_OBJECT
 
-   /****************************************************************************
-    * TYPES
-    ***************************************************************************/
+    /****************************************************************************
+     * TYPES
+     ***************************************************************************/
 
-   /****************************************************************************
-    * CONSTRUCTOR, DESTRUCTOR
-    ***************************************************************************/
+    /****************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR
+     ***************************************************************************/
 public:
-   explicit MainWindow(
-         Appl &appl,
-         QWidget *parent = 0
-         );
-   ~MainWindow();
+    explicit MainWindow(
+            Appl &appl,
+            QWidget *parent = 0
+            );
+    ~MainWindow();
 
 
 
-   /****************************************************************************
-    * PRIVATE DATA
-    ***************************************************************************/
+    /****************************************************************************
+     * PRIVATE DATA
+     ***************************************************************************/
 
 private:
-   Ui::MainWindow   *ui;
-   Appl &appl;
+    Ui::MainWindow   *ui;
+    Appl &appl;
 
-   QSignalMapper     windows_toggle_sigmap;
+    QSignalMapper     windows_toggle_sigmap;
 
-   QAction          *p_act_raw_data;
-   QAction          *p_act_messages;
-
-
-   QPlainTextEdit_My   *p_raw_data_pte;
-   QPlainTextEdit_My   *p_log_pte;
-
-   QDockWidget      *p_dw_raw_data;
-   QDockWidget      *p_dw_handlers;
-
-   std::vector<std::shared_ptr<HandlerView>> handler_views;
-
-   static const QString SETT_KEY__MAINWINDOW;
-   static const QString SETT_KEY__MAINWINDOW__GEOMETRY;
-   static const QString SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED;
-   static const QString SETT_KEY__MAINWINDOW__MAXIMIZED;
-   static const QString SETT_KEY__MAINWINDOW__PROJ_STATE;
+    QAction          *p_act_raw_data;
+    QAction          *p_act_messages;
 
 
+    QPlainTextEdit_My   *p_raw_data_pte;
+    QPlainTextEdit_My   *p_log_pte;
 
-   /****************************************************************************
-    * STATIC METHODS
-    ***************************************************************************/
+    QDockWidget      *p_dw_raw_data;
+    QDockWidget      *p_dw_handlers;
 
-   /****************************************************************************
-    * METHODS
-    ***************************************************************************/
+    std::vector<std::shared_ptr<HandlerView>> handler_views;
+
+    static const QString SETT_KEY__MAINWINDOW;
+    static const QString SETT_KEY__MAINWINDOW__GEOMETRY;
+    static const QString SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED;
+    static const QString SETT_KEY__MAINWINDOW__MAXIMIZED;
+    static const QString SETT_KEY__MAINWINDOW__PROJ_STATE;
+
+
+
+    /****************************************************************************
+     * STATIC METHODS
+     ***************************************************************************/
+
+    /****************************************************************************
+     * METHODS
+     ***************************************************************************/
 
 public:
 
-   void addHandlerEditWidget(
-         std::shared_ptr<HTCore::ReqHandler> p_handler,
-         QWidget *p_widg
-         );
+    void addHandlerEditWidget(
+            std::shared_ptr<HTCore::ReqHandler> p_handler,
+            QWidget *p_widg
+            );
 
 
 
 private:
 
-   void populateWithProject(std::shared_ptr<HTCore::Project> p_project);
-   void initSettings();
+    void populateWithProject(std::shared_ptr<HTCore::Project> p_project);
+    void initSettings();
 
-   void mySaveState();
-   void myRestoreState();
+    void mySaveState();
+    void myRestoreState();
 
-   void saveProjectState();
-   void restoreProjectState();
+    void saveProjectState();
+    void restoreProjectState();
 
-   QString getTagnameFromFilename(QString filename);
+    QString getTagnameFromFilename(QString filename);
 
 private:
-   void closeEvent(QCloseEvent *p_event) override;
+    void closeEvent(QCloseEvent *p_event) override;
 
 
 
 
-   /****************************************************************************
-    * SIGNALS, SLOTS
-    ***************************************************************************/
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 
 private slots:
 
-   void onProjectOpened(std::shared_ptr<HTCore::Project> p_project);
+    void onProjectOpened(std::shared_ptr<HTCore::Project> p_project);
 
-   void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
-   void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
+void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
+void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
 
 };
 

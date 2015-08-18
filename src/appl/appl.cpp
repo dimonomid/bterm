@@ -56,175 +56,175 @@ SETT_KEY__APPL + "/last_project_filename";
  ******************************************************************************/
 
 Appl::Appl() :
-   p_sett(std::make_shared<XmlSettings>("hterm_sett.xml")),
-   p_codec(nullptr),
-   p_io_dev(nullptr),
-   p_project(nullptr),
+    p_sett(std::make_shared<XmlSettings>("hterm_sett.xml")),
+    p_codec(nullptr),
+    p_io_dev(nullptr),
+    p_project(nullptr),
 
-   proj_filename(""),
+    proj_filename(""),
 
-   htevent_visitor_handle(*this),
-   p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
+    htevent_visitor_handle(*this),
+    p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
-   initSettings();
+    initSettings();
 
-   p_io_dev = std::make_shared<IODevDbg>();
-   p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
+    p_io_dev = std::make_shared<IODevDbg>();
+    p_codec = std::make_shared<Codec_ISO14230>(0x01, 0x02);
 
-   p_events_data_raw = std::unique_ptr<EventsAcc<EventDataRaw>>{
-      new EventsAcc<EventDataRaw>(1000/*TODO: settings*/)
-   };
+    p_events_data_raw = std::unique_ptr<EventsAcc<EventDataRaw>>{
+        new EventsAcc<EventDataRaw>(1000/*TODO: settings*/)
+    };
 
-   p_events_data_msg = std::unique_ptr<EventsAcc<EventDataMsg>>{
-      new EventsAcc<EventDataMsg>(1000/*TODO: settings*/)
-   };
+    p_events_data_msg = std::unique_ptr<EventsAcc<EventDataMsg>>{
+        new EventsAcc<EventDataMsg>(1000/*TODO: settings*/)
+    };
 
 
 #if 0
-   {
-      qmlRegisterType<ByteArrReadWrite>("test", 1, 0, "ByteArrReadWrite");
+    {
+        qmlRegisterType<ByteArrReadWrite>("test", 1, 0, "ByteArrReadWrite");
 
 
-      QJSEngine engine;
+        QJSEngine engine;
 
-      ByteArrFactory ba_factory {};
-      QJSValue ba_factory_jsval = engine.newQObject(&ba_factory);
+        ByteArrFactory ba_factory {};
+        QJSValue ba_factory_jsval = engine.newQObject(&ba_factory);
 
-      QJSValue func = engine.evaluate(
-            R"(
+        QJSValue func = engine.evaluate(
+                R"(
 
-         (function(baFactory) {
+            (function(baFactory) {
 
-          var ba = baFactory.createByteArrReadWrite();
-          ba.putU08(2, 0x08);
+             var ba = baFactory.createByteArrReadWrite();
+             ba.putU08(2, 0x08);
 
-          return ba;
+             return ba;
 
-         });
+             });
 
-         )"
-            );
+        )"
+                );
 
-      qDebug() << "func: " << func.toString();
+        qDebug() << "func: " << func.toString();
 
-      QJSValue ba_jsval = func.call(
-            QJSValueList() << ba_factory_jsval
-            );
+        QJSValue ba_jsval = func.call(
+                QJSValueList() << ba_factory_jsval
+                );
 
-      qDebug() << "isQObject: " << ba_jsval.isQObject();
-      qDebug() << "toString: " << ba_jsval.toString();
-   }
+        qDebug() << "isQObject: " << ba_jsval.isQObject();
+        qDebug() << "toString: " << ba_jsval.toString();
+    }
 #endif
 
 #if 0
-   {
-      QJSEngine engine;
+    {
+        QJSEngine engine;
 
-      QJSValue myCodec = engine.evaluate(
-            R"(
+        QJSValue myCodec = engine.evaluate(
+                R"(
 
-         (function() {
+            (function() {
 
-            var rawData;
+             var rawData;
 
-            reset();
+             reset();
 
-            return {
-               feedRawData: feedRawData,
-               getTest: function() {
-                  return rawData.length;
-               }
-            };
-
-
-            function feedRawData(num) {
-               rawData.push(num);
-            };
-
-            function reset() {
-               rawData = [];
-            };
-
-         })();
-
-         )"
-            );
+             return {
+feedRawData: feedRawData,
+getTest: function() {
+return rawData.length;
+}
+};
 
 
+function feedRawData(num) {
+rawData.push(num);
+};
 
-         myCodec.property("feedRawData").call(
-               QJSValueList() << (double)1
-               );
-         qDebug() << "test: " << myCodec.property("getTest").call().toString();
-         myCodec.property("feedRawData").call(
-               QJSValueList() << (double)1
-               );
-         qDebug() << "test: " << myCodec.property("getTest").call().toString();
-   }
+function reset() {
+rawData = [];
+};
+
+})();
+
+)"
+);
+
+
+
+myCodec.property("feedRawData").call(
+        QJSValueList() << (double)1
+        );
+qDebug() << "test: " << myCodec.property("getTest").call().toString();
+myCodec.property("feedRawData").call(
+        QJSValueList() << (double)1
+        );
+qDebug() << "test: " << myCodec.property("getTest").call().toString();
+}
 #endif
 
 
 #if 0
-   {
-      QJSEngine engine;
+{
+    QJSEngine engine;
 
-      QJSValue val = engine.evaluate(
+    QJSValue val = engine.evaluate(
             "({a: 1, b: 2});"
             );
 
-      qDebug() << "val: " << val.toVariant();
-   }
+    qDebug() << "val: " << val.toVariant();
+}
 #endif
 
 #if 0
-   {
-      QJSEngine engine;
-      QJSValue val = engine.evaluate(
+{
+    QJSEngine engine;
+    QJSValue val = engine.evaluate(
             "test();"
             );
 
-      if (val.isError()){
-         qDebug() << "error, variant: " << val.toVariant();
+    if (val.isError()){
+        qDebug() << "error, variant: " << val.toVariant();
 
-         qDebug() << "message: " << val.property("message").toString();
-         qDebug() << "lineNumber: " << val.property("lineNumber").toString();
-      }
-      qDebug() << "val: " << val.toVariant();
-   }
+        qDebug() << "message: " << val.property("message").toString();
+        qDebug() << "lineNumber: " << val.property("lineNumber").toString();
+    }
+    qDebug() << "val: " << val.toVariant();
+}
 #endif
 
 #if 0
-   {
-      QJSEngine engine;
+{
+    QJSEngine engine;
 
-      QJSValue val = engine.evaluate(
+    QJSValue val = engine.evaluate(
             "print('123');"
             );
 
-      if (val.isError()){
-         qDebug() << "error: " << val.toString();
-      }
+    if (val.isError()){
+        qDebug() << "error: " << val.toString();
+    }
 
-      qDebug() << "val: " << val.toVariant();
-   }
+    qDebug() << "val: " << val.toVariant();
+}
 #endif
 
 
 #if 0
-   {
-      QJSEngine engine;
-      QJSValue result;
+{
+    QJSEngine engine;
+    QJSValue result;
 
-      std::vector<uint8_t> in_data{0x61, 0x01};
+    std::vector<uint8_t> in_data{0x61, 0x01};
 
-      ByteArrRead ba_in {in_data};
-      ByteArrReadWrite ba_out {};
+    ByteArrRead ba_in {in_data};
+    ByteArrReadWrite ba_out {};
 
-      QJSValue ba_in_scrval = engine.newQObject(&ba_in);
-      QJSValue ba_out_scrval = engine.newQObject(&ba_out);
-      QJSValue script_ctx = engine.evaluate("({})");
+    QJSValue ba_in_scrval = engine.newQObject(&ba_in);
+    QJSValue ba_out_scrval = engine.newQObject(&ba_out);
+    QJSValue script_ctx = engine.evaluate("({})");
 
-      QJSValue func = engine.evaluate(
+    QJSValue func = engine.evaluate(
             "(function(inputArr, outputArr){ "
             "     this.c = 123;"
 
@@ -237,35 +237,35 @@ Appl::Appl() :
             "        handled: true"
             "     };"
             " })"
-      );
+            );
 
-      if (engine.hasUncaughtException()){
-         qDebug() << "exception: " << func.toVariant();
-      } else {
-         QJSValue returned = func.call(
-               script_ctx,
-               QJSValueList() << ba_in_scrval << ba_out_scrval << script_ctx
-               );
+    if (engine.hasUncaughtException()){
+        qDebug() << "exception: " << func.toVariant();
+    } else {
+        QJSValue returned = func.call(
+                script_ctx,
+                QJSValueList() << ba_in_scrval << ba_out_scrval << script_ctx
+                );
 
-         qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
-         qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
-         qDebug() << "script_ctx: " << script_ctx.toVariant().toMap();
+        qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
+        qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
+        qDebug() << "script_ctx: " << script_ctx.toVariant().toMap();
 
-         if (engine.hasUncaughtException()){
+        if (engine.hasUncaughtException()){
             qDebug() << "exception: " << returned.toVariant();
-         } else {
+        } else {
             qDebug() << "returned: " << returned.toVariant();
             qDebug() << "returned handled: " << returned.toVariant().toMap()["handled"].toBool();
-         }
-      }
+        }
+    }
 
-   }
+}
 #endif
 
 
-   openProject("dummy");
+openProject("dummy");
 
-   this->p_main_window->show();
+this->p_main_window->show();
 
 }
 
@@ -293,7 +293,7 @@ Appl::~Appl()
 
 void Appl::initSettings()
 {
-   this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME,  "");
+    this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME,  "");
 }
 
 
@@ -304,35 +304,35 @@ void Appl::initSettings()
 
 void Appl::openProject(QString filename)
 {
-   auto file = std::make_shared<QFile>(filename);
-   QFileInfo fileinfo {*file};
+    auto file = std::make_shared<QFile>(filename);
+    QFileInfo fileinfo {*file};
 
-   // TODO: really open project
-   proj_filename = fileinfo.absoluteFilePath();
-   this->p_sett->setValue(
-         SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
-         );
+    // TODO: really open project
+    proj_filename = fileinfo.absoluteFilePath();
+    this->p_sett->setValue(
+            SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
+            );
 
-   p_project = std::make_shared<Project>(p_codec, p_io_dev);
+    p_project = std::make_shared<Project>(p_codec, p_io_dev);
 
-   connect(
-         p_project.get(), &Project::eventDataRaw,
-         this, &Appl::onNewDataRaw
-         );
+    connect(
+            p_project.get(), &Project::eventDataRaw,
+            this, &Appl::onNewDataRaw
+           );
 
-   connect(
-         p_project.get(), &Project::eventDataMsg,
-         this, &Appl::onNewDataMsg
-         );
+    connect(
+            p_project.get(), &Project::eventDataMsg,
+            this, &Appl::onNewDataMsg
+           );
 
 
 
-   emit projectOpened(p_project);
+    emit projectOpened(p_project);
 }
 
 QString Appl::getProjectFilename() const
 {
-   return proj_filename;
+    return proj_filename;
 }
 
 
@@ -346,22 +346,22 @@ QString Appl::getProjectFilename() const
 #if 0
 void Appl::onEvent(const std::shared_ptr<Event> &p_event)
 {
-   p_event->accept(htevent_visitor_handle);
+    p_event->accept(htevent_visitor_handle);
 }
 #endif
 
 void Appl::onNewDataRaw(std::shared_ptr<EventDataRaw> p_event)
 {
-   p_events_data_raw->addEvent(p_event);
+    p_events_data_raw->addEvent(p_event);
 
-   emit eventDataRaw(p_event);
+    emit eventDataRaw(p_event);
 }
 
 void Appl::onNewDataMsg(std::shared_ptr<EventDataMsg> p_event)
 {
-   p_events_data_msg->addEvent(p_event);
+    p_events_data_msg->addEvent(p_event);
 
-   emit eventDataMsg(p_event);
+    emit eventDataMsg(p_event);
 }
 
 
@@ -371,12 +371,12 @@ void Appl::onNewDataMsg(std::shared_ptr<EventDataMsg> p_event)
 #if 0
 void Appl::onNewDataRaw(const std::vector<uint8_t> &data)
 {
-   //TODO
+    //TODO
 }
 
 void Appl::onNewDataMsg(const DataMsg &msg)
 {
-   //TODO
+    //TODO
 }
 #endif
 

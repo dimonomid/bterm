@@ -27,15 +27,15 @@ class TestReqHandler: public QObject
 Q_OBJECT
 
 public:
-   explicit TestReqHandler();
+    explicit TestReqHandler();
 
 private:
-   std::shared_ptr<QJSEngine> p_engine;
+    std::shared_ptr<QJSEngine> p_engine;
 
 private slots:
-   void generalTest();
-   void errorsTest();
-   void scriptCtxTest();
+    void generalTest();
+    void errorsTest();
+    void scriptCtxTest();
 
 };
 

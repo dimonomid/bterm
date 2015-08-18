@@ -22,7 +22,7 @@
  ******************************************************************************/
 
 namespace HTCore {
-   class ByteArrRead;
+    class ByteArrRead;
 }
 
 /*
@@ -36,63 +36,63 @@ namespace HTCore {
 class HTCore::ByteArrRead : public QObject
 {
 Q_OBJECT
-   /****************************************************************************
-    * TYPES
-    ***************************************************************************/
+    /****************************************************************************
+     * TYPES
+     ***************************************************************************/
 
 public:
-   enum Endianness {
-      LITTLE_END,
-      BIG_END
-   };
+    enum Endianness {
+    LITTLE_END,
+    BIG_END
+    };
 
-   /****************************************************************************
-    * CONSTRUCTOR, DESTRUCTOR
-    ***************************************************************************/
+    /****************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR
+     ***************************************************************************/
 public:
-   explicit ByteArrRead(const std::vector<uint8_t> &data);
+    explicit ByteArrRead(const std::vector<uint8_t> &data);
 
 
-   /****************************************************************************
-    * PRIVATE DATA
-    ***************************************************************************/
+    /****************************************************************************
+     * PRIVATE DATA
+     ***************************************************************************/
 protected:
 
-   std::shared_ptr<std::vector<uint8_t>> p_data;
+    std::shared_ptr<std::vector<uint8_t>> p_data;
 
 
 
-   /****************************************************************************
-    * STATIC METHODS
-    ***************************************************************************/
+    /****************************************************************************
+     * STATIC METHODS
+     ***************************************************************************/
 
-   /****************************************************************************
-    * METHODS
-    ***************************************************************************/
+    /****************************************************************************
+     * METHODS
+     ***************************************************************************/
 
 public:
 
-   std::shared_ptr<const std::vector<uint8_t>> getData() const;
+    std::shared_ptr<const std::vector<uint8_t>> getData() const;
 
-   Q_INVOKABLE double getU08(unsigned int index);
-   Q_INVOKABLE double getU16(unsigned int index, int end = LITTLE_END);
-   Q_INVOKABLE double getU32(unsigned int index, int end = LITTLE_END);
+    Q_INVOKABLE double getU08(unsigned int index);
+    Q_INVOKABLE double getU16(unsigned int index, int end = LITTLE_END);
+    Q_INVOKABLE double getU32(unsigned int index, int end = LITTLE_END);
 
-   Q_INVOKABLE double getS08(unsigned int index);
-   Q_INVOKABLE double getS16(unsigned int index, int end = LITTLE_END);
-   Q_INVOKABLE double getS32(unsigned int index, int end = LITTLE_END);
-
-
-   /****************************************************************************
-    * SIGNALS, SLOTS
-    ***************************************************************************/
+    Q_INVOKABLE double getS08(unsigned int index);
+    Q_INVOKABLE double getS16(unsigned int index, int end = LITTLE_END);
+    Q_INVOKABLE double getS32(unsigned int index, int end = LITTLE_END);
 
 
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 
 
-   /****************************************************************************
-    * SIGNALS, SLOTS
-    ***************************************************************************/
+
+
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 
 };
 

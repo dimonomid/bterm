@@ -26,14 +26,14 @@ class TestByteArr: public QObject
 Q_OBJECT
 
 public:
-   explicit TestByteArr();
+    explicit TestByteArr();
 
 private:
-   void doFillTest(uint8_t fill_byte);
+    void doFillTest(uint8_t fill_byte);
 
 private slots:
-   void fillAndResizeTest();
-   void putGetTest();
+    void fillAndResizeTest();
+    void putGetTest();
 
 };
 

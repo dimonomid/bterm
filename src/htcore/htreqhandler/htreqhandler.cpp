@@ -26,16 +26,16 @@ using namespace HTCore;
  ******************************************************************************/
 
 ReqHandler::ReqHandler(
-      QString name,
-      std::shared_ptr<QJSEngine> p_engine,
-      QString script_func_code
-      ) :
-   name(name),
-   p_engine(p_engine),
-   script_func_code(script_func_code),
-   last_error(Error::UNKNOWN),
-   p_response(),
-   last_exception_details()
+        QString name,
+        std::shared_ptr<QJSEngine> p_engine,
+        QString script_func_code
+        ) :
+    name(name),
+    p_engine(p_engine),
+    script_func_code(script_func_code),
+    last_error(Error::UNKNOWN),
+    p_response(),
+    last_exception_details()
 {
 
 }
@@ -65,95 +65,95 @@ ReqHandler::ReqHandler(
 
 QString ReqHandler::getName() const
 {
-   return name;
+    return name;
 }
 
 QString ReqHandler::getScript() const
 {
-   return script_func_code;
+    return script_func_code;
 }
 
 void ReqHandler::setScript(QString script_func_code)
 {
-   this->script_func_code = script_func_code;
+    this->script_func_code = script_func_code;
 }
 
 ReqHandler::Result ReqHandler::handle(
-      QJSValue input_msg_jsval,
-      QJSValue script_ctx_jsval
-      )
+        QJSValue input_msg_jsval,
+        QJSValue script_ctx_jsval
+        )
 {
-   //-- before handling, set global properties
-   p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
-   p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
+    //-- before handling, set global properties
+    p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
+    p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
 
-   ReqHandler::Result ret = Result::UNKNOWN;
+    ReqHandler::Result ret = Result::UNKNOWN;
 
-   last_error = Error::UNKNOWN;
-   last_exception_details = QVariantMap();
+    last_error = Error::UNKNOWN;
+    last_exception_details = QVariantMap();
 
-   QJSValue result;
+    QJSValue result;
 
-   p_response = std::make_shared<ByteArrReadWrite>();
+    p_response = std::make_shared<ByteArrReadWrite>();
 
-   QJSValue ba_out_scrval = p_engine->newQObject(p_response.get());
-   QQmlEngine::setObjectOwnership(p_response.get(), QQmlEngine::CppOwnership);
+    QJSValue ba_out_scrval = p_engine->newQObject(p_response.get());
+    QQmlEngine::setObjectOwnership(p_response.get(), QQmlEngine::CppOwnership);
 
 
-   QJSValue func = p_engine->evaluate(script_func_code);
+    QJSValue func = p_engine->evaluate(script_func_code);
 
-   if (func.isError()){
+    if (func.isError()){
 
-      ret = Result::ERROR;
-      last_error = Error::EXCEPTION;
-      last_exception_details = MyUtil::qjsErrorToVariant(func);
-      qDebug() << "exception 1: " << last_exception_details;
+        ret = Result::ERROR;
+        last_error = Error::EXCEPTION;
+        last_exception_details = MyUtil::qjsErrorToVariant(func);
+        qDebug() << "exception 1: " << last_exception_details;
 
-   } else if (!func.isCallable()){
+    } else if (!func.isCallable()){
 
-      ret = Result::ERROR;
-      last_error = Error::SCRIPT_IS_NOT_FUNCTION;
+        ret = Result::ERROR;
+        last_error = Error::SCRIPT_IS_NOT_FUNCTION;
 
-   } else {
+    } else {
 
-      QJSValue returned = func.callWithInstance(
-            script_ctx_jsval,
-            QJSValueList() << input_msg_jsval << ba_out_scrval
-            );
+        QJSValue returned = func.callWithInstance(
+                script_ctx_jsval,
+                QJSValueList() << input_msg_jsval << ba_out_scrval
+                );
 
-      if (returned.isError()){
-         ret = Result::ERROR;
-         last_error = Error::EXCEPTION;
-         last_exception_details = MyUtil::qjsErrorToVariant(returned);
-         qDebug() << "exception 2: " << last_exception_details;
-      } else {
-         bool handled = returned.toVariant().toMap()["handled"].toBool();
-         if (handled){
-            ret = Result::OK_HANDLED;
-            //-- p_response now contains the byte array that was written by the script
-         } else {
-            ret = Result::OK_NOT_HANDLED;
-         }
-      }
+        if (returned.isError()){
+            ret = Result::ERROR;
+            last_error = Error::EXCEPTION;
+            last_exception_details = MyUtil::qjsErrorToVariant(returned);
+            qDebug() << "exception 2: " << last_exception_details;
+        } else {
+            bool handled = returned.toVariant().toMap()["handled"].toBool();
+            if (handled){
+                ret = Result::OK_HANDLED;
+                //-- p_response now contains the byte array that was written by the script
+            } else {
+                ret = Result::OK_NOT_HANDLED;
+            }
+        }
 
-   }
+    }
 
-   return ret;
+    return ret;
 }
 
 ReqHandler::Error ReqHandler::getLastError()
 {
-   return last_error;
+    return last_error;
 }
 
 QVariantMap ReqHandler::getLastExceptionDetails()
 {
-   return last_exception_details;
+    return last_exception_details;
 }
 
 std::shared_ptr<const std::vector<uint8_t>> ReqHandler::getResponse()
 {
-   return p_response->getData();
+    return p_response->getData();
 }
 
 /*******************************************************************************

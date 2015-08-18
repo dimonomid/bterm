@@ -4,8 +4,8 @@ let s:sVimprjPath = expand('<sfile>:p:h')
 
 let g:proj_project_filename=s:sVimprjPath.'/.vimprojects'
 
-let &tabstop = 3
-let &shiftwidth = 3
+let &tabstop = 4
+let &shiftwidth = 4
 
 let g:indexer_ctagsDontSpecifyFilesIfPossible = 1
 "let g:indexer_enableWhenProjectDirFound = 0

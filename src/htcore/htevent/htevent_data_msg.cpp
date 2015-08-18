@@ -22,8 +22,8 @@ using namespace HTCore;
  ******************************************************************************/
 
 EventDataMsg::EventDataMsg(const DataMsg &msg, Direction dir) :
-   msg(msg),
-   dir(dir)
+    msg(msg),
+    dir(dir)
 {
 }
 
@@ -52,17 +52,17 @@ EventDataMsg::EventDataMsg(const DataMsg &msg, Direction dir) :
 
 const DataMsg EventDataMsg::getMsg() const
 {
-   return msg;
+    return msg;
 }
 
 EventDataMsg::Direction EventDataMsg::getDir() const
 {
-   return dir;
+    return dir;
 }
 
 void EventDataMsg::accept(EventVisitor &visitor)
 {
-   visitor.accept(*this);
+    visitor.accept(*this);
 }
 
 

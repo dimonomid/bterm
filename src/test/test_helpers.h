@@ -16,25 +16,25 @@
 
 
 namespace QTest {
-   template<>
-      char *toString(const std::vector<uint8_t> &vec)
-      {
-         bool empty = true;
-         QByteArray ba = "vector{";
+    template<>
+        char *toString(const std::vector<uint8_t> &vec)
+        {
+            bool empty = true;
+            QByteArray ba = "vector{";
 
-         for (int byte : vec){
-            if (!empty){
-               ba += ", ";
+            for (int byte : vec){
+                if (!empty){
+                    ba += ", ";
+                }
+
+                ba += "" + QByteArray::number(byte) + "";
+
+                empty = false;
             }
 
-            ba += "" + QByteArray::number(byte) + "";
-
-            empty = false;
-         }
-
-         ba += "}";
-         return qstrdup(ba.data());
-      }
+            ba += "}";
+            return qstrdup(ba.data());
+        }
 }
 
 

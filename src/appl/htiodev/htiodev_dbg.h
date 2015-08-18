@@ -26,66 +26,66 @@
 
 class IODevDbg : public HTCore::IODev
 {
-   Q_OBJECT
-   /****************************************************************************
-    * TYPES
-    ***************************************************************************/
+Q_OBJECT
+    /****************************************************************************
+     * TYPES
+     ***************************************************************************/
 
-   /****************************************************************************
-    * CONSTRUCTOR, DESTRUCTOR, ASSIGNMENT
-    ***************************************************************************/
+    /****************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR, ASSIGNMENT
+     ***************************************************************************/
 public:
-   explicit IODevDbg();
-   virtual ~IODevDbg();
+    explicit IODevDbg();
+    virtual ~IODevDbg();
 
-   IODevDbg(const IODevDbg &other) = delete;
-   IODevDbg(IODevDbg &&other) = delete;
+    IODevDbg(const IODevDbg &other) = delete;
+    IODevDbg(IODevDbg &&other) = delete;
 
-   IODevDbg &operator=(const IODevDbg &other) = delete;
-   IODevDbg &operator=(IODevDbg &&other) = delete;
+    IODevDbg &operator=(const IODevDbg &other) = delete;
+    IODevDbg &operator=(IODevDbg &&other) = delete;
 
 
-   /****************************************************************************
-    * PRIVATE DATA
-    ***************************************************************************/
+    /****************************************************************************
+     * PRIVATE DATA
+     ***************************************************************************/
 private:
-   QTimer timer;
-   std::vector<uint8_t> cur_data;
+    QTimer timer;
+    std::vector<uint8_t> cur_data;
 
-   int stage;
+    int stage;
 
 
-   /****************************************************************************
-    * STATIC METHODS
-    ***************************************************************************/
+    /****************************************************************************
+     * STATIC METHODS
+     ***************************************************************************/
 
-   /****************************************************************************
-    * METHODS
-    ***************************************************************************/
+    /****************************************************************************
+     * METHODS
+     ***************************************************************************/
 public:
 
-   std::vector<uint8_t> read() override;
-   void write(const std::vector<uint8_t> &data) override;
+    std::vector<uint8_t> read() override;
+    void write(const std::vector<uint8_t> &data) override;
 
 
-   /****************************************************************************
-    * SIGNALS, SLOTS
-    ***************************************************************************/
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 signals:
-   //NOTE: we should NOT define signals in subclasses,
-   //      since if we do, then function pointer-based
-   //      connect() syntax will not generate any errors,
-   //      but it will just not work silently.
-   //
-   //void readyRead(int bytes_available);
+    //NOTE: we should NOT define signals in subclasses,
+    //      since if we do, then function pointer-based
+    //      connect() syntax will not generate any errors,
+    //      but it will just not work silently.
+    //
+    //void readyRead(int bytes_available);
 
 private slots:
-   void nextMsgGenerate();
+    void nextMsgGenerate();
 
 
-   /****************************************************************************
-    * OPERATORS
-    ***************************************************************************/
+    /****************************************************************************
+     * OPERATORS
+     ***************************************************************************/
 
 };
 

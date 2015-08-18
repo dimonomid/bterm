@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 namespace HTCore {
-   class ByteArrReadWrite;
+    class ByteArrReadWrite;
 }
 
 /*
@@ -38,57 +38,57 @@ namespace HTCore {
 class HTCore::ByteArrReadWrite : public HTCore::ByteArrRead
 {
 Q_OBJECT
-   /****************************************************************************
-    * TYPES
-    ***************************************************************************/
+    /****************************************************************************
+     * TYPES
+     ***************************************************************************/
 
-   /****************************************************************************
-    * CONSTRUCTOR, DESTRUCTOR
-    ***************************************************************************/
+    /****************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR
+     ***************************************************************************/
 public:
-   explicit ByteArrReadWrite();
-   explicit ByteArrReadWrite(const std::vector<uint8_t> &data);
-   explicit ByteArrReadWrite(size_t size, uint8_t fill_byte);
+    explicit ByteArrReadWrite();
+    explicit ByteArrReadWrite(const std::vector<uint8_t> &data);
+    explicit ByteArrReadWrite(size_t size, uint8_t fill_byte);
 
 
-   /****************************************************************************
-    * PRIVATE DATA
-    ***************************************************************************/
+    /****************************************************************************
+     * PRIVATE DATA
+     ***************************************************************************/
 private:
 
-   uint8_t fill_byte;
+    uint8_t fill_byte;
 
 
 
-   /****************************************************************************
-    * STATIC METHODS
-    ***************************************************************************/
+    /****************************************************************************
+     * STATIC METHODS
+     ***************************************************************************/
 
-   /****************************************************************************
-    * METHODS
-    ***************************************************************************/
+    /****************************************************************************
+     * METHODS
+     ***************************************************************************/
 
 public:
-   Q_INVOKABLE void setFillByte(unsigned int fill_byte);
+    Q_INVOKABLE void setFillByte(unsigned int fill_byte);
 
-   Q_INVOKABLE void putU08(unsigned int index, double val);
-   Q_INVOKABLE void putU16(unsigned int index, double val, int end = LITTLE_END);
-   Q_INVOKABLE void putU32(unsigned int index, double val, int end = LITTLE_END);
+    Q_INVOKABLE void putU08(unsigned int index, double val);
+    Q_INVOKABLE void putU16(unsigned int index, double val, int end = LITTLE_END);
+    Q_INVOKABLE void putU32(unsigned int index, double val, int end = LITTLE_END);
 
-   Q_INVOKABLE void putS08(unsigned int index, double val);
-   Q_INVOKABLE void putS16(unsigned int index, double val, int end = LITTLE_END);
-   Q_INVOKABLE void putS32(unsigned int index, double val, int end = LITTLE_END);
+    Q_INVOKABLE void putS08(unsigned int index, double val);
+    Q_INVOKABLE void putS16(unsigned int index, double val, int end = LITTLE_END);
+    Q_INVOKABLE void putS32(unsigned int index, double val, int end = LITTLE_END);
 
 
 
 private:
 
-   void ensureSize(size_t size_needed);
+    void ensureSize(size_t size_needed);
 
 
-   /****************************************************************************
-    * SIGNALS, SLOTS
-    ***************************************************************************/
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 
 };
 

@@ -53,7 +53,7 @@ using namespace HTCore;
 
 ByteArrReadWrite *ByteArrFactory::createByteArrReadWrite()
 {
-   return new ByteArrReadWrite();
+    return new ByteArrReadWrite();
 }
 
 

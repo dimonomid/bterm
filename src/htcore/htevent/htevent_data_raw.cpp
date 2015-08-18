@@ -22,7 +22,7 @@ using namespace HTCore;
  ******************************************************************************/
 
 EventDataRaw::EventDataRaw(const std::vector<uint8_t> &data) :
-   data(data)
+    data(data)
 {
 }
 
@@ -51,12 +51,12 @@ EventDataRaw::EventDataRaw(const std::vector<uint8_t> &data) :
 
 const std::vector<uint8_t> EventDataRaw::getData() const
 {
-   return data;
+    return data;
 }
 
 void EventDataRaw::accept(EventVisitor &visitor)
 {
-   visitor.accept(*this);
+    visitor.accept(*this);
 }
 
 

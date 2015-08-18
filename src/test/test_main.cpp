@@ -21,31 +21,31 @@
 
 int main(int argc, char **argv)
 {
-   QApplication qappl{argc, argv};
+    QApplication qappl{argc, argv};
 
-   int status = 0;
+    int status = 0;
 
-   //-- run all tests
-   {
-      TestCodecISO14230 tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
+    //-- run all tests
+    {
+        TestCodecISO14230 tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
 
-   {
-      TestDataMsg tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
+    {
+        TestDataMsg tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
 
-   {
-      TestByteArr tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
+    {
+        TestByteArr tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
 
-   {
-      TestReqHandler tc;
-      status |= QTest::qExec(&tc, argc, argv);
-   }
+    {
+        TestReqHandler tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
 
-   return status;
+    return status;
 }
 

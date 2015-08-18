@@ -20,13 +20,13 @@
 
 namespace MyUtil
 {
-   /****************************************************************************
-    * PUBLIC FUNCTIONS
-    ***************************************************************************/
+    /****************************************************************************
+     * PUBLIC FUNCTIONS
+     ***************************************************************************/
 
-   QString byteArrayToHex(const std::vector<uint8_t> &data);
-   QVariantMap qjsErrorToVariant(const QJSValue &valError);
-   QString readFile(QString filename);
+    QString byteArrayToHex(const std::vector<uint8_t> &data);
+    QVariantMap qjsErrorToVariant(const QJSValue &valError);
+    QString readFile(QString filename);
 
 };
 

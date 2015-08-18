@@ -26,17 +26,17 @@ class TestDataMsg: public QObject
 Q_OBJECT
 
 public:
-   explicit TestDataMsg();
+    explicit TestDataMsg();
 
 private:
-   std::vector<HTCore::DataPart> data_parts;
-   HTCore::DataMsg msg;
+    std::vector<HTCore::DataPart> data_parts;
+    HTCore::DataMsg msg;
 
 private slots:
-   void testDataParts();
-   void testUserData();
-   void testRawData();
-   void testClear();
+    void testDataParts();
+    void testUserData();
+    void testRawData();
+    void testClear();
 
 };
 
