@@ -79,7 +79,7 @@ void ReqHandler::setScript(QString script_func_code)
 }
 
 ReqHandler::Result ReqHandler::handle(
-      const std::vector<uint8_t> &data,
+      QJSValue input_msg,
       QJSValue script_ctx
       )
 {
@@ -94,11 +94,7 @@ ReqHandler::Result ReqHandler::handle(
 
    QJSValue result;
 
-   ByteArrRead ba_in {data};
    p_response = std::make_shared<ByteArrReadWrite>();
-
-   QJSValue ba_in_scrval = p_engine->newQObject(&ba_in);
-   QQmlEngine::setObjectOwnership(&ba_in, QQmlEngine::CppOwnership);
 
    QJSValue ba_out_scrval = p_engine->newQObject(p_response.get());
    QQmlEngine::setObjectOwnership(p_response.get(), QQmlEngine::CppOwnership);
@@ -122,7 +118,7 @@ ReqHandler::Result ReqHandler::handle(
 
       QJSValue returned = func.callWithInstance(
             script_ctx,
-            QJSValueList() << ba_in_scrval << ba_out_scrval
+            QJSValueList() << input_msg << ba_out_scrval
             );
 
       if (returned.isError()){

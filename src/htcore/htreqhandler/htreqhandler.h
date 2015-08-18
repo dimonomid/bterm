@@ -93,7 +93,7 @@ public:
     * TODO
     */
    Result handle(
-         const std::vector<uint8_t> &data,
+         QJSValue input_msg,
          QJSValue script_ctx
          );
 

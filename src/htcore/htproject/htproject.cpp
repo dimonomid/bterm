@@ -62,7 +62,8 @@ Project::Project(
          make_shared<ReqHandler>(
             "handler 1",
             p_engine,
-            "(function(inputArr, outputArr){\n"
+            "(function(inputMsg, outputArr){\n"
+            "     var inputArr = inputMsg.byteArr;\n"
             "     var handled = false;\n"
 
             "     if (inputArr.getU08(0) === 0x03){\n"
@@ -81,7 +82,8 @@ Project::Project(
          make_shared<ReqHandler>(
             "handler 2",
             p_engine,
-            "(function(inputArr, outputArr){ \n"
+            "(function(inputMsg, outputArr){ \n"
+            "     var inputArr = inputMsg.byteArr;\n"
             "     var handled = false;\n"
 
             "     if (inputArr.getU08(0) === 0x04){\n"
@@ -102,7 +104,8 @@ Project::Project(
          make_shared<ReqHandler>(
             "handler 3",
             p_engine,
-            "(function(inputArr, outputArr){ \n"
+            "(function(inputMsg, outputArr){ \n"
+            "     var inputArr = inputMsg.byteArr;\n"
             "     var handled = false;\n"
 
             "     if (inputArr.getU08(0) === 0x04){\n"
@@ -191,10 +194,20 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
    std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
 
+   //-- create an object that will be given to handlers as input message
+   QJSValue decoded_msg_jsval = p_engine->newObject();
+
+   //-- actual input byte array
+   ByteArrRead ba_in {*p_req_data};
+   QJSValue ba_in_jsval = p_engine->newQObject(&ba_in);
+   QQmlEngine::setObjectOwnership(&ba_in, QQmlEngine::CppOwnership);
+
+   decoded_msg_jsval.setProperty("byteArr", ba_in_jsval);
+
    for (auto p_req_handler : handlers){
 
       ReqHandler::Result res = p_req_handler->handle(
-            *p_req_data,
+            decoded_msg_jsval,
             script_ctx
             );
 
