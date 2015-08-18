@@ -1,8 +1,7 @@
-/*****************************************************************************************
- *   Description:   TODO
- *                  Original code taken from http://www.prog.org.ru/topic_12074_0.html
+/******************************************************************************
+ *   Description:   See class declaration below
  *
- *****************************************************************************************/
+ ******************************************************************************/
 
 #ifndef __XML_SETTINGS_H__
 #define __XML_SETTINGS_H__
@@ -27,6 +26,11 @@ class QIODevice;
  * CLASS DECLARATION
  *****************************************************************************************/
 
+/**
+ * Class that provides setting storage in XML format.
+ *
+ * Original code taken a long ago from http://www.prog.org.ru/topic_12074_0.html
+ */
 class XmlSettings
 {
 
