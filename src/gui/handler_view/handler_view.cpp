@@ -43,9 +43,9 @@ HandlerView::HandlerView(
     //-- setup edit dockwidget
     {
         QWidget *p_edit_widg = createEditWidget();
-        p_dock = shared_ptr<QDockWidget>(
-                new QDockWidget("Handler " + p_handler->getName())
-                );
+        p_dock = make_shared<QDockWidget>("Handler " + p_handler->getName());
+        //TODO: probably use some unique key instead of human-readable name
+        p_dock->setObjectName("handler: " + p_handler->getName());
         p_dock->setWidget(p_edit_widg);
     }
 }

@@ -102,6 +102,7 @@ MainWindow::MainWindow(
 
         p_widg->setLayout(p_lay);
         p_dw_raw_data->setWidget(p_widg);
+        p_dw_raw_data->setObjectName("raw_data");
     }
 
     //-- populate central widget (with log)
@@ -287,6 +288,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     p_widg->setLayout(p_lay);
 
     p_dw_handlers->setWidget(p_widg);
+    p_dw_handlers->setObjectName("handlers_list");
 }
 
 void MainWindow::initSettings()
