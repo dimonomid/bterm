@@ -50,6 +50,11 @@ MainWindow::MainWindow(
 {
     ui->setupUi(this);
 
+    //-- Enable for dock areas to contain arbitrary number of rows (horizontal
+    //   or vertical). By default, when this option is false, dock areas can
+    //   contain only a single row.
+    this->setDockNestingEnabled(true);
+
     //-- test save/restore state
     {
        QAction *saveStateAction = new QAction(tr("&Save State"), this);
