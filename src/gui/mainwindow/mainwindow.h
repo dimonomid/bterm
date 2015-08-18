@@ -23,6 +23,7 @@ namespace Ui {
 
 class Appl;
 class HandlerView;
+class QPlainTextEdit_My;
 
 
 class MainWindow : public QMainWindow
@@ -45,6 +46,10 @@ private:
    QAction          *p_act_raw_data;
    QAction          *p_act_messages;
 
+
+   QPlainTextEdit_My   *p_raw_data_pte;
+
+   QDockWidget      *p_dw_raw_data;
    QDockWidget      *p_dw_handlers;
 
    std::vector<std::shared_ptr<HandlerView>> handler_views;

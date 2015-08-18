@@ -24,6 +24,7 @@
 #include "handler_view.h"
 
 #include "mainwindow.h"
+#include "qplaintextedit_my.h"
 
 
 
@@ -39,6 +40,8 @@ MainWindow::MainWindow(
     ui(new Ui::MainWindow),
     appl(appl),
     windows_toggle_sigmap(this),
+    p_raw_data_pte(new QPlainTextEdit_My(NULL)),
+    p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
     handler_views()
 {
@@ -57,7 +60,18 @@ MainWindow::MainWindow(
        fileMenu->addAction(restoreStateAction);
     }
 
+    //-- populate raw data dockwidget
+    {
+       QWidget *p_widg = new QWidget();
+       QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
+       p_lay->addWidget(p_raw_data_pte);
 
+       p_widg->setLayout(p_lay);
+       p_dw_raw_data->setWidget(p_widg);
+    }
+
+
+    addDockWidget(Qt::LeftDockWidgetArea, p_dw_raw_data);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
 
 
@@ -190,7 +204,8 @@ void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 {
    QString text = MyUtil::byteArrayToHex(event_data_raw->getData()) + "<br>";
 
-   this->ui->pte_raw_data->appendHtmlNoNL(text, true);
+   //this->ui->pte_raw_data->appendHtmlNoNL(text, true);
+   p_raw_data_pte->appendHtmlNoNL(text, true);
 
 #if 0
    QTextCursor cursor = QTextCursor(this->ui->pte_raw_data->document());
