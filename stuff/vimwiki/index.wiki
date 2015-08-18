@@ -13,14 +13,19 @@
 
 === todo ===
 
+   * [ ] indicate script errors
+   * [ ] ability to switch some particular handler off (probably with checkbox at the very left)
+   * [ ] ability to reorder handlers
    * [ ] project load/save
-   * [ ] script editing
+   * [ ] codec should emit protocol-specific data when message is decoded, this data should be given to handlers
+   * [ ] evaluate script only after code has changed
+   * [X] script editing
    * [ ] real data exchange
    * [ ] other protocols:
       * [ ] mikas
       * [ ] just cs
       * [ ] aldl
-   * [ ] position save/restore
+   * [X] position save/restore
 
    * [ ] make HTDataMsg::toString() to return QString instead of std::string
    * [ ] remove visitor, since it isn't used
