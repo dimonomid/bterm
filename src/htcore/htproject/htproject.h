@@ -51,8 +51,7 @@ Q_OBJECT
      ***************************************************************************/
 public:
     explicit Project(
-            std::shared_ptr<Codec> p_codec,
-            std::shared_ptr<IODev> p_io_dev
+            std::shared_ptr<Codec> p_codec
             );
 
     virtual ~Project();
@@ -81,6 +80,7 @@ private:
      ***************************************************************************/
 public:
 
+    void setIODev(std::shared_ptr<IODev> p_io_dev);
     std::shared_ptr<ReqHandler> getHandler(size_t index);
     size_t getHandlersCnt() const;
 

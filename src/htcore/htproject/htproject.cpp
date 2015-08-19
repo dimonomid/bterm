@@ -33,13 +33,12 @@ using namespace std;
  ******************************************************************************/
 
 Project::Project(
-        std::shared_ptr<Codec> p_codec,
-        std::shared_ptr<IODev> p_io_dev
+        std::shared_ptr<Codec> p_codec
         ) :
     p_engine(std::make_shared<QJSEngine>()),
     p_script_factory(std::make_shared<ScriptFactory>()),
     p_codec(p_codec),
-    p_io_dev(p_io_dev),
+    p_io_dev(),
     handlers(),
     script_ctx_jsval(p_engine->evaluate("({})"))
 {
@@ -49,11 +48,6 @@ Project::Project(
     //   and ByteArrReadWrite as instantiable
     qmlRegisterType<ByteArrRead>     ();
     qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
-
-    connect(
-            p_io_dev.get(), &IODev::readyRead,
-            this, &Project::onDataSrcReadyRead
-           );
 
     connect(
             p_codec.get(), &Codec::messageDecoded,
@@ -171,6 +165,17 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 /* protected    */
 
 /* public       */
+
+void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
+{
+    this->p_io_dev = p_io_dev;
+
+    connect(
+            p_io_dev.get(), &IODev::readyRead,
+            this, &Project::onDataSrcReadyRead
+           );
+
+}
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
 {

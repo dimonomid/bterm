@@ -312,7 +312,10 @@ void Appl::openProject(QString filename)
             SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
             );
 
-    p_project = std::make_shared<Project>(p_codec, p_io_dev);
+    p_project = std::make_shared<Project>(p_codec);
+
+    //-- set IODev to newly created project, so that it can talk
+    p_project->setIODev(p_io_dev);
 
     connect(
             p_project.get(), &Project::eventDataRaw,

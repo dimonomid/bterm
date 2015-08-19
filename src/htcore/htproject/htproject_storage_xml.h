@@ -11,12 +11,16 @@
  ******************************************************************************/
 
 #include <QObject>
+#include <QDomElement>
+#include <memory>
 
 
 
 
 namespace HTCore {
     class Project;
+    class Codec;
+    class Codec_ISO14230;
 }
 
 class QIODevice;
@@ -33,7 +37,7 @@ namespace HTCore {
 /**
  * TODO
  */
-class ProjectStorageXML : public QObject
+class HTCore::ProjectStorageXML : public QObject
 {
 Q_OBJECT
 
@@ -63,8 +67,8 @@ private:
 
     static const QString XML_ATTR_NAME__COMMON__NAME;
 
-    static const QString XML_ATTR_NAME__CODEC__ISO14230__LOCAL_ADDR;
-    static const QString XML_ATTR_NAME__CODEC__ISO14230__REMOTE_ADDR;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR;
 
     static const QString CODEC_NAME__ISO14230;
 
@@ -88,6 +92,13 @@ private:
     std::shared_ptr<Codec> readCodecFromDomElement(
             const QDomElement &elem_codec
             );
+
+    std::shared_ptr<Codec_ISO14230> readCodecIso14230FromDomElement(
+            const QDomElement &elem_codec
+            );
+
+
+
 
     /****************************************************************************
      * SIGNALS, SLOTS
