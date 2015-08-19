@@ -8,6 +8,7 @@
  ******************************************************************************/
 
 #include "htproject_storage_xml.h"
+#include "htproject.h"
 #include "htcodec.h"
 #include "htcodec_iso14230.h"
 
@@ -114,6 +115,7 @@ std::shared_ptr<Codec_ISO14230> ProjectStorageXML::readCodecIso14230FromDomEleme
             XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR
             );
 
+    //-- make sure both addresses are specified
     if (codec_local_addr_node.isNull()){
         throw std::invalid_argument(std::string("line ")
                 + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
@@ -128,6 +130,7 @@ std::shared_ptr<Codec_ISO14230> ProjectStorageXML::readCodecIso14230FromDomEleme
                 );
     }
 
+    //-- try to parse addresses
     unsigned int local_addr_int = codec_local_addr_node.nodeValue().toUInt(
             &ok, 0
             );
@@ -150,6 +153,7 @@ std::shared_ptr<Codec_ISO14230> ProjectStorageXML::readCodecIso14230FromDomEleme
                 );
     }
 
+    //-- check that addresses aren't too large
     if (local_addr_int > 0xff){
         throw std::invalid_argument(std::string("line ")
                 + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
@@ -226,17 +230,40 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
         proj_name = QObject::tr("Untitled project");
     }
 
-    //-- handle codecs
+    //-- handle codec
     std::shared_ptr<Codec> p_codec {};
     {
-        QDomNodeList children = elem_proj.elementsByTagName(
+        //-- get codecs folder
+        QDomNodeList codec_folders = elem_proj.elementsByTagName(
+                XML_TAG_NAME__CODECS
+                );
+        //-- there should be exactly one folder
+        if (codec_folders.count() != 1){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem_proj.lineNumber()).toStdString()
+                    + ": there should be exactly one \""
+                    + XML_TAG_NAME__CODECS.toStdString()
+                    + "\", element, but actual count is: "
+                    + QString::number(codec_folders.count()).toStdString()
+                    );
+        }
+
+        if (codec_folders.item(0).nodeType() != QDomNode::ElementNode){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem_proj.lineNumber()).toStdString()
+                    + ": wrong node type (Element expected)"
+                    );
+        }
+
+        //-- get codec nodes (currently, there should be just one codec)
+        QDomNodeList codec_nodes = codec_folders.item(0).toElement().elementsByTagName(
                 XML_TAG_NAME__CODEC
                 );
 
         int codecs_cnt = 0;
 
-        for (int i = 0; i < children.count(); ++i){
-            QDomNode cur_node = children.item(i);
+        for (int i = 0; i < codec_nodes.count(); ++i){
+            QDomNode cur_node = codec_nodes.item(i);
             if (cur_node.nodeType() == QDomNode::ElementNode){
                 QDomElement cur_elem = cur_node.toElement();
                 //-- since we've used elementsByTagName(),
@@ -260,6 +287,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
                     break;
                 }
 
+                //-- read codec
                 p_codec = readCodecFromDomElement(cur_elem);
 
                 ++codecs_cnt;
@@ -268,7 +296,10 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
     }
 
 
+    //-- now, since we have codec, we can create the project
     p_proj = std::make_shared<Project>(p_codec);
+
+    //TODO: read handlers
 
     return p_proj;
 }
