@@ -157,6 +157,8 @@ ReqHandler::Result ReqHandler::handle(
                 } else {
                     ret = Result::OK_NOT_HANDLED;
                 }
+            } else {
+                ret = Result::OK_NOT_HANDLED;
             }
         }
 
@@ -177,7 +179,11 @@ QVariantMap ReqHandler::getLastExceptionDetails()
 
 std::shared_ptr<const std::vector<uint8_t>> ReqHandler::getResponse()
 {
-    return p_response->getData();
+    if (p_response != nullptr){
+        return p_response->getData();
+    } else {
+        return std::make_shared<const std::vector<uint8_t>>();
+    }
 }
 
 /*******************************************************************************

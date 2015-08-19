@@ -72,13 +72,13 @@ void ByteArrReadWrite::ensureSize(size_t size_needed)
 
 /* public       */
 
-void ByteArrReadWrite::setFillByte(unsigned int fill_byte)
+void ByteArrReadWrite::setFillByte(double fill_byte)
 {
     this->fill_byte = fill_byte;
 }
 
 
-void ByteArrReadWrite::putU08(unsigned int index, double val)
+void ByteArrReadWrite::putU08(double index, double val)
 {
     uint8_t actual_val = val;
     ensureSize(index + sizeof(actual_val));
@@ -86,12 +86,12 @@ void ByteArrReadWrite::putU08(unsigned int index, double val)
     (*p_data)[index] = val;
 }
 
-void ByteArrReadWrite::putU16(unsigned int index, double val, int/*Endianness*/ end)
+void ByteArrReadWrite::putU16(double index, double val, double/*Endianness*/ end)
 {
     uint16_t actual_val = val;
     ensureSize(index + sizeof(actual_val));
 
-    switch (end){
+    switch (static_cast<int>(end)){
         case LITTLE_END:
             (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
             (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
@@ -103,12 +103,12 @@ void ByteArrReadWrite::putU16(unsigned int index, double val, int/*Endianness*/ 
     }
 }
 
-void ByteArrReadWrite::putU32(unsigned int index, double val, int/*Endianness*/ end)
+void ByteArrReadWrite::putU32(double index, double val, double/*Endianness*/ end)
 {
     uint32_t actual_val = val;
     ensureSize(index + sizeof(actual_val));
 
-    switch (end){
+    switch (static_cast<int>(end)){
         case LITTLE_END:
             (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
             (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
@@ -124,7 +124,7 @@ void ByteArrReadWrite::putU32(unsigned int index, double val, int/*Endianness*/ 
     }
 }
 
-void ByteArrReadWrite::putS08(unsigned int index, double val)
+void ByteArrReadWrite::putS08(double index, double val)
 {
     int8_t actual_val = val;
     ensureSize(index + sizeof(actual_val));
@@ -132,12 +132,12 @@ void ByteArrReadWrite::putS08(unsigned int index, double val)
     (*p_data)[index] = val;
 }
 
-void ByteArrReadWrite::putS16(unsigned int index, double val, int/*Endianness*/ end)
+void ByteArrReadWrite::putS16(double index, double val, double/*Endianness*/ end)
 {
     int16_t actual_val = val;
     ensureSize(index + sizeof(actual_val));
 
-    switch (end){
+    switch (static_cast<int>(end)){
         case LITTLE_END:
             (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
             (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];
@@ -149,12 +149,12 @@ void ByteArrReadWrite::putS16(unsigned int index, double val, int/*Endianness*/ 
     }
 }
 
-void ByteArrReadWrite::putS32(unsigned int index, double val, int/*Endianness*/ end)
+void ByteArrReadWrite::putS32(double index, double val, double/*Endianness*/ end)
 {
     int32_t actual_val = val;
     ensureSize(index + sizeof(actual_val));
 
-    switch (end){
+    switch (static_cast<int>(end)){
         case LITTLE_END:
             (*p_data)[index + 0] = ((uint8_t *)(&actual_val))[0];
             (*p_data)[index + 1] = ((uint8_t *)(&actual_val))[1];

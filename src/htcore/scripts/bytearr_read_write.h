@@ -69,15 +69,15 @@ private:
      ***************************************************************************/
 
 public:
-    Q_INVOKABLE void setFillByte(unsigned int fill_byte);
+    Q_INVOKABLE void setFillByte(double fill_byte);
 
-    Q_INVOKABLE void putU08(unsigned int index, double val);
-    Q_INVOKABLE void putU16(unsigned int index, double val, int end = LITTLE_END);
-    Q_INVOKABLE void putU32(unsigned int index, double val, int end = LITTLE_END);
+    Q_INVOKABLE void putU08(double index, double val);
+    Q_INVOKABLE void putU16(double index, double val, double end = LITTLE_END);
+    Q_INVOKABLE void putU32(double index, double val, double end = LITTLE_END);
 
-    Q_INVOKABLE void putS08(unsigned int index, double val);
-    Q_INVOKABLE void putS16(unsigned int index, double val, int end = LITTLE_END);
-    Q_INVOKABLE void putS32(unsigned int index, double val, int end = LITTLE_END);
+    Q_INVOKABLE void putS08(double index, double val);
+    Q_INVOKABLE void putS16(double index, double val, double end = LITTLE_END);
+    Q_INVOKABLE void putS32(double index, double val, double end = LITTLE_END);
 
 
 

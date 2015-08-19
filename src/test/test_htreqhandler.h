@@ -12,9 +12,17 @@
  ******************************************************************************/
 
 #include <QtTest/QtTest>
+#include <QJSValue>
 
 #include <memory>
+#include <vector>
+#include <cstdint>
 
+
+
+namespace HTCore {
+    class ScriptFactory;
+}
 
 class QJSEngine;
 
@@ -31,6 +39,10 @@ public:
 
 private:
     std::shared_ptr<QJSEngine> p_engine;
+    std::shared_ptr<HTCore::ScriptFactory> p_script_factory;
+
+private:
+    QJSValue createInputMsgFromInputData(std::vector<uint8_t> input_data);
 
 private slots:
     void generalTest();
