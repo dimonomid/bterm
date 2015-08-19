@@ -35,6 +35,7 @@
 
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
+#include "htevent_sys.h"
 
 #include "handler_view.h"
 
@@ -174,6 +175,11 @@ MainWindow::MainWindow(
     connect(
             &appl, &Appl::eventDataMsg,
             this, &MainWindow::onNewDataMsg
+           );
+
+    connect(
+            &appl, &Appl::eventSys,
+            this, &MainWindow::onEventSys
            );
 
     connect(&appl, &Appl::projectOpened, this, &MainWindow::onProjectOpened);
@@ -441,6 +447,30 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
     cursor.insertHtml(text);
     cursor.movePosition(QTextCursor::End);
 #endif
+}
+
+void MainWindow::onEventSys(std::shared_ptr<EventSys> p_event_sys)
+{
+    if (true/*event_sys.getLevel() >= mainwindow.sys_msg_level*/){
+        QString html {};
+
+        switch (p_event_sys->getLevel()){
+            case EventSys::Level::DEBUG:
+                html = "<font color='green'>" + p_event_sys->toString() + "</font>";
+                break;
+            case EventSys::Level::INFO:
+                html = "<font color='blue'>" + p_event_sys->toString() + "</font>";
+                break;
+            case EventSys::Level::WARNING:
+                html = "<font color='brown'>" + p_event_sys->toString() + "</font>";
+                break;
+            case EventSys::Level::ERROR:
+                html = "<font color='red'>" + p_event_sys->toString() + "</font>";
+                break;
+        }
+
+        this->p_log_pte->appendHtmlNoNL("* " + html + "<br>", true);
+    }
 }
 
 

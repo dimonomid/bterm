@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Test">
+
+    <codecs>
+        <codec
+            name="iso14230"
+            local_addr="0x10"
+            remote_addr="0x11"
+            />
+    </codecs>
+
+</project>
+

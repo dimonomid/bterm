@@ -21,6 +21,7 @@
 #include "htiodev_dbg.h"
 
 #include "htdatamsg.h"
+#include "htproject_storage_xml.h"
 
 //#include "htevent_data_raw.h"
 //#include "htevent_data_msg.h"
@@ -262,7 +263,7 @@ qDebug() << "test: " << myCodec.property("getTest").call().toString();
 #endif
 
 
-    openProject("dummy");
+    openProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
 
     this->p_main_window->showInRestoredState();
 
@@ -295,6 +296,12 @@ void Appl::initSettings()
     this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME,  "");
 }
 
+void Appl::cryEventSys(EventSys::Level level, QString text)
+{
+    auto p_event = std::make_shared<EventSys>(level, text);
+    emit eventSys(p_event);
+}
+
 
 
 /* protected    */
@@ -306,7 +313,16 @@ void Appl::openProject(QString filename)
     auto file = std::make_shared<QFile>(filename);
     QFileInfo fileinfo {*file};
 
+    //-- try to read project from xml file
+    ProjectStorageXML storage_xml (file);
+
+    //-- subscribe to the reader's events
+    //   (there may be some warnings or errors)
+    //   TODO
+    //connect(&storage_xml, &ProjectReaderXML::event, this, &Appl::onDMEvent);
+
     // TODO: really open project
+#if 0
     proj_filename = fileinfo.absoluteFilePath();
     this->p_sett->setValue(
             SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
@@ -333,9 +349,59 @@ void Appl::openProject(QString filename)
             this, &Appl::reqHandlerNameChanged
            );
 
-
-
     emit projectOpened(p_project);
+#endif
+
+    try {
+        p_project = storage_xml.readProject();
+        //-- project is read successfully
+        //   let's save filename and notify the listeners
+
+        cryEventSys(
+                EventSys::Level::INFO,
+                tr("Project \"") + filename + tr("\" opened successfully")
+                );
+
+        proj_filename = fileinfo.absoluteFilePath();
+        this->p_sett->setValue(
+                SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
+                );
+
+        //-- set IODev to newly created project, so that it can talk
+        p_project->setIODev(p_io_dev);
+
+        connect(
+                p_project.get(), &Project::eventDataRaw,
+                this, &Appl::onNewDataRaw
+               );
+
+        connect(
+                p_project.get(), &Project::eventDataMsg,
+                this, &Appl::onNewDataMsg
+               );
+
+        //-- just forward reqHandlerNameChanged() signal
+        connect(
+                p_project.get(), &Project::reqHandlerNameChanged,
+                this, &Appl::reqHandlerNameChanged
+               );
+
+        emit projectOpened(p_project);
+
+    } catch (std::invalid_argument e){
+        //-- there was some error during project read
+
+        cryEventSys(
+                EventSys::Level::ERROR,
+                tr("Error during opening the project \"") 
+                + filename
+                + tr("\": ")
+                + e.what()
+                );
+    }
+
+
+
 }
 
 QString Appl::getProjectFilename() const
