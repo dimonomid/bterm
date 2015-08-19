@@ -1,0 +1,99 @@
+/*******************************************************************************
+ *   Description:   See class declaration below
+ *
+ ******************************************************************************/
+
+#ifndef _HTPROJECT_STORAGE_XML_H
+#define _HTPROJECT_STORAGE_XML_H
+
+/*******************************************************************************
+ * INCLUDED FILES
+ ******************************************************************************/
+
+#include <QObject>
+
+
+
+
+namespace HTCore {
+    class Project;
+}
+
+class QIODevice;
+
+/*******************************************************************************
+ * CLASS DECLARATION
+ ******************************************************************************/
+
+namespace HTCore {
+    class ProjectStorageXML;
+}
+
+
+/**
+ * TODO
+ */
+class ProjectStorageXML : public QObject
+{
+Q_OBJECT
+
+    /****************************************************************************
+     * TYPES
+     ***************************************************************************/
+
+    /****************************************************************************
+     * CONSTRUCTOR, DESTRUCTOR
+     ***************************************************************************/
+public:
+    ProjectStorageXML(
+            std::shared_ptr<QIODevice> p_device
+            );
+
+    /****************************************************************************
+     * PRIVATE DATA
+     ***************************************************************************/
+private:
+
+    std::shared_ptr<QIODevice> p_device;
+
+
+    static const QString XML_TAG_NAME__PROJECT;
+    static const QString XML_TAG_NAME__CODECS;
+    static const QString XML_TAG_NAME__CODEC;
+
+    static const QString XML_ATTR_NAME__COMMON__NAME;
+
+    static const QString XML_ATTR_NAME__CODEC__ISO14230__LOCAL_ADDR;
+    static const QString XML_ATTR_NAME__CODEC__ISO14230__REMOTE_ADDR;
+
+    static const QString CODEC_NAME__ISO14230;
+
+    /****************************************************************************
+     * STATIC METHODS
+     ***************************************************************************/
+
+    /****************************************************************************
+     * METHODS
+     ***************************************************************************/
+public:
+    /**
+     * Read project from QIODevice that was given to constructor.
+     */
+    std::shared_ptr<Project> readProject();
+
+
+
+private:
+
+    std::shared_ptr<Codec> readCodecFromDomElement(
+            const QDomElement &elem_codec
+            );
+
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
+
+};
+
+
+#endif // _HTPROJECT_STORAGE_XML_H
