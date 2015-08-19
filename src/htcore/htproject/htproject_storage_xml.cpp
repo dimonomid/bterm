@@ -267,29 +267,8 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
         }
     }
 
-#if 0
-    QDomNode codec_node = elem_proj_attrs.namedItem(
-            XML_ATTR_NAME__PROJECT__CODEC
-            );
-    QString codec_name {};
-    std::shared_ptr<Codec> p_codec {};
-    if (!codec_node.isNull()){
-        //-- codec name specified
-        codec_name = codec_node.nodeValue();
-        if (codec_name == CODEC_NAME__ISO14230){
-            p_codec = std::make_shared<Codec_ISO14230>(
-                    0x01, 0x02
-                    );
-        }
-    } else {
-        //-- codec name unspecified
-        codec_name = QObject::tr("Untitled project");
-    }
-#endif
 
-
-    //TODO
-    //p_proj = std::make_shared<Project>(proj_name);
+    p_proj = std::make_shared<Project>(p_codec);
 
     return p_proj;
 }
