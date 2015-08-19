@@ -54,9 +54,14 @@ const std::vector<uint8_t> EventDataRaw::getData() const
     return data;
 }
 
+const QString EventDataRaw::toString() const
+{
+    return "EventDataRaw";
+}
+
 void EventDataRaw::accept(EventVisitor &visitor)
 {
-    visitor.accept(*this);
+    visitor.visit(*this);
 }
 
 

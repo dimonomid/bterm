@@ -57,8 +57,9 @@ private:
      ***************************************************************************/
 public:
 
-    virtual void accept(HTCore::EventDataRaw &htevent_data_raw) override;
-    virtual void accept(HTCore::EventDataMsg &htevent_data_msg) override;
+    virtual void visit(HTCore::EventDataRaw &htevent_data_raw) override;
+    virtual void visit(HTCore::EventDataMsg &htevent_data_msg) override;
+    virtual void visit(HTCore::EventSys &htevent_data_msg) override;
 
 
     /****************************************************************************

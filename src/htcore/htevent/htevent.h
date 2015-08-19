@@ -55,6 +55,7 @@ private:
      ***************************************************************************/
 public:
 
+    virtual const QString toString() const = 0;
     virtual void accept(EventVisitor &visitor) = 0;
 
 

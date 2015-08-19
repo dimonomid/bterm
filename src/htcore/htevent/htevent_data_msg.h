@@ -80,6 +80,7 @@ public:
     Direction getDir() const;
     std::shared_ptr<ReqHandler> getHandler() const;
 
+    virtual const QString toString() const override;
     virtual void accept(EventVisitor &visitor) override;
 
 

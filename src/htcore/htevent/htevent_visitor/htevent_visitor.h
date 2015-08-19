@@ -21,6 +21,7 @@
 namespace HTCore {
     class EventDataRaw;
     class EventDataMsg;
+    class EventSys;
 }
 
 /*******************************************************************************
@@ -57,8 +58,9 @@ private:
      ***************************************************************************/
 public:
 
-    virtual void accept(EventDataRaw &) = 0;
-    virtual void accept(EventDataMsg &) = 0;
+    virtual void visit(EventDataRaw &) = 0;
+    virtual void visit(EventDataMsg &) = 0;
+    virtual void visit(EventSys &) = 0;
 
 
 

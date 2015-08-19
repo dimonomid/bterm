@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration in header file
  *
  ******************************************************************************/
 
@@ -7,12 +7,8 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <QDebug>
-
-#include "htevent_visitor_handle.h"
-
-#include "htevent_data_raw.h"
-#include "htevent_data_msg.h"
+#include "htevent_sys.h"
+#include "htevent_visitor.h"
 
 
 using namespace HTCore;
@@ -21,8 +17,14 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-EventVisitor_Handle::EventVisitor_Handle(Appl &appl) : 
-    appl(appl)
+EventSys::EventSys(Level level, QString text) :
+    level(level),
+    text(text)
+{
+
+}
+
+EventSys::~EventSys()
 {
 }
 
@@ -38,6 +40,45 @@ EventVisitor_Handle::EventVisitor_Handle(Appl &appl) :
 
 /* public       */
 
+QString EventSys::levelToString(Level level)
+{
+    QString ret = "unknown";
+
+    switch (level){
+        case Level::DEBUG:
+            ret = "DEBUG";
+            break;
+        case Level::INFO:
+            ret = "INFO";
+            break;
+        case Level::WARNING:
+            ret = "WARNING";
+            break;
+        case Level::ERROR:
+            ret = "ERROR";
+            break;
+    }
+
+    return ret;
+}
+
+EventSys::Level EventSys::levelFromString(QString level_str)
+{
+    Level level = Level::INFO;
+
+    if (level_str == "DEBUG"){
+        level = Level::DEBUG;
+    } else if (level_str == "INFO"){
+        level = Level::INFO;
+    } else if (level_str == "WARNING"){
+        level = Level::WARNING;
+    } else if (level_str == "ERROR"){
+        level = Level::ERROR;
+    }
+
+    return level;
+}
+
 
 /*******************************************************************************
  * METHODS
@@ -49,31 +90,19 @@ EventVisitor_Handle::EventVisitor_Handle(Appl &appl) :
 
 /* public       */
 
-void EventVisitor_Handle::visit(EventDataRaw &htevent_data_raw)
+const QString EventSys::toString() const
 {
-    const std::vector<uint8_t> data = htevent_data_raw.getData();
-    emit(newDataRaw(data));
-#if 0
-    qDebug("handle data raw: ");
-    for (auto byte : data){
-        qDebug("0x%2.x", byte);
-    }
-#endif
+    return text;
 }
 
-void EventVisitor_Handle::visit(EventDataMsg &htevent_data_msg)
+EventSys::Level EventSys::getLevel() const
 {
-    //qDebug(("handle data msg: " + htevent_data_msg.getMsg().toString()).c_str());
-    emit(
-            newDataMsg(
-                htevent_data_msg.getMsg()
-                )
-        );
+    return level;
 }
 
-void EventVisitor_Handle::visit(EventSys &htevent_sys)
+void EventSys::accept(EventVisitor &visitor)
 {
-    std::ignore = htevent_sys;
+    visitor.visit(*this);
 }
 
 

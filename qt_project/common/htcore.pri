@@ -10,9 +10,11 @@ SOURCES += \
     ../../src/htcore/htdatamsg/htdatapart.cpp \
     ../../src/htcore/htdatamsg/htdatamsg.cpp \
     $$PWD/../../src/htcore/htproject/htproject.cpp \
+    $$PWD/../../src/htcore/htproject/htproject_storage_xml.cpp \
     $$PWD/../../src/htcore/htevent/htevent.cpp \
     $$PWD/../../src/htcore/htevent/htevent_data_raw.cpp \
     $$PWD/../../src/htcore/htevent/htevent_data_msg.cpp \
+    $$PWD/../../src/htcore/htevent/htevent_sys.cpp \
     $$PWD/../../src/htcore/htreqhandler/htreqhandler.cpp \
     $$PWD/../../src/htcore/scripts/bytearr_read.cpp \
     $$PWD/../../src/htcore/scripts/bytearr_read_write.cpp \
@@ -24,9 +26,11 @@ HEADERS += ../../src/htcore/htdatamsg/htdatapart.h \
     ../../src/htcore/htcodec/htcodec_iso14230.h \
     $$PWD/../../src/htcore/htiodev/htiodev.h \
     $$PWD/../../src/htcore/htproject/htproject.h \
+    $$PWD/../../src/htcore/htproject/htproject_storage_xml.h \
     $$PWD/../../src/htcore/htevent/htevent.h \
     $$PWD/../../src/htcore/htevent/htevent_data_raw.h \
     $$PWD/../../src/htcore/htevent/htevent_data_msg.h \
+    $$PWD/../../src/htcore/htevent/htevent_sys.h \
     $$PWD/../../src/htcore/htevent/htevent_visitor/htevent_visitor.h \
     $$PWD/../../src/htcore/htevents_acc.h \
     $$PWD/../../src/htcore/htreqhandler/htreqhandler.h \

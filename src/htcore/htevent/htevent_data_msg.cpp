@@ -72,9 +72,14 @@ std::shared_ptr<ReqHandler> EventDataMsg::getHandler() const
 }
 
 
+const QString EventDataMsg::toString() const
+{
+    return "EventDataMsg";
+}
+
 void EventDataMsg::accept(EventVisitor &visitor)
 {
-    visitor.accept(*this);
+    visitor.visit(*this);
 }
 
 

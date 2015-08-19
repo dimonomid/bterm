@@ -1,21 +1,17 @@
-/*******************************************************************************
- *   Description:   TODO
+/******************************************************************************
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
-#ifndef _HTEVENT_DATA_RAW_H
-#define _HTEVENT_DATA_RAW_H
+#ifndef _HTEVENT_SYS_H
+#define _HTEVENT_SYS_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <vector>
-#include <cstdint>
-
-#include <QObject>
-
 #include "htevent.h"
+
 
 
 /*******************************************************************************
@@ -23,21 +19,33 @@
  ******************************************************************************/
 
 namespace HTCore {
-    class EventDataRaw;
+    class EventSys;
 }
 
-class HTCore::EventDataRaw : public HTCore::Event
+/**
+ * Event that represents some system event, such as debug events (data rx/tx),
+ * issues during project opening, etc.
+ */
+class HTCore::EventSys : public Event
 {
     /****************************************************************************
      * TYPES
      ***************************************************************************/
 
+public:
+    enum class Level {
+        DEBUG,
+        INFO,
+        WARNING,
+        ERROR,
+    };
+
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-
-    EventDataRaw(const std::vector<uint8_t> &data);
+    explicit EventSys(Level level, QString text);
+    virtual ~EventSys();
 
 
     /****************************************************************************
@@ -45,21 +53,26 @@ public:
      ***************************************************************************/
 private:
 
-    std::vector<uint8_t> data;
+    Level level;
+    QString text;
+
 
 
     /****************************************************************************
      * STATIC METHODS
      ***************************************************************************/
+public:
+    static QString levelToString(Level level);
+    static Level levelFromString(QString level_str);
+
 
     /****************************************************************************
      * METHODS
      ***************************************************************************/
 public:
 
-    const std::vector<uint8_t> getData() const;
-
     virtual const QString toString() const override;
+    Level getLevel() const;
     virtual void accept(EventVisitor &visitor) override;
 
 
@@ -71,4 +84,4 @@ public:
 };
 
 
-#endif // _HTEVENT_DATA_RAW_H
+#endif // _HTEVENT_SYS_H
