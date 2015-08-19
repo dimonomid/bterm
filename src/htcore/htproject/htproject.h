@@ -81,14 +81,13 @@ private:
 public:
 
     void setIODev(std::shared_ptr<IODev> p_io_dev);
+    void addHandler(std::shared_ptr<ReqHandler> p_handler);
     std::shared_ptr<ReqHandler> getHandler(size_t index);
     size_t getHandlersCnt() const;
 
 
 
 private:
-
-    void addHandler(std::shared_ptr<ReqHandler> p_handler);
 
 
 

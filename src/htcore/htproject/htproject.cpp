@@ -54,11 +54,10 @@ Project::Project(
             this, &Project::onMessageDecoded
            );
 
+#if 0
     addHandler(
             make_shared<ReqHandler>(
                 "handler 1",
-                p_engine,
-                p_script_factory,
                 "(function(inputMsg){\n"
                 "     var inputArr = inputMsg.byteArr;\n"
                 "     var handled = false;\n"
@@ -81,8 +80,6 @@ Project::Project(
     addHandler(
             make_shared<ReqHandler>(
                 "handler 2",
-                p_engine,
-                p_script_factory,
                 "(function(inputMsg){ \n"
                 "     var inputArr = inputMsg.byteArr;\n"
                 "     var handled = false;\n"
@@ -107,8 +104,6 @@ Project::Project(
     addHandler(
             make_shared<ReqHandler>(
                 "handler 3",
-                p_engine,
-                p_script_factory,
                 "(function(inputMsg){ \n"
                 "     var inputArr = inputMsg.byteArr;\n"
                 "     var handled = false;\n"
@@ -127,6 +122,7 @@ Project::Project(
                 " })\n"
                 )
             );
+#endif
 
 }
 
@@ -152,16 +148,6 @@ Project::~Project()
 
 /* private      */
 
-void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
-{
-    handlers.push_back(p_handler);
-    connect(
-            p_handler.get(), &ReqHandler::nameChanged,
-            this, &Project::onReqHandlerNameChanged
-           );
-}
-
-
 /* protected    */
 
 /* public       */
@@ -175,6 +161,17 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
             this, &Project::onDataSrcReadyRead
            );
 
+}
+
+void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
+{
+    p_handler->setQJSEngine(p_engine);
+    p_handler->setScriptFactory(p_script_factory);
+    handlers.push_back(p_handler);
+    connect(
+            p_handler.get(), &ReqHandler::nameChanged,
+            this, &Project::onReqHandlerNameChanged
+           );
 }
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)

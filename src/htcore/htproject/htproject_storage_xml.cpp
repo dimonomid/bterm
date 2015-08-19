@@ -23,6 +23,10 @@ using namespace HTCore;
 const QString ProjectStorageXML::XML_TAG_NAME__PROJECT = "project";
 const QString ProjectStorageXML::XML_TAG_NAME__CODECS  = "codecs";
 const QString ProjectStorageXML::XML_TAG_NAME__CODEC   = "codec";
+const QString ProjectStorageXML::XML_TAG_NAME__REQ_HANDLERS = "req_handlers";
+const QString ProjectStorageXML::XML_TAG_NAME__REQ_HANDLER  = "req_handler";
+const QString ProjectStorageXML::XML_TAG_NAME__RH_CODE  = "code";
+
 
 const QString ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME     = "name";
 
@@ -61,6 +65,34 @@ ProjectStorageXML::ProjectStorageXML(
  ******************************************************************************/
 
 /* private      */
+
+QDomElement ProjectStorageXML::getSingleChildElementByTagName(
+        const QDomElement &elem_parent,
+        QString tagName
+        )
+{
+    QDomNodeList rh_folders = elem_parent.elementsByTagName(tagName);
+
+    //-- there should be exactly one folder
+    if (rh_folders.count() != 1){
+        throw std::invalid_argument(std::string("line ")
+                + QString::number(elem_parent.lineNumber()).toStdString()
+                + ": there should be exactly one \""
+                + tagName.toStdString()
+                + "\" element, but actual count is: "
+                + QString::number(rh_folders.count()).toStdString()
+                );
+    }
+
+    if (rh_folders.item(0).nodeType() != QDomNode::ElementNode){
+        throw std::invalid_argument(std::string("line ")
+                + QString::number(elem_parent.lineNumber()).toStdString()
+                + ": wrong node type (Element expected)"
+                );
+    }
+
+    return rh_folders.item(0).toElement();
+}
 
 std::shared_ptr<Codec> ProjectStorageXML::readCodecFromDomElement(
         const QDomElement &elem_codec
@@ -182,6 +214,38 @@ std::shared_ptr<Codec_ISO14230> ProjectStorageXML::readCodecIso14230FromDomEleme
 }
 
 
+std::shared_ptr<ReqHandler> ProjectStorageXML::readReqHandlerFromDomElement(
+        const QDomElement &elem_rh
+        )
+{
+    std::shared_ptr<ReqHandler> p_rh {};
+
+    QDomNamedNodeMap elem_rh_attrs = elem_rh.attributes();
+    QDomNode rh_name_node = elem_rh_attrs.namedItem(
+            XML_ATTR_NAME__COMMON__NAME
+            );
+
+    QString rh_name {};
+    if (!rh_name_node.isNull()){
+        rh_name = rh_name_node.nodeValue();
+    }
+
+    //-- get code elem
+    QDomElement code_elem = getSingleChildElementByTagName(
+            elem_rh,
+            XML_TAG_NAME__RH_CODE
+            );
+    QString code = code_elem.text();
+
+    p_rh = std::make_shared<ReqHandler>(
+            rh_name, code
+            );
+
+    return p_rh;
+}
+
+
+
 /* protected    */
 
 /* public       */
@@ -234,29 +298,13 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
     std::shared_ptr<Codec> p_codec {};
     {
         //-- get codecs folder
-        QDomNodeList codec_folders = elem_proj.elementsByTagName(
+        QDomElement codecs_folder = getSingleChildElementByTagName(
+                elem_proj,
                 XML_TAG_NAME__CODECS
                 );
-        //-- there should be exactly one folder
-        if (codec_folders.count() != 1){
-            throw std::invalid_argument(std::string("line ")
-                    + QString::number(elem_proj.lineNumber()).toStdString()
-                    + ": there should be exactly one \""
-                    + XML_TAG_NAME__CODECS.toStdString()
-                    + "\", element, but actual count is: "
-                    + QString::number(codec_folders.count()).toStdString()
-                    );
-        }
-
-        if (codec_folders.item(0).nodeType() != QDomNode::ElementNode){
-            throw std::invalid_argument(std::string("line ")
-                    + QString::number(elem_proj.lineNumber()).toStdString()
-                    + ": wrong node type (Element expected)"
-                    );
-        }
 
         //-- get codec nodes (currently, there should be just one codec)
-        QDomNodeList codec_nodes = codec_folders.item(0).toElement().elementsByTagName(
+        QDomNodeList codec_nodes = codecs_folder.elementsByTagName(
                 XML_TAG_NAME__CODEC
                 );
 
@@ -300,6 +348,51 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
     p_proj = std::make_shared<Project>(p_codec);
 
     //TODO: read handlers
+    {
+        //-- get handlers folder
+        QDomNodeList rh_folders = elem_proj.elementsByTagName(
+                XML_TAG_NAME__REQ_HANDLERS
+                );
+        //-- there should be exactly one folder
+        if (rh_folders.count() != 1){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem_proj.lineNumber()).toStdString()
+                    + ": there should be exactly one \""
+                    + XML_TAG_NAME__REQ_HANDLERS.toStdString()
+                    + "\" element, but actual count is: "
+                    + QString::number(rh_folders.count()).toStdString()
+                    );
+        }
+
+        if (rh_folders.item(0).nodeType() != QDomNode::ElementNode){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem_proj.lineNumber()).toStdString()
+                    + ": wrong node type (Element expected)"
+                    );
+        }
+
+        //-- get rh nodes (currently, there should be just one codec)
+        QDomNodeList rh_nodes = rh_folders.item(0).toElement().elementsByTagName(
+                XML_TAG_NAME__REQ_HANDLER
+                );
+
+
+        for (int i = 0; i < rh_nodes.count(); ++i){
+            QDomNode cur_node = rh_nodes.item(i);
+            if (cur_node.nodeType() == QDomNode::ElementNode){
+                QDomElement cur_elem = cur_node.toElement();
+                //-- since we've used elementsByTagName(),
+                //   we're sure that tag name is correct
+
+                //-- read rh
+                std::shared_ptr<ReqHandler> p_rh
+                    = readReqHandlerFromDomElement(cur_elem);
+
+                p_proj->addHandler(p_rh);
+            }
+        }
+    }
+
 
     return p_proj;
 }

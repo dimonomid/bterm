@@ -21,6 +21,7 @@ namespace HTCore {
     class Project;
     class Codec;
     class Codec_ISO14230;
+    class ReqHandler;
 }
 
 class QIODevice;
@@ -64,6 +65,9 @@ private:
     static const QString XML_TAG_NAME__PROJECT;
     static const QString XML_TAG_NAME__CODECS;
     static const QString XML_TAG_NAME__CODEC;
+    static const QString XML_TAG_NAME__REQ_HANDLERS;
+    static const QString XML_TAG_NAME__REQ_HANDLER;
+    static const QString XML_TAG_NAME__RH_CODE;
 
     static const QString XML_ATTR_NAME__COMMON__NAME;
 
@@ -89,12 +93,21 @@ public:
 
 private:
 
+    QDomElement getSingleChildElementByTagName(
+            const QDomElement &elem_parent,
+            QString tagName
+            );
+
     std::shared_ptr<Codec> readCodecFromDomElement(
             const QDomElement &elem_codec
             );
 
     std::shared_ptr<Codec_ISO14230> readCodecIso14230FromDomElement(
             const QDomElement &elem_codec
+            );
+
+    std::shared_ptr<ReqHandler> readReqHandlerFromDomElement(
+            const QDomElement &elem_rh
             );
 
 
