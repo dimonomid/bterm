@@ -24,6 +24,7 @@ namespace HTCore {
     class EventDataRaw;
     class EventDataMsg;
     class DataMsg;
+    class ScriptFactory;
 }
 
 class QJSEngine;
@@ -62,6 +63,7 @@ public:
 private:
 
     std::shared_ptr<QJSEngine> p_engine;
+    std::shared_ptr<ScriptFactory> p_script_factory;
 
     std::shared_ptr<Codec> p_codec;
     std::shared_ptr<IODev> p_io_dev;

@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _BYTEARR_FACTORY_H
-#define _BYTEARR_FACTORY_H
+#ifndef _SCRIPT_FACTORY_H
+#define _SCRIPT_FACTORY_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -18,14 +18,14 @@
  ******************************************************************************/
 
 namespace HTCore {
-    class ByteArrFactory;
+    class ScriptFactory;
 }
 
 
 /**
  * TODO
  */
-class HTCore::ByteArrFactory : public QObject
+class HTCore::ScriptFactory : public QObject
 {
 Q_OBJECT
     /****************************************************************************
@@ -55,9 +55,9 @@ private:
      ***************************************************************************/
 public slots:
 
-    HTCore::ByteArrReadWrite *createByteArrReadWrite();
+    HTCore::ByteArrReadWrite *createByteArr();
 
 };
 
 
-#endif // _BYTEARR_FACTORY_H
+#endif // _SCRIPT_FACTORY_H

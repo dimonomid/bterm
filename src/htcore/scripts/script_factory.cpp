@@ -7,7 +7,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "bytearr_factory.h"
+#include "script_factory.h"
 
 
 
@@ -51,7 +51,7 @@ using namespace HTCore;
 
 /* public       */
 
-ByteArrReadWrite *ByteArrFactory::createByteArrReadWrite()
+ByteArrReadWrite *ScriptFactory::createByteArr()
 {
     return new ByteArrReadWrite();
 }

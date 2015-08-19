@@ -35,7 +35,6 @@
 #include <QDebug>
 #include "bytearr_read.h"
 #include "bytearr_read_write.h"
-#include "bytearr_factory.h"
 #include "my_util.h"
 
 using namespace HTCore;

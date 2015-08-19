@@ -46,7 +46,7 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit ByteArrReadWrite();
+    Q_INVOKABLE explicit ByteArrReadWrite();
     explicit ByteArrReadWrite(const std::vector<uint8_t> &data);
     explicit ByteArrReadWrite(size_t size, uint8_t fill_byte);
 

@@ -22,6 +22,7 @@
 
 #include "bytearr_read.h"
 #include "bytearr_read_write.h"
+#include "script_factory.h"
 
 
 using namespace HTCore;
@@ -36,6 +37,7 @@ Project::Project(
         std::shared_ptr<IODev> p_io_dev
         ) :
     p_engine(std::make_shared<QJSEngine>()),
+    p_script_factory(std::make_shared<ScriptFactory>()),
     p_codec(p_codec),
     p_io_dev(p_io_dev),
     handlers(),
@@ -62,17 +64,21 @@ Project::Project(
             make_shared<ReqHandler>(
                 "handler 1",
                 p_engine,
-                "(function(inputMsg, outputArr){\n"
+                p_script_factory,
+                "(function(inputMsg){\n"
                 "     var inputArr = inputMsg.byteArr;\n"
                 "     var handled = false;\n"
+                "     var outputArr = null;\n"
 
                 "     if (inputArr.getU08(0) === 0x03){\n"
+                "        outputArr = factory.createByteArr();\n"
                 "        outputArr.putU08(1, 0x04);\n"
                 "        handled = true;\n"
                 "     };\n"
 
                 "     return {\n"
-                "        handled: handled\n"
+                "        handled: handled,\n"
+                "        response: outputArr\n"
                 "     };\n"
                 " })\n"
                 )
@@ -82,11 +88,14 @@ Project::Project(
             make_shared<ReqHandler>(
                 "handler 2",
                 p_engine,
-                "(function(inputMsg, outputArr){ \n"
+                p_script_factory,
+                "(function(inputMsg){ \n"
                 "     var inputArr = inputMsg.byteArr;\n"
                 "     var handled = false;\n"
+                "     var outputArr = null;\n"
 
                 "     if (inputArr.getU08(0) === 0x04){\n"
+                "        outputArr = factory.createByteArr();\n"
                 "        outputArr.putU16(1, 0x1234);\n"
                 "        outputArr.putU16(5, 0x1234, LITTLE_END);\n"
                 "        outputArr.putU16(10, 0x1234, BIG_END);\n"
@@ -94,7 +103,8 @@ Project::Project(
                 "     };\n"
 
                 "     return {\n"
-                "        handled: handled\n"
+                "        handled: handled,\n"
+                "        response: outputArr\n"
                 "     };\n"
                 " })\n"
                 )
@@ -104,17 +114,21 @@ Project::Project(
             make_shared<ReqHandler>(
                 "handler 3",
                 p_engine,
-                "(function(inputMsg, outputArr){ \n"
+                p_script_factory,
+                "(function(inputMsg){ \n"
                 "     var inputArr = inputMsg.byteArr;\n"
                 "     var handled = false;\n"
+                "     var outputArr = null;\n"
 
                 "     if (inputArr.getU08(0) === 0x04){\n"
+                "        outputArr = factory.createByteArr();\n"
                 "        outputArr.putU08(1, 0xff);\n"
                 "        handled = true;\n"
                 "     };\n"
 
                 "     return {\n"
-                "        handled: handled\n"
+                "        handled: handled,\n"
+                "        response: outputArr\n"
                 "     };\n"
                 " })\n"
                 )

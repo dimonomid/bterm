@@ -16,7 +16,7 @@ SOURCES += \
     $$PWD/../../src/htcore/htreqhandler/htreqhandler.cpp \
     $$PWD/../../src/htcore/scripts/bytearr_read.cpp \
     $$PWD/../../src/htcore/scripts/bytearr_read_write.cpp \
-    $$PWD/../../src/htcore/scripts/bytearr_factory.cpp \
+    $$PWD/../../src/htcore/scripts/script_factory.cpp \
 
 
 HEADERS += ../../src/htcore/htdatamsg/htdatapart.h \
@@ -32,7 +32,7 @@ HEADERS += ../../src/htcore/htdatamsg/htdatapart.h \
     $$PWD/../../src/htcore/htreqhandler/htreqhandler.h \
     $$PWD/../../src/htcore/scripts/bytearr_read.h \
     $$PWD/../../src/htcore/scripts/bytearr_read_write.h \
-    $$PWD/../../src/htcore/scripts/bytearr_factory.h \
+    $$PWD/../../src/htcore/scripts/script_factory.h \
 
 
 INCLUDEPATH += ../../src/htcore \

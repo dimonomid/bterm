@@ -15,6 +15,7 @@
 
 #include "bytearr_read.h"
 #include "bytearr_read_write.h"
+#include "script_factory.h"
 #include "my_util.h"
 #include "htreqhandler.h"
 
@@ -28,10 +29,12 @@ using namespace HTCore;
 ReqHandler::ReqHandler(
         QString name,
         std::shared_ptr<QJSEngine> p_engine,
+        std::shared_ptr<ScriptFactory> p_script_factory,
         QString script_func_code
         ) :
     name(name),
     p_engine(p_engine),
+    p_script_factory(p_script_factory),
     script_func_code(script_func_code),
     last_error(Error::UNKNOWN),
     p_response(),
@@ -89,9 +92,13 @@ ReqHandler::Result ReqHandler::handle(
         QJSValue script_ctx_jsval
         )
 {
+    QJSValue factory_jsval = p_engine->newQObject(p_script_factory.get());
+    QQmlEngine::setObjectOwnership(p_script_factory.get(), QQmlEngine::CppOwnership);
+
     //-- before handling, set global properties
     p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
     p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
+    p_engine->globalObject().setProperty("factory",    factory_jsval);
 
     ReqHandler::Result ret = Result::UNKNOWN;
 
@@ -100,10 +107,6 @@ ReqHandler::Result ReqHandler::handle(
 
     QJSValue result;
 
-    p_response = std::make_shared<ByteArrReadWrite>();
-
-    QJSValue ba_out_scrval = p_engine->newQObject(p_response.get());
-    QQmlEngine::setObjectOwnership(p_response.get(), QQmlEngine::CppOwnership);
 
 
     QJSValue func = p_engine->evaluate(script_func_code);
@@ -124,7 +127,7 @@ ReqHandler::Result ReqHandler::handle(
 
         QJSValue returned = func.callWithInstance(
                 script_ctx_jsval,
-                QJSValueList() << input_msg_jsval << ba_out_scrval
+                QJSValueList() << input_msg_jsval
                 );
 
         if (returned.isError()){
@@ -133,12 +136,27 @@ ReqHandler::Result ReqHandler::handle(
             last_exception_details = MyUtil::qjsErrorToVariant(returned);
             qDebug() << "exception 2: " << last_exception_details;
         } else {
-            bool handled = returned.toVariant().toMap()["handled"].toBool();
-            if (handled){
-                ret = Result::OK_HANDLED;
-                //-- p_response now contains the byte array that was written by the script
-            } else {
-                ret = Result::OK_NOT_HANDLED;
+
+
+            if (returned.property("response").isQObject()){
+                p_response = std::shared_ptr<ByteArrReadWrite>(
+                        dynamic_cast<ByteArrReadWrite *>(
+                            returned.property("response").toQObject()
+                            )
+                        );
+                QQmlEngine::setObjectOwnership(
+                        p_response.get(),
+                        QQmlEngine::CppOwnership
+                        );
+
+                bool handled = returned.property("handled").toBool();
+                if (handled){
+                    ret = Result::OK_HANDLED;
+
+                    //-- p_response now contains the byte array that was written by the script
+                } else {
+                    ret = Result::OK_NOT_HANDLED;
+                }
             }
         }
 
