@@ -13,10 +13,21 @@
 
 === todo ===
 
+==== mandatory ====
+
+   * [ ] project load/save
+   * [ ] real data exchange
+   * [ ] other protocols:
+      * [ ] mikas
+      * [ ] just cs
+      * [ ] aldl
+
+
+==== somewhat optional ====
+
+   * [ ] ability to reorder handlers
    * [ ] indicate script errors
    * [ ] ability to switch some particular handler off (probably with checkbox at the very left)
-   * [ ] ability to reorder handlers
-   * [ ] project load/save
    * [ ] codec should emit protocol-specific data when message is decoded, this data should be given to handlers
    * [ ] evaluate script only after code has changed
    * [ ] codec-specific standard handlers (should be called after all user's handlers)
@@ -24,16 +35,15 @@
    * [ ] instantiable ByteArrReadWrite. It is needed for the next two items:
    * [ ] some script that runs just when project is opened (may perform some init)
    * [ ] set of other functions, non-handlers. They may be called when user presses button.
-   * [X] script editing
-   * [ ] real data exchange
-   * [ ] other protocols:
-      * [ ] mikas
-      * [ ] just cs
-      * [ ] aldl
-   * [X] position save/restore
 
    * [ ] make HTDataMsg::toString() to return QString instead of std::string
    * [ ] remove visitor, since it isn't used
+
+
+
+
+   * [X] script editing
+   * [X] position save/restore
    * [X] write tests
       * [X] ByteArrRead
       * [X] ByteArrReadWrite
