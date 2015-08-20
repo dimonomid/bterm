@@ -247,6 +247,16 @@ std::shared_ptr<ReqHandler> ProjectStorageXML::readReqHandlerFromDomElement(
     return p_rh;
 }
 
+std::shared_ptr<QDomElement> ProjectStorageXML::saveCodecToDomElement(
+        QDomDocument &doc, std::shared_ptr<Codec> p_codec
+        )
+{
+    CodecVisitor_SaveXML codec_visitor_save_xml {doc};
+    p_codec->accept(codec_visitor_save_xml);
+
+    return codec_visitor_save_xml.getDomElement();
+}
+
 
 
 /* protected    */
@@ -395,11 +405,8 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
 
     std::shared_ptr<Codec> p_codec = p_proj->getCodec();
 
-    CodecVisitor_SaveXML codec_visitor_save_xml {doc};
-    p_codec->accept(codec_visitor_save_xml);
-
     std::shared_ptr<QDomElement> p_codec_elem =
-        codec_visitor_save_xml.getDomElement();
+        saveCodecToDomElement(doc, p_codec);
 
     codecs_folder_elem.appendChild(*p_codec_elem);
 

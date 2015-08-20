@@ -27,6 +27,7 @@ namespace HTCore {
 }
 
 class QIODevice;
+class QDomDocument;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -115,6 +116,10 @@ private:
             const QDomElement &elem_rh
             );
 
+
+    std::shared_ptr<QDomElement> saveCodecToDomElement(
+            QDomDocument &doc, std::shared_ptr<Codec> p_codec
+            );
 
 
 
