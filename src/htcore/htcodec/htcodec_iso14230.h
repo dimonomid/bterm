@@ -11,7 +11,7 @@
  ******************************************************************************/
 
 #include <cstdint>
-#include <deque>
+#include <vector>
 
 #include <QObject>
 
@@ -65,7 +65,7 @@ private:
     //
     //   When message parsing error happens, one byte
     //   is removed from the beginning.
-    std::deque<unsigned char> raw_data;
+    std::vector<unsigned char> raw_data;
     size_t cur_raw_data_idx;
 
 
@@ -90,6 +90,11 @@ public:
 
     uint8_t               getOwnAddr() const;
     uint8_t               getRemoteAddr() const;
+
+
+private:
+
+    void msgReset();
 
 
     /****************************************************************************

@@ -167,6 +167,7 @@ void TestCodecISO14230::encode()
  */
 void TestCodecISO14230::decode_encoded()
 {
+    codec.clearRawRxData();
     std::default_random_engine dre;
     std::uniform_int_distribution<uint8_t> di{0, 0xff};
 

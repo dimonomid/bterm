@@ -23,8 +23,8 @@ using namespace HTCore;
 //-- I have difficulties getting QT_NO_DEBUG_OUTPUT to work (and even more,
 //   it's project-wide, but I'd prefer it to be class-wide),
 //   so I just use simple macro here
-#define  _DEBUG(...)    qDebug(__VA_ARGS__)
-//#define  _DEBUG(...)    strlen("")
+//#define  _DEBUG(...)    qDebug(__VA_ARGS__)
+#define  _DEBUG(...)    strlen("")
 
 
 /*******************************************************************************
@@ -79,7 +79,7 @@ Codec_ISO14230::Codec_ISO14230(
 %%{
    action message_reset {
       _DEBUG("reset");
-      this->clearRawRxData();
+      this->msgReset();
    }
 
    action got_fmt_with_len {
@@ -119,12 +119,7 @@ Codec_ISO14230::Codec_ISO14230(
    action message_received {
       /* TODO */
       _DEBUG("msg received");
-      size_t raw_data_size_to_delete = p - raw_data.data();
-      for (size_t i = 0; i < raw_data_size_to_delete; i++){
-         raw_data.pop_front();
-      }
-      p = raw_data.data();
-      pe = p + raw_data.size();
+      del_from_beginning = p - raw_data.data();
 
       emit messageDecoded(this->cur_rx_msg);
    }
@@ -134,11 +129,10 @@ Codec_ISO14230::Codec_ISO14230(
       _DEBUG("msg error");
 
       //-- remove first byte
-      raw_data.pop_front();
+      del_from_beginning += 1;
 
       //-- start parsing from the next byte
-      p = raw_data.data();
-      pe = p + raw_data.size();
+      p = raw_data.data() + del_from_beginning;
       /*fhold; */fgoto msg_start;
    }
 
@@ -202,6 +196,24 @@ main := (msg_start: message)*;
 
 /* private      */
 
+void Codec_ISO14230::msgReset()
+{
+   this->rx_user_data_got_len = 0;
+   this->rx_user_data_len = 0;
+   this->rx_checksum = 0;
+
+   this->cur_rx_msg.clear();
+
+   {
+      int cs = ragel_cs;
+      %%{
+         write init;
+      }%%
+      ragel_cs = cs;
+   }
+}
+
+
 /* protected    */
 
 /* public       */
@@ -213,11 +225,18 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
     for (size_t i = 0; i < data.size(); i++){
         raw_data.push_back(data[i]);
     }
+    _DEBUG("---new raw data, size=%d, new raw_data.size()=%d, cur_raw_data_idx=%d",
+       data.size(),
+       raw_data.size(),
+       cur_raw_data_idx
+    );
 
    const unsigned char *p = raw_data.data() + cur_raw_data_idx;
-   const unsigned char *pe = p + raw_data.size();
+   const unsigned char *pe = raw_data.data() + raw_data.size();
    int cs = this->ragel_cs;
    const unsigned char *eof = nullptr;
+
+   int del_from_beginning = 0;
 
    //-- execute machine
    %%{
@@ -228,7 +247,21 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
    ragel_cs = cs;
    //-- and remember current position in raw data
    cur_raw_data_idx = p - raw_data.data();
-   //TODO: update cur_raw_data_idx
+
+   if (del_from_beginning > 0){
+      _DEBUG("deleting %d bytes..", del_from_beginning);
+      if (del_from_beginning > raw_data.size()){
+         qDebug("error: del_from_beginning=%u is more than raw_data.size()=%u",
+            del_from_beginning,
+            raw_data.size()
+         );
+      }
+      raw_data.erase(raw_data.begin(), raw_data.begin() + del_from_beginning);
+      cur_raw_data_idx -= del_from_beginning;
+
+      _DEBUG("new raw_data.size()=%d", raw_data.size());
+   }
+
 #endif
 
 #if 0
@@ -252,21 +285,10 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 
 void Codec_ISO14230::clearRawRxData()
 {
-   this->rx_user_data_got_len = 0;
-   this->rx_user_data_len = 0;
-   this->rx_checksum = 0;
-   this->cur_raw_data_idx = 0;
+   msgReset();
+
    this->raw_data.clear();
-
-   this->cur_rx_msg.clear();
-
-   {
-      int cs = ragel_cs;
-      %%{
-         write init;
-      }%%
-      ragel_cs = cs;
-   }
+   this->cur_raw_data_idx = 0;
 }
 
 DataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
