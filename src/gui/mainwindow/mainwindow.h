@@ -84,6 +84,9 @@ private:
     QDockWidget      *p_dw_raw_data;
     QDockWidget      *p_dw_handlers;
 
+    QAction *p_act_open_project;
+    QAction *p_act_close_project;
+
     //-- NOTE: we use shared_ptr here instead of raw pointers, because
     //   docs say that when we remove dockwidget from mainwindow by calling
     //   removeDockWidget(), the dockwidget is NOT deleted (unlike other GUI
@@ -141,6 +144,9 @@ public:
 private:
 
     void populateWithProject(std::shared_ptr<HTCore::Project> p_project);
+    void unpopulate();
+
+    void initMainMenu();
     void initSettings();
 
     void mySaveState();
@@ -164,10 +170,14 @@ private:
 private slots:
 
     void onProjectOpened(std::shared_ptr<HTCore::Project> p_project);
+    void onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project);
 
     void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
     void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
     void onEventSys(std::shared_ptr<HTCore::EventSys> event_sys);
+
+    void openProject();
+    void closeProject();
 
 };
 

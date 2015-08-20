@@ -80,6 +80,12 @@ private:
 public:
 
     /**
+     * Close currently opened project. If no project is opened,
+     * this method has no effect
+     */
+    void closeProject();
+
+    /**
      * Open project from XML file
      */
     void openProject(QString filename);

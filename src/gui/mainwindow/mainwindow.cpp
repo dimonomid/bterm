@@ -18,6 +18,7 @@
 #include <QDockWidget>
 #include <QBoxLayout>
 #include <QTimer>
+#include <QFileDialog>
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -93,6 +94,7 @@ MainWindow::MainWindow(
     this->setDockNestingEnabled(true);
 
     initSettings();
+    initMainMenu();
 
     myRestoreState();
 
@@ -298,6 +300,17 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     p_dw_handlers->setObjectName("handlers_list");
 }
 
+void MainWindow::unpopulate()
+{
+    while (handler_views.size() > 0){
+        std::shared_ptr<HandlerView> p_handler =
+            handler_views.front();
+
+        removeDockWidget(p_handler->getEditDockWidget());
+        handler_views.pop_front();
+    }
+}
+
 void MainWindow::initSettings()
 {
     auto p_sett = appl.settings();
@@ -305,6 +318,42 @@ void MainWindow::initSettings()
     p_sett->value(SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED, QByteArray());
     p_sett->value(SETT_KEY__MAINWINDOW__PROJ_STATE, QByteArray());
     p_sett->value(SETT_KEY__MAINWINDOW__MAXIMIZED, false);
+}
+
+void MainWindow::initMainMenu()
+{
+    p_act_open_project = new QAction(tr("&Open project"), this);
+    connect(
+            p_act_open_project, &QAction::triggered,
+            this, &MainWindow::openProject
+           );
+
+    p_act_close_project = new QAction(tr("&Close project"), this);
+    connect(
+            p_act_close_project, &QAction::triggered,
+            this, &MainWindow::closeProject
+           );
+    p_act_close_project->setEnabled(false);
+
+#if 0
+    p_act_show_debug = new QAction(tr("&Show debug events"), this);
+    connect(
+            p_act_show_debug, &QAction::triggered,
+            this, &MainWindow::showDebugEventsToggle
+           );
+
+    p_act_show_debug->setCheckable(true);
+    p_act_show_debug->setChecked(sys_msg_level == EventSys::Level::DEBUG);
+#endif
+
+    QMenu *menu_file = menuBar()->addMenu(tr("&File"));
+    menu_file->addAction(p_act_open_project);
+    menu_file->addAction(p_act_close_project);
+
+#if 0
+    QMenu *menu_opts = menuBar()->addMenu(tr("&Options"));
+    menu_opts->addAction(p_act_show_debug);
+#endif
 }
 
 void MainWindow::mySaveState()
@@ -397,6 +446,43 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 
     restoreProjectState();
 }
+
+void MainWindow::onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project)
+{
+    std::ignore = p_project;
+
+    saveProjectState();
+
+    //TODO
+    //setWindowTitle(WINDOW_TITLE);
+    unpopulate();
+
+    p_act_close_project->setEnabled(false);
+}
+
+void MainWindow::openProject()
+{
+    //-- get filename
+    QString wanted_filename = QFileDialog::getOpenFileName(
+            this,
+            QObject::tr("Open device protocol file"),
+            appl.getLastProjectFilename(),
+            "Xml files (*.xml)"
+            );
+
+    if (!wanted_filename.isEmpty()){
+        if (QFile::exists(wanted_filename)){
+            appl.openProject(wanted_filename);
+        }
+    }
+
+}
+
+void MainWindow::closeProject()
+{
+    appl.closeProject();
+}
+
 
 void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
 {

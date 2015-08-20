@@ -318,6 +318,30 @@ void Appl::cryEventSys(EventSys::Level level, QString text)
 
 /* public       */
 
+void Appl::closeProject()
+{
+    //-- if we have some currently opened project, cry that it is
+    //   going to be closed
+    if (p_project != nullptr){
+
+        //-- Note: we don't disconnect() from devices' signals manually, since
+        //   QObject does that for us, and if we do that, then we're unable to
+        //   send signals from destructor of the sender (well, we are able, but
+        //   nobody will care)
+
+        cryEventSys(
+                EventSys::Level::INFO,
+                tr("Project \"") + proj_filename + tr("\" closed")
+                );
+
+
+        emit projectBeforeClose(p_project);
+    }
+
+    p_project = nullptr;
+    proj_filename = tr("");
+}
+
 void Appl::openProject(QString filename)
 {
     auto file = std::make_shared<QFile>(filename);
