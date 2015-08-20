@@ -397,25 +397,39 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
 void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
 {
     QDomDocument doc("");
+
+    //-- create root project element
     QDomElement project_elem = doc.createElement(XML_TAG_NAME__PROJECT);
     doc.appendChild(project_elem);
 
-    QDomElement codecs_folder_elem = doc.createElement(XML_TAG_NAME__CODECS);
-    project_elem.appendChild(codecs_folder_elem);
+    //-- save codec
+    {
+        //-- create codecs folder
+        QDomElement codecs_folder_elem = doc.createElement(XML_TAG_NAME__CODECS);
+        project_elem.appendChild(codecs_folder_elem);
 
-    std::shared_ptr<Codec> p_codec = p_proj->getCodec();
+        //-- create codec element inside
+        std::shared_ptr<Codec> p_codec = p_proj->getCodec();
 
-    std::shared_ptr<QDomElement> p_codec_elem =
-        saveCodecToDomElement(doc, p_codec);
+        std::shared_ptr<QDomElement> p_codec_elem =
+            saveCodecToDomElement(doc, p_codec);
 
-    codecs_folder_elem.appendChild(*p_codec_elem);
+        codecs_folder_elem.appendChild(*p_codec_elem);
+    }
 
-    QDomNode xml_node = doc.createProcessingInstruction(
-            "xml",
-            "version=\"1.0\" encoding=\"UTF-8\""
-            );
-    doc.insertBefore(xml_node, doc.firstChild());
 
+
+
+    //-- add xml header
+    {
+        QDomNode xml_node = doc.createProcessingInstruction(
+                "xml",
+                "version=\"1.0\" encoding=\"UTF-8\""
+                );
+        doc.insertBefore(xml_node, doc.firstChild());
+    }
+
+    //-- save xml data
     QTextStream out( p_device.get() );
     doc.save(out, 3);
 }
