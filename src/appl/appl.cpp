@@ -263,8 +263,17 @@ qDebug() << "test: " << myCodec.property("getTest").call().toString();
 #endif
 
 
+
+    QString last_project_filename = getLastProjectFilename();
+
+    if (!last_project_filename.isEmpty() && QFile::exists(last_project_filename)){
+        openProject(last_project_filename);
+    }
+
+#if 0
     openProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
     saveProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
+#endif
 
     this->p_main_window->showInRestoredState();
 
@@ -444,6 +453,11 @@ void Appl::saveProject(QString filename)
 QString Appl::getProjectFilename() const
 {
     return proj_filename;
+}
+
+QString Appl::getLastProjectFilename() const
+{
+    return this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME).toString();
 }
 
 

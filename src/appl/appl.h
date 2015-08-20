@@ -100,6 +100,12 @@ public:
      */
     QString getProjectFilename() const;
 
+    /**
+     * Returns filename of the last project that was successfully opened.
+     * (this value is persisted across multpile application invocations:
+     * it is saved in settings)
+     */
+    QString getLastProjectFilename() const;
 
 private:
 
