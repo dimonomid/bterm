@@ -23,8 +23,8 @@ using namespace HTCore;
 //-- I have difficulties getting QT_NO_DEBUG_OUTPUT to work (and even more,
 //   it's project-wide, but I'd prefer it to be class-wide),
 //   so I just use simple macro here
-//#define  _DEBUG(...)    qDebug(__VA_ARGS__)
-#define  _DEBUG(...)    strlen("")
+#define  _DEBUG(...)    qDebug(__VA_ARGS__)
+//#define  _DEBUG(...)    strlen("")
 
 
 /*******************************************************************************
