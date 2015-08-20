@@ -121,6 +121,10 @@ private:
             QDomDocument &doc, std::shared_ptr<Codec> p_codec
             );
 
+    std::shared_ptr<QDomElement> saveReqHandlerToDomElement(
+            QDomDocument &doc, std::shared_ptr<ReqHandler> p_handler
+            );
+
 
 
     /****************************************************************************

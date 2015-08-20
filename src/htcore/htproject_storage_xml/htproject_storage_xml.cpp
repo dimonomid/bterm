@@ -257,6 +257,34 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveCodecToDomElement(
     return codec_visitor_save_xml.getDomElement();
 }
 
+std::shared_ptr<QDomElement> ProjectStorageXML::saveReqHandlerToDomElement(
+        QDomDocument &doc, std::shared_ptr<ReqHandler> p_handler
+        )
+{
+    std::shared_ptr<QDomElement> p_handler_elem =
+        std::make_shared<QDomElement>(
+                doc.createElement(XML_TAG_NAME__REQ_HANDLER)
+                );
+
+    //-- set handler name
+    p_handler_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME,
+            p_handler->getName()
+            );
+
+    //-- create code element
+    QDomElement code_elem = doc.createElement(
+            XML_TAG_NAME__RH_CODE
+            );
+
+    QDomText code_text_node = doc.createTextNode(p_handler->getScript());
+    code_elem.appendChild(code_text_node);
+
+    p_handler_elem->appendChild(code_elem);
+
+    return p_handler_elem;
+}
+
 
 
 /* protected    */
@@ -417,6 +445,25 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
         codecs_folder_elem.appendChild(*p_codec_elem);
     }
 
+    //-- save headers
+    {
+        //-- create rhs folder
+        QDomElement rhs_folder_elem = doc.createElement(XML_TAG_NAME__REQ_HANDLERS);
+        project_elem.appendChild(rhs_folder_elem);
+
+        size_t handlers_cnt = p_proj->getHandlersCnt();
+
+        for (size_t i = 0; i < handlers_cnt; i++){
+            std::shared_ptr<ReqHandler> p_handler =
+                p_proj->getHandler(i);
+
+            std::shared_ptr<QDomElement> p_handler_elem =
+                saveReqHandlerToDomElement(doc, p_handler);
+
+            rhs_folder_elem.appendChild(*p_handler_elem);
+        }
+    }
+
 
 
 
@@ -431,7 +478,7 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
 
     //-- save xml data
     QTextStream out( p_device.get() );
-    doc.save(out, 3);
+    doc.save(out, 4);
 }
 
 /*******************************************************************************
