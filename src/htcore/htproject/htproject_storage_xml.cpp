@@ -347,32 +347,16 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
     //-- now, since we have codec, we can create the project
     p_proj = std::make_shared<Project>(p_codec);
 
-    //TODO: read handlers
+    //-- read handlers
     {
-        //-- get handlers folder
-        QDomNodeList rh_folders = elem_proj.elementsByTagName(
+
+        QDomElement handlers_folder = getSingleChildElementByTagName(
+                elem_proj,
                 XML_TAG_NAME__REQ_HANDLERS
                 );
-        //-- there should be exactly one folder
-        if (rh_folders.count() != 1){
-            throw std::invalid_argument(std::string("line ")
-                    + QString::number(elem_proj.lineNumber()).toStdString()
-                    + ": there should be exactly one \""
-                    + XML_TAG_NAME__REQ_HANDLERS.toStdString()
-                    + "\" element, but actual count is: "
-                    + QString::number(rh_folders.count()).toStdString()
-                    );
-        }
-
-        if (rh_folders.item(0).nodeType() != QDomNode::ElementNode){
-            throw std::invalid_argument(std::string("line ")
-                    + QString::number(elem_proj.lineNumber()).toStdString()
-                    + ": wrong node type (Element expected)"
-                    );
-        }
 
         //-- get rh nodes (currently, there should be just one codec)
-        QDomNodeList rh_nodes = rh_folders.item(0).toElement().elementsByTagName(
+        QDomNodeList rh_nodes = handlers_folder.elementsByTagName(
                 XML_TAG_NAME__REQ_HANDLER
                 );
 
