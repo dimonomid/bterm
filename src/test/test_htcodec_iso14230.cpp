@@ -122,6 +122,35 @@ void TestCodecISO14230::decode_summary()
 
 }
 
+/**
+ * Try to feed some data, including garbage, and verify that everything as expected
+ */
+void TestCodecISO14230::decode_with_return_after_error()
+{
+    vector<uint8_t> data{
+        //-- some garbage
+        0x88, 0x01, 0x02,
+            //-- correct message
+            0x83, 0x01, 0x02, 0x02, 0x02, 0x02, 0x8c,
+            //-- some garbage
+            0x00, 0x00, 0x00, 0x00, 0x00
+    };
+
+    codec.addRawRxData(data);
+
+    //-- number of received messages should be 1
+    QCOMPARE(rx_msgs.size(), (unsigned int)1);
+
+    {
+        vector<uint8_t> expected_user_data{2, 2, 2};
+
+        //-- compare message contents
+        std::shared_ptr<vector<uint8_t>> p_user_data = rx_msgs.front().getUserData();
+        QCOMPARE(*p_user_data, expected_user_data);
+        rx_msgs.pop();
+    }
+}
+
 void TestCodecISO14230::encode()
 {
     vector<uint8_t> user_data{0x01, 0x02, 0x03};

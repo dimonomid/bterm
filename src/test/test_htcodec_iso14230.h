@@ -52,6 +52,7 @@ private slots:
     void decode_summary();
     void encode();
     void decode_encoded();
+    void decode_with_return_after_error();
 
 public slots:
     void messageDecoded(const HTCore::DataMsg &msg);
