@@ -388,7 +388,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
 
 
     //-- now, since we have codec, we can create the project
-    p_proj = std::make_shared<Project>(p_codec);
+    p_proj = std::make_shared<Project>(proj_name, p_codec);
 
     //-- read handlers
     {
@@ -431,6 +431,12 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
     //-- create root project element
     QDomElement project_elem = doc.createElement(XML_TAG_NAME__PROJECT);
     doc.appendChild(project_elem);
+
+    //-- save project name
+    project_elem.setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME,
+            p_proj->getTitle()
+            );
 
     //-- save codec
     {

@@ -33,8 +33,10 @@ using namespace std;
  ******************************************************************************/
 
 Project::Project(
+        QString title,
         std::shared_ptr<Codec> p_codec
         ) :
+    title(title),
     p_engine(std::make_shared<QJSEngine>()),
     p_script_factory(std::make_shared<ScriptFactory>()),
     p_codec(p_codec),
@@ -187,6 +189,16 @@ size_t Project::getHandlersCnt() const
 std::shared_ptr<Codec> Project::getCodec() const
 {
     return p_codec;
+}
+
+QString Project::getTitle() const
+{
+    return title;
+}
+
+void Project::setTitle(QString title)
+{
+    this->title = title;
 }
 
 /*******************************************************************************

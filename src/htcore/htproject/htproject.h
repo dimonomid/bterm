@@ -51,6 +51,7 @@ Q_OBJECT
      ***************************************************************************/
 public:
     explicit Project(
+            QString title,
             std::shared_ptr<Codec> p_codec
             );
 
@@ -60,6 +61,8 @@ public:
      * PRIVATE DATA
      ***************************************************************************/
 private:
+
+    QString title;
 
     std::shared_ptr<QJSEngine> p_engine;
     std::shared_ptr<ScriptFactory> p_script_factory;
@@ -86,6 +89,9 @@ public:
     size_t getHandlersCnt() const;
 
     std::shared_ptr<Codec> getCodec() const;
+
+    QString getTitle() const;
+    void setTitle(QString title);
 
 private:
 
