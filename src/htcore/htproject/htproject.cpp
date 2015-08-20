@@ -184,6 +184,11 @@ size_t Project::getHandlersCnt() const
     return handlers.size();
 }
 
+std::shared_ptr<Codec> Project::getCodec() const
+{
+    return p_codec;
+}
+
 /*******************************************************************************
  * SLOTS
  ******************************************************************************/

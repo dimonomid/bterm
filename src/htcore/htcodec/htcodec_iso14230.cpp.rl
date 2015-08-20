@@ -8,6 +8,7 @@
  ******************************************************************************/
 
 #include "htcodec_iso14230.h"
+#include "htcodec_visitor.h"
 
 #include <iostream>
 
@@ -257,6 +258,11 @@ DataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
    }
 
    return ret;
+}
+
+void Codec_ISO14230::accept(CodecVisitor &visitor)
+{
+    visitor.visit(*this);
 }
 
 

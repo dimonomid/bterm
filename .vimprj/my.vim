@@ -34,6 +34,9 @@ let g:indexer_ctagsCommandLineOptions = '--c++-kinds=+p+l --c-kinds=+l --fields=
 " build-директории.
 let s:sProjectName = 'dterminal_qt'
 let s:sBuildPath = $INDEXER_PROJECT_ROOT.'/../build-hterm-Desktop_Qt_5_5_0_GCC_32bit-Debug'
+if !isdirectory(s:sBuildPath)
+   let s:sBuildPath = $INDEXER_PROJECT_ROOT.'/../build-hterm-Desktop_Qt_5_4_1_GCC_32bit-Debug'
+endif
 
 if isdirectory(s:sBuildPath)
    let s:o_dir = s:sBuildPath.'/compiled_in_vim'

@@ -24,6 +24,7 @@
 
 namespace HTCore {
     class Codec;
+    class CodecVisitor;
 }
 
 class HTCore::Codec : public QObject
@@ -55,6 +56,7 @@ public:
     virtual void     addRawRxData   (const std::vector<uint8_t> &data) = 0;
     virtual void     clearRawRxData () = 0;
     virtual DataMsg  encodeMessage  (const std::vector<uint8_t> &data) const = 0;
+    virtual void     accept(CodecVisitor &visitor) = 0;
 
 
     /******************************************************************************************
@@ -64,6 +66,7 @@ signals:
     void messageDecoded(const DataMsg &msg);
     //void curMessageChanged(const DTMsg &msg);
     //void invalidDataDetected(const QByteArray &data);
+
 
 };
 

@@ -392,6 +392,7 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
     QDomElement codecs_folder_elem = doc.createElement(XML_TAG_NAME__CODECS);
     project_elem.appendChild(codecs_folder_elem);
 
+    std::shared_ptr<Codec> p_codec = p_proj->getCodec();
 
 
 

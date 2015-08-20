@@ -85,7 +85,7 @@ public:
     std::shared_ptr<ReqHandler> getHandler(size_t index);
     size_t getHandlersCnt() const;
 
-
+    std::shared_ptr<Codec> getCodec() const;
 
 private:
 
