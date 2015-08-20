@@ -93,7 +93,7 @@ public:
     /**
      * Save project to XML file
      */
-    void saveProject(QString filename);
+    void saveProject(QString filename = "");
 
     /**
      * Returns pointer to settings instance
@@ -117,6 +117,7 @@ private:
 
     void initSettings();
     void cryEventSys(HTCore::EventSys::Level level, QString text);
+    void rememberProjectFilename(QString filename);
 
 
 

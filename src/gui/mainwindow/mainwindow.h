@@ -86,6 +86,8 @@ private:
 
     QAction *p_act_open_project;
     QAction *p_act_close_project;
+    QAction *p_act_save_project;
+    QAction *p_act_save_project_as;
 
     //-- NOTE: we use shared_ptr here instead of raw pointers, because
     //   docs say that when we remove dockwidget from mainwindow by calling
@@ -178,6 +180,8 @@ private slots:
 
     void openProject();
     void closeProject();
+    void saveProject();
+    void saveProjectAs();
 
 };
 

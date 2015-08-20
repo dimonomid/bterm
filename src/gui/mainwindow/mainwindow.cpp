@@ -342,6 +342,18 @@ void MainWindow::initMainMenu()
            );
     p_act_close_project->setEnabled(false);
 
+    p_act_save_project = new QAction(tr("&Save project"), this);
+    connect(
+            p_act_save_project, &QAction::triggered,
+            this, &MainWindow::saveProject
+           );
+
+    p_act_save_project_as = new QAction(tr("&Save project as ..."), this);
+    connect(
+            p_act_save_project_as, &QAction::triggered,
+            this, &MainWindow::saveProjectAs
+           );
+
 #if 0
     p_act_show_debug = new QAction(tr("&Show debug events"), this);
     connect(
@@ -356,6 +368,8 @@ void MainWindow::initMainMenu()
     QMenu *menu_file = menuBar()->addMenu(tr("&File"));
     menu_file->addAction(p_act_open_project);
     menu_file->addAction(p_act_close_project);
+    menu_file->addAction(p_act_save_project);
+    menu_file->addAction(p_act_save_project_as);
 
 #if 0
     QMenu *menu_opts = menuBar()->addMenu(tr("&Options"));
@@ -483,6 +497,33 @@ void MainWindow::openProject()
         if (QFile::exists(wanted_filename)){
             appl.openProject(wanted_filename);
         }
+    }
+
+}
+
+void MainWindow::saveProject()
+{
+    //-- if we already have project filename, then save it.
+    //   Otherwise, ask user for the filename
+    if (!appl.getProjectFilename().isEmpty()){
+        appl.saveProject();
+    } else {
+        saveProjectAs();
+    }
+}
+
+void MainWindow::saveProjectAs()
+{
+    //-- get filename
+    QString wanted_filename = QFileDialog::getSaveFileName(
+            this,
+            QObject::tr("Save device protocol file"),
+            appl.getLastProjectFilename(),
+            "Xml files (*.xml)"
+            );
+
+    if (!wanted_filename.isEmpty()){
+        appl.saveProject(wanted_filename);
     }
 
 }

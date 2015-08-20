@@ -312,6 +312,13 @@ void Appl::cryEventSys(EventSys::Level level, QString text)
     emit eventSys(p_event);
 }
 
+void Appl::rememberProjectFilename(QString filename)
+{
+    proj_filename = filename;
+    this->p_sett->setValue(
+            SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
+            );
+}
 
 
 /* protected    */
@@ -360,37 +367,6 @@ void Appl::openProject(QString filename)
     //   TODO
     //connect(&storage_xml, &ProjectReaderXML::event, this, &Appl::onDMEvent);
 
-    // TODO: really open project
-#if 0
-    proj_filename = fileinfo.absoluteFilePath();
-    this->p_sett->setValue(
-            SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
-            );
-
-    p_project = std::make_shared<Project>(p_codec);
-
-    //-- set IODev to newly created project, so that it can talk
-    p_project->setIODev(p_io_dev);
-
-    connect(
-            p_project.get(), &Project::eventDataRaw,
-            this, &Appl::onNewDataRaw
-           );
-
-    connect(
-            p_project.get(), &Project::eventDataMsg,
-            this, &Appl::onNewDataMsg
-           );
-
-    //-- just forward reqHandlerNameChanged() signal
-    connect(
-            p_project.get(), &Project::reqHandlerNameChanged,
-            this, &Appl::reqHandlerNameChanged
-           );
-
-    emit projectOpened(p_project);
-#endif
-
     try {
         p_project = storage_xml.readProject();
         //-- project is read successfully
@@ -401,10 +377,7 @@ void Appl::openProject(QString filename)
                 tr("Project \"") + filename + tr("\" opened successfully")
                 );
 
-        proj_filename = fileinfo.absoluteFilePath();
-        this->p_sett->setValue(
-                SETT_KEY__APPL__LAST_PROJECT_FILENAME, proj_filename
-                );
+        rememberProjectFilename(fileinfo.absoluteFilePath());
 
         //-- set IODev to newly created project, so that it can talk
         p_project->setIODev(p_io_dev);
@@ -444,37 +417,53 @@ void Appl::openProject(QString filename)
 
 void Appl::saveProject(QString filename)
 {
-    auto file = std::make_shared<QFile>(filename);
-    QFileInfo fileinfo {*file};
-
-    file->open(QIODevice::WriteOnly);
-
-    //-- try to read project from xml file
-    ProjectStorageXML storage_xml (file);
-
-    try {
-        storage_xml.saveProject(p_project);
-        //-- project is read successfully
-        //   let's save filename and notify the listeners
-
-        cryEventSys(
-                EventSys::Level::INFO,
-                tr("Project \"") + filename + tr("\" saved successfully")
-                );
-
-    } catch (std::invalid_argument e){
-        //-- there was some error during project read
-
-        cryEventSys(
-                EventSys::Level::ERROR,
-                tr("Error during saving the project \"") 
-                + filename
-                + tr("\": ")
-                + e.what()
-                );
+    //-- if given filename is empty, use current project filename
+    if (filename.isEmpty()){
+        filename = getProjectFilename();
     }
 
-    file->close();
+    //-- if filename is, after all, specified, then proceed
+    //   with saving
+    if (!filename.isEmpty()){
+        auto file = std::make_shared<QFile>(filename);
+        QFileInfo fileinfo {*file};
+
+        file->open(QIODevice::WriteOnly);
+
+        //-- try to read project from xml file
+        ProjectStorageXML storage_xml (file);
+
+        try {
+            storage_xml.saveProject(p_project);
+            //-- project is read successfully
+            //   let's save filename and notify the listeners
+
+            cryEventSys(
+                    EventSys::Level::INFO,
+                    tr("Project \"") + filename + tr("\" saved successfully")
+                    );
+
+        } catch (std::invalid_argument e){
+            //-- there was some error during project read
+
+            cryEventSys(
+                    EventSys::Level::ERROR,
+                    tr("Error during saving the project \"") 
+                    + filename
+                    + tr("\": ")
+                    + e.what()
+                    );
+        }
+
+        file->close();
+
+        rememberProjectFilename(fileinfo.absoluteFilePath());
+    } else {
+        cryEventSys(
+                EventSys::Level::ERROR,
+                tr("Can't save current project, since there's no filename")
+                );
+    }
 }
 
 QString Appl::getProjectFilename() const
