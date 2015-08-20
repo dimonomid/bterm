@@ -119,20 +119,23 @@ Codec_ISO14230::Codec_ISO14230(
    action message_received {
       /* TODO */
       _DEBUG("msg received");
-      del_from_beginning = p - raw_data.data();
+      del_from_beginning = p - raw_data.data() + 1;
 
       emit messageDecoded(this->cur_rx_msg);
    }
 
    action message_error {
       /* TODO */
-      _DEBUG("msg error");
+      _DEBUG("msg error, byte: 0x%x", fc);
 
       //-- remove first byte
       del_from_beginning += 1;
 
       //-- start parsing from the next byte
-      p = raw_data.data() + del_from_beginning;
+      p = raw_data.data()
+         + del_from_beginning
+         - 1/*because it will now be incremented again*/
+         ;
       /*fhold; */fgoto msg_start;
    }
 
@@ -220,7 +223,6 @@ void Codec_ISO14230::msgReset()
 
 void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 {
-#if 1
     //TODO: refactor, use iterators
     for (size_t i = 0; i < data.size(); i++){
         raw_data.push_back(data[i]);
@@ -248,39 +250,25 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
    //-- and remember current position in raw data
    cur_raw_data_idx = p - raw_data.data();
 
+   //-- if need to delete some data from the beginning, do it
    if (del_from_beginning > 0){
       _DEBUG("deleting %d bytes..", del_from_beginning);
+
       if (del_from_beginning > raw_data.size()){
+         //-- should never happen: need to delete more data that is present
          qDebug("error: del_from_beginning=%u is more than raw_data.size()=%u",
             del_from_beginning,
             raw_data.size()
          );
       }
+
+      //-- erase data from the beginning
       raw_data.erase(raw_data.begin(), raw_data.begin() + del_from_beginning);
+      //-- adjust cur_raw_data_idx accordingly
       cur_raw_data_idx -= del_from_beginning;
 
       _DEBUG("new raw_data.size()=%d", raw_data.size());
    }
-
-#endif
-
-#if 0
-   //-- initialize variables necessary for ragel machine
-   //   (it is possible to set ragel to use different variable names,
-   //   but I find it more clear to just explicitly define needed variables)
-   const unsigned char *p = data.data();
-   const unsigned char *pe = p + data.size();
-   int cs = this->ragel_cs;
-   const unsigned char *eof = nullptr;
-
-   //-- execute machine
-   %%{
-      write exec;
-   }%%
-
-   //-- remember ragel machine's current state
-   ragel_cs = cs;
-#endif
 }
 
 void Codec_ISO14230::clearRawRxData()

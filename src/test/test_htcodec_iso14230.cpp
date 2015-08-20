@@ -127,6 +127,8 @@ void TestCodecISO14230::decode_summary()
  */
 void TestCodecISO14230::decode_with_return_after_error()
 {
+    codec.clearRawRxData();
+
     vector<uint8_t> data{
         //-- some garbage
         0x88, 0x01, 0x02,
