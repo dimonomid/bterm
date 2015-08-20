@@ -76,6 +76,9 @@ public:
     void                  setOwnAddr(uint8_t own_addr);
     void                  setRemoteAddr(uint8_t remote_addr);
 
+    uint8_t               getOwnAddr() const;
+    uint8_t               getRemoteAddr() const;
+
 
     /****************************************************************************
      * SIGNALS, SLOTS

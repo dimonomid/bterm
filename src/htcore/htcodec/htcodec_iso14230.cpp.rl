@@ -268,12 +268,22 @@ void Codec_ISO14230::accept(CodecVisitor &visitor)
 
 void Codec_ISO14230::setOwnAddr(unsigned char own_addr)
 {
-   this->own_addr = own_addr;
+    this->own_addr = own_addr;
 }
 
 void Codec_ISO14230::setRemoteAddr(unsigned char remote_addr)
 {
-   this->remote_addr = remote_addr;
+    this->remote_addr = remote_addr;
+}
+
+uint8_t Codec_ISO14230::getOwnAddr() const
+{
+    return own_addr;
+}
+
+uint8_t Codec_ISO14230::getRemoteAddr() const
+{
+    return remote_addr;
 }
 
 

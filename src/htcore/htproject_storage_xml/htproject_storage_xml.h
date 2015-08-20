@@ -22,6 +22,8 @@ namespace HTCore {
     class Codec;
     class Codec_ISO14230;
     class ReqHandler;
+
+    class CodecVisitor_SaveXML;
 }
 
 class QIODevice;
@@ -41,6 +43,8 @@ namespace HTCore {
 class HTCore::ProjectStorageXML : public QObject
 {
 Q_OBJECT
+
+    friend CodecVisitor_SaveXML;
 
     /****************************************************************************
      * TYPES

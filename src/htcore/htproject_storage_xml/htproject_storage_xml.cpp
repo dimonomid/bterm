@@ -13,6 +13,7 @@
 #include "htproject.h"
 #include "htcodec.h"
 #include "htcodec_iso14230.h"
+#include "htcodec_visitor__save_xml.h"
 
 
 
@@ -394,7 +395,13 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
 
     std::shared_ptr<Codec> p_codec = p_proj->getCodec();
 
+    CodecVisitor_SaveXML codec_visitor_save_xml {doc};
+    p_codec->accept(codec_visitor_save_xml);
 
+    std::shared_ptr<QDomElement> p_codec_elem =
+        codec_visitor_save_xml.getDomElement();
+
+    codecs_folder_elem.appendChild(*p_codec_elem);
 
     QDomNode xml_node = doc.createProcessingInstruction(
             "xml",
