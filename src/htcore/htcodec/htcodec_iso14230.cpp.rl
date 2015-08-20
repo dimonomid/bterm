@@ -119,12 +119,26 @@ Codec_ISO14230::Codec_ISO14230(
    action message_received {
       /* TODO */
       _DEBUG("msg received");
+      size_t raw_data_size_to_delete = p - raw_data.data();
+      for (size_t i = 0; i < raw_data_size_to_delete; i++){
+         raw_data.pop_front();
+      }
+      p = raw_data.data();
+      pe = p + raw_data.size();
+
       emit messageDecoded(this->cur_rx_msg);
    }
 
    action message_error {
       /* TODO */
       _DEBUG("msg error");
+
+      //-- remove first byte
+      raw_data.pop_front();
+
+      //-- start parsing from the next byte
+      p = raw_data.data();
+      pe = p + raw_data.size();
       /*fhold; */fgoto msg_start;
    }
 
@@ -194,14 +208,14 @@ main := (msg_start: message)*;
 
 void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 {
-#if 0
+#if 1
     //TODO: refactor, use iterators
-    for (int i = 0; i < data.size(); i++){
+    for (size_t i = 0; i < data.size(); i++){
         raw_data.push_back(data[i]);
     }
 
    const unsigned char *p = raw_data.data() + cur_raw_data_idx;
-   const unsigned char *pe = p + data.size();
+   const unsigned char *pe = p + raw_data.size();
    int cs = this->ragel_cs;
    const unsigned char *eof = nullptr;
 
@@ -212,11 +226,12 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 
    //-- remember ragel machine's current state
    ragel_cs = cs;
+   //-- and remember current position in raw data
    cur_raw_data_idx = p - raw_data.data();
    //TODO: update cur_raw_data_idx
 #endif
 
-#if 1
+#if 0
    //-- initialize variables necessary for ragel machine
    //   (it is possible to set ragel to use different variable names,
    //   but I find it more clear to just explicitly define needed variables)
