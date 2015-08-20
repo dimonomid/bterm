@@ -344,6 +344,9 @@ void Appl::closeProject()
 
 void Appl::openProject(QString filename)
 {
+    //-- close currently opened project (if any)
+    closeProject();
+
     auto file = std::make_shared<QFile>(filename);
     QFileInfo fileinfo {*file};
 

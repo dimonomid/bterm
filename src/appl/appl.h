@@ -140,6 +140,7 @@ signals:
      * Emitted just after project has been opened
      */
     void projectOpened(std::shared_ptr<HTCore::Project> p_project);
+    void projectBeforeClose(std::shared_ptr<HTCore::Project> p_project);
 
     void reqHandlerNameChanged(
             const HTCore::ReqHandler *p_handler,

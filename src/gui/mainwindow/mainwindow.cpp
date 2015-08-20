@@ -185,6 +185,10 @@ MainWindow::MainWindow(
            );
 
     connect(&appl, &Appl::projectOpened, this, &MainWindow::onProjectOpened);
+    connect(
+            &appl, &Appl::projectBeforeClose,
+            this, &MainWindow::onProjectBeforeClose
+           );
 }
 
 MainWindow::~MainWindow()
@@ -302,12 +306,15 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 
 void MainWindow::unpopulate()
 {
-    while (handler_views.size() > 0){
-        std::shared_ptr<HandlerView> p_handler =
-            handler_views.front();
+    p_dw_handlers->setWidget(nullptr);
 
+    qDebug("size: %d", handler_views.size());
+    while (handler_views.size() > 0){
+        std::shared_ptr<HandlerView> p_handler = handler_views.back();
+
+        qDebug("remove");
         removeDockWidget(p_handler->getEditDockWidget());
-        handler_views.pop_front();
+        handler_views.pop_back();
     }
 }
 
@@ -445,6 +452,8 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
     populateWithProject(p_project);
 
     restoreProjectState();
+
+    p_act_close_project->setEnabled(true);
 }
 
 void MainWindow::onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project)
