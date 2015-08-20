@@ -273,14 +273,16 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveReqHandlerToDomElement(
             );
 
     //-- create code element
-    QDomElement code_elem = doc.createElement(
-            XML_TAG_NAME__RH_CODE
-            );
+    {
+        QDomElement code_elem = doc.createElement(
+                XML_TAG_NAME__RH_CODE
+                );
 
-    QDomText code_text_node = doc.createTextNode(p_handler->getScript());
-    code_elem.appendChild(code_text_node);
+        QDomText code_text_node = doc.createTextNode(p_handler->getScript());
+        code_elem.appendChild(code_text_node);
 
-    p_handler_elem->appendChild(code_elem);
+        p_handler_elem->appendChild(code_elem);
+    }
 
     return p_handler_elem;
 }
