@@ -264,6 +264,7 @@ qDebug() << "test: " << myCodec.property("getTest").call().toString();
 
 
     openProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
+    saveProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj2.xml");
 
     this->p_main_window->showInRestoredState();
 
@@ -312,6 +313,8 @@ void Appl::openProject(QString filename)
 {
     auto file = std::make_shared<QFile>(filename);
     QFileInfo fileinfo {*file};
+
+    file->open(QIODevice::ReadOnly);
 
     //-- try to read project from xml file
     ProjectStorageXML storage_xml (file);
@@ -400,8 +403,42 @@ void Appl::openProject(QString filename)
                 );
     }
 
+    file->close();
+}
 
+void Appl::saveProject(QString filename)
+{
+    auto file = std::make_shared<QFile>(filename);
+    QFileInfo fileinfo {*file};
 
+    file->open(QIODevice::WriteOnly);
+
+    //-- try to read project from xml file
+    ProjectStorageXML storage_xml (file);
+
+    try {
+        storage_xml.saveProject(p_project);
+        //-- project is read successfully
+        //   let's save filename and notify the listeners
+
+        cryEventSys(
+                EventSys::Level::INFO,
+                tr("Project \"") + filename + tr("\" saved successfully")
+                );
+
+    } catch (std::invalid_argument e){
+        //-- there was some error during project read
+
+        cryEventSys(
+                EventSys::Level::ERROR,
+                tr("Error during saving the project \"") 
+                + filename
+                + tr("\": ")
+                + e.what()
+                );
+    }
+
+    file->close();
 }
 
 QString Appl::getProjectFilename() const

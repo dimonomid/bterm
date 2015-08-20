@@ -88,6 +88,7 @@ public:
      * Read project from QIODevice that was given to constructor.
      */
     std::shared_ptr<Project> readProject();
+    void saveProject(std::shared_ptr<Project> p_proj);
 
 
 

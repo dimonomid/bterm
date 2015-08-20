@@ -85,6 +85,11 @@ public:
     void openProject(QString filename);
 
     /**
+     * Save project to XML file
+     */
+    void saveProject(QString filename);
+
+    /**
      * Returns pointer to settings instance
      */
     std::shared_ptr<XmlSettings> settings() const { return p_sett; };

@@ -7,6 +7,8 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QTextStream>
+
 #include "htproject_storage_xml.h"
 #include "htproject.h"
 #include "htcodec.h"
@@ -379,6 +381,28 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
 
 
     return p_proj;
+}
+
+void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
+{
+    QDomDocument doc("");
+    QDomElement project_elem = doc.createElement(XML_TAG_NAME__PROJECT);
+    doc.appendChild(project_elem);
+
+    QDomElement codecs_folder_elem = doc.createElement(XML_TAG_NAME__CODECS);
+    project_elem.appendChild(codecs_folder_elem);
+
+
+
+
+    QDomNode xml_node = doc.createProcessingInstruction(
+            "xml",
+            "version=\"1.0\" encoding=\"UTF-8\""
+            );
+    doc.insertBefore(xml_node, doc.firstChild());
+
+    QTextStream out( p_device.get() );
+    doc.save(out, 3);
 }
 
 /*******************************************************************************
