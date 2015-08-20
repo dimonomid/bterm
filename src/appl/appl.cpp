@@ -264,7 +264,7 @@ qDebug() << "test: " << myCodec.property("getTest").call().toString();
 
 
     openProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
-    saveProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj2.xml");
+    saveProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
 
     this->p_main_window->showInRestoredState();
 
