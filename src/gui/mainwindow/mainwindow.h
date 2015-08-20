@@ -110,12 +110,13 @@ private:
     bool need_to_restore_non_maximized_geometry;
 
 
+    static const QString WINDOW_TITLE;
+
     static const QString SETT_KEY__MAINWINDOW;
     static const QString SETT_KEY__MAINWINDOW__GEOMETRY;
     static const QString SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED;
     static const QString SETT_KEY__MAINWINDOW__MAXIMIZED;
     static const QString SETT_KEY__MAINWINDOW__PROJ_STATE;
-
 
 
     /****************************************************************************

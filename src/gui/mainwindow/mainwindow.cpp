@@ -54,6 +54,8 @@ using namespace std;
  * STATIC DATA
  ******************************************************************************/
 
+const QString MainWindow::WINDOW_TITLE = "HTerm";
+
 const QString MainWindow::SETT_KEY__MAINWINDOW = "mainwindow";
 const QString MainWindow::SETT_KEY__MAINWINDOW__GEOMETRY =
 SETT_KEY__MAINWINDOW + "/geometry";
@@ -465,6 +467,13 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 {
     populateWithProject(p_project);
 
+    setWindowTitle(
+            WINDOW_TITLE + ": "
+            + p_project->getTitle()
+            + " ("
+            + appl.getProjectFilename()
+            + ")"
+            );
     restoreProjectState();
 
     p_act_close_project->setEnabled(true);
@@ -476,8 +485,7 @@ void MainWindow::onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project
 
     saveProjectState();
 
-    //TODO
-    //setWindowTitle(WINDOW_TITLE);
+    setWindowTitle(WINDOW_TITLE);
     unpopulate();
 
     p_act_close_project->setEnabled(false);
