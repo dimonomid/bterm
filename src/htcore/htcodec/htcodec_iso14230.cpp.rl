@@ -50,7 +50,9 @@ Codec_ISO14230::Codec_ISO14230(
    rx_user_data_len(0),
    rx_user_data_got_len(0),
    own_addr(own_addr),
-   remote_addr(remote_addr)
+   remote_addr(remote_addr),
+   raw_data(),
+   cur_raw_data_idx(0)
 {
    this->clearRawRxData();
 }
@@ -192,6 +194,29 @@ main := (msg_start: message)*;
 
 void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 {
+#if 0
+    //TODO: refactor, use iterators
+    for (int i = 0; i < data.size(); i++){
+        raw_data.push_back(data[i]);
+    }
+
+   const unsigned char *p = raw_data.data() + cur_raw_data_idx;
+   const unsigned char *pe = p + data.size();
+   int cs = this->ragel_cs;
+   const unsigned char *eof = nullptr;
+
+   //-- execute machine
+   %%{
+      write exec;
+   }%%
+
+   //-- remember ragel machine's current state
+   ragel_cs = cs;
+   cur_raw_data_idx = p - raw_data.data();
+   //TODO: update cur_raw_data_idx
+#endif
+
+#if 1
    //-- initialize variables necessary for ragel machine
    //   (it is possible to set ragel to use different variable names,
    //   but I find it more clear to just explicitly define needed variables)
@@ -207,6 +232,7 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
 
    //-- remember ragel machine's current state
    ragel_cs = cs;
+#endif
 }
 
 void Codec_ISO14230::clearRawRxData()
@@ -214,6 +240,8 @@ void Codec_ISO14230::clearRawRxData()
    this->rx_user_data_got_len = 0;
    this->rx_user_data_len = 0;
    this->rx_checksum = 0;
+   this->cur_raw_data_idx = 0;
+   this->raw_data.clear();
 
    this->cur_rx_msg.clear();
 

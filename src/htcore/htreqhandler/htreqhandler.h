@@ -63,6 +63,13 @@ public:
 public:
     ReqHandler(
             QString name,
+            std::shared_ptr<QJSEngine> p_engine,
+            std::shared_ptr<ScriptFactory> p_script_factory,
+            QString script_func_code
+            );
+
+    ReqHandler(
+            QString name,
             QString script_func_code = ""
             );
 

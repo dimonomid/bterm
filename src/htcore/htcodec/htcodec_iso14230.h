@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 #include <cstdint>
+#include <deque>
 
 #include <QObject>
 
@@ -55,6 +56,17 @@ private:
     uint8_t own_addr;
     //-- used as source for decoded messages, and target for encoded messages
     uint8_t remote_addr;
+
+    //-- Current raw data.
+    //   When new raw data arrives, it is added at the end.
+    //
+    //   When message is successfully decoded, its data
+    //   is removed from the beginning.
+    //
+    //   When message parsing error happens, one byte
+    //   is removed from the beginning.
+    std::deque<unsigned char> raw_data;
+    size_t cur_raw_data_idx;
 
 
     /****************************************************************************
