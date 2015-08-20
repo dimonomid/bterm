@@ -9,7 +9,6 @@
 
 #include "htcodec_visitor__save_xml.h"
 #include "htproject_storage_xml.h"
-#include "htproject_storage_xml.h"
 #include "htcodec_iso14230.h"
 
 
