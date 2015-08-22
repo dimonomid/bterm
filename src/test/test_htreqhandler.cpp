@@ -120,6 +120,10 @@ void TestReqHandler::generalTest()
     }
 }
 
+/**
+ * when script returned "handled": true, but set no response, then it should
+ * still be considered as OK_HANDLED.
+ */
 void TestReqHandler::noResponseTest()
 {
     ReqHandler handler("handler", p_engine, p_script_factory, "");
