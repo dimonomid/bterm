@@ -97,12 +97,17 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
 
 void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 {
+    //-- set JavaScript engine and factory to the handler
     p_handler->setQJSEngine(p_engine);
     p_handler->setScriptFactory(p_script_factory);
+
+    //-- add handler
     handlers.push_back(p_handler);
+
+    //-- subscribe for the handler events
     connect(
-            p_handler.get(), &ReqHandler::nameChanged,
-            this, &Project::onReqHandlerNameChanged
+            p_handler.get(), &ReqHandler::titleChanged,
+            this, &Project::onReqHandlerTitleChanged
            );
 }
 
@@ -143,6 +148,9 @@ void Project::setTitle(QString title)
 
 /* private      */
 
+/**
+ * Called when new raw data is available to read from IO device
+ */
 void Project::onDataSrcReadyRead(int bytes_available)
 {
     std::ignore = bytes_available;
@@ -150,19 +158,17 @@ void Project::onDataSrcReadyRead(int bytes_available)
     //-- get received data
     std::vector<uint8_t> data = p_io_dev->read();
 
+    //-- emit an event about received raw data
     auto p_event = std::make_shared<EventDataRaw>(data);
     emit (eventDataRaw(p_event));
-
-#if 0
-    for (auto byte : data){
-        qDebug(byte + " ");
-    }
-#endif
 
     //-- feed received data as a raw data to codec
     p_codec->addRawRxData( data );
 }
 
+/**
+ * Called when new Rx message is decoded
+ */
 void Project::onMessageDecoded(const DataMsg &msg)
 {
     //qDebug(msg.toString().c_str());
@@ -182,36 +188,36 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
     input_msg_jsval.setProperty("byteArr", ba_in_jsval);
 
+    //-- iterate through all the request handlers
     for (auto p_req_handler : handlers){
 
+        //-- try to handle the request with current handler
         ReqHandler::Result res = p_req_handler->handle(
                 input_msg_jsval,
                 script_ctx_jsval
                 );
 
-
-#if 0
-        qDebug() << "handler: " << p_req_handler->getTitle();
-#endif
-
+        //-- take action depending on handling result
         switch (res){
             case ReqHandler::Result::UNKNOWN:
                 qDebug("unknown result: should never be here");
                 break;
 
             case ReqHandler::Result::OK_NOT_HANDLED:
-#if 0
-                qDebug() << "not handled";
-#endif
+                //-- this handler did not handle the request.
+                //   Ok, we will proceed to the next handler (if any)
                 break;
 
             case ReqHandler::Result::OK_HANDLED:
+                //-- request is handled
                 {
+                    //-- get response, encode it and transmit on the wire
                     auto p_data_tx = p_req_handler->getResponse();
                     DataMsg msg_tx = p_codec->encodeMessage(*p_data_tx);
                     auto p_data_raw_tx = msg_tx.getRawData();
                     p_io_dev->write(*p_data_raw_tx);
 
+                    //-- emit an event about outgoing (Tx) message
                     auto p_event = std::make_shared<EventDataMsg>(
                             msg_tx,
                             EventDataMsg::Direction::TX,
@@ -219,28 +225,27 @@ void Project::onMessageDecoded(const DataMsg &msg)
                             );
                     emit (eventDataMsg(p_event));
                 }
-#if 0
-                qDebug() << "handled, response: " << MyUtil::byteArrayToHex(
-                        *p_req_handler->getResponse()
-                        );
-#endif
                 break;
 
             case ReqHandler::Result::ERROR:
+                //-- some error has happened during executing the handler.
+                //   (this is error in JavaScript handler code)
                 qDebug() << "error";
                 break;
         }
 
         if (res == ReqHandler::Result::OK_HANDLED){
+            //-- if request was handled, then stop iterating handlers,
+            //   and exit immediately
             break;
         }
     }
-
-
-    //TODO: handle response rules, generate response if necessary
 }
 
-void Project::onReqHandlerNameChanged(const QString &name)
+/**
+ * Called when request handler title was changed
+ */
+void Project::onReqHandlerTitleChanged(const QString &name)
 {
     ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
     emit reqHandlerTitleChanged(p_handler, name);

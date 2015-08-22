@@ -100,7 +100,7 @@ QString ReqHandler::getTitle() const
 void ReqHandler::setTitle(const QString &title)
 {
     this->title = title;
-    emit nameChanged(title);
+    emit titleChanged(title);
 }
 
 QString ReqHandler::getScript() const
@@ -128,6 +128,8 @@ ReqHandler::Result ReqHandler::handle(
 
     ReqHandler::Result ret = Result::UNKNOWN;
 
+    //-- before running the handler, set response to an empty pointer.
+    p_response = std::shared_ptr<ByteArrReadWrite>();
     last_error = Error::UNKNOWN;
     last_exception_details = QVariantMap();
 
@@ -135,9 +137,11 @@ ReqHandler::Result ReqHandler::handle(
 
 
 
+    //-- try to evaluate JavaScript code
     QJSValue func = p_engine->evaluate(script_func_code);
 
     if (func.isError()){
+        //-- evaluation is failed: some error in JavaScript code.
 
         ret = Result::ERROR;
         last_error = Error::EXCEPTION;
@@ -145,47 +149,68 @@ ReqHandler::Result ReqHandler::handle(
         qDebug() << "exception 1: " << last_exception_details;
 
     } else if (!func.isCallable()){
+        //-- evaluation has succeed, but the script has evaluated to
+        //   non-function value.
 
         ret = Result::ERROR;
         last_error = Error::SCRIPT_IS_NOT_FUNCTION;
 
     } else {
-
+        //-- ok, we have function value. Try to call it,
+        //   passing the scripts context as `this`.
         QJSValue returned = func.callWithInstance(
                 script_ctx_jsval,
                 QJSValueList() << input_msg_jsval
                 );
 
         if (returned.isError()){
+            //-- returned value is an error: some exception has happened
+            //   during handler invocation
+
             ret = Result::ERROR;
             last_error = Error::EXCEPTION;
             last_exception_details = MyUtil::qjsErrorToVariant(returned);
             qDebug() << "exception 2: " << last_exception_details;
         } else {
+            //-- ok, handler has executed successfully. Let's see the result:
+            //   whether the request was handled or not.
 
+            bool handled = returned.property("handled").toBool();
+            if (handled){
+                //-- yes, request is handled
+                ret = Result::OK_HANDLED;
 
-            if (returned.property("response").isQObject()){
-                p_response = std::shared_ptr<ByteArrReadWrite>(
-                        dynamic_cast<ByteArrReadWrite *>(
-                            returned.property("response").toQObject()
-                            )
-                        );
-                QQmlEngine::setObjectOwnership(
-                        p_response.get(),
-                        QQmlEngine::CppOwnership
-                        );
+                if (returned.property("response").isQObject()){
+                    //-- we have "response" property, which, if defined, should
+                    //   contain response to send. So, remember it: the client
+                    //   may want to get it by calling `getResponse()`.
 
-                bool handled = returned.property("handled").toBool();
-                if (handled){
-                    ret = Result::OK_HANDLED;
+                    p_response = std::shared_ptr<ByteArrReadWrite>(
+                            dynamic_cast<ByteArrReadWrite *>(
+                                returned.property("response").toQObject()
+                                )
+                            );
+                    //-- don't forget to set ownership of this object to
+                    //   C++ code, so that JavaScript engine won't
+                    //   garbage-collect it.
+                    QQmlEngine::setObjectOwnership(
+                            p_response.get(),
+                            QQmlEngine::CppOwnership
+                            );
 
-                    //-- p_response now contains the byte array that was written by the script
+                    //-- p_response now contains the byte array that was
+                    //   written by the script
                 } else {
-                    ret = Result::OK_NOT_HANDLED;
+                    //-- although the request is handled, we have no response.
+                    //   Ok, response is already set to an empty pointer, so,
+                    //   leave it as it is.
                 }
+
             } else {
+                //-- request was not handled. That's ok.
                 ret = Result::OK_NOT_HANDLED;
             }
+
         }
 
     }

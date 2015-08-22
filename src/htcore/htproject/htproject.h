@@ -175,7 +175,7 @@ private slots:
     void onDataSrcReadyRead(int bytes_available);
     void onMessageDecoded(const DataMsg &msg);
 
-    void onReqHandlerNameChanged(const QString &name);
+    void onReqHandlerTitleChanged(const QString &name);
 
 
 };

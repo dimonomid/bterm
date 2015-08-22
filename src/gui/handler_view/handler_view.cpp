@@ -50,8 +50,8 @@ HandlerView::HandlerView(
         p_dock->setWidget(p_edit_widg);
 
         connect(
-                p_handler.get(), &HTCore::ReqHandler::nameChanged,
-                this, &HandlerView::onReqHandlerNameChanged
+                p_handler.get(), &HTCore::ReqHandler::titleChanged,
+                this, &HandlerView::onReqHandlerTitleChanged
                );
     }
 }
@@ -203,7 +203,7 @@ void HandlerView::onScriptChangedByUser()
     p_handler->setScript(p_script_edit->toPlainText());
 }
 
-void HandlerView::onReqHandlerNameChanged(const QString &text)
+void HandlerView::onReqHandlerTitleChanged(const QString &text)
 {
     std::ignore = text;
 

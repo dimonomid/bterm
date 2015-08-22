@@ -112,8 +112,7 @@ private slots:
     void onEditButtonPressed();
     void onTitleChangedByUser(const QString &text);
     void onScriptChangedByUser();
-    void onReqHandlerNameChanged(const QString &text);
-    //void updateListItemTitle(const QString &text);
+    void onReqHandlerTitleChanged(const QString &text);
 
 
 
