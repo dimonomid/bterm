@@ -19,6 +19,7 @@
    * [ ] new project
    * [ ] adding, removing, moving handlers
    * [ ] real data exchange
+   * [ ] codec-specific settings (probably QML is what we need?)
    * [ ] other protocols:
       * [ ] mikas
       * [ ] just cs
@@ -33,13 +34,11 @@
    * [ ] codec should emit protocol-specific data when message is decoded, this data should be given to handlers
    * [ ] evaluate script only after code has changed
    * [ ] codec-specific standard handlers (should be called after all user's handlers)
-   * [ ] codec-specific settings (probably QML is what we need?)
    * [ ] instantiable ByteArrReadWrite. It is needed for the next two items:
    * [ ] some script that runs just when project is opened (may perform some init)
    * [ ] set of other functions, non-handlers. They may be called when user presses button.
 
    * [ ] make HTDataMsg::toString() to return QString instead of std::string
-   * [ ] remove visitor, since it isn't used
 
 
 
