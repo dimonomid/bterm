@@ -190,13 +190,8 @@ signals:
     void projectBeforeClose(std::shared_ptr<HTCore::Project> p_project);
 
     /**
-     * Emitted when title of some request handler has changed.
-     * This signal is just forwarded from `#HTCore`.
-     *
-     * @param p_handler
-     *      handler whose title has changed
-     * @param name
-     *      new title
+     * This signal is just forwarded from `#HTCore`,
+     * see `#HTCore::Project::reqHandlerTitleChanged()`.
      */
     void reqHandlerTitleChanged(
             const HTCore::ReqHandler *p_handler,

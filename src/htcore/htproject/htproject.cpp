@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration in header file
  *
  ******************************************************************************/
 
@@ -108,7 +108,13 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
 {
-    return handlers[index];
+    std::shared_ptr<ReqHandler> p_ret {};
+
+    if (index < handlers.size()){
+        p_ret = handlers[index];
+    }
+
+    return p_ret;
 }
 
 size_t Project::getHandlersCnt() const
