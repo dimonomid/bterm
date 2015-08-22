@@ -27,9 +27,10 @@ namespace BTCore {
 
 /**
  * Class that represents a part of data message (see `#BTCore::DataMsg`). The
- * message contains both service data (that is transmitted on the wire) and
- * user data (the payload). To this end, the message consists of parts,
- * represented by this class.
+ * message contains both service data (that is needed just to transmit a
+ * message on the wire) and user data (the actual payload).
+ *
+ * To this end, the message consists of parts, represented by this class.
  *
  * Each part is of some type (see `#PartType`).
  */
@@ -45,11 +46,15 @@ public:
      */
     enum class DataType {
 
-        /** Service data (that is transmitted on the wire)
+        /** Service data. It is needed only to transmit a message on the wire,
+         * and it is never used when we want to get the payload of the message.
          */
         SERVICE,
 
-        /** User data (the payload of the message)
+        /** User data (the payload of the message). It is always used when we
+         * get the payload of the message, and it **may** be used when we
+         * transmit data on the wire as well. (see
+         * `#BTCore::DataMsg::getRawData()`)
          */
         USER,
     };
@@ -70,10 +75,15 @@ public:
         USER,
 
         /** Combined: the part contains data of both types (service and user).
-         * This may happen when the payload data is represented by different
+         *
+         * This may be needed when the payload data is represented by different
          * service data. For example, it happens if we have some "escape
-         * sequences": say, we may have byte `0xfe` to have some special meaning,
-         * and in order to encode exactly this byte `0xfe`, we must double it.
+         * sequences": say, we may have byte `0xfe` to have some special
+         * meaning (for example, the end of the message), and in order to
+         * encode exactly this byte `0xfe`, we must use some escape sequence:
+         * for example, `{ 0xf0, 0xf1 }`. In this case, the `SERVICE` data
+         * would contain two bytes `{ 0xf0, 0xf1 }`, and the `USER` data would
+         * contain a single byte `0xfe`.
          */
         COMBINED,
 

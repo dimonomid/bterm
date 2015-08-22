@@ -105,13 +105,18 @@ public:
     void clear();
 
     /**
-     * Get user (payload) data. It is collected from all the data parts.
+     * Get user (payload) data. It is collected from all the data parts:
+     * all data with type `BTCore::DataPart::DataType::USER` will be collected.
      */
     std::shared_ptr<std::vector<uint8_t>> getUserData() const;
 
     /**
-     * Get service data (to be transmitted on the wire). It is collected from
-     * all the data parts.
+     * Get raw data (that is, data to be transmitted on the wire). It is
+     * collected from all the data parts. For each part, we:
+     *
+     * - try to get `SERVICE` data.
+     * - If part doesn't have any `SERVICE` data, then we get `USER` data from
+     *   this part, and use it.
      */
     std::shared_ptr<std::vector<uint8_t>> getRawData() const;
 
