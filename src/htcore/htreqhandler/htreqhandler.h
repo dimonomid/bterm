@@ -21,6 +21,7 @@ class QJSEngine;
 
 namespace HTCore {
     class ScriptFactory;
+    class ByteArrReadWrite;
 }
 
 /*******************************************************************************
@@ -29,7 +30,6 @@ namespace HTCore {
 
 namespace HTCore {
     class ReqHandler;
-    class ByteArrReadWrite;
 }
 
 /**
