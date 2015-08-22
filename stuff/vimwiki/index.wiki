@@ -20,6 +20,9 @@
    * [ ] adding, removing, moving handlers
    * [ ] real data exchange
    * [ ] codec-specific settings (probably QML is what we need?)
+   * [ ] codec-specific standard handlers (should be called after all user's handlers)
+   * [ ] ByteArrReadWrite: add method putData(index, [0x01, 0x02, 0x03])
+   * [ ] ByteArrReadWrite: add method fill(index, length, byteToFill)
    * [ ] other protocols:
       * [ ] mikas
       * [ ] just cs
@@ -33,7 +36,6 @@
    * [ ] ability to switch some particular handler off (probably with checkbox at the very left)
    * [ ] codec should emit protocol-specific data when message is decoded, this data should be given to handlers
    * [ ] evaluate script only after code has changed
-   * [ ] codec-specific standard handlers (should be called after all user's handlers)
    * [ ] instantiable ByteArrReadWrite. It is needed for the next two items:
    * [ ] some script that runs just when project is opened (may perform some init)
    * [ ] set of other functions, non-handlers. They may be called when user presses button.
