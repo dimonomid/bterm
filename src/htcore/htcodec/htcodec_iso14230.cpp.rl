@@ -238,7 +238,7 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
    int cs = this->ragel_cs;
    const unsigned char *eof = nullptr;
 
-   int del_from_beginning = 0;
+   size_t del_from_beginning = 0;
 
    //-- execute machine
    %%{
@@ -262,7 +262,7 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
          );
       }
 
-      //-- erase data from the beginning
+      //-- actually delete data from the beginning
       raw_data.erase(raw_data.begin(), raw_data.begin() + del_from_beginning);
       //-- adjust cur_raw_data_idx accordingly
       cur_raw_data_idx -= del_from_beginning;
