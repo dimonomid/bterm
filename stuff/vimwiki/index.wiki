@@ -24,8 +24,11 @@
    * [X] adding, removing, moving handlers
    * [ ] project settings:
        * [ ] title
+       * [ ] IODev to use (select from the drop-down menu)
+       * [ ] IODev-specific settings
        * [ ] codec to use (select from the drop-down menu)
        * [ ] codec-specific settings (probably QML is what we need?)
+   * [ ] move codec outside of BTerm, or, conversely, move IODev to BTerm
    * [ ] new project
    * [ ] real data exchange
    * [ ] codec-specific standard handlers (should be called after all user's handlers)
@@ -39,7 +42,10 @@
 
 ==== somewhat optional ====
 
-   * [ ] ability to reorder handlers
+   * [ ] JS API: console.log, etc
+   * [ ] JS API: setTimeout(), setInterval()
+   * [ ] list of non-handler scripts, with buttons to fire each of them
+   * [ ] ask whether to save project before exit (if it is changed)
    * [ ] indicate script errors
    * [ ] ability to switch some particular handler off (probably with checkbox at the very left)
    * [ ] codec should emit protocol-specific data when message is decoded, this data should be given to handlers

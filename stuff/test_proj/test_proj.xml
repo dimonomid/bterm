@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project title="Test">
     <codecs>
-        <codec local_addr="0x10" remote_addr="0x11" title="iso14230"/>
+        <codec title="iso14230" remote_addr="0x11" local_addr="0x10"/>
     </codecs>
     <req_handlers>
         <req_handler title="test 1">
@@ -25,16 +25,19 @@
  })
             </code>
         </req_handler>
-        <req_handler title="test 2">
+        <req_handler title="My third">
             <code>
 (function(inputMsg){
      var inputArr = inputMsg.byteArr;
      var handled = false;
      var outputArr = null;
+     if (this.val === undefined){
+        this.val = 0;
+     }
 
      if (inputArr.getU08(0) === 0x04){
         outputArr = factory.createByteArr();
-        outputArr.putU16(1, 0x1234);
+        outputArr.putU16(1, this.val++);
         outputArr.putU16(5, 0x1234, LITTLE_END);
         outputArr.putU16(10, 0x1234, BIG_END);
         handled = true;
@@ -47,7 +50,7 @@
  })
             </code>
         </req_handler>
-        <req_handler title="My third">
+        <req_handler title="test 2">
             <code>
 (function(inputMsg){
      var inputArr = inputMsg.byteArr;
@@ -56,7 +59,7 @@
 
      if (inputArr.getU08(0) === 0x04){
         outputArr = factory.createByteArr();
-        outputArr.putU16(1, 0x9999);
+        outputArr.putU16(1, 0x1234);
         outputArr.putU16(5, 0x1234, LITTLE_END);
         outputArr.putU16(10, 0x1234, BIG_END);
         handled = true;
