@@ -23,7 +23,7 @@
 #include "htcodec.h"
 #include "htevent_sys.h"
 
-#include "htevent_visitor_handle.h"
+#include "htevent_visitor__appl_handle.h"
 
 
 
@@ -48,7 +48,8 @@ class Appl : public QObject
 {
 Q_OBJECT;
 
-    friend EventVisitor_Handle;
+    friend EventVisitor_ApplHandle;
+
 
     /****************************************************************************
      * TYPES
@@ -78,11 +79,11 @@ private:
     std::shared_ptr<HTCore::Project> p_project;
 
     //-- accumulator of data raw events
-    //   (NOTE: accessed by EventVisitor_Handle)
+    //   (NOTE: accessed by EventVisitor_ApplHandle)
     std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataRaw>> p_events_data_raw;
 
     //-- accumulator of data message events
-    //   (NOTE: accessed by EventVisitor_Handle)
+    //   (NOTE: accessed by EventVisitor_ApplHandle)
     std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataMsg>> p_events_data_msg;
 
     //-- filename of currently opened project. When no project is opened,
@@ -90,8 +91,7 @@ private:
     //   string.
     QString proj_filename;
 
-    //TODO: remove (not used)
-    EventVisitor_Handle htevent_visitor_handle;
+    EventVisitor_ApplHandle htevent_visitor__appl_handle;
 
     //-- instance of main window
     std::unique_ptr<MainWindow>  p_main_window;

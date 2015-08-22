@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HTEVENT_VISITOR_HANDLE_H
-#define _HTEVENT_VISITOR_HANDLE_H
+#ifndef _HTEVENT_VISITOR_APPL_HANDLE_H
+#define _HTEVENT_VISITOR_APPL_HANDLE_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -27,7 +27,7 @@ namespace HTCore {
  ******************************************************************************/
 
 
-class EventVisitor_Handle : public HTCore::EventVisitor
+class EventVisitor_ApplHandle : public HTCore::EventVisitor
 {
 Q_OBJECT
     /****************************************************************************
@@ -38,7 +38,7 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    EventVisitor_Handle(Appl &appl);
+    EventVisitor_ApplHandle(Appl &appl);
 
     /****************************************************************************
      * PRIVATE DATA
@@ -68,4 +68,4 @@ public:
 };
 
 
-#endif // _HTEVENT_VISITOR_HANDLE_H
+#endif // _HTEVENT_VISITOR_APPL_HANDLE_H

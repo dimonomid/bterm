@@ -20,7 +20,7 @@ SOURCES += \
     ../../src/gui/mainwindow/mainwindow.cpp \
     ../../src/gui/mainwindow/htevent_visitor__gui_handle/htevent_visitor__gui_handle.cpp \
     ../../src/appl/appl.cpp \
-    ../../src/appl/htevent_visitor/htevent_visitor_handle.cpp \
+    ../../src/appl/htevent_visitor/htevent_visitor__appl_handle.cpp \
     ../../src/util/my_util.cpp \
     ../../src/gui/widgets/qplaintextedit_my.cpp \
     ../../src/appl/htiodev/htiodev_dbg.cpp \
@@ -32,7 +32,7 @@ HEADERS += \
     ../../src/gui/mainwindow/mainwindow.h \
     ../../src/gui/mainwindow/htevent_visitor__gui_handle/htevent_visitor__gui_handle.h \
     ../../src/appl/appl.h \
-    ../../src/appl/htevent_visitor/htevent_visitor_handle.h \
+    ../../src/appl/htevent_visitor/htevent_visitor__appl_handle.h \
     ../../src/util/my_util.h \
     ../../src/gui/widgets/qplaintextedit_my.h \
     ../../src/appl/htiodev/htiodev_dbg.h \

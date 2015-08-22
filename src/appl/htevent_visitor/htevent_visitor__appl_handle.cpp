@@ -9,7 +9,7 @@
 
 #include <QDebug>
 
-#include "htevent_visitor_handle.h"
+#include "htevent_visitor__appl_handle.h"
 
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
@@ -23,7 +23,7 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-EventVisitor_Handle::EventVisitor_Handle(Appl &appl) : 
+EventVisitor_ApplHandle::EventVisitor_ApplHandle(Appl &appl) : 
     appl(appl)
 {
 }
@@ -51,7 +51,7 @@ EventVisitor_Handle::EventVisitor_Handle(Appl &appl) :
 
 /* public       */
 
-void EventVisitor_Handle::visit(EventDataRaw &htevent_data_raw)
+void EventVisitor_ApplHandle::visit(EventDataRaw &htevent_data_raw)
 {
     appl.p_events_data_raw->addEvent(
             std::dynamic_pointer_cast<EventDataRaw>(
@@ -60,7 +60,7 @@ void EventVisitor_Handle::visit(EventDataRaw &htevent_data_raw)
             );
 }
 
-void EventVisitor_Handle::visit(EventDataMsg &htevent_data_msg)
+void EventVisitor_ApplHandle::visit(EventDataMsg &htevent_data_msg)
 {
     appl.p_events_data_msg->addEvent(
             std::dynamic_pointer_cast<EventDataMsg>(
@@ -69,7 +69,7 @@ void EventVisitor_Handle::visit(EventDataMsg &htevent_data_msg)
             );
 }
 
-void EventVisitor_Handle::visit(EventSys &htevent_sys)
+void EventVisitor_ApplHandle::visit(EventSys &htevent_sys)
 {
     std::ignore = htevent_sys;
 }

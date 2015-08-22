@@ -60,7 +60,7 @@ Appl::Appl() :
 
     proj_filename(""),
 
-    htevent_visitor_handle(*this),
+    htevent_visitor__appl_handle(*this),
     p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
     initSettings();
@@ -310,7 +310,7 @@ QString Appl::getLastProjectFilename() const
 void Appl::onEvent(std::shared_ptr<Event> p_event)
 {
     //-- handle event with visitor
-    p_event->accept(htevent_visitor_handle);
+    p_event->accept(htevent_visitor__appl_handle);
 
     //-- forward the event
     emit event(p_event);
