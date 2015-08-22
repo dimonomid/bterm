@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Test">
+    <codecs>
+        <codec name="iso14230" remote_addr="0x11" local_addr="0x10"/>
+    </codecs>
+    <req_handlers>
+        <req_handler name="test 1">
+            <code>
+(function(inputMsg){
+     var inputArr = inputMsg.byteArr;
+     var handled = false;
+     var outputArr = null;
+
+     //test
+     if (inputArr.getU08(0) === 0x03){
+        outputArr = factory.createByteArr();
+        outputArr.putU08(1, 0x04);
+        handled = true;
+     };
+
+     return {
+        handled: handled,
+        response: outputArr
+     };
+ })
+            </code>
+        </req_handler>
+        <req_handler name="test 2">
+            <code>
+(function(inputMsg){
+     var inputArr = inputMsg.byteArr;
+     var handled = false;
+     var outputArr = null;
+
+     if (inputArr.getU08(0) === 0x04){
+        outputArr = factory.createByteArr();
+        outputArr.putU16(1, 0x1234);
+        outputArr.putU16(5, 0x1234, LITTLE_END);
+        outputArr.putU16(10, 0x1234, BIG_END);
+        handled = true;
+     };
+
+     return {
+        handled: handled,
+        response: outputArr
+     };
+ })
+            </code>
+        </req_handler>
+    </req_handlers>
+</project>
