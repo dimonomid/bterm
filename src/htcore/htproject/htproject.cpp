@@ -213,17 +213,23 @@ void Project::onMessageDecoded(const DataMsg &msg)
                 {
                     //-- get response, encode it and transmit on the wire
                     auto p_data_tx = p_req_handler->getResponse();
-                    DataMsg msg_tx = p_codec->encodeMessage(*p_data_tx);
-                    auto p_data_raw_tx = msg_tx.getRawData();
-                    p_io_dev->write(*p_data_raw_tx);
+                    if (p_data_tx->size() > 0){
+                        DataMsg msg_tx = p_codec->encodeMessage(*p_data_tx);
+                        auto p_data_raw_tx = msg_tx.getRawData();
+                        p_io_dev->write(*p_data_raw_tx);
 
-                    //-- emit an event about outgoing (Tx) message
-                    auto p_event = std::make_shared<EventDataMsg>(
-                            msg_tx,
-                            EventDataMsg::Direction::TX,
-                            p_req_handler
-                            );
-                    emit (eventDataMsg(p_event));
+                        //-- emit an event about outgoing (Tx) message
+                        auto p_event = std::make_shared<EventDataMsg>(
+                                msg_tx,
+                                EventDataMsg::Direction::TX,
+                                p_req_handler
+                                );
+                        emit (eventDataMsg(p_event));
+                    } else {
+                        //-- no response is generated. That's ok, so, we don't
+                        //   send anything, just stop iterating through
+                        //   handlers.
+                    }
                 }
                 break;
 
