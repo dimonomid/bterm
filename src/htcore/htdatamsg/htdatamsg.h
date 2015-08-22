@@ -77,12 +77,12 @@ public:
      * is appended to the last part. Otherwise, new data part is created and
      * added to the sequence of message data parts.
      *
-     * Note that if last data part is `#HTCore::DataPart::PartType::COMBINED`,
-     * then new data won't be appended to it, but new part will be created
-     * instead. This is because combined data parts are self-contained:
-     * typically, they have some payload data, and some service data that
-     * represents this payload data. If we append either data, this semantic
-     * will be lost.
+     * Note that if the last data part type is
+     * `#HTCore::DataPart::PartType::COMBINED`, then new data won't be appended
+     * to it, but new part will be created instead. This is because combined
+     * data parts are self-contained: typically, they have some payload data,
+     * and some service data that represents this payload data. If we append
+     * data of either type to this part, this semantic will be lost.
      */
     void addData(DataPart::DataType data_type, const std::vector<uint8_t> &data);
 
