@@ -194,6 +194,8 @@ public:
 
     /**
      * Set JavaScript handler code
+     *
+     * TODO: explain handler's JavaScript API
      */
     void setScript(QString script_func_code);
 
