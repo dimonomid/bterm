@@ -19,6 +19,7 @@
 #include <QBoxLayout>
 #include <QTimer>
 #include <QFileDialog>
+#include <QScrollArea>
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -203,7 +204,7 @@ bool MainWindow::event(QEvent *e)
 
 void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 {
-    QWidget *p_widg = new QWidget();
+    QWidget *p_handlers_list_widg = new QWidget();
 
     QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
@@ -232,9 +233,14 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     }
 
 
-    p_widg->setLayout(p_lay);
+    p_handlers_list_widg->setLayout(p_lay);
 
-    p_dw_handlers->setWidget(p_widg);
+    QScrollArea *p_scroll_area = new QScrollArea();
+    p_scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    p_scroll_area->setWidget(p_handlers_list_widg);
+    p_scroll_area->setWidgetResizable(false);
+
+    p_dw_handlers->setWidget(p_scroll_area);
     p_dw_handlers->setObjectName("handlers_list");
 }
 
