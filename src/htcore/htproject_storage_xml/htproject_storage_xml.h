@@ -39,7 +39,7 @@ namespace HTCore {
 
 
 /**
- * Class that provides loading and saving `#DMCore::Project`
+ * Class that provides loading and saving `#HTCore::Project`
  * from and to an XML format.
  */
 class HTCore::ProjectStorageXML : public QObject

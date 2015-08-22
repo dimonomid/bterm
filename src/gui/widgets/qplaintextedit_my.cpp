@@ -57,9 +57,9 @@ QPlainTextEdit_My::QPlainTextEdit_My(const QString &text, QWidget *parent) :
 /* public       */
 
 /**
- * append html without adding new line (new paragraph)
+ * append text without adding new line (new paragraph)
  *
- * @param html       html text to append
+ * @param text       html text to append
  * @param check_nl   if true, then text will be splitted by \n char,
  *                   and each substring will be added as separate QTextBlock.
  *                   NOTE: this important: if you set this to false,

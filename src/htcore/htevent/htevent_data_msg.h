@@ -34,6 +34,9 @@ class HTCore::EventDataMsg : public HTCore::Event
 
 public:
 
+    /**
+     * Direction of the message: Rx or Tx.
+     */
     enum class Direction {
         RX,
         TX,
@@ -46,6 +49,10 @@ public:
 public:
 
     /**
+     * @param msg
+     *      Message that this event is about
+     * @param dir
+     *      Direction of the message: Rx or Tx. See `#Direction`.
      * @param p_handler
      *      Used if only dir == Direction::TX. Represents a handler that
      *      generated a message.

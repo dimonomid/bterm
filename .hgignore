@@ -4,4 +4,6 @@ vimprj[/\\]tags
 vimprj[/\\].+_tags
 stuff[/\\]ragel_test[/\\].*\.c$
 stuff[/\\]ragel_test[/\\].*\.png$
+doxygen[/\\]output
+doxygen[/\\]uml[/\\].*\.png$
 

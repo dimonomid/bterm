@@ -1,0 +1,49 @@
+@startuml
+
+package SScript {
+   class SScriptCompiler {
+      +compile : SScriptItem
+   }
+
+   class SScriptItem <<abstract>> {
+   }
+
+   class SScriptItemExpr {
+   }
+
+   class SScriptItemStatement {
+   }
+
+   class SScriptItemWhatever ##[dashed] {
+   }
+
+   SScriptItem <|-- SScriptItemExpr
+   SScriptItem <|-- SScriptItemStatement
+   SScriptItem <|.. SScriptItemWhatever
+
+   SScriptCompiler ..> SScriptItem : compile
+}
+
+package Project {
+   class Project {
+
+   }
+   note left
+      This is where we have all actual
+      function names. The SScriptCompiler and
+      SScriptItem-s are just "dumb" data
+      structures, they do not know how to actually
+      execute the script. Project does.
+
+      It has buffers (input, output), and it knows
+      what to do when it meets SScriptItemFuncCall
+      with function name "get_u08".
+
+      It has visitor for each SScriptItem that
+      "does the right thing".
+   end note
+}
+
+Project ..> SScriptItem : exec
+
+@enduml

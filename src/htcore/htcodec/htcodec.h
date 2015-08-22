@@ -29,7 +29,7 @@ namespace HTCore {
 
 /**
  * Abstract codec that is used by `#HTCore::Project` to decode messages
- * (`#DataMsg`) from raw Rx data, and encode Tx messages.
+ * (`#HTCore::DataMsg`) from raw Rx data, and encode Tx messages.
  */
 class HTCore::Codec : public QObject
 {
