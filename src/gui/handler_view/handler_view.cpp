@@ -16,6 +16,7 @@
 #include <QPlainTextEdit>
 #include <QLineEdit>
 #include <QDockWidget>
+#include <QMessageBox>
 
 #include "handler_view.h"
 #include "mainwindow.h"
@@ -123,6 +124,7 @@ QWidget *HandlerView::createListItemWidget()
     //-- edit button
     {
         QPushButton *p_edit_button = new QPushButton("Edit");
+        p_edit_button->setMinimumWidth(5);
         p_vert_lay->addWidget(p_edit_button);
 
         connect(
@@ -134,6 +136,7 @@ QWidget *HandlerView::createListItemWidget()
     //-- remove button
     {
         QPushButton *p_remove_button = new QPushButton("x");
+        p_remove_button->setMinimumWidth(5);
         p_vert_lay->addWidget(p_remove_button);
 
         connect(
@@ -215,9 +218,21 @@ void HandlerView::onEditButtonPressed()
 
 void HandlerView::onRemoveButtonPressed()
 {
-    if (auto p_project = wp_project.lock()){
-        p_project->removeHandler(p_handler->getHandlerIndex());
+    QMessageBox::StandardButton reply =
+        QMessageBox::question(
+                nullptr,
+                "Remove handler?",
+                "Remove request handler \"" + p_handler->getTitle() + "\"?",
+                (QMessageBox::Yes | QMessageBox::No)
+                );
+
+    if (reply == QMessageBox::Yes){
+        if (auto p_project = wp_project.lock()){
+            p_project->removeHandler(p_handler->getHandlerIndex());
+        }
     }
+#if 0
+#endif
 }
 
 void HandlerView::onTitleChangedByUser(const QString &text)

@@ -76,7 +76,8 @@ ReqHandler::ReqHandler() :
             "     var outputArr;\n"
 
             "     if (false){\n"
-            "        //outputArr.putU08(1, 0x04);\n"
+            "        outputArr = factory.createByteArr();\n"
+            "        outputArr.putU08(1, 0x04);\n"
             "        handled = true;\n"
             "     };\n"
 
