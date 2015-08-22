@@ -97,6 +97,10 @@ MainWindow::MainWindow(
 {
     ui->setupUi(this);
 
+    //TODO: configurable
+    p_raw_data_pte->setMaximumBlockCount(1000);
+    p_log_pte->setMaximumBlockCount(1000);
+
     //-- Enable for dock areas to contain arbitrary number of rows (horizontal
     //   or vertical). By default, when this option is false, dock areas can
     //   contain only a single row.

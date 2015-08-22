@@ -44,6 +44,8 @@
 
    * [ ] JS API: console.log, etc
    * [ ] JS API: setTimeout(), setInterval()
+   * [ ] app settings:
+       * [ ] maximum block count of msg log and raw data log
    * [ ] list of non-handler scripts, with buttons to fire each of them
    * [ ] ask whether to save project before exit (if it is changed)
    * [ ] indicate script errors
