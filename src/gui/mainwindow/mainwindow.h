@@ -101,6 +101,8 @@ private:
 
     std::unique_ptr<EventVisitor_GuiHandle> p_event_visitor__gui_handle;
 
+    std::weak_ptr<BTCore::Project> wp_project;
+
 
     //-- A hack that is needed for the case when application was closed in
     //   maximized state. When it is reopened, in order for central widget
@@ -160,6 +162,8 @@ private:
     void saveProjectState();
     void restoreProjectState();
 
+    void refreshHandlersList();
+
     QString getTagnameFromFilename(QString filename);
 
 private:
@@ -184,6 +188,12 @@ private slots:
     void saveProject();
     void saveProjectAs();
 
+    void onAddHandlerButtonPressed();
+
+    void onReqHandlerAdded(
+            std::shared_ptr<BTCore::ReqHandler> p_handler,
+            size_t index
+            );
 };
 
 #endif // MAINWINDOW_H

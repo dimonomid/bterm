@@ -119,6 +119,12 @@ public:
     std::shared_ptr<ReqHandler> getHandler(size_t index);
 
     /**
+     * Remove handler at specified index. After handler is removed, the signal
+     * `reqHandlerRemoved()` will be emitted.
+     */
+    void removeHandler(size_t index);
+
+    /**
      * Get handlers count
      */
     size_t getHandlersCnt() const;
@@ -163,6 +169,26 @@ signals:
      */
     void reqHandlerTitleChanged(const ReqHandler *p_handler, const QString &name);
 
+    /**
+     * Emitted when new handler was just added to the sequence of handlers.
+     *
+     * @param p_handler
+     *      handler that was just added
+     * @param index
+     *      index of newly added handler in the sequence of handlers
+     */
+    void reqHandlerAdded(std::shared_ptr<ReqHandler> p_handler, size_t index);
+
+    /**
+     * Emitted when handler was just removed from the sequence of handlers.
+     *
+     * @param p_handler
+     *      handler that was just removed
+     * @param index
+     *      index of removed handler. When this signal is emitted, this index
+     *      is no more occupied by this handler.
+     */
+    void reqHandlerRemoved(std::shared_ptr<ReqHandler> p_handler, size_t index);
 
 
 private slots:

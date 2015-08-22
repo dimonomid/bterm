@@ -109,6 +109,9 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
             p_handler.get(), &ReqHandler::titleChanged,
             this, &Project::onReqHandlerTitleChanged
            );
+
+    //-- notify listeners about new handler
+    emit reqHandlerAdded(p_handler, handlers.size() - 1);
 }
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
@@ -121,6 +124,17 @@ std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
 
     return p_ret;
 }
+
+void Project::removeHandler(size_t index)
+{
+    std::shared_ptr<ReqHandler> p_handler = handlers[index];
+
+    handlers.erase(handlers.begin() + index);
+
+    //-- notify listeners about removed handler
+    emit reqHandlerRemoved(p_handler, index);
+}
+
 
 size_t Project::getHandlersCnt() const
 {

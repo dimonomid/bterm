@@ -130,6 +130,12 @@ public:
             QString script_func_code = ""
             );
 
+    /**
+     * Construct request handler with default title "Untitled handler" and
+     * script draft. JavaScript engine and factory should be set later by
+     * calling `setQJSEngine()` and `setScriptFactory()`
+     */
+    ReqHandler();
 
     /****************************************************************************
      * PRIVATE DATA

@@ -57,6 +57,30 @@ ReqHandler::ReqHandler(
 
 }
 
+ReqHandler::ReqHandler() :
+    ReqHandler(
+            "Untitled handler",
+            std::shared_ptr<QJSEngine>(),
+            std::shared_ptr<ScriptFactory>(),
+            "(function(inputMsg){ \n"
+            "     var handled = false;\n"
+            "     var outputArr;\n"
+
+            "     if (false){\n"
+            "        //outputArr.putU08(1, 0x04);\n"
+            "        handled = true;\n"
+            "     };\n"
+
+            "     return {\n"
+            "        handled: handled,\n"
+            "        response: outputArr\n"
+            "     };\n"
+            " })\n"
+            )
+{
+
+}
+
 
 
 /*******************************************************************************

@@ -20,6 +20,7 @@
 #include <QTimer>
 #include <QFileDialog>
 #include <QScrollArea>
+#include <QPushButton>
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -208,6 +209,16 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 
     QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
+    //-- add "add handler" button
+    {
+        QPushButton *p_add_handler_btn = new QPushButton("Add handler");
+        p_lay->addWidget(p_add_handler_btn);
+        connect(
+                p_add_handler_btn, &QPushButton::clicked,
+                this, &MainWindow::onAddHandlerButtonPressed
+               );
+    }
+
 
     //-- iterate all handlers: 
     //   for each of them, create the view and display it:
@@ -238,10 +249,11 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     QScrollArea *p_scroll_area = new QScrollArea();
     p_scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     p_scroll_area->setWidget(p_handlers_list_widg);
-    p_scroll_area->setWidgetResizable(false);
+    p_scroll_area->setWidgetResizable(true);
 
     p_dw_handlers->setWidget(p_scroll_area);
     p_dw_handlers->setObjectName("handlers_list");
+
 }
 
 void MainWindow::unpopulate()
@@ -356,6 +368,19 @@ void MainWindow::restoreProjectState()
     }
 }
 
+/**
+ * Refresh handlers list
+ */
+void MainWindow::refreshHandlersList()
+{
+    if (auto p_project = wp_project.lock()){
+        saveProjectState();
+        unpopulate();
+        populateWithProject(p_project);
+        restoreProjectState();
+    }
+}
+
 QString MainWindow::getTagnameFromFilename(QString filename)
 {
     QRegularExpression re {"[^a-zA-Z0-9_]"};
@@ -399,10 +424,20 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
     restoreProjectState();
 
     p_act_close_project->setEnabled(true);
+
+    //-- subscribe for project's signals
+    connect(
+            p_project.get(), &Project::reqHandlerAdded,
+            this, &MainWindow::onReqHandlerAdded
+           );
+
+    //-- store weak pointer to the project
+    this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
 }
 
-void MainWindow::onProjectBeforeClose(std::shared_ptr<BTCore::Project> p_project)
+void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
 {
+    this->wp_project = std::weak_ptr<BTCore::Project>();
     std::ignore = p_project;
 
     saveProjectState();
@@ -469,5 +504,23 @@ void MainWindow::onEvent(std::shared_ptr<Event> p_event)
     p_event->accept(*p_event_visitor__gui_handle);
 }
 
+void MainWindow::onAddHandlerButtonPressed()
+{
+    //-- add new handler
+    if (auto p_project = wp_project.lock()){
+        p_project->addHandler(std::make_shared<ReqHandler>());
+    }
+}
+
+void MainWindow::onReqHandlerAdded(
+        std::shared_ptr<ReqHandler> p_handler,
+        size_t index
+        )
+{
+    std::ignore = p_handler;
+    std::ignore = index;
+
+    refreshHandlersList();
+}
 
 
