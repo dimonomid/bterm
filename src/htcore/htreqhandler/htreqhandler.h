@@ -34,9 +34,9 @@ namespace HTCore {
 
 /**
  * Class that represents single handler of the incoming message (request).
- * The handler itself is defined by JavaScript code.
+ * The handler's behavior is defined by JavaScript code.
  *
- * TODO: explain handler's API
+ * TODO: explain handler's JavaScript API
  */
 class HTCore::ReqHandler : public QObject
 {
