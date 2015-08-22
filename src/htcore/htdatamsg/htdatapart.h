@@ -31,7 +31,7 @@ namespace HTCore {
  * user data (the payload). To this end, the message consists of parts,
  * represented by this class.
  *
- * Each part is of some type (see `#HTCore::DataPart::PartType`).
+ * Each part is of some type (see `#PartType`).
  */
 class HTCore::DataPart
 {
@@ -60,12 +60,12 @@ public:
     enum class PartType {
 
         /** Service: the part contains only data of type
-         * `#HTCore::DataPart::DataType::SERVICE`.
+         * `DataType::SERVICE`.
          */
         SERVICE,
 
         /** User: the part contains only data of type
-         * `#HTCore::DataPart::DataType::USER`.
+         * `DataType::USER`.
          */
         USER,
 
@@ -107,9 +107,9 @@ public:
      * PRIVATE DATA
      ***************************************************************************/
 private:
-    //-- data of type `#HTCore::DataPart::DataType::SERVICE`
+    //-- data of type `DataType::SERVICE`
     std::vector<uint8_t> service_data;
-    //-- data of type `#HTCore::DataPart::DataType::USER`
+    //-- data of type `DataType::USER`
     std::vector<uint8_t> user_data;
 
 
@@ -138,7 +138,7 @@ public:
     std::vector<uint8_t> getData(DataType data_type) const;
 
     /**
-     * Get type of this data part. See `#HTCore::DataPart::PartType` for details.
+     * Get type of this data part. See `#PartType` for details.
      */
     PartType getType() const;
 
@@ -150,8 +150,8 @@ public:
      * intependently of given data_type.
      *
      * The part is homogeneous if it is either empty or contains
-     * data of only single type (`#HTCore::DataPart::DataType::SERVICE` or
-     * `#HTCore::DataPart::DataType::USER`), but not both.
+     * data of only single type (`DataType::SERVICE` or
+     * `DataType::USER`), but not both.
      *
      * @param data_type
      *      data type to consider
