@@ -164,6 +164,8 @@ private:
 
     void refreshHandlersList();
 
+    void scrollAllToBottom();
+
     QString getTagnameFromFilename(QString filename);
 
 private:

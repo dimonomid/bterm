@@ -20,6 +20,7 @@
 #include <QTimer>
 #include <QFileDialog>
 #include <QScrollArea>
+#include <QScrollBar>
 #include <QPushButton>
 
 #include <QListWidget>
@@ -257,7 +258,6 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 
     p_dw_handlers->setWidget(p_scroll_area);
     p_dw_handlers->setObjectName("handlers_list");
-
 }
 
 void MainWindow::unpopulate()
@@ -382,7 +382,20 @@ void MainWindow::refreshHandlersList()
         unpopulate();
         populateWithProject(p_project);
         restoreProjectState();
+
+        scrollAllToBottom();
     }
+}
+
+void MainWindow::scrollAllToBottom()
+{
+    p_log_pte->verticalScrollBar()->setValue(
+            p_log_pte->verticalScrollBar()->maximum()
+            );
+
+    p_raw_data_pte->verticalScrollBar()->setValue(
+            p_raw_data_pte->verticalScrollBar()->maximum()
+            );
 }
 
 QString MainWindow::getTagnameFromFilename(QString filename)
@@ -446,6 +459,8 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 
     //-- store weak pointer to the project
     this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
+
+    scrollAllToBottom();
 }
 
 void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
