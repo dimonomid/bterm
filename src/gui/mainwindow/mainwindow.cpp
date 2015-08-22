@@ -439,6 +439,10 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
             p_project.get(), &Project::reqHandlerRemoved,
             this, &MainWindow::onReqHandlerRemoved
            );
+    connect(
+            p_project.get(), &Project::reqHandlersReordered,
+            this, &MainWindow::onReqHandlersReordered
+           );
 
     //-- store weak pointer to the project
     this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
@@ -540,6 +544,11 @@ void MainWindow::onReqHandlerRemoved(
     std::ignore = p_handler;
     std::ignore = index;
 
+    refreshHandlersList();
+}
+
+void MainWindow::onReqHandlersReordered()
+{
     refreshHandlersList();
 }
 

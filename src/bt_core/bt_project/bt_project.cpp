@@ -152,6 +152,32 @@ void Project::removeHandler(size_t index)
     }
 }
 
+void Project::moveHandlerUp(size_t index)
+{
+    if (index < handlers.size() && index > 0){
+        std::swap(handlers[index], handlers[index - 1]);
+
+        handlers[index]->setHandlerIndex(index);
+        handlers[index - 1]->setHandlerIndex(index - 1);
+
+        //-- notify listeners about removed handler
+        emit reqHandlersReordered();
+    }
+}
+
+void Project::moveHandlerDown(size_t index)
+{
+    if (index + 1 < handlers.size()){
+        std::swap(handlers[index], handlers[index + 1]);
+
+        handlers[index]->setHandlerIndex(index);
+        handlers[index + 1]->setHandlerIndex(index + 1);
+
+        //-- notify listeners about removed handler
+        emit reqHandlersReordered();
+    }
+}
+
 
 size_t Project::getHandlersCnt() const
 {

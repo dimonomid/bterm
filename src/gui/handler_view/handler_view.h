@@ -114,6 +114,8 @@ private slots:
 
     void onEditButtonPressed();
     void onRemoveButtonPressed();
+    void onUpButtonPressed();
+    void onDownButtonPressed();
     void onTitleChangedByUser(const QString &text);
     void onScriptChangedByUser();
     void onReqHandlerTitleChanged(const QString &text);

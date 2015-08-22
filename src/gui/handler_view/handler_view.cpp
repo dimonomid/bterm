@@ -133,6 +133,30 @@ QWidget *HandlerView::createListItemWidget()
                );
     }
 
+    //-- up button
+    {
+        QPushButton *p_up_button = new QPushButton("Up");
+        p_up_button->setMinimumWidth(5);
+        p_vert_lay->addWidget(p_up_button);
+
+        connect(
+                p_up_button, &QPushButton::clicked,
+                this, &HandlerView::onUpButtonPressed
+               );
+    }
+
+    //-- down button
+    {
+        QPushButton *p_down_button = new QPushButton("Down");
+        p_down_button->setMinimumWidth(5);
+        p_vert_lay->addWidget(p_down_button);
+
+        connect(
+                p_down_button, &QPushButton::clicked,
+                this, &HandlerView::onDownButtonPressed
+               );
+    }
+
     //-- remove button
     {
         QPushButton *p_remove_button = new QPushButton("x");
@@ -231,8 +255,20 @@ void HandlerView::onRemoveButtonPressed()
             p_project->removeHandler(p_handler->getHandlerIndex());
         }
     }
-#if 0
-#endif
+}
+
+void HandlerView::onUpButtonPressed()
+{
+    if (auto p_project = wp_project.lock()){
+        p_project->moveHandlerUp(p_handler->getHandlerIndex());
+    }
+}
+
+void HandlerView::onDownButtonPressed()
+{
+    if (auto p_project = wp_project.lock()){
+        p_project->moveHandlerDown(p_handler->getHandlerIndex());
+    }
 }
 
 void HandlerView::onTitleChangedByUser(const QString &text)

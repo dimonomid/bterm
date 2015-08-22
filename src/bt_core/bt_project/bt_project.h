@@ -130,6 +130,18 @@ public:
     size_t getHandlersCnt() const;
 
     /**
+     * Move hander with specified index "up", i.e. swap it with the previous
+     * handler.
+     */
+    void moveHandlerUp(size_t index);
+
+    /**
+     * Move hander with specified index "down", i.e. swap it with the next
+     * handler.
+     */
+    void moveHandlerDown(size_t index);
+
+    /**
      * Get codec being currently used by the project
      */
     std::shared_ptr<Codec> getCodec() const;
@@ -189,6 +201,11 @@ signals:
      *      is no more occupied by this handler.
      */
     void reqHandlerRemoved(std::shared_ptr<ReqHandler> p_handler, size_t index);
+
+    /**
+     * Emitted when handlers are reordered
+     */
+    void reqHandlersReordered();
 
 
 private slots:

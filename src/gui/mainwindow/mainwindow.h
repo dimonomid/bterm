@@ -198,6 +198,7 @@ private slots:
             std::shared_ptr<BTCore::ReqHandler> p_handler,
             size_t index
             );
+    void onReqHandlersReordered();
 };
 
 #endif // MAINWINDOW_H
