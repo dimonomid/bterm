@@ -131,12 +131,25 @@ std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
 
 void Project::removeHandler(size_t index)
 {
-    std::shared_ptr<ReqHandler> p_handler = handlers[index];
+    if (index < handlers.size()){
+        std::shared_ptr<ReqHandler> p_handler = handlers[index];
 
-    handlers.erase(handlers.begin() + index);
+        handlers.erase(handlers.begin() + index);
 
-    //-- notify listeners about removed handler
-    emit reqHandlerRemoved(p_handler, index);
+        size_t cur_index = index;
+        for (
+                auto pp_cur_handler = (handlers.begin() + index);
+                pp_cur_handler < handlers.end();
+                ++pp_cur_handler, ++cur_index
+            )
+        {
+            auto p_cur_handler = *pp_cur_handler;
+            p_cur_handler->setHandlerIndex(cur_index);
+        }
+
+        //-- notify listeners about removed handler
+        emit reqHandlerRemoved(p_handler, index);
+    }
 }
 
 

@@ -16,6 +16,7 @@
 
 
 namespace BTCore {
+    class Project;
     class ReqHandler;
 }
 
@@ -45,6 +46,7 @@ Q_OBJECT
 public:
     HandlerView(
             MainWindow &mainwindow,
+            std::shared_ptr<BTCore::Project> p_project,
             std::shared_ptr<BTCore::ReqHandler> p_handler
             );
 
@@ -69,6 +71,7 @@ private:
     QWidget *p_list_item_widget;
     QLabel *p_list_item_label_name;
     QPlainTextEdit *p_script_edit;
+    std::weak_ptr<BTCore::Project> wp_project;
 
 
     /****************************************************************************
@@ -110,6 +113,7 @@ private:
 private slots:
 
     void onEditButtonPressed();
+    void onRemoveButtonPressed();
     void onTitleChangedByUser(const QString &text);
     void onScriptChangedByUser();
     void onReqHandlerTitleChanged(const QString &text);

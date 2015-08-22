@@ -21,10 +21,12 @@
 #include "mainwindow.h"
 
 
+#include "bt_project.h"
 #include "bt_reqhandler.h"
 
 
 using namespace std;
+using namespace BTCore;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
@@ -32,12 +34,14 @@ using namespace std;
 
 HandlerView::HandlerView(
         MainWindow &mainwindow,
-        std::shared_ptr<BTCore::ReqHandler> p_handler
+        std::shared_ptr<Project> p_project,
+        std::shared_ptr<ReqHandler> p_handler
         ) :
     mainwindow(mainwindow),
     p_handler(p_handler),
     p_dock(),
-    p_list_item_widget(nullptr)
+    p_list_item_widget(nullptr),
+    wp_project(std::weak_ptr<Project>(p_project))
 {
 
 
@@ -50,7 +54,7 @@ HandlerView::HandlerView(
         p_dock->setWidget(p_edit_widg);
 
         connect(
-                p_handler.get(), &BTCore::ReqHandler::titleChanged,
+                p_handler.get(), &ReqHandler::titleChanged,
                 this, &HandlerView::onReqHandlerTitleChanged
                );
     }
@@ -116,6 +120,7 @@ QWidget *HandlerView::createListItemWidget()
         p_vert_lay->addWidget(p_list_item_label_name);
     }
 
+    //-- edit button
     {
         QPushButton *p_edit_button = new QPushButton("Edit");
         p_vert_lay->addWidget(p_edit_button);
@@ -123,6 +128,17 @@ QWidget *HandlerView::createListItemWidget()
         connect(
                 p_edit_button, &QPushButton::clicked,
                 this, &HandlerView::onEditButtonPressed
+               );
+    }
+
+    //-- remove button
+    {
+        QPushButton *p_remove_button = new QPushButton("x");
+        p_vert_lay->addWidget(p_remove_button);
+
+        connect(
+                p_remove_button, &QPushButton::clicked,
+                this, &HandlerView::onRemoveButtonPressed
                );
     }
 
@@ -195,6 +211,13 @@ void HandlerView::onEditButtonPressed()
             p_edit_widg
             );
 #endif
+}
+
+void HandlerView::onRemoveButtonPressed()
+{
+    if (auto p_project = wp_project.lock()){
+        p_project->removeHandler(p_handler->getHandlerIndex());
+    }
 }
 
 void HandlerView::onTitleChangedByUser(const QString &text)

@@ -226,7 +226,11 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
 
         //-- create view
-        auto p_handler_view = make_shared<HandlerView>(*this, p_project->getHandler(i));
+        auto p_handler_view = make_shared<HandlerView>(
+                *this,
+                p_project,
+                p_project->getHandler(i)
+                );
 
         //-- create row view
         QWidget *p_cur_widg = p_handler_view->getListItemWidget();
@@ -431,6 +435,11 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
             this, &MainWindow::onReqHandlerAdded
            );
 
+    connect(
+            p_project.get(), &Project::reqHandlerRemoved,
+            this, &MainWindow::onReqHandlerRemoved
+           );
+
     //-- store weak pointer to the project
     this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
 }
@@ -513,6 +522,17 @@ void MainWindow::onAddHandlerButtonPressed()
 }
 
 void MainWindow::onReqHandlerAdded(
+        std::shared_ptr<ReqHandler> p_handler,
+        size_t index
+        )
+{
+    std::ignore = p_handler;
+    std::ignore = index;
+
+    refreshHandlersList();
+}
+
+void MainWindow::onReqHandlerRemoved(
         std::shared_ptr<ReqHandler> p_handler,
         size_t index
         )
