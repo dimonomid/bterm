@@ -1,8 +1,5 @@
 /*******************************************************************************
- *   Description:   Event Visitor
- *
- *                  See visitor pattern, for example, on Wikipedia:
- *                  https://en.wikipedia.org/wiki/Visitor_pattern
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
@@ -32,6 +29,12 @@ namespace HTCore {
     class EventVisitor;
 }
 
+/**
+ * Abstract visitor for `#HTCore::Event`
+ *
+ * (if you're unfamiliar with visitor pattern, read about it somewhere; for
+ * example, on Wikipedia: https://en.wikipedia.org/wiki/Visitor_pattern )
+ */
 class HTCore::EventVisitor : public QObject
 {
 Q_OBJECT

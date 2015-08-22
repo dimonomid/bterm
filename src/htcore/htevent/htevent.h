@@ -27,6 +27,10 @@ namespace HTCore {
     class Event;
 }
 
+/**
+ * Class that represents abstract event. See subclasses for specific event
+ * types.
+ */
 class HTCore::Event
 {
     /****************************************************************************
@@ -55,7 +59,14 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * Return human-readable string representation of the event
+     */
     virtual const QString toString() const = 0;
+
+    /**
+     * Accept visitor (google "visitor pattern")
+     */
     virtual void accept(EventVisitor &visitor) = 0;
 
 
