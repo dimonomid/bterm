@@ -21,8 +21,7 @@
 
 
 namespace HTCore {
-    class EventDataRaw;
-    class EventDataMsg;
+    class Event;
     class DataMsg;
     class ScriptFactory;
 }
@@ -149,14 +148,10 @@ private:
 signals:
 
     /**
-     * Emitted when `EventDataRaw` happened
+     * Emitted when some event has happened (say, `EventDataRaw` or
+     * `EventDataMsg`)
      */
-    void eventDataRaw(std::shared_ptr<EventDataRaw> p_event);
-
-    /**
-     * Emitted when `EventDataMsg` happened
-     */
-    void eventDataMsg(std::shared_ptr<EventDataMsg> p_event);
+    void event(std::shared_ptr<Event> p_event);
 
     /**
      * Emitted when title of some request handler has changed.

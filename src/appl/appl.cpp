@@ -79,95 +79,6 @@ Appl::Appl() :
         new EventsAcc<EventDataMsg>(1000/*TODO: settings*/)
     };
 
-
-#if 0
-    {
-        QJSEngine engine;
-        QJSValue val = engine.evaluate(
-                "test();"
-                );
-
-        if (val.isError()){
-            qDebug() << "error, variant: " << val.toVariant();
-
-            qDebug() << "message: " << val.property("message").toString();
-            qDebug() << "lineNumber: " << val.property("lineNumber").toString();
-        }
-        qDebug() << "val: " << val.toVariant();
-    }
-#endif
-
-#if 0
-    {
-        QJSEngine engine;
-
-        QJSValue val = engine.evaluate(
-                "print('123');"
-                );
-
-        if (val.isError()){
-            qDebug() << "error: " << val.toString();
-        }
-
-        qDebug() << "val: " << val.toVariant();
-    }
-#endif
-
-
-#if 0
-    {
-        QJSEngine engine;
-        QJSValue result;
-
-        std::vector<uint8_t> in_data{0x61, 0x01};
-
-        ByteArrRead ba_in {in_data};
-        ByteArrReadWrite ba_out {};
-
-        QJSValue ba_in_scrval = engine.newQObject(&ba_in);
-        QJSValue ba_out_scrval = engine.newQObject(&ba_out);
-        QJSValue script_ctx = engine.evaluate("({})");
-
-        QJSValue func = engine.evaluate(
-                "(function(inputArr, outputArr){ "
-                "     this.c = 123;"
-
-                "     if (inputArr.getU08(0) === 0x61){"
-                "        outputArr.setFillByte(0xaa);"
-                "        outputArr.putU08(4, 0x10);"
-                "        outputArr.putU08(1, 0xff);"
-                "     };"
-                "     return {"
-                "        handled: true"
-                "     };"
-                " })"
-                );
-
-        if (engine.hasUncaughtException()){
-            qDebug() << "exception: " << func.toVariant();
-        } else {
-            QJSValue returned = func.call(
-                    script_ctx,
-                    QJSValueList() << ba_in_scrval << ba_out_scrval << script_ctx
-                    );
-
-            qDebug() << "in: "  << MyUtil::byteArrayToHex(*ba_in.getData());
-            qDebug() << "out: " << MyUtil::byteArrayToHex(*ba_out.getData());
-            qDebug() << "script_ctx: " << script_ctx.toVariant().toMap();
-
-            if (engine.hasUncaughtException()){
-                qDebug() << "exception: " << returned.toVariant();
-            } else {
-                qDebug() << "returned: " << returned.toVariant();
-                qDebug() << "returned handled: " << returned.toVariant().toMap()["handled"].toBool();
-            }
-        }
-
-    }
-#endif
-
-
-
     //-- if we have some previously-opened project, and it still exists,
     //   then open it
     {
@@ -180,11 +91,6 @@ Appl::Appl() :
             openProject(last_project_filename);
         }
     }
-
-#if 0
-    openProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
-    saveProject("/home/dimon/projects/hterm/hterm/stuff/test_proj/test_proj.xml");
-#endif
 
     //-- show main window (restoring the previously saved state, if any)
     this->p_main_window->showInRestoredState();
@@ -228,7 +134,7 @@ void Appl::initSettings()
 void Appl::cryEventSys(EventSys::Level level, QString text)
 {
     auto p_event = std::make_shared<EventSys>(level, text);
-    emit eventSys(p_event);
+    emit event(p_event);
 }
 
 /**
@@ -305,13 +211,8 @@ void Appl::openProject(QString filename)
         p_project->setIODev(p_io_dev);
 
         connect(
-                p_project.get(), &Project::eventDataRaw,
-                this, &Appl::onNewDataRaw
-               );
-
-        connect(
-                p_project.get(), &Project::eventDataMsg,
-                this, &Appl::onNewDataMsg
+                p_project.get(), &Project::event,
+                this, &Appl::onEvent
                );
 
         //-- just forward reqHandlerTitleChanged() signal
@@ -406,58 +307,14 @@ QString Appl::getLastProjectFilename() const
 
 /* private      */
 
-#if 0
-void Appl::onEvent(const std::shared_ptr<Event> &p_event)
+void Appl::onEvent(std::shared_ptr<Event> p_event)
 {
+    //-- handle event with visitor
     p_event->accept(htevent_visitor_handle);
+
+    //-- forward the event
+    emit event(p_event);
 }
-#endif
-
-/**
- * Called when new `EventDataRaw` happened
- */
-void Appl::onNewDataRaw(std::shared_ptr<EventDataRaw> p_event)
-{
-    p_events_data_raw->addEvent(p_event);
-
-    emit eventDataRaw(p_event);
-}
-
-/**
- * Called when new `EventDataMsg` happened
- */
-void Appl::onNewDataMsg(std::shared_ptr<EventDataMsg> p_event)
-{
-    p_events_data_msg->addEvent(p_event);
-
-    emit eventDataMsg(p_event);
-}
-
-#if 0
-void Appl::onHandlerNameChanged(
-        const ReqHandler *p_handler,
-        const QString &name
-        )
-{
-    emit eventDataMsg(p_event);
-}
-#endif
-
-
-
-
-
-#if 0
-void Appl::onNewDataRaw(const std::vector<uint8_t> &data)
-{
-    //TODO
-}
-
-void Appl::onNewDataMsg(const DataMsg &msg)
-{
-    //TODO
-}
-#endif
 
 /* protected    */
 

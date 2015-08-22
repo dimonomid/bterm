@@ -47,6 +47,9 @@ class XmlSettings;
 class Appl : public QObject
 {
 Q_OBJECT;
+
+    friend EventVisitor_Handle;
+
     /****************************************************************************
      * TYPES
      ***************************************************************************/
@@ -75,9 +78,11 @@ private:
     std::shared_ptr<HTCore::Project> p_project;
 
     //-- accumulator of data raw events
+    //   (NOTE: accessed by EventVisitor_Handle)
     std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataRaw>> p_events_data_raw;
 
     //-- accumulator of data message events
+    //   (NOTE: accessed by EventVisitor_Handle)
     std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataMsg>> p_events_data_msg;
 
     //-- filename of currently opened project. When no project is opened,
@@ -157,27 +162,15 @@ private:
      ***************************************************************************/
 private slots:
 
-    //void onEvent(const std::shared_ptr<Event> &);
-    void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> p_event);
-    void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> p_event);
-    //void onHandlerNameChanged(const ReqHandler *p_handler, const QString &name);
-
+    void onEvent(std::shared_ptr<HTCore::Event> p_event);
 
 signals:
-    /**
-     * Emitted when `EventDataRaw` happened
-     */
-    void eventDataRaw(std::shared_ptr<HTCore::EventDataRaw> p_event);
 
     /**
-     * Emitted when `EventDataMsg` happened
+     * Emitted when some event has happened (it is typically forwarded
+     * from `HTCore`)
      */
-    void eventDataMsg(std::shared_ptr<HTCore::EventDataMsg> p_event);
-
-    /**
-     * Emitted when `EventSys` happened
-     */
-    void eventSys(std::shared_ptr<HTCore::EventSys> p_event);
+    void event(std::shared_ptr<HTCore::Event> p_event);
 
     /**
      * Emitted just after project has been opened

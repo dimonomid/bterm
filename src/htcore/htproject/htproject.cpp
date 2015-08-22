@@ -160,7 +160,7 @@ void Project::onDataSrcReadyRead(int bytes_available)
 
     //-- emit an event about received raw data
     auto p_event = std::make_shared<EventDataRaw>(data);
-    emit (eventDataRaw(p_event));
+    emit event(p_event);
 
     //-- feed received data as a raw data to codec
     p_codec->addRawRxData( data );
@@ -174,7 +174,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
     //qDebug(msg.toString().c_str());
 
     auto p_event = std::make_shared<EventDataMsg>(msg, EventDataMsg::Direction::RX);
-    emit (eventDataMsg(p_event));
+    emit event(p_event);
 
     std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
 
@@ -224,7 +224,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
                                 EventDataMsg::Direction::TX,
                                 p_req_handler
                                 );
-                        emit (eventDataMsg(p_event));
+                        emit event(p_event);
                     } else {
                         //-- no response is generated. That's ok, so, we don't
                         //   send anything, just stop iterating through

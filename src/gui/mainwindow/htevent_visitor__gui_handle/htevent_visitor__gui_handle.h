@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HTEVENT_H
-#define _HTEVENT_H
+#ifndef _HTEVENT_VISITOR__GUI_HANDLE_H
+#define _HTEVENT_VISITOR__GUI_HANDLE_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -12,28 +12,24 @@
 
 #include <QObject>
 
-#include <memory>
+#include "htevent_visitor.h"
 
 
+class MainWindow;
 
 namespace HTCore {
-    class EventVisitor;
+    class EventDataRaw;
+    class EventDataMsg;
 }
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-namespace HTCore {
-    class Event;
-}
 
-/**
- * Class that represents abstract event. See subclasses for specific event
- * types.
- */
-class HTCore::Event : public std::enable_shared_from_this<HTCore::Event>
+class EventVisitor_GuiHandle : public HTCore::EventVisitor
 {
+Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
@@ -42,14 +38,14 @@ class HTCore::Event : public std::enable_shared_from_this<HTCore::Event>
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit Event(/*TODO: time*/);
-    virtual ~Event();
-
+    EventVisitor_GuiHandle(MainWindow &mainwindow);
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
+
+    MainWindow &mainwindow;
 
     /****************************************************************************
      * STATIC METHODS
@@ -60,20 +56,9 @@ private:
      ***************************************************************************/
 public:
 
-    /**
-     * Return human-readable string representation of the event
-     */
-    virtual const QString toString() const = 0;
-
-    /**
-     * Accept visitor (google "visitor pattern")
-     */
-    virtual void accept(EventVisitor &visitor) = 0;
-
-    /**
-     * Returns shared pointer to this instance of `Event`
-     */
-    std::shared_ptr<Event> getSharedPtr();
+    virtual void visit(HTCore::EventDataRaw &htevent_data_raw) override;
+    virtual void visit(HTCore::EventDataMsg &htevent_data_msg) override;
+    virtual void visit(HTCore::EventSys &htevent_data_msg) override;
 
 
     /****************************************************************************
@@ -83,4 +68,4 @@ public:
 };
 
 
-#endif // _HTEVENT_H
+#endif // _HTEVENT_VISITOR__GUI_HANDLE_H

@@ -18,7 +18,6 @@
 class Appl;
 
 namespace HTCore {
-    class DataMsg;
     class EventDataRaw;
     class EventDataMsg;
 }
@@ -65,10 +64,6 @@ public:
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
-signals:
-
-    void newDataRaw(const std::vector<uint8_t> &data);
-    void newDataMsg(const HTCore::DataMsg &msg);
 
 };
 

@@ -14,6 +14,8 @@
 #include "htevent_data_raw.h"
 #include "htevent_data_msg.h"
 
+#include "appl.h"
+
 
 using namespace HTCore;
 
@@ -51,24 +53,20 @@ EventVisitor_Handle::EventVisitor_Handle(Appl &appl) :
 
 void EventVisitor_Handle::visit(EventDataRaw &htevent_data_raw)
 {
-    const std::vector<uint8_t> data = htevent_data_raw.getData();
-    emit(newDataRaw(data));
-#if 0
-    qDebug("handle data raw: ");
-    for (auto byte : data){
-        qDebug("0x%2.x", byte);
-    }
-#endif
+    appl.p_events_data_raw->addEvent(
+            std::dynamic_pointer_cast<EventDataRaw>(
+                htevent_data_raw.getSharedPtr()
+                )
+            );
 }
 
 void EventVisitor_Handle::visit(EventDataMsg &htevent_data_msg)
 {
-    //qDebug(("handle data msg: " + htevent_data_msg.getMsg().toString()).c_str());
-    emit(
-            newDataMsg(
-                htevent_data_msg.getMsg()
+    appl.p_events_data_msg->addEvent(
+            std::dynamic_pointer_cast<EventDataMsg>(
+                htevent_data_msg.getSharedPtr()
                 )
-        );
+            );
 }
 
 void EventVisitor_Handle::visit(EventSys &htevent_sys)

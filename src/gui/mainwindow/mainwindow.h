@@ -19,9 +19,7 @@
 
 
 namespace HTCore {
-    class EventDataRaw;
-    class EventDataMsg;
-    class EventSys;
+    class Event;
     class Project;
     class ReqHandler;
 }
@@ -33,6 +31,7 @@ namespace Ui {
 class Appl;
 class HandlerView;
 class QPlainTextEdit_My;
+class EventVisitor_GuiHandle;
 
 
 
@@ -47,6 +46,8 @@ class QPlainTextEdit_My;
 class MainWindow : public QMainWindow
 {
 Q_OBJECT
+
+    friend EventVisitor_GuiHandle;
 
     /****************************************************************************
      * TYPES
@@ -98,6 +99,7 @@ private:
 
     std::vector<std::shared_ptr<HandlerView>> handler_views;
 
+    std::unique_ptr<EventVisitor_GuiHandle> p_event_visitor__gui_handle;
 
 
     //-- A hack that is needed for the case when application was closed in
@@ -175,9 +177,7 @@ private slots:
     void onProjectOpened(std::shared_ptr<HTCore::Project> p_project);
     void onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project);
 
-    void onNewDataRaw(std::shared_ptr<HTCore::EventDataRaw> event_data_raw);
-    void onNewDataMsg(std::shared_ptr<HTCore::EventDataMsg> event_data_msg);
-    void onEventSys(std::shared_ptr<HTCore::EventSys> event_sys);
+    void onEvent(std::shared_ptr<HTCore::Event> p_event);
 
     void openProject();
     void closeProject();

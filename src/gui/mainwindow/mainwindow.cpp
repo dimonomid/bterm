@@ -26,6 +26,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "htevent_visitor__gui_handle.h"
 #include "xmlsettings.h"
 
 #include "htdatamsg.h"
@@ -86,6 +87,9 @@ MainWindow::MainWindow(
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
     handler_views(),
+    p_event_visitor__gui_handle(std::unique_ptr<EventVisitor_GuiHandle>(
+                new EventVisitor_GuiHandle(*this)
+                )),
     need_to_restore_non_maximized_geometry(false)
 {
     ui->setupUi(this);
@@ -125,22 +129,10 @@ MainWindow::MainWindow(
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
 
 
-    connect(
-            &appl, &Appl::eventDataRaw,
-            this, &MainWindow::onNewDataRaw
-           );
-
-    connect(
-            &appl, &Appl::eventDataMsg,
-            this, &MainWindow::onNewDataMsg
-           );
-
-    connect(
-            &appl, &Appl::eventSys,
-            this, &MainWindow::onEventSys
-           );
+    connect(&appl, &Appl::event, this, &MainWindow::onEvent);
 
     connect(&appl, &Appl::projectOpened, this, &MainWindow::onProjectOpened);
+
     connect(
             &appl, &Appl::projectBeforeClose,
             this, &MainWindow::onProjectBeforeClose
@@ -465,80 +457,10 @@ void MainWindow::closeProject()
     appl.closeProject();
 }
 
-
-void MainWindow::onNewDataRaw(std::shared_ptr<EventDataRaw> event_data_raw)
+void MainWindow::onEvent(std::shared_ptr<Event> p_event)
 {
-    QString text = MyUtil::byteArrayToHex(event_data_raw->getData()) + "<br>";
-
-    //this->ui->pte_raw_data->appendHtmlNoNL(text, true);
-    p_raw_data_pte->appendHtmlNoNL(text, true);
-
-#if 0
-    QTextCursor cursor = QTextCursor(this->ui->pte_raw_data->document());
-    cursor.movePosition(QTextCursor::End);
-    cursor.insertHtml(text);
-    cursor.movePosition(QTextCursor::End);
-#endif
-}
-
-void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
-{
-    QString dir_text = "";
-    QString handler_text = "";
-    QString color = "black";
-
-    switch (event_data_msg->getDir()){
-        case EventDataMsg::Direction::TX:
-            dir_text = "Tx";
-            color = "blue";
-            handler_text = " (" + event_data_msg->getHandler()->getTitle() + ")";
-            break;
-        case EventDataMsg::Direction::RX:
-            dir_text = "Rx";
-            break;
-        default:
-            //-- should never be here
-            break;
-    }
-
-    QString text = "<font color='" + color + "'><b>msg " + dir_text + ":</b>" + handler_text + " " + MyUtil::byteArrayToHex(
-            *event_data_msg->getMsg().getUserData()
-            ) + "</font><br>";
-
-    //this->ui->pte_messages->appendHtmlNoNL(text, true);
-    this->p_log_pte->appendHtmlNoNL(text, true);
-
-
-#if 0
-    QTextCursor cursor = QTextCursor(this->ui->pte_messages->document());
-    cursor.movePosition(QTextCursor::End);
-    cursor.insertHtml(text);
-    cursor.movePosition(QTextCursor::End);
-#endif
-}
-
-void MainWindow::onEventSys(std::shared_ptr<EventSys> p_event_sys)
-{
-    if (true/*event_sys.getLevel() >= mainwindow.sys_msg_level*/){
-        QString html {};
-
-        switch (p_event_sys->getLevel()){
-            case EventSys::Level::DEBUG:
-                html = "<font color='green'>" + p_event_sys->toString() + "</font>";
-                break;
-            case EventSys::Level::INFO:
-                html = "<font color='blue'>" + p_event_sys->toString() + "</font>";
-                break;
-            case EventSys::Level::WARNING:
-                html = "<font color='brown'>" + p_event_sys->toString() + "</font>";
-                break;
-            case EventSys::Level::ERROR:
-                html = "<font color='red'>" + p_event_sys->toString() + "</font>";
-                break;
-        }
-
-        this->p_log_pte->appendHtmlNoNL("* " + html + "<br>", true);
-    }
+    //-- handle event with visitor
+    p_event->accept(*p_event_visitor__gui_handle);
 }
 
 
