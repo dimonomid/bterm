@@ -29,7 +29,7 @@ class QIODevice;
 /**
  * Class that provides setting storage in XML format.
  *
- * Original code taken a long ago from bt_tp://www.prog.org.ru/topic_12074_0.bt_ml
+ * Original code taken a long ago from http://www.prog.org.ru/topic_12074_0.bt_ml
  */
 class XmlSettings
 {

@@ -31,7 +31,7 @@ namespace BTCore {
  * Abstract visitor for `#BTCore::Codec`
  *
  * (if you're unfamiliar with visitor pattern, read about it somewhere; for
- * example, on Wikipedia: bt_tps://en.wikipedia.org/wiki/Visitor_pattern )
+ * example, on Wikipedia: https://en.wikipedia.org/wiki/Visitor_pattern )
  */
 class BTCore::CodecVisitor
 {
