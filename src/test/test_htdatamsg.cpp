@@ -28,56 +28,56 @@ TestDataMsg::TestDataMsg()
         std::vector<uint8_t> data {0x01, 0x02, 0x03};
 
         for (auto byte : data){
-            msg.addData(DataPart::DataType::SERVICE, byte);
+            msg.addDataByte(DataPart::DataType::SERVICE, byte);
         }
     }
 
     //-- feed USER data mixed: byte-by-byte and the vector at once
     {
-        msg.addData(DataPart::DataType::USER, 0x04);
+        msg.addDataByte(DataPart::DataType::USER, 0x04);
 
         std::vector<uint8_t> data {0x05, 0x06, 0x07};
         msg.addData(DataPart::DataType::USER, data);
 
-        msg.addData(DataPart::DataType::USER, 0x08);
+        msg.addDataByte(DataPart::DataType::USER, 0x08);
     }
 
     //-- feed data as a complete data part
     {
         DataPart part{DataPart::DataType::SERVICE, {0x09}};
-        msg.addData(part);
+        msg.addDataPart(part);
     }
 
     //-- feed data as a complete data part
     {
         DataPart part{DataPart::DataType::USER, {0x0a, 0x0b, 0x0c}};
-        msg.addData(part);
+        msg.addDataPart(part);
     }
 
     //-- feed data as a complete data part
     {
         DataPart part{};
         part.addData(DataPart::DataType::SERVICE, {0xfe, 0xff});
-        part.addData(DataPart::DataType::USER, 0x3f);
-        msg.addData(part);
+        part.addDataByte(DataPart::DataType::USER, 0x3f);
+        msg.addDataPart(part);
     }
 
     //-- add empty part, and then feed data byte-by-byte
     {
         DataPart part{};
-        msg.addData(part);
+        msg.addDataPart(part);
 
         std::vector<uint8_t> data {0x0a, 0x0b, 0x0c};
 
         for (auto byte : data){
-            msg.addData(DataPart::DataType::USER, byte);
+            msg.addDataByte(DataPart::DataType::USER, byte);
         }
     }
 
     //-- add empty part, and then feed data as a vector
     {
         DataPart part{};
-        msg.addData(part);
+        msg.addDataPart(part);
 
         std::vector<uint8_t> data {0x0d};
         msg.addData(DataPart::DataType::SERVICE, data);

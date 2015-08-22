@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration in header file
  *
  ******************************************************************************/
 
@@ -52,26 +52,6 @@ DataMsg::DataMsg() :
 
 /* public       */
 
-void DataMsg::addData(DataPart::DataType data_type, uint8_t byte)
-{
-    if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
-        //-- type of new data is the same as previously added data, so, just
-        //   append it to last data part
-
-        this->data_parts.back().addData(data_type, byte);
-    } else {
-        //-- type of new data differs from that of previously added data
-        //   (or we haven't any data yet), so, add new data part
-
-        auto data = vector<uint8_t>();
-        data.push_back(byte);
-
-        this->data_parts.push_back(
-                DataPart(data_type, data)
-                );
-    }
-}
-
 void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 {
     if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
@@ -90,7 +70,27 @@ void DataMsg::addData(DataPart::DataType data_type, const vector<uint8_t> &data)
 
 }
 
-void DataMsg::addData(DataPart data_part)
+void DataMsg::addDataByte(DataPart::DataType data_type, uint8_t byte)
+{
+    if (this->data_parts.size() > 0 && this->data_parts.back().canDataBeAddedHomogeneously(data_type)){
+        //-- type of new data is the same as previously added data, so, just
+        //   append it to last data part
+
+        this->data_parts.back().addDataByte(data_type, byte);
+    } else {
+        //-- type of new data differs from that of previously added data
+        //   (or we haven't any data yet), so, add new data part
+
+        auto data = vector<uint8_t>();
+        data.push_back(byte);
+
+        this->data_parts.push_back(
+                DataPart(data_type, data)
+                );
+    }
+}
+
+void DataMsg::addDataPart(DataPart data_part)
 {
     this->data_parts.push_back(data_part);
 }

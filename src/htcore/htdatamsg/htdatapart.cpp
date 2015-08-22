@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration in header file
  *
  ******************************************************************************/
 
@@ -20,7 +20,9 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-DataPart::DataPart()
+DataPart::DataPart() :
+    service_data(),
+    user_data()
 {
 }
 
@@ -77,7 +79,7 @@ void DataPart::addData(DataType data_type, const vector<uint8_t> &data)
     }
 }
 
-void DataPart::addData(DataType data_type, uint8_t byte)
+void DataPart::addDataByte(DataType data_type, uint8_t byte)
 {
     switch (data_type){
         case DataPart::DataType::SERVICE:
@@ -112,6 +114,7 @@ DataPart::PartType DataPart::getType() const
 {
     DataPart::PartType ret;
 
+    //-- determine part type depending on contained data type
     if (user_data.size() != 0 && service_data.size() == 0){
         ret = DataPart::PartType::USER;
     } else if (user_data.size() == 0 && service_data.size() != 0){
