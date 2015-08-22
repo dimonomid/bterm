@@ -77,11 +77,11 @@ private:
      * METHODS
      ***************************************************************************/
 public:
-    virtual void                  addRawRxData   (const std::vector<uint8_t> &data) override;
-    virtual void                  clearRawRxData () override;
+    virtual void addRawRxData   (const std::vector<uint8_t> &data) override;
+    virtual void clearRawRxData () override;
 
-    virtual DataMsg             encodeMessage  (const std::vector<uint8_t> &data) const override;
-    virtual void      accept(CodecVisitor &visitor) override;
+    virtual DataMsg encodeMessage  (const std::vector<uint8_t> &data) const override;
+    virtual void accept(CodecVisitor &visitor) override;
 
 
 
