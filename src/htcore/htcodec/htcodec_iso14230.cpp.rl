@@ -199,6 +199,10 @@ main := (msg_start: message)*;
 
 /* private      */
 
+/**
+ * Reset current Rx message. It is called by ragel parser whenever we start
+ * receiving next message.
+ */
 void Codec_ISO14230::msgReset()
 {
    this->rx_user_data_got_len = 0;
