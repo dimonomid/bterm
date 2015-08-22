@@ -25,7 +25,7 @@ namespace HTCore {
 }
 
 /**
- * TODO
+ * Concrete visitor for `#HTCore::Codec`, it implements `saveXML` functionality.
  */
 class HTCore::CodecVisitor_SaveXML : public HTCore::CodecVisitor
 {
@@ -45,9 +45,11 @@ public:
      ***************************************************************************/
 private:
 
-    //-- codec element that was generated during the acceptance
-    //   of the visitor
+    //-- `QDomDocument` given to constructor
     QDomDocument &doc;
+
+    //-- codec element that was generated during the acceptance
+    //   of the visitor. Returned by `getDomElement()`
     std::shared_ptr<QDomElement> p_codec_elem;
 
 
@@ -62,6 +64,9 @@ public:
 
     virtual void visit(Codec_ISO14230 &) override;
 
+    /**
+     * Returns element that was generated during the acceptance of the visitor.
+     */
     std::shared_ptr<QDomElement> getDomElement();
 
 };
