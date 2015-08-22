@@ -110,8 +110,12 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
             this, &Project::onReqHandlerTitleChanged
            );
 
+    size_t handler_index = handlers.size() - 1;
+
+    p_handler->setHandlerIndex(handler_index);
+
     //-- notify listeners about new handler
-    emit reqHandlerAdded(p_handler, handlers.size() - 1);
+    emit reqHandlerAdded(p_handler, handler_index);
 }
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)

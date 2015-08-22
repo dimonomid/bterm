@@ -140,12 +140,16 @@ void HandlerView::applyReqName()
 
 QString HandlerView::getEditDockWidgetTitle() const
 {
-    return "Handler #x: " + p_handler->getTitle();
+    return "Handler #"
+        + QString::number(p_handler->getHandlerIndex() + 1) + ": "
+        + p_handler->getTitle();
 }
 
 QString HandlerView::getListItemWidgetTitle() const
 {
-    return p_handler->getTitle();
+    return "#"
+        + QString::number(p_handler->getHandlerIndex() + 1) + ": "
+        + p_handler->getTitle();
 }
 
 

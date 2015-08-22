@@ -22,6 +22,14 @@
 
 using namespace BTCore;
 
+/****************************************************************************
+ * CONSTANTS
+ ***************************************************************************/
+
+const size_t ReqHandler::INDEX_UNKNOWN = (size_t)-1;
+
+
+
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
@@ -38,7 +46,8 @@ ReqHandler::ReqHandler(
     script_func_code(script_func_code),
     last_error(Error::UNKNOWN),
     p_response(),
-    last_exception_details()
+    last_exception_details(),
+    handler_index(INDEX_UNKNOWN)
 {
 
 }
@@ -259,6 +268,16 @@ std::shared_ptr<const std::vector<uint8_t>> ReqHandler::getResponse()
     } else {
         return std::make_shared<const std::vector<uint8_t>>();
     }
+}
+
+void ReqHandler::setHandlerIndex(size_t index)
+{
+    handler_index = index;
+}
+
+size_t ReqHandler::getHandlerIndex()
+{
+    return handler_index;
 }
 
 /*******************************************************************************
