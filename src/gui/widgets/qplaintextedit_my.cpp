@@ -59,7 +59,7 @@ QPlainTextEdit_My::QPlainTextEdit_My(const QString &text, QWidget *parent) :
 /**
  * append text without adding new line (new paragraph)
  *
- * @param text       html text to append
+ * @param text       bt_ml text to append
  * @param check_nl   if true, then text will be splitted by \n char,
  *                   and each substring will be added as separate QTextBlock.
  *                   NOTE: this important: if you set this to false,
@@ -105,26 +105,26 @@ void QPlainTextEdit_My::appendPlainTextNoNL(const QString &text, bool check_nl)
 }
 
 /**
- * append html without adding new line (new paragraph)
+ * append bt_ml without adding new line (new paragraph)
  *
- * @param html       html text to append
+ * @param bt_ml       bt_ml text to append
  * @param check_br   if true, then text will be splitted by "<br>" tag,
  *                   and each substring will be added as separate QTextBlock.
  *                   NOTE: this important: if you set this to false,
  *                   then you should append new blocks manually (say, by calling appendNL() )
  *                   because one huge block will significantly slow down your widget.
  */
-void QPlainTextEdit_My::appendHtmlNoNL(const QString &html, bool check_br)
+void QPlainTextEdit_My::appendHtmlNoNL(const QString &bt_ml, bool check_br)
 {
     QScrollBar *p_scroll_bar = this->verticalScrollBar();
     bool bool_at_bottom = (p_scroll_bar->value() == p_scroll_bar->maximum());
 
     if (!check_br){
-        //-- don't check for <br>, just append all the given html text
+        //-- don't check for <br>, just append all the given bt_ml text
 
         QTextCursor text_cursor = QTextCursor(this->document());
         text_cursor.movePosition(QTextCursor::End);
-        text_cursor.insertHtml(html);
+        text_cursor.insertHtml(bt_ml);
     } else {
         //-- split text by <br> tag, and add resulting pieces as separate paragraphs
         //   (we have to use QRegExp here, because there are many variants of tag representation )
@@ -134,7 +134,7 @@ void QPlainTextEdit_My::appendHtmlNoNL(const QString &html, bool check_br)
 
         text_cursor.movePosition(QTextCursor::End);
 
-        QStringList string_list = html.split(QRegExp("\\<br\\s*\\/?\\>", Qt::CaseInsensitive));
+        QStringList string_list = bt_ml.split(QRegExp("\\<br\\s*\\/?\\>", Qt::CaseInsensitive));
 
         for (int i = 0; i < string_list.size(); i++){
             text_cursor.insertHtml( string_list.at(i) );

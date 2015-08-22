@@ -9,12 +9,12 @@
 
 #include <QJSEngine>
 
-#include "htcodec.h"
+#include "bt_codec.h"
 #include "my_util.h"
 #include "bytearr_read.h"
 
 
-using namespace HTCore;
+using namespace BTCore;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
@@ -28,7 +28,7 @@ Codec::Codec(
 {
     //TODO: filename from config
     QString codec_js_code = MyUtil::readFile(
-            "/home/dimon/projects/hterm/hterm/src/htcore/htcodec/codec_iso14230.js"
+            "/home/dimon/projects/bterm/bterm/src/bt_core/bt_codec/codec_iso14230.js"
             );
 
     codec_js = p_engine->evaluate(codec_js_code);

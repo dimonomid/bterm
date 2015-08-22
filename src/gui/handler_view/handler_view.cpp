@@ -21,7 +21,7 @@
 #include "mainwindow.h"
 
 
-#include "htreqhandler.h"
+#include "bt_reqhandler.h"
 
 
 using namespace std;
@@ -32,7 +32,7 @@ using namespace std;
 
 HandlerView::HandlerView(
         MainWindow &mainwindow,
-        std::shared_ptr<HTCore::ReqHandler> p_handler
+        std::shared_ptr<BTCore::ReqHandler> p_handler
         ) :
     mainwindow(mainwindow),
     p_handler(p_handler),
@@ -50,7 +50,7 @@ HandlerView::HandlerView(
         p_dock->setWidget(p_edit_widg);
 
         connect(
-                p_handler.get(), &HTCore::ReqHandler::titleChanged,
+                p_handler.get(), &BTCore::ReqHandler::titleChanged,
                 this, &HandlerView::onReqHandlerTitleChanged
                );
     }

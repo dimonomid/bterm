@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HTCODEC_H
-#define _HTCODEC_H
+#ifndef _BT_CODEC_H
+#define _BT_CODEC_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -13,7 +13,7 @@
 #include <cstdint>
 
 #include <QObject>
-#include "htdatamsg.h"
+#include "bt_datamsg.h"
 
 #include <vector>
 
@@ -25,14 +25,14 @@ class QJSEngine;
  * CLASS DECLARATION
  ******************************************************************************/
 
-namespace HTCore {
+namespace BTCore {
     class Codec;
 }
 
 /**
  * TODO
  */
-class HTCore::Codec : public QObject
+class BTCore::Codec : public QObject
 {
 Q_OBJECT
 
@@ -83,4 +83,4 @@ signals:
 };
 
 
-#endif // _HTCODEC_H
+#endif // _BT_CODEC_H

@@ -17,13 +17,13 @@
 
 #include "mainwindow.h"
 
-#include "htproject.h"
-#include "htevents_acc.h"
-#include "htiodev.h"
-#include "htcodec.h"
-#include "htevent_sys.h"
+#include "bt_project.h"
+#include "bt_events_acc.h"
+#include "bt_iodev.h"
+#include "bt_codec.h"
+#include "bt_event_sys.h"
 
-#include "htevent_visitor__appl_handle.h"
+#include "bt_event_visitor__appl_handle.h"
 
 
 
@@ -36,7 +36,7 @@ class XmlSettings;
 
 /**
  * Class that essentially provides a "glue" for two other application parties:
- * `#HTCore` and GUI.
+ * `#BTCore` and GUI.
  *
  * It provides project open/close functionality, and also settings that persist
  * across multiple application invocations. See method descriptions for
@@ -73,25 +73,25 @@ private:
     std::shared_ptr<XmlSettings> p_sett;
 
     //-- IO device (serial port implementation)
-    std::shared_ptr<HTCore::IODev> p_io_dev;
+    std::shared_ptr<BTCore::IODev> p_io_dev;
 
     //-- current project
-    std::shared_ptr<HTCore::Project> p_project;
+    std::shared_ptr<BTCore::Project> p_project;
 
     //-- accumulator of data raw events
     //   (NOTE: accessed by EventVisitor_ApplHandle)
-    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataRaw>> p_events_data_raw;
+    std::unique_ptr<BTCore::EventsAcc<BTCore::EventDataRaw>> p_events_data_raw;
 
     //-- accumulator of data message events
     //   (NOTE: accessed by EventVisitor_ApplHandle)
-    std::unique_ptr<HTCore::EventsAcc<HTCore::EventDataMsg>> p_events_data_msg;
+    std::unique_ptr<BTCore::EventsAcc<BTCore::EventDataMsg>> p_events_data_msg;
 
     //-- filename of currently opened project. When no project is opened,
     //   or when current project doesn't yet have a filename, it is an empty
     //   string.
     QString proj_filename;
 
-    EventVisitor_ApplHandle htevent_visitor__appl_handle;
+    EventVisitor_ApplHandle bt_event_visitor__appl_handle;
 
     //-- instance of main window
     std::unique_ptr<MainWindow>  p_main_window;
@@ -152,7 +152,7 @@ public:
 private:
 
     void initSettings();
-    void cryEventSys(HTCore::EventSys::Level level, QString text);
+    void cryEventSys(BTCore::EventSys::Level level, QString text);
     void rememberProjectFilename(QString filename);
 
 
@@ -162,32 +162,32 @@ private:
      ***************************************************************************/
 private slots:
 
-    void onEvent(std::shared_ptr<HTCore::Event> p_event);
+    void onEvent(std::shared_ptr<BTCore::Event> p_event);
 
 signals:
 
     /**
      * Emitted when some event has happened (it is typically forwarded
-     * from `HTCore`)
+     * from `BTCore`)
      */
-    void event(std::shared_ptr<HTCore::Event> p_event);
+    void event(std::shared_ptr<BTCore::Event> p_event);
 
     /**
      * Emitted just after project has been opened
      */
-    void projectOpened(std::shared_ptr<HTCore::Project> p_project);
+    void projectOpened(std::shared_ptr<BTCore::Project> p_project);
 
     /**
      * Emitted just before closing the current project
      */
-    void projectBeforeClose(std::shared_ptr<HTCore::Project> p_project);
+    void projectBeforeClose(std::shared_ptr<BTCore::Project> p_project);
 
     /**
-     * This signal is just forwarded from `#HTCore`,
-     * see `#HTCore::Project::reqHandlerTitleChanged()`.
+     * This signal is just forwarded from `#BTCore`,
+     * see `#BTCore::Project::reqHandlerTitleChanged()`.
      */
     void reqHandlerTitleChanged(
-            const HTCore::ReqHandler *p_handler,
+            const BTCore::ReqHandler *p_handler,
             const QString &name
             );
 };

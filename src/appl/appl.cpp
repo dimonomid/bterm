@@ -14,14 +14,14 @@
 #include "appl.h"
 #include "xmlsettings.h"
 
-#include "htcodec.h"
-#include "htcodec_iso14230.h"
+#include "bt_codec.h"
+#include "bt_codec_iso14230.h"
 
-#include "htiodev.h"
-#include "htiodev_dbg.h"
+#include "bt_iodev.h"
+#include "bt_iodev_dbg.h"
 
-#include "htdatamsg.h"
-#include "htproject_storage_xml.h"
+#include "bt_datamsg.h"
+#include "bt_project_storage_xml.h"
 
 
 
@@ -36,7 +36,7 @@
 #include "bytearr_read_write.h"
 #include "my_util.h"
 
-using namespace HTCore;
+using namespace BTCore;
 using namespace std;
 
 /*******************************************************************************
@@ -54,13 +54,13 @@ SETT_KEY__APPL + "/last_project_filename";
  ******************************************************************************/
 
 Appl::Appl() :
-    p_sett(std::make_shared<XmlSettings>("hterm_sett.xml")),
+    p_sett(std::make_shared<XmlSettings>("bterm_sett.xml")),
     p_io_dev(nullptr),
     p_project(nullptr),
 
     proj_filename(""),
 
-    htevent_visitor__appl_handle(*this),
+    bt_event_visitor__appl_handle(*this),
     p_main_window(std::unique_ptr<MainWindow>(new MainWindow(*this)))
 {
     initSettings();
@@ -310,7 +310,7 @@ QString Appl::getLastProjectFilename() const
 void Appl::onEvent(std::shared_ptr<Event> p_event)
 {
     //-- handle event with visitor
-    p_event->accept(htevent_visitor__appl_handle);
+    p_event->accept(bt_event_visitor__appl_handle);
 
     //-- forward the event
     emit event(p_event);

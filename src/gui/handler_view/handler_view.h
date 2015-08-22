@@ -15,7 +15,7 @@
 
 
 
-namespace HTCore {
+namespace BTCore {
     class ReqHandler;
 }
 
@@ -45,7 +45,7 @@ Q_OBJECT
 public:
     HandlerView(
             MainWindow &mainwindow,
-            std::shared_ptr<HTCore::ReqHandler> p_handler
+            std::shared_ptr<BTCore::ReqHandler> p_handler
             );
 
 
@@ -55,7 +55,7 @@ public:
 private:
 
     MainWindow &mainwindow;
-    std::shared_ptr<HTCore::ReqHandler> p_handler;
+    std::shared_ptr<BTCore::ReqHandler> p_handler;
 
     //-- NOTE: we use shared_ptr here instead of raw pointers, because
     //   docs say that when we remove dockwidget from mainwindow by calling

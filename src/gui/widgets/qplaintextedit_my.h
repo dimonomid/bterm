@@ -47,7 +47,7 @@ private:
      *****************************************************************************************/
 public:
     void appendPlainTextNoNL(const QString &text, bool check_nl = false);
-    void appendHtmlNoNL     (const QString &html, bool check_br = false);
+    void appendHtmlNoNL     (const QString &bt_ml, bool check_br = false);
     void insertNL           ();
 
     /******************************************************************************************

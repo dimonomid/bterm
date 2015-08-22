@@ -12,7 +12,7 @@
  ******************************************************************************/
 
 #include <QtTest/QtTest>
-#include "htcodec_iso14230.h"
+#include "bt_codec_iso14230.h"
 
 #include <queue>
 #include <iostream>
@@ -31,7 +31,7 @@ public:
         codec(0x01, 0x02)
     {
     connect(
-            &codec, &HTCore::Codec_ISO14230::messageDecoded,
+            &codec, &BTCore::Codec_ISO14230::messageDecoded,
             this, &TestCodecISO14230::messageDecoded
            );
     std::cout << "constructed" << std::endl;
@@ -44,8 +44,8 @@ public:
     }
 
 private:
-    HTCore::Codec_ISO14230 codec;
-    std::queue<HTCore::DataMsg> rx_msgs;
+    BTCore::Codec_ISO14230 codec;
+    std::queue<BTCore::DataMsg> rx_msgs;
 
 
 private slots:
@@ -55,7 +55,7 @@ private slots:
     void decode_with_return_after_error();
 
 public slots:
-    void messageDecoded(const HTCore::DataMsg &msg);
+    void messageDecoded(const BTCore::DataMsg &msg);
 };
 
 

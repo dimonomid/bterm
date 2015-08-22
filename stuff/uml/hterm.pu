@@ -2,9 +2,9 @@
 
 package "Core" {
 
-' HTermCore {{{
-class HTermCore {
-   -data_codec : HTDataCodec
+' BTCore {{{
+class BTCore {
+   -data_codec : Codec
    -io_dev : IODev
 }
 ' }}}
@@ -19,18 +19,18 @@ class IODevQExtSp {
 IODev <|-- IODevQExtSp
 ' }}}
 
-' HTDataCodec {{{
-class HTDataCodec <<interface>> {
+' Codec {{{
+class Codec <<interface>> {
 }
 
-class HTDataCodecISO14230 {
+class CodecISO14230 {
 }
 
-class HTDataCodecMikas {
+class CodecMikas {
 }
 
-HTDataCodec <|-- HTDataCodecISO14230
-HTDataCodec <|-- HTDataCodecMikas
+Codec <|-- CodecISO14230
+Codec <|-- CodecMikas
 ' }}}
 
 ' DataMsg {{{
@@ -54,19 +54,19 @@ Event <|-- EventDataMsg
 Event <|-- EventSomething
 ' }}}
 
-HTermCore o-- "1" HTDataCodec : data_codec
-HTermCore o-- "1" IODev : io_dev
-HTermCore o-- "*" DataMsg : messages
+BTCore o-- "1" Codec : data_codec
+BTCore o-- "1" IODev : io_dev
+BTCore o-- "*" DataMsg : messages
 
-HTDataCodec ..> DataMsg : emit
+Codec ..> DataMsg : emit
 
-HTermCore ..> IODev   : listen for raw Rx data \n (QByteArray)
-HTermCore ..> HTDataCodec : put raw Rx data \n (QByteArray)
-HTermCore ..> HTDataCodec : listen for Rx \n DataMsg's
-HTermCore ..> HTDataCodec : encode data for Tx \n (put QByteArray, \n get DataMsg)
-HTermCore ..> IODev   : put raw data for Tx \n (QByteArray extracted \n from DataMsg)
+BTCore ..> IODev   : listen for raw Rx data \n (QByteArray)
+BTCore ..> Codec : put raw Rx data \n (QByteArray)
+BTCore ..> Codec : listen for Rx \n DataMsg's
+BTCore ..> Codec : encode data for Tx \n (put QByteArray, \n get DataMsg)
+BTCore ..> IODev   : put raw data for Tx \n (QByteArray extracted \n from DataMsg)
 
-HTermCore ..> Event : emit
+BTCore ..> Event : emit
 
 EventDataMsg o-- "1" DataMsg
 }
@@ -78,7 +78,7 @@ package "Gui" {
 
 }
 
-SomeGUI ..> HTermCore : listen for events \n (Event)
+SomeGUI ..> BTCore : listen for events \n (Event)
 SomeGUI o-- "*" Event : events
 
 

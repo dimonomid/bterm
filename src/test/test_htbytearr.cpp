@@ -14,7 +14,7 @@
 #include "bytearr_read_write.h"
 
 
-using namespace HTCore;
+using namespace BTCore;
 using namespace std;
 
 /*******************************************************************************

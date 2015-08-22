@@ -11,10 +11,10 @@
 
 #include "test_helpers.h"
 #include "test_htdatamsg.h"
-#include "htdatamsg.h"
+#include "bt_datamsg.h"
 
 
-using namespace HTCore;
+using namespace BTCore;
 using namespace std;
 
 /*******************************************************************************

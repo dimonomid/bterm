@@ -26,18 +26,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "htevent_visitor__gui_handle.h"
+#include "bt_event_visitor__gui_handle.h"
 #include "xmlsettings.h"
 
-#include "htdatamsg.h"
+#include "bt_datamsg.h"
 
 #include "appl.h"
 
 #include "my_util.h"
 
-#include "htevent_data_raw.h"
-#include "htevent_data_msg.h"
-#include "htevent_sys.h"
+#include "bt_event_data_raw.h"
+#include "bt_event_data_msg.h"
+#include "bt_event_sys.h"
 
 #include "handler_view.h"
 
@@ -46,7 +46,7 @@
 
 
 
-using namespace HTCore;
+using namespace BTCore;
 using namespace std;
 
 
@@ -55,7 +55,7 @@ using namespace std;
  * STATIC DATA
  ******************************************************************************/
 
-const QString MainWindow::WINDOW_TITLE = "HTerm";
+const QString MainWindow::WINDOW_TITLE = "BTerm";
 
 const QString MainWindow::SETT_KEY__MAINWINDOW = "mainwindow";
 const QString MainWindow::SETT_KEY__MAINWINDOW__GEOMETRY =
@@ -395,7 +395,7 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
     p_act_close_project->setEnabled(true);
 }
 
-void MainWindow::onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project)
+void MainWindow::onProjectBeforeClose(std::shared_ptr<BTCore::Project> p_project)
 {
     std::ignore = p_project;
 

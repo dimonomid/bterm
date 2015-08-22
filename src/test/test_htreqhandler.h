@@ -20,7 +20,7 @@
 
 
 
-namespace HTCore {
+namespace BTCore {
     class ScriptFactory;
 }
 
@@ -39,7 +39,7 @@ public:
 
 private:
     std::shared_ptr<QJSEngine> p_engine;
-    std::shared_ptr<HTCore::ScriptFactory> p_script_factory;
+    std::shared_ptr<BTCore::ScriptFactory> p_script_factory;
 
 private:
     QJSValue createInputMsgFromInputData(std::vector<uint8_t> input_data);

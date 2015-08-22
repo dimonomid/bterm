@@ -10,14 +10,14 @@
 #include <QtTest/QtTest>
 #include "test_htcodec_iso14230.h"
 
-#include "htcodec_iso14230.h"
+#include "bt_codec_iso14230.h"
 
 #include <iostream>
 #include <queue>
 #include <random>
 
 
-using namespace HTCore;
+using namespace BTCore;
 using namespace std;
 
 /*******************************************************************************

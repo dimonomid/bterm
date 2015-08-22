@@ -15,7 +15,7 @@
 
 #include <vector>
 
-#include "htdatamsg.h"
+#include "bt_datamsg.h"
 
 /*******************************************************************************
  * TESTS CLASS
@@ -29,8 +29,8 @@ public:
     explicit TestDataMsg();
 
 private:
-    std::vector<HTCore::DataPart> data_parts;
-    HTCore::DataMsg msg;
+    std::vector<BTCore::DataPart> data_parts;
+    BTCore::DataMsg msg;
 
 private slots:
     void testDataParts();

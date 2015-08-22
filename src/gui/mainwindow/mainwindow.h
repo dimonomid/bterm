@@ -18,7 +18,7 @@
 #include <QSignalMapper>
 
 
-namespace HTCore {
+namespace BTCore {
     class Event;
     class Project;
     class ReqHandler;
@@ -133,7 +133,7 @@ public:
 
 #if 0
     void addHandlerEditWidget(
-            std::shared_ptr<HTCore::ReqHandler> p_handler,
+            std::shared_ptr<BTCore::ReqHandler> p_handler,
             QWidget *p_widg
             );
 #endif
@@ -148,7 +148,7 @@ public:
 
 private:
 
-    void populateWithProject(std::shared_ptr<HTCore::Project> p_project);
+    void populateWithProject(std::shared_ptr<BTCore::Project> p_project);
     void unpopulate();
 
     void initMainMenu();
@@ -174,10 +174,10 @@ private:
 
 private slots:
 
-    void onProjectOpened(std::shared_ptr<HTCore::Project> p_project);
-    void onProjectBeforeClose(std::shared_ptr<HTCore::Project> p_project);
+    void onProjectOpened(std::shared_ptr<BTCore::Project> p_project);
+    void onProjectBeforeClose(std::shared_ptr<BTCore::Project> p_project);
 
-    void onEvent(std::shared_ptr<HTCore::Event> p_event);
+    void onEvent(std::shared_ptr<BTCore::Event> p_event);
 
     void openProject();
     void closeProject();

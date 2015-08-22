@@ -12,14 +12,14 @@
 #include <QJSEngine>
 
 #include "test_htreqhandler.h"
-#include "htreqhandler.h"
+#include "bt_reqhandler.h"
 
 #include "bytearr_read.h"
 #include "bytearr_read_write.h"
 #include "script_factory.h"
 
 
-using namespace HTCore;
+using namespace BTCore;
 using namespace std;
 
 /*******************************************************************************
