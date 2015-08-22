@@ -83,6 +83,11 @@ else
 endif
 
 
+" ignore doxygen output for filefastselector
+call add(g:FFS_ignore_list, 'output')
+
+
+
 let s:sProjectPath = simplify(s:sVimprjPath.'/..')
 
 let g:vimwiki_list[0] =
