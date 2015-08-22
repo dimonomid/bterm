@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project title="Test">
     <codecs>
-        <codec title="iso14230" remote_addr="0x11" local_addr="0x10"/>
+        <codec remote_addr="0x11" title="iso14230" local_addr="0x10"/>
     </codecs>
     <req_handlers>
         <req_handler title="test 1">
@@ -47,7 +47,7 @@
  })
             </code>
         </req_handler>
-        <req_handler title="Untitled handler">
+        <req_handler title="My third">
             <code>(function(inputMsg){ 
      var handled = false;
      var outputArr;
