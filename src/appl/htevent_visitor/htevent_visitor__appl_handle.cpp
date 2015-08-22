@@ -23,7 +23,7 @@ using namespace HTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-EventVisitor_ApplHandle::EventVisitor_ApplHandle(Appl &appl) : 
+EventVisitor_ApplHandle::EventVisitor_ApplHandle(Appl &appl) :
     appl(appl)
 {
 }
