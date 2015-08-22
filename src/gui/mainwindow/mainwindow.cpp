@@ -125,52 +125,6 @@ MainWindow::MainWindow(
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
 
 
-#if 0
-    {
-        QDockWidget *p_dw;
-
-        p_dw = new QDockWidget("dock");
-
-
-        QListWidget *p_list = new QListWidget(this);
-
-        p_dw->setWidget(p_list);
-
-        {
-            QListWidgetItem *newItem = new QListWidgetItem;
-            newItem->setText("one");
-            p_list->insertItem(0, newItem);
-        }
-
-        {
-            QListWidgetItem *newItem = new QListWidgetItem;
-            newItem->setText("two");
-            p_list->insertItem(0, newItem);
-        }
-
-        {
-            QListWidgetItem *newItem = new QListWidgetItem;
-            newItem->setText("three");
-            p_list->insertItem(0, newItem);
-        }
-
-        addDockWidget(Qt::TopDockWidgetArea, p_dw);
-    }
-#endif
-
-#if 0
-    {
-        QWidget *p_widg = new QWidget();
-
-        QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
-
-
-
-        p_widg->setLayout(p_lay);
-    }
-#endif
-
-
     connect(
             &appl, &Appl::eventDataRaw,
             this, &MainWindow::onNewDataRaw
@@ -204,20 +158,6 @@ MainWindow::~MainWindow()
  ******************************************************************************/
 
 /* public */
-
-#if 0
-void MainWindow::addHandlerEditWidget(
-        std::shared_ptr<HTCore::ReqHandler> p_handler,
-        QWidget *p_widg
-        )
-{
-    QDockWidget *p_dw = new QDockWidget("Handler " + p_handler->getTitle());
-
-    p_dw->setWidget(p_widg);
-
-    addDockWidget(Qt::TopDockWidgetArea, p_dw);
-}
-#endif
 
 void MainWindow::showInRestoredState()
 {
@@ -356,27 +296,11 @@ void MainWindow::initMainMenu()
             this, &MainWindow::saveProjectAs
            );
 
-#if 0
-    p_act_show_debug = new QAction(tr("&Show debug events"), this);
-    connect(
-            p_act_show_debug, &QAction::triggered,
-            this, &MainWindow::showDebugEventsToggle
-           );
-
-    p_act_show_debug->setCheckable(true);
-    p_act_show_debug->setChecked(sys_msg_level == EventSys::Level::DEBUG);
-#endif
-
     QMenu *menu_file = menuBar()->addMenu(tr("&File"));
     menu_file->addAction(p_act_open_project);
     menu_file->addAction(p_act_close_project);
     menu_file->addAction(p_act_save_project);
     menu_file->addAction(p_act_save_project_as);
-
-#if 0
-    QMenu *menu_opts = menuBar()->addMenu(tr("&Options"));
-    menu_opts->addAction(p_act_show_debug);
-#endif
 }
 
 void MainWindow::mySaveState()
