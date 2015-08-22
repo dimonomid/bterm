@@ -18,7 +18,7 @@ include(../common/htcore.pri)
 SOURCES += \
     ../../src/main.cpp \
     ../../src/gui/mainwindow/mainwindow.cpp \
-    ../../src/gui/mainwindow/htevent_visitor__gui_handle/htevent_visitor__gui_handle.cpp \
+    ../../src/gui/mainwindow/htevent_visitor/htevent_visitor__gui_handle.cpp \
     ../../src/appl/appl.cpp \
     ../../src/appl/htevent_visitor/htevent_visitor__appl_handle.cpp \
     ../../src/util/my_util.cpp \
@@ -30,7 +30,7 @@ SOURCES += \
 
 HEADERS += \
     ../../src/gui/mainwindow/mainwindow.h \
-    ../../src/gui/mainwindow/htevent_visitor__gui_handle/htevent_visitor__gui_handle.h \
+    ../../src/gui/mainwindow/htevent_visitor/htevent_visitor__gui_handle.h \
     ../../src/appl/appl.h \
     ../../src/appl/htevent_visitor/htevent_visitor__appl_handle.h \
     ../../src/util/my_util.h \
@@ -45,7 +45,7 @@ FORMS    += \
 
 INCLUDEPATH += \
     ../../src/gui/mainwindow \
-    ../../src/gui/mainwindow/htevent_visitor__gui_handle \
+    ../../src/gui/mainwindow/htevent_visitor \
     ../../src/appl/htiodev \
     ../../src/appl/htevent_visitor \
     ../../src/appl \
