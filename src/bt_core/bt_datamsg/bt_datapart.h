@@ -46,8 +46,8 @@ public:
      */
     enum class DataType {
 
-        /** Service data. It is needed only to transmit a message on the wire,
-         * and it is never used when we want to get the payload of the message.
+        /** Service data. It is needed only to transmit a message on the wire.
+         * It is never used when we want to get the payload of the message.
          */
         SERVICE,
 
