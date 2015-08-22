@@ -112,7 +112,7 @@ public:
     /**
      * Construct request handler without JavaScript engine and factory specified.
      * These should be set later by calling `HTCore::ReqHandler::setQJSEngine()`
-     * and `HTCore::ReqHandler::setScriptFactory()`
+     * and `HTCore::ReqHandler::setScriptFactory()`.
      *
      * @param title
      *      human-readable title of the handler
