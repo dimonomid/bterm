@@ -120,6 +120,35 @@ void TestReqHandler::generalTest()
     }
 }
 
+void TestReqHandler::noResponseTest()
+{
+    ReqHandler handler("handler", p_engine, p_script_factory, "");
+    QJSValue script_ctx = p_engine->evaluate("({})");
+    ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
+
+    handler.setScript(
+            "(function(inputMsg){ \n"
+            "     return {\n"
+            "        handled: true\n"
+            "     };\n"
+            " })\n"
+            );
+
+    {
+        vector<uint8_t> input_data = {
+            0x01, 0x02, 0x03, 0x04, 0x05
+        };
+        result = handler.handle(createInputMsgFromInputData(input_data), script_ctx);
+        //-- should be handled
+        QCOMPARE(result, ReqHandler::Result::OK_HANDLED);
+        auto p_resp = handler.getResponse();
+
+        //-- response should be empty
+        vector<uint8_t> expected_resp = {};
+        QCOMPARE(*p_resp, expected_resp);
+    }
+}
+
 
 void TestReqHandler::errorsTest()
 {

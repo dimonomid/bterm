@@ -46,6 +46,7 @@ private:
 
 private slots:
     void generalTest();
+    void noResponseTest();
     void errorsTest();
     void scriptCtxTest();
 
