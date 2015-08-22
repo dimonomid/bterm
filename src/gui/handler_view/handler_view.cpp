@@ -46,7 +46,7 @@ HandlerView::HandlerView(
         QWidget *p_edit_widg = createEditWidget();
         p_dock = make_shared<QDockWidget>(getEditDockWidgetTitle());
         //TODO: probably use some unique key instead of human-readable name
-        p_dock->setObjectName("handler: " + p_handler->getName());
+        p_dock->setObjectName("handler: " + p_handler->getTitle());
         p_dock->setWidget(p_edit_widg);
 
         connect(
@@ -82,7 +82,7 @@ QWidget *HandlerView::createEditWidget()
     QBoxLayout *p_vert_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
     {
-        QLineEdit *p_title = new QLineEdit(p_handler->getName());
+        QLineEdit *p_title = new QLineEdit(p_handler->getTitle());
         p_vert_lay->addWidget(p_title);
 
         p_script_edit = new QPlainTextEdit(p_handler->getScript());
@@ -134,18 +134,18 @@ QWidget *HandlerView::createListItemWidget()
 #if 0
 void HandlerView::applyReqName()
 {
-    p_dock->setWindowTitle("Handler " + p_handler->getName());
+    p_dock->setWindowTitle("Handler " + p_handler->getTitle());
 }
 #endif
 
 QString HandlerView::getEditDockWidgetTitle() const
 {
-    return "Handler #x: " + p_handler->getName();
+    return "Handler #x: " + p_handler->getTitle();
 }
 
 QString HandlerView::getListItemWidgetTitle() const
 {
-    return p_handler->getName();
+    return p_handler->getTitle();
 }
 
 
@@ -195,7 +195,7 @@ void HandlerView::onEditButtonPressed()
 
 void HandlerView::onTitleChangedByUser(const QString &text)
 {
-    p_handler->setName(text);
+    p_handler->setTitle(text);
 }
 
 void HandlerView::onScriptChangedByUser()

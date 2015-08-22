@@ -56,7 +56,7 @@ void CodecVisitor_SaveXML::visit(Codec_ISO14230 &codec)
             );
 
     p_codec_elem->setAttribute(
-            ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME,
+            ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE,
             ProjectStorageXML::CODEC_NAME__ISO14230
             );
 

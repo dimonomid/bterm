@@ -314,10 +314,10 @@ void Appl::openProject(QString filename)
                 this, &Appl::onNewDataMsg
                );
 
-        //-- just forward reqHandlerNameChanged() signal
+        //-- just forward reqHandlerTitleChanged() signal
         connect(
-                p_project.get(), &Project::reqHandlerNameChanged,
-                this, &Appl::reqHandlerNameChanged
+                p_project.get(), &Project::reqHandlerTitleChanged,
+                this, &Appl::reqHandlerTitleChanged
                );
 
         emit projectOpened(p_project);

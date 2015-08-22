@@ -185,7 +185,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
 
 #if 0
-        qDebug() << "handler: " << p_req_handler->getName();
+        qDebug() << "handler: " << p_req_handler->getTitle();
 #endif
 
         switch (res){
@@ -237,7 +237,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
 void Project::onReqHandlerNameChanged(const QString &name)
 {
     ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
-    emit reqHandlerNameChanged(p_handler, name);
+    emit reqHandlerTitleChanged(p_handler, name);
 }
 
 

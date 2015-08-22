@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Test">
+<project title="Test">
     <codecs>
-        <codec name="iso14230" local_addr="0x10" remote_addr="0x11"/>
+        <codec title="iso14230" local_addr="0x10" remote_addr="0x11"/>
     </codecs>
     <req_handlers>
-        <req_handler name="test 1">
+        <req_handler title="test 1">
             <code>
 (function(inputMsg){
      var inputArr = inputMsg.byteArr;
@@ -25,7 +25,7 @@
  })
             </code>
         </req_handler>
-        <req_handler name="test 2">
+        <req_handler title="test 2">
             <code>
 (function(inputMsg){
      var inputArr = inputMsg.byteArr;

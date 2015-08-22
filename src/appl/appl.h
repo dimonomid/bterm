@@ -198,7 +198,7 @@ signals:
      * @param name
      *      new title
      */
-    void reqHandlerNameChanged(
+    void reqHandlerTitleChanged(
             const HTCore::ReqHandler *p_handler,
             const QString &name
             );

@@ -27,12 +27,12 @@ using namespace HTCore;
  ******************************************************************************/
 
 ReqHandler::ReqHandler(
-        QString name,
+        QString title,
         std::shared_ptr<QJSEngine> p_engine,
         std::shared_ptr<ScriptFactory> p_script_factory,
         QString script_func_code
         ) :
-    name(name),
+    title(title),
     p_engine(p_engine),
     p_script_factory(p_script_factory),
     script_func_code(script_func_code),
@@ -44,11 +44,11 @@ ReqHandler::ReqHandler(
 }
 
 ReqHandler::ReqHandler(
-        QString name,
+        QString title,
         QString script_func_code
         ) :
     ReqHandler(
-            name,
+            title,
             std::shared_ptr<QJSEngine>(),
             std::shared_ptr<ScriptFactory>(),
             script_func_code
@@ -92,15 +92,15 @@ void ReqHandler::setScriptFactory(
     this->p_script_factory = p_script_factory;
 }
 
-QString ReqHandler::getName() const
+QString ReqHandler::getTitle() const
 {
-    return name;
+    return title;
 }
 
-void ReqHandler::setName(const QString &name)
+void ReqHandler::setTitle(const QString &title)
 {
-    this->name = name;
-    emit nameChanged(name);
+    this->title = title;
+    emit nameChanged(title);
 }
 
 QString ReqHandler::getScript() const

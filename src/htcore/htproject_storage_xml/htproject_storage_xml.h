@@ -74,7 +74,7 @@ private:
     static const QString XML_TAG_NAME__REQ_HANDLER;
     static const QString XML_TAG_NAME__RH_CODE;
 
-    static const QString XML_ATTR_NAME__COMMON__NAME;
+    static const QString XML_ATTR_NAME__COMMON__TITLE;
 
     static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR;
     static const QString XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR;
@@ -89,10 +89,15 @@ private:
      * METHODS
      ***************************************************************************/
 public:
+
     /**
-     * Read project from QIODevice that was given to constructor.
+     * Read project from QIODevice that was given to the constructor
      */
     std::shared_ptr<Project> readProject();
+
+    /**
+     * Save project to QIODevice that was given to the constructor
+     */
     void saveProject(std::shared_ptr<Project> p_proj);
 
 

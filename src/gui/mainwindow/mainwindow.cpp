@@ -211,7 +211,7 @@ void MainWindow::addHandlerEditWidget(
         QWidget *p_widg
         )
 {
-    QDockWidget *p_dw = new QDockWidget("Handler " + p_handler->getName());
+    QDockWidget *p_dw = new QDockWidget("Handler " + p_handler->getTitle());
 
     p_dw->setWidget(p_widg);
 
@@ -567,7 +567,7 @@ void MainWindow::onNewDataMsg(std::shared_ptr<EventDataMsg> event_data_msg)
         case EventDataMsg::Direction::TX:
             dir_text = "Tx";
             color = "blue";
-            handler_text = " (" + event_data_msg->getHandler()->getName() + ")";
+            handler_text = " (" + event_data_msg->getHandler()->getTitle() + ")";
             break;
         case EventDataMsg::Direction::RX:
             dir_text = "Rx";

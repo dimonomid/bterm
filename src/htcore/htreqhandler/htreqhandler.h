@@ -62,14 +62,14 @@ public:
      ***************************************************************************/
 public:
     ReqHandler(
-            QString name,
+            QString title,
             std::shared_ptr<QJSEngine> p_engine,
             std::shared_ptr<ScriptFactory> p_script_factory,
             QString script_func_code
             );
 
     ReqHandler(
-            QString name,
+            QString title,
             QString script_func_code = ""
             );
 
@@ -79,7 +79,7 @@ public:
      ***************************************************************************/
 private:
 
-    QString name;
+    QString title;
     std::shared_ptr<QJSEngine> p_engine;
     std::shared_ptr<ScriptFactory> p_script_factory;
     QString script_func_code;
@@ -99,8 +99,8 @@ public:
 
     void setQJSEngine(std::shared_ptr<QJSEngine> p_engine);
     void setScriptFactory(std::shared_ptr<ScriptFactory> p_script_factory);
-    QString getName() const;
-    void setName(const QString &name);
+    QString getTitle() const;
+    void setTitle(const QString &title);
     QString getScript() const;
     void setScript(QString script_func_code);
 
@@ -130,7 +130,7 @@ public:
 
 signals:
 
-    void nameChanged(const QString &name);
+    void nameChanged(const QString &title);
 
 };
 

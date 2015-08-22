@@ -31,7 +31,7 @@ const QString ProjectStorageXML::XML_TAG_NAME__REQ_HANDLER  = "req_handler";
 const QString ProjectStorageXML::XML_TAG_NAME__RH_CODE  = "code";
 
 
-const QString ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME     = "name";
+const QString ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE = "title";
 
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR   = "local_addr";
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR  = "remote_addr";
@@ -105,7 +105,7 @@ std::shared_ptr<Codec> ProjectStorageXML::readCodecFromDomElement(
 
     QDomNamedNodeMap elem_codec_attrs = elem_codec.attributes();
     QDomNode codec_name_node = elem_codec_attrs.namedItem(
-            XML_ATTR_NAME__COMMON__NAME
+            XML_ATTR_NAME__COMMON__TITLE
             );
 
     if (codec_name_node.isNull()){
@@ -225,7 +225,7 @@ std::shared_ptr<ReqHandler> ProjectStorageXML::readReqHandlerFromDomElement(
 
     QDomNamedNodeMap elem_rh_attrs = elem_rh.attributes();
     QDomNode rh_name_node = elem_rh_attrs.namedItem(
-            XML_ATTR_NAME__COMMON__NAME
+            XML_ATTR_NAME__COMMON__TITLE
             );
 
     QString rh_name {};
@@ -268,8 +268,8 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveReqHandlerToDomElement(
 
     //-- set handler name
     p_handler_elem->setAttribute(
-            ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME,
-            p_handler->getName()
+            ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE,
+            p_handler->getTitle()
             );
 
     //-- create code element
@@ -326,7 +326,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
     //-- tag name is correct, so, proceed: get project name
     QDomNamedNodeMap elem_proj_attrs = elem_proj.attributes();
     QDomNode proj_name_node = elem_proj_attrs.namedItem(
-            XML_ATTR_NAME__COMMON__NAME
+            XML_ATTR_NAME__COMMON__TITLE
             );
     QString proj_name {};
     if (!proj_name_node.isNull()){
@@ -434,7 +434,7 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
 
     //-- save project name
     project_elem.setAttribute(
-            ProjectStorageXML::XML_ATTR_NAME__COMMON__NAME,
+            ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE,
             p_proj->getTitle()
             );
 
