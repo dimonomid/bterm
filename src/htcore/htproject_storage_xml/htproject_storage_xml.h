@@ -39,7 +39,8 @@ namespace HTCore {
 
 
 /**
- * TODO
+ * Class that provides loading and saving `#DMCore::Project`
+ * from and to an XML format.
  */
 class HTCore::ProjectStorageXML : public QObject
 {
@@ -64,6 +65,7 @@ public:
      ***************************************************************************/
 private:
 
+    //-- IO device to use when reading/saving the project
     std::shared_ptr<QIODevice> p_device;
 
 
@@ -92,6 +94,9 @@ public:
 
     /**
      * Read project from QIODevice that was given to the constructor
+     *
+     * NOTE: in case of error, std::invalid_argument is thrown,
+     * so you should be prepared to catch it.
      */
     std::shared_ptr<Project> readProject();
 
