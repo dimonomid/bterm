@@ -55,7 +55,7 @@ using namespace std;
  * STATIC DATA
  ******************************************************************************/
 
-const QString MainWindow::WINDOW_TITLE = "BTerm";
+const QString MainWindow::WINDOW_TITLE = "Bot Terminal";
 
 const QString MainWindow::SETT_KEY__MAINWINDOW = "mainwindow";
 const QString MainWindow::SETT_KEY__MAINWINDOW__GEOMETRY =
