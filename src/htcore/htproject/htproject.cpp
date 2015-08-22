@@ -44,7 +44,7 @@ Project::Project(
     handlers(),
     script_ctx_jsval(p_engine->evaluate("({})"))
 {
-    //TODO: comment these registrations
+    //TODO: add comments about these registrations
     //
     //   It seems, we register ByteArrRead as non-instantiable type,
     //   and ByteArrReadWrite as instantiable
