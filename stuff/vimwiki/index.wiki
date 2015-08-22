@@ -15,7 +15,9 @@
 
 ==== mandatory ====
 
-   * [ ] project load/save
+   * [X] project load/save
+   * [ ] new project
+   * [ ] adding, removing, moving handlers
    * [ ] real data exchange
    * [ ] other protocols:
       * [ ] mikas
