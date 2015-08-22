@@ -11,15 +11,23 @@
 * settings of `HTDataSrc` and `HTDataCodec`: they should return vector of `Field` instances, each field should be of some type (say, integer field is a subclass `FieldInt`), and may contain additional type-specific data. GUI should take this vector of `Field`s, display appropriate form, and get/set data. 
   More, `HTDataSrc` should have two sets of fields: one is "general", and the second one is "computer-specific". For example, baudrate is general, and port name is computer-specific.
 
+=== some ideas ===
+
+    * add the codec like "no codec": it will transmit all the data literally to handlers, and "encoding" the message will return the message itself
+    * about JavaScript codec: probably later, add the codec like "custom JavaScript". In its codec-specific settings, we should have a text field for JavaScript code (or just a file selection), and this C++ "codec" will cooperate with the user's custom JavaScript code via some API.
+
 === todo ===
 
 ==== mandatory ====
 
    * [X] project load/save
+   * [X] adding, removing, moving handlers
+   * [ ] project settings:
+       * [ ] title
+       * [ ] codec to use (select from the drop-down menu)
+       * [ ] codec-specific settings (probably QML is what we need?)
    * [ ] new project
-   * [ ] adding, removing, moving handlers
    * [ ] real data exchange
-   * [ ] codec-specific settings (probably QML is what we need?)
    * [ ] codec-specific standard handlers (should be called after all user's handlers)
    * [ ] ByteArrReadWrite: add method putData(index, [0x01, 0x02, 0x03])
    * [ ] ByteArrReadWrite: add method fill(index, length, byteToFill)
