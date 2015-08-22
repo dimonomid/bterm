@@ -53,6 +53,7 @@ EventVisitor_ApplHandle::EventVisitor_ApplHandle(Appl &appl) :
 
 void EventVisitor_ApplHandle::visit(EventDataRaw &htevent_data_raw)
 {
+    //-- add event to accumulator
     appl.p_events_data_raw->addEvent(
             std::dynamic_pointer_cast<EventDataRaw>(
                 htevent_data_raw.getSharedPtr()
@@ -62,6 +63,7 @@ void EventVisitor_ApplHandle::visit(EventDataRaw &htevent_data_raw)
 
 void EventVisitor_ApplHandle::visit(EventDataMsg &htevent_data_msg)
 {
+    //-- add event to accumulator
     appl.p_events_data_msg->addEvent(
             std::dynamic_pointer_cast<EventDataMsg>(
                 htevent_data_msg.getSharedPtr()
