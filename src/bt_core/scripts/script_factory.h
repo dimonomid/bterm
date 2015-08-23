@@ -23,7 +23,17 @@ namespace BTCore {
 
 
 /**
- * TODO
+ * Factory that is used in JavaScript scripts to create various objects,
+ * namely `BTCore::ByteArrReadWrite`.
+ *
+ * The instance of the factory is available in scripts via `factory` property
+ * of the global object.
+ *
+ * So, use it as follows:
+ *
+ * <code>
+ *      var outputArr = factory.createByteArr();
+ * </code>
  */
 class BTCore::ScriptFactory : public QObject
 {
@@ -55,6 +65,9 @@ private:
      ***************************************************************************/
 public slots:
 
+    /**
+     * Create new empty `BTCore::ByteArrReadWrite`
+     */
     BTCore::ByteArrReadWrite *createByteArr();
 
 };
