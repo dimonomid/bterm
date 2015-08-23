@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _BT_PROJECT_VIEW_H
-#define _BT_PROJECT_VIEW_H
+#ifndef _BT_CODEC_VIEW_H
+#define _BT_CODEC_VIEW_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -13,28 +13,23 @@
 #include <QObject>
 #include <memory>
 
-#include "ui_bt_project_view.h"
 
 
 
 class QDockWidget;
-
-namespace BTCore {
-    class Project;
-}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
 namespace BTGui {
-    class ProjectView;
+    class CodecView;
 }
 
 /**
  * TODO
  */
-class BTGui::ProjectView : public QObject
+class BTGui::CodecView : public QObject
 {
    /****************************************************************************
     * TYPES
@@ -44,18 +39,12 @@ class BTGui::ProjectView : public QObject
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-    explicit ProjectView(
-            std::shared_ptr<BTCore::Project> p_project
-            );
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
 private:
 
-    Ui::BTProjectView *p_project_view_ui;
-    std::weak_ptr<BTCore::Project> wp_project;
-    QWidget *p_project_edit_widg;
 
 
    /****************************************************************************
@@ -67,27 +56,25 @@ private:
     ***************************************************************************/
 public:
 
-    QWidget *getProjectSettWidget();
+    /**
+     * NOTE: each time this function is called, the same widget is returned,
+     * and the caller is responsible to delete it eventually.
+     *
+     * Widget will be actually created at the first call, so if this method
+     * never called, then widget is not created at all.
+     */
+    virtual QWidget *getCodecSettWidget() = 0;
 
 
 
 private:
 
-    QWidget *createProjectEditWidget();
-
-
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
-
-private slots:
-
-    void onTitleChangedByUser(const QString &text);
-    void onCodecSelectionChangedByUser(int index);
-    void onWidgetDestroyed();
 
 
 };
 
 
-#endif // _BT_PROJECT_VIEW_H
+#endif // _BT_CODEC_VIEW_H

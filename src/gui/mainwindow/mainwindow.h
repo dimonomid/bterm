@@ -26,6 +26,7 @@ namespace BTCore {
 
 namespace BTGui {
     class ProjectView;
+    class CodecView;
 }
 
 namespace Ui {
@@ -89,6 +90,7 @@ private:
     QDockWidget      *p_dw_raw_data;
     QDockWidget      *p_dw_handlers;
     QDockWidget      *p_dw_project_sett;
+    QDockWidget      *p_dw_codec_sett;
 
     QAction *p_act_open_project;
     QAction *p_act_close_project;
@@ -112,6 +114,7 @@ private:
 
     std::weak_ptr<BTCore::Project> wp_project;
     std::shared_ptr<BTGui::ProjectView> p_project_view;
+    std::shared_ptr<BTGui::CodecView> p_codec_view;
 
 
     //-- A hack that is needed for the case when application was closed in
@@ -174,6 +177,7 @@ private:
     void restoreProjectState();
 
     void refreshHandlersList();
+    void refreshCodecView(std::shared_ptr<BTCore::Project> p_project);
 
     void scrollAllToBottom();
 

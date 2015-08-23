@@ -49,6 +49,8 @@
 #include "bt_project_dialog.h"
 #include "bt_project_view.h"
 
+#include "bt_codec_visitor__view_create.h"
+#include "bt_codec_view.h"
 
 
 using namespace BTCore;
@@ -93,10 +95,14 @@ MainWindow::MainWindow(
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
     p_dw_project_sett(new QDockWidget("Project settings")),
+    p_dw_codec_sett(new QDockWidget("Codec settings")),
     handler_views(),
     p_event_visitor__gui_handle(std::unique_ptr<EventVisitor_GuiHandle>(
                 new EventVisitor_GuiHandle(*this)
                 )),
+    wp_project(),
+    p_project_view(),
+    p_codec_view(),
     need_to_restore_non_maximized_geometry(false)
 {
     ui->setupUi(this);
@@ -139,6 +145,7 @@ MainWindow::MainWindow(
     addDockWidget(Qt::LeftDockWidgetArea, p_dw_raw_data);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_project_sett);
+    addDockWidget(Qt::TopDockWidgetArea, p_dw_codec_sett);
 
 
     connect(&appl, &Appl::event, this, &MainWindow::onEvent);
@@ -268,8 +275,12 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     p_dw_handlers->setWidget(p_scroll_area);
     p_dw_handlers->setObjectName("handlers_list");
 
+
+    //-- populate project settings window
     p_dw_project_sett->setWidget(p_project_view->getProjectSettWidget());
     p_dw_project_sett->setObjectName("project_sett");
+
+    refreshCodecView(p_project);
 
     //-- subscribe on project's signals
     connect(
@@ -282,6 +293,7 @@ void MainWindow::unpopulate()
 {
     p_dw_handlers->setWidget(nullptr);
     p_dw_project_sett->setWidget(nullptr);
+    refreshCodecView(nullptr);
 
     qDebug("size: %d", handler_views.size());
     while (handler_views.size() > 0){
@@ -438,6 +450,22 @@ void MainWindow::refreshHandlersList()
         restoreProjectState();
 
         scrollAllToBottom();
+    }
+}
+
+void MainWindow::refreshCodecView(std::shared_ptr<Project> p_project)
+{
+    if (p_project != nullptr){
+        CodecVisitor_ViewCreate codec_visitor__view_create {};
+        p_project->getCodec()->accept(codec_visitor__view_create);
+
+        p_codec_view = codec_visitor__view_create.getCodecView();
+
+        //-- populate codec settings window
+        p_dw_codec_sett->setWidget(p_codec_view->getCodecSettWidget());
+        p_dw_codec_sett->setObjectName("codec_sett");
+    } else {
+        p_dw_codec_sett->setWidget(nullptr);
     }
 }
 

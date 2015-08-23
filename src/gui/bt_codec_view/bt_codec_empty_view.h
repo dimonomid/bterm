@@ -3,16 +3,18 @@
  *
  ******************************************************************************/
 
-#ifndef _BT_CODEC_TRANSPARENT_H
-#define _BT_CODEC_TRANSPARENT_H
+#ifndef _BT_CODEC_EMPTY_VIEW_H
+#define _BT_CODEC_EMPTY_VIEW_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
 #include <QObject>
+#include <memory>
 
-#include "bt_codec.h"
+#include "bt_codec_view.h"
+
 
 
 
@@ -20,14 +22,14 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
-namespace BTCore {
-    class CodecTransparent;
+namespace BTGui {
+    class CodecEmptyView;
 }
 
 /**
  * TODO
  */
-class BTCore::CodecTransparent : public BTCore::Codec
+class BTGui::CodecEmptyView : public BTGui::CodecView
 {
     /****************************************************************************
      * TYPES
@@ -37,13 +39,17 @@ class BTCore::CodecTransparent : public BTCore::Codec
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit CodecTransparent(CodecNum codec_num);
+
+    explicit CodecEmptyView(QString codec_name);
 
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
+
+    QString codec_name;
+
 
     /****************************************************************************
      * STATIC METHODS
@@ -54,12 +60,7 @@ private:
      ***************************************************************************/
 public:
 
-    virtual void addRawRxData   (const std::vector<uint8_t> &data) override;
-    virtual void clearRawRxData () override;
-
-    virtual DataMsg encodeMessage  (const std::vector<uint8_t> &data) const override;
-    virtual void accept(CodecVisitor &visitor) override;
-
+    virtual QWidget *getCodecSettWidget() override;
 
 
     /****************************************************************************
@@ -69,4 +70,4 @@ public:
 };
 
 
-#endif // _BT_CODEC_TRANSPARENT_H
+#endif // _BT_CODEC_EMPTY_VIEW_H

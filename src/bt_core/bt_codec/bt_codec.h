@@ -32,7 +32,9 @@ namespace BTCore {
  * Abstract codec that is used by `#BTCore::Project` to decode messages
  * (`#BTCore::DataMsg`) from raw Rx data, and encode Tx messages.
  */
-class BTCore::Codec : public QObject
+class BTCore::Codec :
+    public QObject,
+    public std::enable_shared_from_this<BTCore::Codec>
 {
 Q_OBJECT
 
@@ -104,6 +106,11 @@ public:
      */
     virtual void accept(CodecVisitor &visitor) = 0;
 
+
+    /**
+     * Returns shared pointer to this instance of `Codec`
+     */
+    std::shared_ptr<Codec> getSharedPtr();
 
     /****************************************************************************
      * SIGNALS, SLOTS

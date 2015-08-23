@@ -7,6 +7,7 @@ QT += qml xml
 RAGEL_FILES += ../../src/bt_core/bt_codec/bt_codec_iso14230.cpp.rl
 
 SOURCES += \
+    ../../src/bt_core/bt_codec/bt_codec.cpp \
     ../../src/bt_core/bt_codec/bt_codec_factory/bt_codec_factory.cpp \
     ../../src/bt_core/bt_codec/bt_codec_transparent.cpp \
     ../../src/bt_core/bt_datamsg/bt_datapart.cpp \
