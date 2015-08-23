@@ -10,6 +10,7 @@
 #include "bt_codec_factory.h"
 #include "bt_codec.h"
 #include "bt_codec_iso14230.h"
+#include "bt_codec_transparent.h"
 
 
 
@@ -20,6 +21,12 @@ using namespace BTCore;
  ******************************************************************************/
 
 const CodecFactory::CodecDesc CodecFactory::CODEC_DESC[] = {
+
+    [static_cast<int>(CodecNum::TRANSPARENT)] =
+    {
+        .key = "transparent",
+        .title = "Transparent (no codec)"
+    },
 
     [static_cast<int>(CodecNum::ISO_14230)] =
     {
@@ -101,6 +108,9 @@ std::shared_ptr<Codec> CodecFactory::createCodec(CodecNum codec_num) const
     switch (codec_num){
         case CodecNum::ISO_14230:
             p_ret = std::make_shared<Codec_ISO14230>(codec_num);
+            break;
+        case CodecNum::TRANSPARENT:
+            p_ret = std::make_shared<CodecTransparent>(codec_num);
             break;
         case CodecNum::_COUNT:
             break;

@@ -74,6 +74,22 @@ void CodecVisitor_SaveXML::visit(Codec_ISO14230 &codec)
             );
 }
 
+void CodecVisitor_SaveXML::visit(CodecTransparent &codec)
+{
+    std::ignore = codec;
+    CodecFactory factory;
+
+    p_codec_elem = std::make_shared<QDomElement>(
+            doc.createElement(ProjectStorageXML::XML_TAG_NAME__CODEC)
+            );
+
+    p_codec_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__CODEC__KEY,
+            factory.getCodecKey(CodecNum::TRANSPARENT)
+            );
+}
+
+
 std::shared_ptr<QDomElement> CodecVisitor_SaveXML::getDomElement()
 {
     return p_codec_elem;

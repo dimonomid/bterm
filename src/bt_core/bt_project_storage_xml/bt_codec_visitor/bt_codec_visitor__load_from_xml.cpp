@@ -123,4 +123,9 @@ void CodecVisitor_LoadFromXML::visit(Codec_ISO14230 &codec)
     codec.setRemoteAddr(remote_addr_int);
 }
 
+void CodecVisitor_LoadFromXML::visit(CodecTransparent &codec)
+{
+    std::ignore = codec;
+}
+
 

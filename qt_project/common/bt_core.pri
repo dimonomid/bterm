@@ -8,6 +8,7 @@ RAGEL_FILES += ../../src/bt_core/bt_codec/bt_codec_iso14230.cpp.rl
 
 SOURCES += \
     ../../src/bt_core/bt_codec/bt_codec_factory/bt_codec_factory.cpp \
+    ../../src/bt_core/bt_codec/bt_codec_transparent.cpp \
     ../../src/bt_core/bt_datamsg/bt_datapart.cpp \
     ../../src/bt_core/bt_datamsg/bt_datamsg.cpp \
     ../../src/bt_core/bt_project/bt_project.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += ../../src/bt_core/bt_datamsg/bt_datapart.h \
     ../../src/bt_core/bt_codec/bt_codec.h \
     ../../src/bt_core/bt_codec/bt_codec_iso14230.h \
+    ../../src/bt_core/bt_codec/bt_codec_transparent.h \
     ../../src/bt_core/bt_codec/bt_codec_factory/bt_codec_factory.h \
     ../../src/bt_core/bt_iodev/bt_iodev.h \
     ../../src/bt_core/bt_project/bt_project.h \

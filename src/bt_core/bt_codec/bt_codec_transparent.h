@@ -3,17 +3,17 @@
  *
  ******************************************************************************/
 
-#ifndef _BT_CODEC_VISITOR__LOAD_FROM_XML_H
-#define _BT_CODEC_VISITOR__LOAD_FROM_XML_H
+#ifndef _TPL_H
+#define _TPL_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "bt_codec_visitor.h"
+#include <QObject>
 
-#include <QDomElement>
-#include <memory>
+#include "bt_codec.h"
+
 
 
 /*******************************************************************************
@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 namespace BTCore {
-    class CodecVisitor_LoadFromXML;
+    class CodecTransparent;
 }
 
 /**
- * Concrete visitor for `#BTCore::Codec`, it implements `saveXML` functionality.
+ * TODO
  */
-class BTCore::CodecVisitor_LoadFromXML : public BTCore::CodecVisitor
+class BTCore::CodecTransparent : public BTCore::Codec
 {
     /****************************************************************************
      * TYPES
@@ -37,19 +37,13 @@ class BTCore::CodecVisitor_LoadFromXML : public BTCore::CodecVisitor
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    CodecVisitor_LoadFromXML(
-            const QDomElement &elem_codec
-            );
+    explicit CodecTransparent(CodecNum codec_num);
 
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
-
-    //-- `QDomElement` given to constructor (it contains actual data to read)
-    const QDomElement &elem_codec;
-
 
     /****************************************************************************
      * STATIC METHODS
@@ -60,10 +54,19 @@ private:
      ***************************************************************************/
 public:
 
-    virtual void visit(Codec_ISO14230 &) override;
-    virtual void visit(CodecTransparent &) override;
+    virtual void addRawRxData   (const std::vector<uint8_t> &data) override;
+    virtual void clearRawRxData () override;
+
+    virtual DataMsg encodeMessage  (const std::vector<uint8_t> &data) const override;
+    virtual void accept(CodecVisitor &visitor) override;
+
+
+
+    /****************************************************************************
+     * SIGNALS, SLOTS
+     ***************************************************************************/
 
 };
 
 
-#endif // _BT_CODEC_VISITOR__LOAD_FROM_XML_H
+#endif // _TPL_H

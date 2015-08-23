@@ -17,6 +17,7 @@
 
 namespace BTCore {
     class Codec_ISO14230;
+    class CodecTransparent;
 }
 
 /*******************************************************************************
@@ -59,6 +60,7 @@ private:
 public:
 
    virtual void visit(Codec_ISO14230 &) = 0;
+   virtual void visit(CodecTransparent &) = 0;
 
 };
 

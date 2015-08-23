@@ -63,6 +63,7 @@ private:
 public:
 
     virtual void visit(Codec_ISO14230 &) override;
+    virtual void visit(CodecTransparent &) override;
 
     /**
      * Returns element that was generated during the acceptance of the visitor.

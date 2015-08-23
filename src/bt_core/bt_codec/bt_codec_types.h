@@ -23,6 +23,11 @@ namespace BTCore {
      * Codec number, used to identify codecs
      */
     enum class CodecNum {
+        /** Transparent (that is, no codec at all: all data is "encoded" and
+         * "decoded" literally)
+         */
+        TRANSPARENT,
+
         /** ISO 14230
          */
         ISO_14230,
