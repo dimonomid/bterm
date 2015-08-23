@@ -34,10 +34,10 @@
    <item row="1" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QComboBox" name="codec_select_2"/>
+      <widget class="QComboBox" name="codec_select"/>
      </item>
      <item>
-      <widget class="QPushButton" name="codec_sett_btn_2">
+      <widget class="QPushButton" name="codec_sett_btn">
        <property name="maximumSize">
         <size>
          <width>100</width>
