@@ -197,6 +197,7 @@ QString Project::getTitle() const
 void Project::setTitle(QString title)
 {
     this->title = title;
+    emit titleChanged(title);
 }
 
 /*******************************************************************************

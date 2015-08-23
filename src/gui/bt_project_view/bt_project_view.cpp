@@ -57,12 +57,24 @@ ProjectView::ProjectView(
 QWidget *ProjectView::createProjectEditWidget()
 {
     QWidget *p_widg = new QWidget();
-    p_project_view_ui->setupUi(p_widg);
 
-    connect(
-            p_widg, &QObject::destroyed,
-            this, &ProjectView::onWidgetDestroyed
-           );
+    if (auto p_project = wp_project.lock()){
+        p_project_view_ui->setupUi(p_widg);
+
+        p_project_view_ui->proj_title_edit->setText(
+                p_project->getTitle()
+                );
+
+        connect(
+                p_project_view_ui->proj_title_edit, &QLineEdit::textChanged,
+                this, &ProjectView::onTitleChangedByUser
+               );
+
+        connect(
+                p_widg, &QObject::destroyed,
+                this, &ProjectView::onWidgetDestroyed
+               );
+    }
 
     return p_widg;
 }
@@ -87,6 +99,13 @@ QWidget *ProjectView::getProjectEditWidget()
  ******************************************************************************/
 
 /* private      */
+
+void ProjectView::onTitleChangedByUser(const QString &text)
+{
+    if (auto p_project = wp_project.lock()){
+        p_project->setTitle(text);
+    }
+}
 
 void ProjectView::onWidgetDestroyed()
 {

@@ -207,6 +207,11 @@ signals:
      */
     void reqHandlersReordered();
 
+    /**
+     * Emitted when human-readable title has changed by calling
+     * `setTitle()`.
+     */
+    void titleChanged(const QString &title);
 
 private slots:
 

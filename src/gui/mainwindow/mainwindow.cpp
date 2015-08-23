@@ -271,7 +271,11 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     p_dw_project_edit->setWidget(p_project_view->getProjectEditWidget());
     p_dw_project_edit->setObjectName("project_edit");
 
-    
+    //-- subscribe on project's signals
+    connect(
+            p_project.get(), &Project::titleChanged,
+            this, &MainWindow::onProjectTitleChanged
+           );
 }
 
 void MainWindow::unpopulate()
@@ -296,6 +300,21 @@ void MainWindow::initSettings()
     p_sett->value(SETT_KEY__MAINWINDOW__GEOMETRY_MAXIMIZED, QByteArray());
     p_sett->value(SETT_KEY__MAINWINDOW__PROJ_STATE, QByteArray());
     p_sett->value(SETT_KEY__MAINWINDOW__MAXIMIZED, false);
+}
+
+void MainWindow::updateWindowTitle()
+{
+    if (auto p_project = wp_project.lock()){
+        setWindowTitle(
+                WINDOW_TITLE + ": "
+                + p_project->getTitle()
+                + " ("
+                + appl.getProjectFilename()
+                + ")"
+                );
+    } else {
+        setWindowTitle(WINDOW_TITLE);
+    }
 }
 
 void MainWindow::initMainMenu()
@@ -468,13 +487,6 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 
     populateWithProject(p_project);
 
-    setWindowTitle(
-            WINDOW_TITLE + ": "
-            + p_project->getTitle()
-            + " ("
-            + appl.getProjectFilename()
-            + ")"
-            );
     restoreProjectState();
 
     p_act_close_project->setEnabled(true);
@@ -497,6 +509,7 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
     //-- store weak pointer to the project
     this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
 
+    updateWindowTitle();
     scrollAllToBottom();
 }
 
@@ -506,11 +519,12 @@ void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
 
     saveProjectState();
 
-    setWindowTitle(WINDOW_TITLE);
     unpopulate();
 
     this->wp_project = std::weak_ptr<BTCore::Project>();
     p_project_view = nullptr;
+
+    updateWindowTitle();
 
     p_act_close_project->setEnabled(false);
 }
@@ -592,6 +606,12 @@ void MainWindow::onAddHandlerButtonPressed()
     if (auto p_project = wp_project.lock()){
         p_project->addHandler(std::make_shared<ReqHandler>());
     }
+}
+
+void MainWindow::onProjectTitleChanged(const QString &title)
+{
+    std::ignore = title;
+    updateWindowTitle();
 }
 
 void MainWindow::onReqHandlerAdded(

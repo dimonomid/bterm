@@ -82,6 +82,7 @@ private:
 
 private slots:
 
+    void onTitleChangedByUser(const QString &text);
     void onWidgetDestroyed();
 
 

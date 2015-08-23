@@ -163,6 +163,7 @@ private:
     void populateWithProject(std::shared_ptr<BTCore::Project> p_project);
     void unpopulate();
 
+    void updateWindowTitle();
     void initMainMenu();
     void initSettings();
 
@@ -203,6 +204,8 @@ private slots:
     void openProjectSettingsDialog();
 
     void onAddHandlerButtonPressed();
+
+    void onProjectTitleChanged(const QString &title);
 
     void onReqHandlerAdded(
             std::shared_ptr<BTCore::ReqHandler> p_handler,
