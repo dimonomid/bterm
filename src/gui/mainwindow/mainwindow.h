@@ -88,7 +88,7 @@ private:
 
     QDockWidget      *p_dw_raw_data;
     QDockWidget      *p_dw_handlers;
-    QDockWidget      *p_dw_project_edit;
+    QDockWidget      *p_dw_project_sett;
 
     QAction *p_act_open_project;
     QAction *p_act_close_project;

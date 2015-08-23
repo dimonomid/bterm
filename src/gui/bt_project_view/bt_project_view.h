@@ -67,7 +67,7 @@ private:
     ***************************************************************************/
 public:
 
-    QWidget *getProjectEditWidget();
+    QWidget *getProjectSettWidget();
 
 
 

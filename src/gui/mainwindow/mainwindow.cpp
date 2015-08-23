@@ -92,7 +92,7 @@ MainWindow::MainWindow(
     p_log_pte(new QPlainTextEdit_My(NULL)),
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
-    p_dw_project_edit(new QDockWidget("Project settings")),
+    p_dw_project_sett(new QDockWidget("Project settings")),
     handler_views(),
     p_event_visitor__gui_handle(std::unique_ptr<EventVisitor_GuiHandle>(
                 new EventVisitor_GuiHandle(*this)
@@ -138,7 +138,7 @@ MainWindow::MainWindow(
 
     addDockWidget(Qt::LeftDockWidgetArea, p_dw_raw_data);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
-    addDockWidget(Qt::TopDockWidgetArea, p_dw_project_edit);
+    addDockWidget(Qt::TopDockWidgetArea, p_dw_project_sett);
 
 
     connect(&appl, &Appl::event, this, &MainWindow::onEvent);
@@ -268,8 +268,8 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     p_dw_handlers->setWidget(p_scroll_area);
     p_dw_handlers->setObjectName("handlers_list");
 
-    p_dw_project_edit->setWidget(p_project_view->getProjectEditWidget());
-    p_dw_project_edit->setObjectName("project_edit");
+    p_dw_project_sett->setWidget(p_project_view->getProjectSettWidget());
+    p_dw_project_sett->setObjectName("project_sett");
 
     //-- subscribe on project's signals
     connect(
@@ -281,7 +281,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 void MainWindow::unpopulate()
 {
     p_dw_handlers->setWidget(nullptr);
-    p_dw_project_edit->setWidget(nullptr);
+    p_dw_project_sett->setWidget(nullptr);
 
     qDebug("size: %d", handler_views.size());
     while (handler_views.size() > 0){

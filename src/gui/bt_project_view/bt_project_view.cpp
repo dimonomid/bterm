@@ -119,7 +119,7 @@ QWidget *ProjectView::createProjectEditWidget()
 
 /* public       */
 
-QWidget *ProjectView::getProjectEditWidget()
+QWidget *ProjectView::getProjectSettWidget()
 {
     if (p_project_edit_widg == nullptr){
         p_project_edit_widg = createProjectEditWidget();
