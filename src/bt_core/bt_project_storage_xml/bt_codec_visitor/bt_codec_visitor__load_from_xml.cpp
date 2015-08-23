@@ -71,7 +71,6 @@ void CodecVisitor_LoadFromXML::visit(Codec_ISO14230 &codec)
             elem_codec,
             ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_RX
             );
-    qDebug("fmt_rx=0x%x", (unsigned int)fmt_rx);
 
     uint8_t local_addr_rx = ProjectStorageXML::readUInt8FromElemAttr(
             elem_codec,
