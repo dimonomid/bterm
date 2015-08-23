@@ -46,6 +46,7 @@
 
 #include "mainwindow.h"
 #include "qplaintextedit_my.h"
+#include "bt_project_dialog.h"
 
 
 
@@ -289,36 +290,56 @@ void MainWindow::initSettings()
 
 void MainWindow::initMainMenu()
 {
-    p_act_open_project = new QAction(tr("&Open project"), this);
-    connect(
-            p_act_open_project, &QAction::triggered,
-            this, &MainWindow::openProject
-           );
+    //-- File menu {{{
+    {
+        p_act_open_project = new QAction(tr("&Open project"), this);
+        connect(
+                p_act_open_project, &QAction::triggered,
+                this, &MainWindow::openProject
+               );
 
-    p_act_close_project = new QAction(tr("&Close project"), this);
-    connect(
-            p_act_close_project, &QAction::triggered,
-            this, &MainWindow::closeProject
-           );
-    p_act_close_project->setEnabled(false);
+        p_act_close_project = new QAction(tr("&Close project"), this);
+        connect(
+                p_act_close_project, &QAction::triggered,
+                this, &MainWindow::closeProject
+               );
+        p_act_close_project->setEnabled(false);
 
-    p_act_save_project = new QAction(tr("&Save project"), this);
-    connect(
-            p_act_save_project, &QAction::triggered,
-            this, &MainWindow::saveProject
-           );
+        p_act_save_project = new QAction(tr("&Save project"), this);
+        connect(
+                p_act_save_project, &QAction::triggered,
+                this, &MainWindow::saveProject
+               );
 
-    p_act_save_project_as = new QAction(tr("&Save project as ..."), this);
-    connect(
-            p_act_save_project_as, &QAction::triggered,
-            this, &MainWindow::saveProjectAs
-           );
+        p_act_save_project_as = new QAction(tr("&Save project as ..."), this);
+        connect(
+                p_act_save_project_as, &QAction::triggered,
+                this, &MainWindow::saveProjectAs
+               );
 
-    QMenu *menu_file = menuBar()->addMenu(tr("&File"));
-    menu_file->addAction(p_act_open_project);
-    menu_file->addAction(p_act_close_project);
-    menu_file->addAction(p_act_save_project);
-    menu_file->addAction(p_act_save_project_as);
+        QMenu *menu_file = menuBar()->addMenu(tr("&File"));
+        menu_file->addAction(p_act_open_project);
+        menu_file->addAction(p_act_close_project);
+        menu_file->addAction(p_act_save_project);
+        menu_file->addAction(p_act_save_project_as);
+    }
+    // }}}
+
+    //-- Project menu {{{
+    {
+        p_act_project_sett = new QAction(tr("&Project settings"), this);
+        connect(
+                p_act_project_sett, &QAction::triggered,
+                this, &MainWindow::openProjectSettingsDialog
+               );
+
+        QMenu *menu_file = menuBar()->addMenu(tr("&Project"));
+        menu_file->addAction(p_act_project_sett);
+    }
+    // }}}
+
+
+
 }
 
 void MainWindow::mySaveState()
@@ -529,6 +550,21 @@ void MainWindow::closeProject()
 {
     appl.closeProject();
 }
+
+void MainWindow::openProjectSettingsDialog()
+{
+    if (auto p_project = wp_project.lock()){
+        BTProjectDialog *p_dialog = new BTProjectDialog(
+                p_project,
+                this
+                );
+        p_dialog->setAttribute(Qt::WA_DeleteOnClose);
+
+        p_dialog->exec();
+        qDebug("done");
+    }
+}
+
 
 void MainWindow::onEvent(std::shared_ptr<Event> p_event)
 {

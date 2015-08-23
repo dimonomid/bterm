@@ -90,6 +90,8 @@ private:
     QAction *p_act_save_project;
     QAction *p_act_save_project_as;
 
+    QAction *p_act_project_sett;
+
     //-- NOTE: we use shared_ptr here instead of raw pointers, because
     //   docs say that when we remove dockwidget from mainwindow by calling
     //   removeDockWidget(), the dockwidget is NOT deleted (unlike other GUI
@@ -189,6 +191,8 @@ private slots:
     void closeProject();
     void saveProject();
     void saveProjectAs();
+
+    void openProjectSettingsDialog();
 
     void onAddHandlerButtonPressed();
 

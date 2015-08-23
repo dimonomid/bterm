@@ -21,6 +21,7 @@ BTProjectDialog::BTProjectDialog(
         Qt::WindowFlags flags
         ) :
     QDialog(p_parent, flags),
+    p_ui(new Ui::BTProjectDialog),
     p_project(p_project)
 {
     p_ui->setupUi(this);

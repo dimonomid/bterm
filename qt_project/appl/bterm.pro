@@ -49,6 +49,7 @@ FORMS    += \
 INCLUDEPATH += \
     ../../src/gui/mainwindow \
     ../../src/gui/mainwindow/bt_event_visitor \
+    ../../src/gui/bt_project_dialog \
     ../../src/appl/bt_iodev \
     ../../src/appl/bt_event_visitor \
     ../../src/appl \
