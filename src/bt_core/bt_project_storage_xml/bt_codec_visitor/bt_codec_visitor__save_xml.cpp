@@ -64,13 +64,33 @@ void CodecVisitor_SaveXML::visit(Codec_ISO14230 &codec)
             );
 
     p_codec_elem->setAttribute(
-            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR,
-            "0x" + QString::number(codec.getOwnAddr(), 16)
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_RX,
+            "0x" + QString::number(codec.getOwnAddrRx(), 16)
             );
 
     p_codec_elem->setAttribute(
-            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR,
-            "0x" + QString::number(codec.getRemoteAddr(), 16)
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_RX,
+            "0x" + QString::number(codec.getOwnAddrRx(), 16)
+            );
+
+    p_codec_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_RX,
+            "0x" + QString::number(codec.getRemoteAddrRx(), 16)
+            );
+
+    p_codec_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_TX,
+            "0x" + QString::number(codec.getOwnAddrTx(), 16)
+            );
+
+    p_codec_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_TX,
+            "0x" + QString::number(codec.getOwnAddrTx(), 16)
+            );
+
+    p_codec_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_TX,
+            "0x" + QString::number(codec.getRemoteAddrTx(), 16)
             );
 }
 

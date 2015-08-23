@@ -36,8 +36,13 @@ const QString ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE = "title";
 
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC__KEY = "key";
 
-const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR   = "local_addr";
-const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR  = "remote_addr";
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_TX   = "fmt_tx";
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_TX   = "local_addr_tx";
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_TX  = "remote_addr_tx";
+
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_RX   = "fmt_rx";
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_RX   = "local_addr_rx";
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_RX  = "remote_addr_rx";
 
 
 /*******************************************************************************
@@ -60,6 +65,56 @@ ProjectStorageXML::ProjectStorageXML(
 /* private      */
 
 /* protected    */
+
+uint8_t ProjectStorageXML::readUInt8FromElemAttr(
+        const QDomElement &elem,
+        QString attr_name,
+        bool throw_if_not_found,
+        uint8_t def
+        )
+{
+    uint8_t ret = def;
+    bool ok = true;
+
+    QDomNamedNodeMap attrs = elem.attributes();
+
+    QDomNode node = attrs.namedItem(attr_name);
+    if (node.isNull()){
+        if (throw_if_not_found){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem.lineNumber()).toStdString()
+                    + ": no attr \"" + attr_name.toStdString() + "\""
+                    );
+        }
+    } else {
+        //-- try to parse
+        unsigned int value_int = node.nodeValue().toUInt(
+                &ok, 0
+                );
+        if (!ok){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem.lineNumber()).toStdString()
+                    + ": error parsing uint8_t from "
+                    + "\"" + node.nodeValue().toStdString() + "\""
+                    );
+        }
+
+        //-- check if it is too large
+        if (value_int > 0xff){
+            throw std::invalid_argument(std::string("line ")
+                    + QString::number(elem.lineNumber()).toStdString()
+                    + ": wrong value of attr: "
+                    + "\"" + node.nodeValue().toStdString() + "\""
+                    + ", it must be from 0 to 0xff"
+                    );
+        }
+
+        ret = value_int;
+    }
+
+    return ret;
+}
+
 
 /* public       */
 
@@ -214,6 +269,9 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveReqHandlerToDomElement(
 
 
 /* protected    */
+
+
+
 
 /* public       */
 

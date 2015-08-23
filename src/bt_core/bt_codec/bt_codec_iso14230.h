@@ -42,18 +42,6 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    /**
-     * @param own_addr
-     *      see details about own, or local, address: `#setOwnAddr()`
-     * @param remote_addr
-     *      see details about remote address: `#setRemoteAddr()`
-     */
-    explicit Codec_ISO14230(
-            CodecNum codec_num,
-            uint8_t own_addr,
-            uint8_t remote_addr
-            );
-
     explicit Codec_ISO14230(
             CodecNum codec_num
             );
@@ -88,10 +76,14 @@ private:
     //   byte.
     uint8_t rx_checksum;
 
-    //-- used as target for decoded messages, and source for encoded messages
-    uint8_t own_addr;
-    //-- used as source for decoded messages, and target for encoded messages
-    uint8_t remote_addr;
+    //-- used as Format byte for incoming messages
+    uint8_t fmt_rx;
+    uint8_t own_addr_rx;
+    uint8_t remote_addr_rx;
+
+    uint8_t fmt_tx;
+    uint8_t own_addr_tx;
+    uint8_t remote_addr_tx;
 
     //-- Current raw data.
     //   When new raw data arrives, it is added at the end.
@@ -101,7 +93,7 @@ private:
     //
     //   When message parsing error happens, one byte
     //   is removed from the beginning.
-    std::vector<unsigned char> raw_data;
+    std::vector<uint8_t> raw_data;
 
     //-- Current index in `raw_data`
     size_t cur_raw_data_idx;
@@ -123,27 +115,21 @@ public:
 
 
 
-    /**
-     * Set own, or local, address. It is used as target address for Rx messages,
-     * and source address for Tx messages.
-     */
-    void setOwnAddr(uint8_t own_addr);
+    void setFmtTx(uint8_t fmt_tx);
+    void setOwnAddrTx(uint8_t own_addr_tx);
+    void setRemoteAddrTx(uint8_t remote_addr_tx);
 
-    /**
-     * Set remote address. It is used as target address for Tx messages,
-     * and source address for Rx messages.
-     */
-    void setRemoteAddr(uint8_t remote_addr);
+    uint8_t getFmtTx() const;
+    uint8_t getOwnAddrTx() const;
+    uint8_t getRemoteAddrTx() const;
 
-    /**
-     * Get own, or local, address. See comments for `setOwnAddr()` for some details.
-     */
-    uint8_t getOwnAddr() const;
+    void setFmtRx(uint8_t fmt_rx);
+    void setOwnAddrRx(uint8_t own_addr_rx);
+    void setRemoteAddrRx(uint8_t remote_addr_rx);
 
-    /**
-     * Get remote address. See comments for `setRemoteAddr()` for some details.
-     */
-    uint8_t getRemoteAddr() const;
+    uint8_t getFmtRx() const;
+    uint8_t getOwnAddrRx() const;
+    uint8_t getRemoteAddrRx() const;
 
 
 private:

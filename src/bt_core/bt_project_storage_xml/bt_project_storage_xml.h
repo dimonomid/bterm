@@ -82,14 +82,29 @@ private:
 
     static const QString XML_ATTR_NAME__CODEC__KEY;
 
-    static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR;
-    static const QString XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__FMT_TX;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_TX;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_TX;
+
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__FMT_RX;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_RX;
+    static const QString XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_RX;
 
 
 
     /****************************************************************************
      * STATIC METHODS
      ***************************************************************************/
+
+protected:
+
+    static uint8_t readUInt8FromElemAttr(
+            const QDomElement &elem,
+            QString attr_name,
+            bool throw_if_not_found = true,
+            uint8_t def = 0
+            );
+
 
     /****************************************************************************
      * METHODS
@@ -110,6 +125,7 @@ public:
     void saveProject(std::shared_ptr<Project> p_proj);
 
 
+protected:
 
 private:
 

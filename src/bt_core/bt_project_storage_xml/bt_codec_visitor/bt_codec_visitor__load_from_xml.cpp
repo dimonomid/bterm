@@ -52,75 +52,45 @@ CodecVisitor_LoadFromXML::CodecVisitor_LoadFromXML(
 
 void CodecVisitor_LoadFromXML::visit(Codec_ISO14230 &codec)
 {
-    bool ok = true;
-
-    QDomNamedNodeMap elem_codec_attrs = elem_codec.attributes();
-    QDomNode codec_local_addr_node = elem_codec_attrs.namedItem(
-            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR
-            );
-    QDomNode codec_remote_addr_node = elem_codec_attrs.namedItem(
-            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR
+    uint8_t fmt_tx = ProjectStorageXML::readUInt8FromElemAttr(
+            elem_codec,
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_TX
             );
 
-    //-- make sure both addresses are specified
-    if (codec_local_addr_node.isNull()){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": no local addr specified for codec iso14230"
-                );
-    }
-
-    if (codec_remote_addr_node.isNull()){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": no remote addr specified for codec iso14230"
-                );
-    }
-
-    //-- try to parse addresses
-    unsigned int local_addr_int = codec_local_addr_node.nodeValue().toUInt(
-            &ok, 0
+    uint8_t local_addr_tx = ProjectStorageXML::readUInt8FromElemAttr(
+            elem_codec,
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_TX
             );
-    if (!ok){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": error parsing local addr "
-                + "\"" + codec_local_addr_node.nodeValue().toStdString() + "\""
-                );
-    }
 
-    unsigned int remote_addr_int = codec_remote_addr_node.nodeValue().toUInt(
-            &ok, 0
+    uint8_t remote_addr_tx = ProjectStorageXML::readUInt8FromElemAttr(
+            elem_codec,
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_TX
             );
-    if (!ok){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": error parsing remote addr "
-                + "\"" + codec_remote_addr_node.nodeValue().toStdString() + "\""
-                );
-    }
 
-    //-- check that addresses aren't too large
-    if (local_addr_int > 0xff){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": wrong local addr given: "
-                + "\"" + codec_local_addr_node.nodeValue().toStdString() + "\""
-                + ", it must be from 0 to 0xff"
-                );
-    }
+    uint8_t fmt_rx = ProjectStorageXML::readUInt8FromElemAttr(
+            elem_codec,
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_RX
+            );
+    qDebug("fmt_rx=0x%x", (unsigned int)fmt_rx);
 
-    if (remote_addr_int > 0xff){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": wrong remote addr given: "
-                + "\"" + codec_remote_addr_node.nodeValue().toStdString() + "\""
-                + ", it must be from 0 to 0xff"
-                );
-    }
+    uint8_t local_addr_rx = ProjectStorageXML::readUInt8FromElemAttr(
+            elem_codec,
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_RX
+            );
 
-    codec.setOwnAddr(local_addr_int);
-    codec.setRemoteAddr(remote_addr_int);
+    uint8_t remote_addr_rx = ProjectStorageXML::readUInt8FromElemAttr(
+            elem_codec,
+            ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_RX
+            );
+
+
+    codec.setFmtTx(fmt_tx);
+    codec.setOwnAddrTx(local_addr_tx);
+    codec.setRemoteAddrTx(remote_addr_tx);
+
+    codec.setFmtRx(fmt_rx);
+    codec.setOwnAddrRx(local_addr_rx);
+    codec.setRemoteAddrRx(remote_addr_rx);
 }
 
 void CodecVisitor_LoadFromXML::visit(CodecTransparent &codec)

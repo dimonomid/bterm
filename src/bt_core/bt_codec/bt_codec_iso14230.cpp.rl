@@ -42,27 +42,24 @@ using namespace BTCore;
  ******************************************************************************/
 
 Codec_ISO14230::Codec_ISO14230(
-        CodecNum codec_num,
-        unsigned char own_addr,
-        unsigned char remote_addr
+        CodecNum codec_num
         ) :
     Codec(codec_num),
     cur_rx_msg(),
     ragel_cs(0),
     rx_user_data_len(0),
     rx_user_data_got_len(0),
-    own_addr(own_addr),
-    remote_addr(remote_addr),
+
+    fmt_rx(0x80),
+    own_addr_rx(0xff),
+    remote_addr_rx(0xff),
+
+    fmt_tx(0x80),
+    own_addr_tx(0x10),
+    remote_addr_tx(0xf0),
+
     raw_data(),
     cur_raw_data_idx(0)
-{
-    this->clearRawRxData();
-}
-
-Codec_ISO14230::Codec_ISO14230(
-        CodecNum codec_num
-        ) :
-    Codec_ISO14230(codec_num, 0xff, 0xfe)
 {
     this->clearRawRxData();
 }
@@ -93,9 +90,9 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action got_fmt {
-       if (fc > 0x80){
+       if (fc > this->fmt_rx){
            //-- got fmt with len
-           rx_user_data_len = fc & ~0x80;
+           rx_user_data_len = fc & ~this->fmt_rx;
            _DEBUG("fmt with len=%d", (int)rx_user_data_len);
            fnext l_tgt;
        } else {
@@ -109,15 +106,15 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action got_tgt {
-      //tgt = fc;
-      //TODO
-      _DEBUG("tgt");
+       //tgt = fc;
+       //TODO
+       _DEBUG("tgt");
    }
 
    action got_src {
-      //src = fc;
-      //TODO
-      _DEBUG("src");
+       //src = fc;
+       //TODO
+       _DEBUG("src");
    }
 
    action got_service_byte {
@@ -133,7 +130,6 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action message_received {
-      /* TODO */
       _DEBUG("msg received");
       del_from_beginning = p - raw_data.data() + 1;
 
@@ -141,7 +137,6 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action message_error {
-      /* TODO */
       _DEBUG("msg error, byte: 0x%x", fc);
 
       //-- remove first byte
@@ -161,7 +156,7 @@ Codec_ISO14230::Codec_ISO14230(
 
 
    action is_fmt_valid {
-       ((fc & 0x80) == 0x80)
+       ((fc & this->fmt_rx) == this->fmt_rx)
    }
 
    action is_len_valid {
@@ -169,15 +164,11 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action is_tgt_valid {
-      //(!tgt_care || fc == tgt_needed);
-      //TODO
-      1
+       (this->own_addr_rx == 0xff || fc == this->own_addr_rx)
    }
 
    action is_src_valid {
-      //(!src_care || fc == src_needed);
-      //TODO
-      1
+       (this->remote_addr_rx == 0xff || fc == this->remote_addr_rx)
    }
 
    action is_waiting_for_data {
@@ -251,7 +242,7 @@ void Codec_ISO14230::msgReset()
 
 /* public       */
 
-void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
+void Codec_ISO14230::addRawRxData(const vector<uint8_t> &data)
 {
     //TODO: refactor, use iterators
     for (size_t i = 0; i < data.size(); i++){
@@ -263,10 +254,10 @@ void Codec_ISO14230::addRawRxData(const vector<unsigned char> &data)
        cur_raw_data_idx
     );
 
-   const unsigned char *p = raw_data.data() + cur_raw_data_idx;
-   const unsigned char *pe = raw_data.data() + raw_data.size();
+   const uint8_t *p = raw_data.data() + cur_raw_data_idx;
+   const uint8_t *pe = raw_data.data() + raw_data.size();
    int cs = this->ragel_cs;
-   const unsigned char *eof = nullptr;
+   const uint8_t *eof = nullptr;
 
    size_t del_from_beginning = 0;
 
@@ -309,21 +300,21 @@ void Codec_ISO14230::clearRawRxData()
    this->cur_raw_data_idx = 0;
 }
 
-DataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
+DataMsg Codec_ISO14230::encodeMessage(const vector<uint8_t> &data) const
 {
    DataMsg ret{};
 
    //-- put length
    if (data.size() >= 0x40){
-      ret.addDataByte(DataPart::DataType::SERVICE, 0x80);
+      ret.addDataByte(DataPart::DataType::SERVICE, this->fmt_tx);
       ret.addDataByte(DataPart::DataType::SERVICE, data.size());
    } else {
-      ret.addDataByte(DataPart::DataType::SERVICE, 0x80 | data.size());
+      ret.addDataByte(DataPart::DataType::SERVICE, this->fmt_tx | data.size());
    }
 
    //-- push target and source addresses
-   ret.addDataByte(DataPart::DataType::SERVICE, remote_addr);
-   ret.addDataByte(DataPart::DataType::SERVICE, own_addr);
+   ret.addDataByte(DataPart::DataType::SERVICE, remote_addr_tx);
+   ret.addDataByte(DataPart::DataType::SERVICE, own_addr_tx);
 
    //-- push user data
    for (auto user_byte : data){
@@ -332,7 +323,7 @@ DataMsg Codec_ISO14230::encodeMessage(const vector<unsigned char> &data) const
 
    //-- calculate and push checksum
    {
-      unsigned char checksum = 0;
+      uint8_t checksum = 0;
       std::shared_ptr<vector<uint8_t>> p_raw_data = ret.getRawData();
       for (auto byte : *p_raw_data){
          checksum += byte;
@@ -349,24 +340,75 @@ void Codec_ISO14230::accept(CodecVisitor &visitor)
 }
 
 
-void Codec_ISO14230::setOwnAddr(unsigned char own_addr)
+
+
+
+void Codec_ISO14230::setFmtRx(uint8_t fmt_rx)
 {
-    this->own_addr = own_addr;
+    this->fmt_rx = fmt_rx;
 }
 
-void Codec_ISO14230::setRemoteAddr(unsigned char remote_addr)
+void Codec_ISO14230::setOwnAddrRx(uint8_t own_addr_rx)
 {
-    this->remote_addr = remote_addr;
+    this->own_addr_rx = own_addr_rx;
 }
 
-uint8_t Codec_ISO14230::getOwnAddr() const
+void Codec_ISO14230::setRemoteAddrRx(uint8_t remote_addr_rx)
 {
-    return own_addr;
+    this->remote_addr_rx = remote_addr_rx;
 }
 
-uint8_t Codec_ISO14230::getRemoteAddr() const
+
+
+void Codec_ISO14230::setFmtTx(uint8_t fmt_tx)
 {
-    return remote_addr;
+    this->fmt_tx = fmt_tx;
+}
+
+void Codec_ISO14230::setOwnAddrTx(uint8_t own_addr_tx)
+{
+    this->own_addr_tx = own_addr_tx;
+}
+
+void Codec_ISO14230::setRemoteAddrTx(uint8_t remote_addr_tx)
+{
+    this->remote_addr_tx = remote_addr_tx;
+}
+
+
+
+
+uint8_t Codec_ISO14230::getFmtRx() const
+{
+    return fmt_rx;
+}
+
+uint8_t Codec_ISO14230::getOwnAddrRx() const
+{
+    return own_addr_rx;
+}
+
+uint8_t Codec_ISO14230::getRemoteAddrRx() const
+{
+    return remote_addr_rx;
+}
+
+
+
+
+uint8_t Codec_ISO14230::getFmtTx() const
+{
+    return fmt_tx;
+}
+
+uint8_t Codec_ISO14230::getOwnAddrTx() const
+{
+    return own_addr_tx;
+}
+
+uint8_t Codec_ISO14230::getRemoteAddrTx() const
+{
+    return remote_addr_tx;
 }
 
 

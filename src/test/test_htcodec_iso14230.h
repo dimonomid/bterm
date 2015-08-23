@@ -29,8 +29,10 @@ Q_OBJECT
 
 public:
     TestCodecISO14230() :
-        codec(BTCore::CodecNum::ISO_14230, 0x01, 0x02)
+        codec(BTCore::CodecNum::ISO_14230)
     {
+        codec.setOwnAddrTx(0x01);
+        codec.setRemoteAddrTx(0x02);
     connect(
             &codec, &BTCore::Codec_ISO14230::messageDecoded,
             this, &TestCodecISO14230::messageDecoded
