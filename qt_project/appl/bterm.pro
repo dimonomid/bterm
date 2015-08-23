@@ -54,7 +54,8 @@ HEADERS += \
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui \
     ../../src/gui/bt_project_dialog/bt_project_dialog.ui \
-    ../../src/gui/bt_project_view/bt_project_view.ui
+    ../../src/gui/bt_project_view/bt_project_view.ui \
+    ../../src/gui/bt_codec_view/bt_codec_iso14230_view.ui
 
 INCLUDEPATH += \
     ../../src/gui/mainwindow \

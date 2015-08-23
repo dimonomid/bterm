@@ -14,6 +14,7 @@
 #include <memory>
 
 #include "bt_codec_view.h"
+#include "ui_bt_codec_iso14230_view.h"
 
 
 
@@ -53,7 +54,9 @@ public:
      ***************************************************************************/
 private:
 
+    Ui::BTCodecISO14230View *p_codec_iso14230_view_ui;
     std::shared_ptr<BTCore::Codec_ISO14230> p_codec_iso14230;
+    QWidget *p_codec_sett_widg;
 
 
     /****************************************************************************
@@ -68,10 +71,19 @@ public:
     virtual QWidget *getCodecSettWidget() override;
 
 
+
+private:
+
+    QWidget *createSettWidget();
+
+
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
 
+private slots:
+
+    void onWidgetDestroyed();
 };
 
 

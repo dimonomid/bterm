@@ -10,7 +10,6 @@
 #include <QLabel>
 
 #include "bt_codec_iso14230_view.h"
-//#include "ui_bt_codec_iso14230_view.h"
 
 
 
@@ -24,7 +23,9 @@ using namespace BTGui;
 CodecISO14230View::CodecISO14230View(
         std::shared_ptr<BTCore::Codec_ISO14230> p_codec_iso14230
         ) :
-    p_codec_iso14230(p_codec_iso14230)
+    p_codec_iso14230_view_ui(new Ui::BTCodecISO14230View),
+    p_codec_iso14230(p_codec_iso14230),
+    p_codec_sett_widg()
 {
 
 }
@@ -49,6 +50,22 @@ CodecISO14230View::CodecISO14230View(
 
 /* private      */
 
+QWidget *CodecISO14230View::createSettWidget()
+{
+    QWidget *p_widg = new QWidget();
+
+    p_codec_iso14230_view_ui->setupUi(p_widg);
+
+
+    //-- listen for widget destroy event
+    connect(
+            p_widg, &QObject::destroyed,
+            this, &CodecISO14230View::onWidgetDestroyed
+           );
+
+    return p_widg;
+}
+
 /* protected    */
 
 /* public       */
@@ -56,7 +73,13 @@ CodecISO14230View::CodecISO14230View(
 QWidget *CodecISO14230View::getCodecSettWidget()
 {
     //TODO
-    return new QLabel("test iso14230");
+    //return new QLabel("test iso14230");
+
+    if (p_codec_sett_widg == nullptr){
+        p_codec_sett_widg = createSettWidget();
+    }
+
+    return p_codec_sett_widg;
 }
 
 
@@ -66,6 +89,11 @@ QWidget *CodecISO14230View::getCodecSettWidget()
  ******************************************************************************/
 
 /* private      */
+
+void CodecISO14230View::onWidgetDestroyed()
+{
+    p_codec_sett_widg = nullptr;
+}
 
 /* protected    */
 
