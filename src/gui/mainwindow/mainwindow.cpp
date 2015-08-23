@@ -46,7 +46,6 @@
 
 #include "mainwindow.h"
 #include "qplaintextedit_my.h"
-#include "bt_project_dialog.h"
 #include "bt_project_view.h"
 
 #include "bt_codec_visitor__view_create.h"
@@ -380,21 +379,6 @@ void MainWindow::initMainMenu()
     }
     // }}}
 
-    //-- Project menu {{{
-    {
-        p_act_project_sett = new QAction(tr("&Project settings"), this);
-        connect(
-                p_act_project_sett, &QAction::triggered,
-                this, &MainWindow::openProjectSettingsDialog
-               );
-
-        QMenu *menu_file = menuBar()->addMenu(tr("&Project"));
-        menu_file->addAction(p_act_project_sett);
-    }
-    // }}}
-
-
-
 }
 
 void MainWindow::mySaveState()
@@ -620,21 +604,6 @@ void MainWindow::closeProject()
 {
     appl.closeProject();
 }
-
-void MainWindow::openProjectSettingsDialog()
-{
-    if (auto p_project = wp_project.lock()){
-        BTProjectDialog *p_dialog = new BTProjectDialog(
-                p_project,
-                this
-                );
-        p_dialog->setAttribute(Qt::WA_DeleteOnClose);
-
-        p_dialog->exec();
-        qDebug("done");
-    }
-}
-
 
 void MainWindow::onEvent(std::shared_ptr<Event> p_event)
 {

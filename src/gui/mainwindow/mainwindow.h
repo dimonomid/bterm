@@ -207,8 +207,6 @@ private slots:
     void saveProject();
     void saveProjectAs();
 
-    void openProjectSettingsDialog();
-
     void onAddHandlerButtonPressed();
 
     void onProjectTitleChanged(const QString &title);

@@ -18,7 +18,6 @@ include(../common/bt_core.pri)
 SOURCES += \
     ../../src/main.cpp \
     ../../src/gui/mainwindow/mainwindow.cpp \
-    ../../src/gui/bt_project_dialog/bt_project_dialog.cpp \
     ../../src/gui/bt_project_view/bt_project_view.cpp \
     ../../src/gui/bt_codec_view/bt_codec_iso14230_view.cpp \
     ../../src/gui/bt_codec_view/bt_codec_empty_view.cpp \
@@ -35,7 +34,6 @@ SOURCES += \
 
 HEADERS += \
     ../../src/gui/mainwindow/mainwindow.h \
-    ../../src/gui/bt_project_dialog/bt_project_dialog.h \
     ../../src/gui/bt_project_view/bt_project_view.h \
     ../../src/gui/bt_codec_view/bt_codec_view.h \
     ../../src/gui/bt_codec_view/bt_codec_iso14230_view.h \
@@ -53,14 +51,12 @@ HEADERS += \
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui \
-    ../../src/gui/bt_project_dialog/bt_project_dialog.ui \
     ../../src/gui/bt_project_view/bt_project_view.ui \
     ../../src/gui/bt_codec_view/bt_codec_iso14230_view.ui
 
 INCLUDEPATH += \
     ../../src/gui/mainwindow \
     ../../src/gui/mainwindow/bt_event_visitor \
-    ../../src/gui/bt_project_dialog \
     ../../src/gui/bt_project_view \
     ../../src/gui/bt_codec_view \
     ../../src/gui/bt_codec_view/bt_codec_visitor \
