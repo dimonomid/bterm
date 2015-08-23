@@ -88,11 +88,13 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
 {
     this->p_io_dev = p_io_dev;
 
+    //-- get existing received data and discard it
+    p_io_dev->read();
+
     connect(
             p_io_dev.get(), &IODev::readyRead,
             this, &Project::onDataSrcReadyRead
            );
-
 }
 
 void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
