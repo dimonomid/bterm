@@ -83,6 +83,13 @@ private:
 
 private slots:
 
+    void onFmtRxChangedByUser(int value);
+    void onLocalAddrRxChangedByUser(int value);
+    void onRemoteAddrRxChangedByUser(int value);
+    void onFmtTxChangedByUser(int value);
+    void onLocalAddrTxChangedByUser(int value);
+    void onRemoteAddrTxChangedByUser(int value);
+
     void onWidgetDestroyed();
 };
 

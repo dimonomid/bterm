@@ -7,7 +7,7 @@
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <QLabel>
+#include <QSpinBox>
 
 #include "bt_codec_iso14230_view.h"
 #include "bt_codec_iso14230.h"
@@ -77,6 +77,37 @@ QWidget *CodecISO14230View::createSettWidget()
             p_codec_iso14230->getRemoteAddrTx()
             );
 
+    //-- subscribe on user changes:
+    connect(
+            p_codec_iso14230_view_ui->fmt_rx,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &CodecISO14230View::onFmtRxChangedByUser
+           );
+    connect(
+            p_codec_iso14230_view_ui->local_addr_rx,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &CodecISO14230View::onLocalAddrRxChangedByUser
+           );
+    connect(
+            p_codec_iso14230_view_ui->remote_addr_rx,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &CodecISO14230View::onRemoteAddrRxChangedByUser
+           );
+    connect(
+            p_codec_iso14230_view_ui->fmt_tx,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &CodecISO14230View::onFmtTxChangedByUser
+           );
+    connect(
+            p_codec_iso14230_view_ui->local_addr_tx,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &CodecISO14230View::onLocalAddrTxChangedByUser
+           );
+    connect(
+            p_codec_iso14230_view_ui->remote_addr_tx,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &CodecISO14230View::onRemoteAddrTxChangedByUser
+           );
 
 
 
@@ -109,6 +140,38 @@ QWidget *CodecISO14230View::getCodecSettWidget()
  ******************************************************************************/
 
 /* private      */
+
+void CodecISO14230View::onFmtRxChangedByUser(int value)
+{
+    p_codec_iso14230->setFmtRx(value);
+}
+
+void CodecISO14230View::onLocalAddrRxChangedByUser(int value)
+{
+    p_codec_iso14230->setOwnAddrRx(value);
+}
+
+void CodecISO14230View::onRemoteAddrRxChangedByUser(int value)
+{
+    p_codec_iso14230->setRemoteAddrRx(value);
+}
+
+void CodecISO14230View::onFmtTxChangedByUser(int value)
+{
+    p_codec_iso14230->setFmtTx(value);
+}
+
+void CodecISO14230View::onLocalAddrTxChangedByUser(int value)
+{
+    p_codec_iso14230->setOwnAddrTx(value);
+}
+
+void CodecISO14230View::onRemoteAddrTxChangedByUser(int value)
+{
+    p_codec_iso14230->setRemoteAddrTx(value);
+}
+
+
 
 void CodecISO14230View::onWidgetDestroyed()
 {
