@@ -77,9 +77,6 @@ QWidget *ProjectView::createProjectEditWidget()
                 p_project_view_ui->codec_select->addItem(
                         codec_factory.getCodecTitle(static_cast<CodecNum>(i))
                         );
-                p_project_view_ui->codec_select->addItem(
-                        codec_factory.getCodecTitle(static_cast<CodecNum>(i))
-                        );
             }
         }
 
