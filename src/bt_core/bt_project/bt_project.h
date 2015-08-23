@@ -231,6 +231,11 @@ signals:
      */
     void titleChanged(const QString &title);
 
+    /**
+     * Emitted when current codec is changed by calling `setCurrentCodecNum()`
+     */
+    void currentCodecNumChanged(std::shared_ptr<Codec> p_codec);
+
 private slots:
 
     void onDataSrcReadyRead(int bytes_available);

@@ -124,6 +124,8 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
             p_codec.get(), &Codec::messageDecoded,
             this, &Project::onMessageDecoded
            );
+
+    emit currentCodecNumChanged(p_codec);
 }
 
 void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)

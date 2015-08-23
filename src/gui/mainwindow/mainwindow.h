@@ -22,6 +22,7 @@ namespace BTCore {
     class Event;
     class Project;
     class ReqHandler;
+    class Codec;
 }
 
 namespace BTGui {
@@ -210,6 +211,7 @@ private slots:
     void onAddHandlerButtonPressed();
 
     void onProjectTitleChanged(const QString &title);
+    void onProjectCodecNumChanged(std::shared_ptr<BTCore::Codec> p_codec);
 
     void onReqHandlerAdded(
             std::shared_ptr<BTCore::ReqHandler> p_handler,

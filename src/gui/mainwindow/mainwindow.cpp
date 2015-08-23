@@ -287,6 +287,11 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
             p_project.get(), &Project::titleChanged,
             this, &MainWindow::onProjectTitleChanged
            );
+
+    connect(
+            p_project.get(), &Project::currentCodecNumChanged,
+            this, &MainWindow::onProjectCodecNumChanged
+           );
 }
 
 void MainWindow::unpopulate()
@@ -640,6 +645,14 @@ void MainWindow::onProjectTitleChanged(const QString &title)
 {
     std::ignore = title;
     updateWindowTitle();
+}
+
+void MainWindow::onProjectCodecNumChanged(std::shared_ptr<Codec> p_codec)
+{
+    std::ignore = p_codec;
+    if (auto p_project = wp_project.lock()){
+        refreshCodecView(p_project);
+    }
 }
 
 void MainWindow::onReqHandlerAdded(
