@@ -169,6 +169,14 @@ QWidget *HandlerView::createListItemWidget()
                );
     }
 
+    //-- destroy
+    {
+        connect(
+                p_widg, &QObject::destroyed,
+                this, &HandlerView::onListItemWidgetDestroyed
+               );
+    }
+
     p_widg->setLayout(p_vert_lay);
 
     return p_widg;
@@ -287,6 +295,11 @@ void HandlerView::onReqHandlerTitleChanged(const QString &text)
 
     p_dock->setWindowTitle(getEditDockWidgetTitle());
     p_list_item_label_name->setText(getListItemWidgetTitle());
+}
+
+void HandlerView::onListItemWidgetDestroyed()
+{
+    p_list_item_widget = nullptr;
 }
 
 

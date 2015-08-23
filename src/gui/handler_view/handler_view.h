@@ -119,6 +119,7 @@ private slots:
     void onTitleChangedByUser(const QString &text);
     void onScriptChangedByUser();
     void onReqHandlerTitleChanged(const QString &text);
+    void onListItemWidgetDestroyed();
 
 
 
