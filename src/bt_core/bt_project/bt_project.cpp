@@ -17,6 +17,7 @@
 #include "bt_project.h"
 #include "bt_event_data_raw.h"
 #include "bt_event_data_msg.h"
+#include "bt_event_sys.h"
 
 #include "my_util.h"
 
@@ -84,10 +85,22 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
 {
     //-- if we already have some IODev set, then unsubscribe from its events
     if (this->p_io_dev != nullptr){
+        if (this->p_io_dev->isOpened()){
+            this->p_io_dev->close();
+        }
+
         disconnect(
                 this->p_io_dev.get(), &IODev::readyRead,
-                this, &Project::onDataSrcReadyRead
+                this, &Project::onIODevReadyRead
                );
+        disconnect(
+                this->p_io_dev.get(), &IODev::openStatusChanged,
+                this, &Project::onIODevOpenStatusChanged
+                );
+        disconnect(
+                this->p_io_dev.get(), &IODev::error,
+                this, &Project::onIODevError
+                );
     }
 
     this->p_io_dev = p_io_dev;
@@ -97,8 +110,18 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
 
     connect(
             this->p_io_dev.get(), &IODev::readyRead,
-            this, &Project::onDataSrcReadyRead
+            this, &Project::onIODevReadyRead
            );
+    connect(
+            this->p_io_dev.get(), &IODev::openStatusChanged,
+            this, &Project::onIODevOpenStatusChanged
+            );
+    connect(
+            this->p_io_dev.get(), &IODev::error,
+            this, &Project::onIODevError
+            );
+
+    this->p_io_dev->open();
 }
 
 void Project::setCurrentCodecNum(CodecNum codec_num)
@@ -254,7 +277,7 @@ void Project::setTitle(QString title)
 /**
  * Called when new raw data is available to read from IO device
  */
-void Project::onDataSrcReadyRead(int bytes_available)
+void Project::onIODevReadyRead(int bytes_available)
 {
     std::ignore = bytes_available;
 
@@ -267,6 +290,36 @@ void Project::onDataSrcReadyRead(int bytes_available)
 
     //-- feed received data as a raw data to codec
     p_codec->addRawRxData( data );
+}
+
+/**
+ * Called when new raw data is available to read from IO device
+ */
+void Project::onIODevOpenStatusChanged(bool opened)
+{
+    QString msg;
+    if (opened){
+        msg = "IO Device \"" + p_io_dev->toString() + "\" opened";
+    } else {
+        msg = "IO Device \"" + p_io_dev->toString() + "\" closed";
+    }
+
+    auto p_event = std::make_shared<EventSys>(EventSys::Level::INFO, msg);
+    emit event(p_event);
+
+    emit ioDevOpenStatusChanged(opened);
+}
+
+/**
+ * Called whenever IO error occurs
+ */
+void Project::onIODevError(QString error_msg)
+{
+    auto p_event = std::make_shared<EventSys>(
+            EventSys::Level::ERROR,
+            "IO error: " + error_msg
+            );
+    emit event(p_event);
 }
 
 /**

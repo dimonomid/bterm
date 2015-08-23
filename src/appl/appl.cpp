@@ -207,9 +207,6 @@ void Appl::openProject(QString filename)
 
         rememberProjectFilename(fileinfo.absoluteFilePath());
 
-        //-- set IODev to newly created project, so that it can talk
-        p_project->setIODev(p_io_dev);
-
         connect(
                 p_project.get(), &Project::event,
                 this, &Appl::onEvent
@@ -220,6 +217,9 @@ void Appl::openProject(QString filename)
                 p_project.get(), &Project::reqHandlerTitleChanged,
                 this, &Appl::reqHandlerTitleChanged
                );
+
+        //-- set IODev to newly created project, so that it can talk
+        p_project->setIODev(p_io_dev);
 
         emit projectOpened(p_project);
 

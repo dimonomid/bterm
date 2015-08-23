@@ -59,6 +59,26 @@ private:
 public:
 
     /**
+     * Set baud rate. This function should be called only when port is not opened.
+     */
+    virtual void setBaudRate(int32_t baud_rate) = 0;
+
+    /**
+     * Open serial port
+     */
+    virtual void open() = 0;
+
+    /**
+     * Close serial port
+     */
+    virtual void close() = 0;
+
+    /**
+     * Returns whether the port is opened
+     */
+    virtual bool isOpened() = 0;
+
+    /**
      * Read all available data from serial port as a `vector<uint8_t>`.
      * If no data is available, empty `vector` is returned.
      */
@@ -69,6 +89,7 @@ public:
      */
     virtual void write(const std::vector<uint8_t> &data) = 0;
 
+    virtual QString toString() = 0;
 
 
     /*******************************************************************************
@@ -87,6 +108,16 @@ signals:
      *      this signal is emitted with value 12.
      */
     void readyRead(int bytes_available);
+
+    /**
+     * Emitted whenever port gets opened or closed.
+     */
+    void openStatusChanged(bool opened);
+
+    /**
+     * Emitted whenever IO error occurs
+     */
+    void error(QString error_msg);
 
 
 };

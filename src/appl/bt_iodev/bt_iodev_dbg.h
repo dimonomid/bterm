@@ -53,6 +53,7 @@ private:
     std::vector<uint8_t> cur_data;
 
     int stage;
+    bool opened;
 
 
     /****************************************************************************
@@ -66,6 +67,11 @@ public:
 
     std::vector<uint8_t> read() override;
     void write(const std::vector<uint8_t> &data) override;
+    void setBaudRate(int32_t baud_rate) override;
+    void open() override;
+    void close() override;
+    bool isOpened() override;
+    QString toString() override;
 
 
     /****************************************************************************

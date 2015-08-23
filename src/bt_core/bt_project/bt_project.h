@@ -236,9 +236,16 @@ signals:
      */
     void currentCodecNumChanged(std::shared_ptr<Codec> p_codec);
 
+    /**
+     * Emitted when IODev gets opened or closed
+     */
+    void ioDevOpenStatusChanged(bool opened);
+
 private slots:
 
-    void onDataSrcReadyRead(int bytes_available);
+    void onIODevReadyRead(int bytes_available);
+    void onIODevOpenStatusChanged(bool opened);
+    void onIODevError(QString error_msg);
     void onMessageDecoded(const DataMsg &msg);
 
     void onReqHandlerTitleChanged(const QString &name);

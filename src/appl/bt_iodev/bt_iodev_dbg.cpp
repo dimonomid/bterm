@@ -26,10 +26,10 @@ using namespace std;
 IODevDbg::IODevDbg() :
     timer(this),
     cur_data(),
-    stage(0)
+    stage(0),
+    opened(false)
 {
     connect(&timer, &QTimer::timeout, this, &IODevDbg::nextMsgGenerate);
-    timer.start(200);
 }
 
 IODevDbg::~IODevDbg()
@@ -71,6 +71,40 @@ void IODevDbg::write(const vector<uint8_t> &data)
     //std::ignore = data;
     qDebug() << "write: " << MyUtil::byteArrayToHex(data);
 }
+
+void IODevDbg::setBaudRate(int32_t baud_rate)
+{
+    std::ignore = baud_rate;
+    //-- do nothing
+}
+
+void IODevDbg::open()
+{
+    opened = true;
+
+    timer.start(200);
+
+    emit error("Just test error. Don't worry.");
+    emit openStatusChanged(true);
+}
+
+void IODevDbg::close()
+{
+    opened = false;
+    timer.stop();
+    emit openStatusChanged(false);
+}
+
+bool IODevDbg::isOpened()
+{
+    return opened;
+}
+
+QString IODevDbg::toString()
+{
+    return "Debug IO device";
+}
+
 
 
 /*******************************************************************************
