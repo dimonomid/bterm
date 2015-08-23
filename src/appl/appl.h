@@ -163,6 +163,8 @@ private:
 private slots:
 
     void onEvent(std::shared_ptr<BTCore::Event> p_event);
+    void onIODevOpenStatusChanged(bool opened);
+    void onIODevError(QString error_msg);
 
 signals:
 
@@ -190,6 +192,12 @@ signals:
             const BTCore::ReqHandler *p_handler,
             const QString &name
             );
+
+    /**
+     * Emitted when IODev gets opened or closed
+     */
+    void ioDevOpenStatusChanged(bool opened);
+
 };
 
 

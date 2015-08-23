@@ -92,6 +92,7 @@ private:
     QDockWidget      *p_dw_handlers;
     QDockWidget      *p_dw_project_sett;
     QDockWidget      *p_dw_codec_sett;
+    QDockWidget      *p_dw_iodev_sett;
 
     QAction *p_act_open_project;
     QAction *p_act_close_project;

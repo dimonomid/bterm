@@ -67,7 +67,18 @@ Appl::Appl() :
 
     //-- create debug IO device
     //   TODO: change to real
-    p_io_dev = std::make_shared<IODevDbg>();
+    {
+        p_io_dev = std::make_shared<IODevDbg>();
+
+        connect(
+                this->p_io_dev.get(), &IODev::openStatusChanged,
+                this, &Appl::onIODevOpenStatusChanged
+               );
+        connect(
+                this->p_io_dev.get(), &IODev::error,
+                this, &Appl::onIODevError
+               );
+    }
 
     //-- create event accumulators
 
@@ -315,6 +326,37 @@ void Appl::onEvent(std::shared_ptr<Event> p_event)
     //-- forward the event
     emit event(p_event);
 }
+
+/**
+ * Called when IO device is opened or closed
+ */
+void Appl::onIODevOpenStatusChanged(bool opened)
+{
+    QString msg;
+    if (opened){
+        msg = "IO Device \"" + p_io_dev->toString() + "\" opened";
+    } else {
+        msg = "IO Device \"" + p_io_dev->toString() + "\" closed";
+    }
+
+    auto p_event = std::make_shared<EventSys>(EventSys::Level::INFO, msg);
+    emit event(p_event);
+
+    emit ioDevOpenStatusChanged(opened);
+}
+
+/**
+ * Called whenever IO error occurs
+ */
+void Appl::onIODevError(QString error_msg)
+{
+    auto p_event = std::make_shared<EventSys>(
+            EventSys::Level::ERROR,
+            "IO error: " + error_msg
+            );
+    emit event(p_event);
+}
+
 
 /* protected    */
 

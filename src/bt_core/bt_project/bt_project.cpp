@@ -93,14 +93,6 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
                 this->p_io_dev.get(), &IODev::readyRead,
                 this, &Project::onIODevReadyRead
                );
-        disconnect(
-                this->p_io_dev.get(), &IODev::openStatusChanged,
-                this, &Project::onIODevOpenStatusChanged
-                );
-        disconnect(
-                this->p_io_dev.get(), &IODev::error,
-                this, &Project::onIODevError
-                );
     }
 
     this->p_io_dev = p_io_dev;
@@ -112,16 +104,11 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
             this->p_io_dev.get(), &IODev::readyRead,
             this, &Project::onIODevReadyRead
            );
-    connect(
-            this->p_io_dev.get(), &IODev::openStatusChanged,
-            this, &Project::onIODevOpenStatusChanged
-            );
-    connect(
-            this->p_io_dev.get(), &IODev::error,
-            this, &Project::onIODevError
-            );
 
-    this->p_io_dev->open();
+    //-- open IO device, if it's not already opened
+    if (!this->p_io_dev->isOpened()){
+        this->p_io_dev->open();
+    }
 }
 
 void Project::setCurrentCodecNum(CodecNum codec_num)
@@ -290,36 +277,6 @@ void Project::onIODevReadyRead(int bytes_available)
 
     //-- feed received data as a raw data to codec
     p_codec->addRawRxData( data );
-}
-
-/**
- * Called when new raw data is available to read from IO device
- */
-void Project::onIODevOpenStatusChanged(bool opened)
-{
-    QString msg;
-    if (opened){
-        msg = "IO Device \"" + p_io_dev->toString() + "\" opened";
-    } else {
-        msg = "IO Device \"" + p_io_dev->toString() + "\" closed";
-    }
-
-    auto p_event = std::make_shared<EventSys>(EventSys::Level::INFO, msg);
-    emit event(p_event);
-
-    emit ioDevOpenStatusChanged(opened);
-}
-
-/**
- * Called whenever IO error occurs
- */
-void Project::onIODevError(QString error_msg)
-{
-    auto p_event = std::make_shared<EventSys>(
-            EventSys::Level::ERROR,
-            "IO error: " + error_msg
-            );
-    emit event(p_event);
 }
 
 /**

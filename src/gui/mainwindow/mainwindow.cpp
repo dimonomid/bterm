@@ -95,6 +95,7 @@ MainWindow::MainWindow(
     p_dw_handlers(new QDockWidget("Handlers list")),
     p_dw_project_sett(new QDockWidget("Project settings")),
     p_dw_codec_sett(new QDockWidget("Codec settings")),
+    p_dw_iodev_sett(new QDockWidget("IO device settings")),
     handler_views(),
     p_event_visitor__gui_handle(std::unique_ptr<EventVisitor_GuiHandle>(
                 new EventVisitor_GuiHandle(*this)
@@ -145,6 +146,7 @@ MainWindow::MainWindow(
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_project_sett);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_codec_sett);
+    addDockWidget(Qt::TopDockWidgetArea, p_dw_iodev_sett);
 
 
     connect(&appl, &Appl::event, this, &MainWindow::onEvent);
@@ -230,81 +232,77 @@ void MainWindow::toggleCodecSettWindow()
 
 void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 {
-    QWidget *p_handlers_list_widg = new QWidget();
-
-    QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
-
-    //-- add "add handler" button
+    //-- populate handlers
     {
-        QPushButton *p_add_handler_btn = new QPushButton("Add handler");
-        p_lay->addWidget(p_add_handler_btn);
-        connect(
-                p_add_handler_btn, &QPushButton::clicked,
-                this, &MainWindow::onAddHandlerButtonPressed
-               );
-    }
+        QWidget *p_handlers_list_widg = new QWidget();
 
+        QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
-    //-- iterate all handlers: 
-    //   for each of them, create the view and display it:
-    //   add a row in the handlers view, and create (hidden) dockwidget
-    for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
-
-        //-- create view
-        auto p_handler_view = make_shared<HandlerView>(
-                *this,
-                p_project,
-                p_project->getHandler(i)
-                );
-
-        //-- create row view
-        QWidget *p_cur_widg = p_handler_view->getListItemWidget();
-        p_lay->addWidget(p_cur_widg);
-
-        //-- create and add hidden dockwidget
+        //-- add "add handler" button
         {
-            QDockWidget *p_dock = p_handler_view->getEditDockWidget();
-            addDockWidget(Qt::TopDockWidgetArea, p_dock);
-            p_dock->hide();
+            QPushButton *p_add_handler_btn = new QPushButton("Add handler");
+            p_lay->addWidget(p_add_handler_btn);
+            connect(
+                    p_add_handler_btn, &QPushButton::clicked,
+                    this, &MainWindow::onAddHandlerButtonPressed
+                   );
         }
 
-        //-- store the handler in the vector
-        handler_views.push_back(p_handler_view);
+
+        //-- iterate all handlers: 
+        //   for each of them, create the view and display it:
+        //   add a row in the handlers view, and create (hidden) dockwidget
+        for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
+
+            //-- create view
+            auto p_handler_view = make_shared<HandlerView>(
+                    *this,
+                    p_project,
+                    p_project->getHandler(i)
+                    );
+
+            //-- create row view
+            QWidget *p_cur_widg = p_handler_view->getListItemWidget();
+            p_lay->addWidget(p_cur_widg);
+
+            //-- create and add hidden dockwidget
+            {
+                QDockWidget *p_dock = p_handler_view->getEditDockWidget();
+                addDockWidget(Qt::TopDockWidgetArea, p_dock);
+                p_dock->hide();
+            }
+
+            //-- store the handler in the vector
+            handler_views.push_back(p_handler_view);
+        }
+
+
+        p_handlers_list_widg->setLayout(p_lay);
+
+        QScrollArea *p_scroll_area = new QScrollArea();
+        p_scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        p_scroll_area->setWidget(p_handlers_list_widg);
+        p_scroll_area->setWidgetResizable(true);
+
+        p_dw_handlers->setWidget(p_scroll_area);
+        p_dw_handlers->setObjectName("handlers_list");
     }
-
-
-    p_handlers_list_widg->setLayout(p_lay);
-
-    QScrollArea *p_scroll_area = new QScrollArea();
-    p_scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    p_scroll_area->setWidget(p_handlers_list_widg);
-    p_scroll_area->setWidgetResizable(true);
-
-    p_dw_handlers->setWidget(p_scroll_area);
-    p_dw_handlers->setObjectName("handlers_list");
 
 
     //-- populate project settings window
     p_dw_project_sett->setWidget(p_project_view->getProjectSettWidget());
     p_dw_project_sett->setObjectName("project_sett");
 
+    //-- codec settings window
     refreshCodecView(p_project);
 
-    //-- subscribe on project's signals
-    connect(
-            p_project.get(), &Project::titleChanged,
-            this, &MainWindow::onProjectTitleChanged
-           );
 
-    connect(
-            p_project.get(), &Project::currentCodecNumChanged,
-            this, &MainWindow::onProjectCodecNumChanged
-           );
 }
 
 void MainWindow::unpopulate()
 {
     p_dw_handlers->setWidget(nullptr);
+    p_dw_iodev_sett->setWidget(nullptr);
     p_dw_project_sett->setWidget(nullptr);
     refreshCodecView(nullptr);
 
@@ -530,6 +528,16 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
     connect(
             p_project.get(), &Project::reqHandlersReordered,
             this, &MainWindow::onReqHandlersReordered
+           );
+
+    connect(
+            p_project.get(), &Project::titleChanged,
+            this, &MainWindow::onProjectTitleChanged
+           );
+
+    connect(
+            p_project.get(), &Project::currentCodecNumChanged,
+            this, &MainWindow::onProjectCodecNumChanged
            );
 
     //-- store weak pointer to the project
