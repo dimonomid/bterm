@@ -57,6 +57,12 @@ Project::Project(
 
 Project::~Project()
 {
+    //-- close IO device
+    if (p_io_dev != nullptr){
+        if (this->p_io_dev->isOpened()){
+            p_io_dev->close();
+        }
+    }
 }
 
 
@@ -106,7 +112,13 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
            );
 
     //-- open IO device, if it's not already opened
-    if (!this->p_io_dev->isOpened()){
+    if (this->p_io_dev->isOpened()){
+        auto p_event = std::make_shared<EventSys>(
+                EventSys::Level::WARNING,
+                "IO device is opened when setting it to project. "
+                );
+        emit event(p_event);
+    } else {
         this->p_io_dev->open();
     }
 }
