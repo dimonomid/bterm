@@ -100,14 +100,6 @@ private:
 
     QAction *p_act_project_sett;
 
-#if 0
-    //-- NOTE: we use shared_ptr here instead of raw pointers, because
-    //   docs say that when we remove dockwidget from mainwindow by calling
-    //   removeDockWidget(), the dockwidget is NOT deleted (unlike other GUI
-    //   stuff in Qt). So, let the lifetime to be managed by shared_ptr, then.
-    std::list<std::shared_ptr<QDockWidget>>   handler_docks;
-#endif
-
 
     std::vector<std::shared_ptr<HandlerView>> handler_views;
 
@@ -147,19 +139,24 @@ private:
 
 public:
 
-#if 0
-    void addHandlerEditWidget(
-            std::shared_ptr<BTCore::ReqHandler> p_handler,
-            QWidget *p_widg
-            );
-#endif
-
     /**
      * if last state was maximized, then calls `showMaximized()`,
      * otherwise, calls `show()`.
      */
     void showInRestoredState();
+
+    /**
+     * We have to override this method in order to save/restore state
+     * correctly. See some details in comments inside this function.
+     */
     bool event(QEvent *e) override;
+
+    /**
+     * If codec settings window is opened, then hides it, otherwise, shows it.
+     * This function is needed because project settings window contains
+     * drop-down menu with codecs, and it's convenient to have a button "Settings"
+     * near this drop-down menu.
+     */
     void toggleCodecSettWindow();
 
 
