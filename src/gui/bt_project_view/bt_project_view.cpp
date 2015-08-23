@@ -80,6 +80,11 @@ QWidget *ProjectView::createProjectEditWidget()
             }
         }
 
+        //-- set current codec
+        p_project_view_ui->codec_select->setCurrentIndex(
+                static_cast<int>(p_project->getCodec()->getCodecNum())
+                );
+
 
         //-- subscribe on user changes:
         //-- project title
