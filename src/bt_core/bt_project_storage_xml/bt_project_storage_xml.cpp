@@ -287,6 +287,39 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveIODevToDomElement(
     return p_iodev_elem;
 }
 
+void ProjectStorageXML::readIODevFromDomElement(
+        const QDomElement &iodev_elem,
+        std::shared_ptr<IODev> p_iodev
+        )
+{
+    bool ok = true;
+
+    QDomNamedNodeMap attrs = iodev_elem.attributes();
+
+    QDomNode node = attrs.namedItem(XML_ATTR_NAME__IODEV__BAUDRATE);
+
+    if (node.isNull()){
+        throw std::invalid_argument(std::string("line ")
+                + QString::number(iodev_elem.lineNumber()).toStdString()
+                + ": no attr \"" + XML_ATTR_NAME__IODEV__BAUDRATE.toStdString() + "\""
+                );
+    }
+
+    //-- try to parse
+    unsigned int baudrate = node.nodeValue().toUInt(
+            &ok, 0
+            );
+    if (!ok){
+        throw std::invalid_argument(std::string("line ")
+                + QString::number(iodev_elem.lineNumber()).toStdString()
+                + ": error parsing baudrate value from "
+                + "\"" + node.nodeValue().toStdString() + "\""
+                );
+    }
+
+    p_iodev->setBaudRate(baudrate);
+}
+
 
 
 /* protected    */
@@ -296,7 +329,9 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveIODevToDomElement(
 
 /* public       */
 
-std::shared_ptr<Project> ProjectStorageXML::readProject()
+std::shared_ptr<Project> ProjectStorageXML::readProject(
+        std::shared_ptr<IODev> p_iodev
+        )
 {
     std::shared_ptr<Project> p_proj {};
 
@@ -392,6 +427,17 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
             }
         }
     }
+
+    //-- hanlde iodev
+    {
+
+        QDomElement iodev_elem = getSingleChildElementByTagName(
+                elem_proj, XML_TAG_NAME__IODEV
+                );
+
+        readIODevFromDomElement(iodev_elem, p_iodev);
+    }
+
 
     //-- add known codec to project and immediately set it as an active codec
     p_proj->addKnownCodec(p_codec);

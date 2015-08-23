@@ -65,7 +65,7 @@ void CodecVisitor_SaveXML::visit(Codec_ISO14230 &codec)
 
     p_codec_elem->setAttribute(
             ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_RX,
-            "0x" + QString::number(codec.getOwnAddrRx(), 16)
+            "0x" + QString::number(codec.getFmtRx(), 16)
             );
 
     p_codec_elem->setAttribute(
@@ -80,7 +80,7 @@ void CodecVisitor_SaveXML::visit(Codec_ISO14230 &codec)
 
     p_codec_elem->setAttribute(
             ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_TX,
-            "0x" + QString::number(codec.getOwnAddrTx(), 16)
+            "0x" + QString::number(codec.getFmtTx(), 16)
             );
 
     p_codec_elem->setAttribute(

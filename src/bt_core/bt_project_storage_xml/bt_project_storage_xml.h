@@ -120,8 +120,19 @@ public:
      *
      * NOTE: in case of error, std::invalid_argument is thrown,
      * so you should be prepared to catch it.
+     *
+     * @param p_iodev
+     *      IO device that project should use. IO parameters
+     *      (at least, baudrate) will be loaded from xml as part of
+     *      loading process.
+     *
+     *      But, IO device is NOT set to the project. After project is loaded
+     *      and you subscribed on its signals, you need to call
+     *      `#BTCore::Project::setIODev()`.
      */
-    std::shared_ptr<Project> readProject();
+    std::shared_ptr<Project> readProject(
+            std::shared_ptr<IODev> p_iodev
+            );
 
     /**
      * Save project to QIODevice that was given to the constructor
@@ -157,6 +168,11 @@ private:
 
     std::shared_ptr<QDomElement> saveIODevToDomElement(
             QDomDocument &doc, std::shared_ptr<IODev> p_iodev
+            );
+
+    void readIODevFromDomElement(
+            const QDomElement &elem_codec,
+            std::shared_ptr<IODev> p_iodev
             );
 
 

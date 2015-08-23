@@ -207,7 +207,9 @@ void Appl::openProject(QString filename)
     //connect(&storage_xml, &ProjectReaderXML::event, this, &Appl::onDMEvent);
 
     try {
-        p_project = storage_xml.readProject();
+        p_project = storage_xml.readProject(
+                p_io_dev
+                );
         //-- project is read successfully
         //   let's save filename and notify the listeners
 
