@@ -92,7 +92,7 @@ MainWindow::MainWindow(
     p_log_pte(new QPlainTextEdit_My(NULL)),
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
-    p_dw_project_edit(new QDockWidget("Project edit")),
+    p_dw_project_edit(new QDockWidget("Project settings")),
     handler_views(),
     p_event_visitor__gui_handle(std::unique_ptr<EventVisitor_GuiHandle>(
                 new EventVisitor_GuiHandle(*this)
