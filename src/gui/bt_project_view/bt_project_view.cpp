@@ -9,10 +9,12 @@
 
 #include <QDockWidget>
 #include <QComboBox>
+#include <QPushButton>
 
 #include "bt_project_view.h"
 #include "bt_project.h"
 #include "bt_codec_factory.h"
+#include "mainwindow.h"
 
 
 using namespace BTGui;
@@ -23,11 +25,13 @@ using namespace BTCore;
  ******************************************************************************/
 
 ProjectView::ProjectView(
-        std::shared_ptr<Project> p_project
+        std::shared_ptr<Project> p_project,
+        MainWindow &mainwindow
         ) :
     p_project_view_ui(new Ui::BTProjectView),
     wp_project(std::weak_ptr<Project>(p_project)),
-    p_project_edit_widg()
+    p_project_edit_widg(),
+    mainwindow(mainwindow)
 {
 #if 0
     QWidget *p_project_edit_widg = createProjectEditWidget();
@@ -104,6 +108,13 @@ QWidget *ProjectView::createProjectEditWidget()
                );
 
 
+
+        //-- codec "Settings" button
+        connect(p_project_view_ui->codec_sett_btn, &QPushButton::clicked,
+                this, &ProjectView::toggleCodecSettWindow
+               );
+
+
         //-- listen for widget destroy event
         connect(
                 p_widg, &QObject::destroyed,
@@ -155,6 +166,11 @@ void ProjectView::onCodecSelectionChangedByUser(int index)
 void ProjectView::onWidgetDestroyed()
 {
     p_project_edit_widg = nullptr;
+}
+
+void ProjectView::toggleCodecSettWindow()
+{
+    mainwindow.toggleCodecSettWindow();
 }
 
 /* protected    */

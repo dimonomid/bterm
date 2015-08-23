@@ -18,6 +18,7 @@
 
 
 class QDockWidget;
+class MainWindow;
 
 namespace BTCore {
     class Project;
@@ -45,7 +46,8 @@ class BTGui::ProjectView : public QObject
     ***************************************************************************/
 public:
     explicit ProjectView(
-            std::shared_ptr<BTCore::Project> p_project
+            std::shared_ptr<BTCore::Project> p_project,
+            MainWindow &mainwindow
             );
 
    /****************************************************************************
@@ -56,6 +58,7 @@ private:
     Ui::BTProjectView *p_project_view_ui;
     std::weak_ptr<BTCore::Project> wp_project;
     QWidget *p_project_edit_widg;
+    MainWindow &mainwindow;
 
 
    /****************************************************************************
@@ -85,6 +88,7 @@ private slots:
     void onTitleChangedByUser(const QString &text);
     void onCodecSelectionChangedByUser(int index);
     void onWidgetDestroyed();
+    void toggleCodecSettWindow();
 
 
 };

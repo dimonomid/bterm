@@ -216,6 +216,15 @@ bool MainWindow::event(QEvent *e)
     return ret;
 }
 
+void MainWindow::toggleCodecSettWindow()
+{
+    if (p_dw_codec_sett->isHidden()){
+        p_dw_codec_sett->show();
+    } else {
+        p_dw_codec_sett->hide();
+    }
+}
+
 
 
 /* private      */
@@ -516,7 +525,7 @@ void MainWindow::closeEvent(QCloseEvent *p_event)
 
 void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 {
-    p_project_view = std::make_shared<ProjectView>(p_project);
+    p_project_view = std::make_shared<ProjectView>(p_project, *this);
 
     populateWithProject(p_project);
 

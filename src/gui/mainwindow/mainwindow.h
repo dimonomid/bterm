@@ -160,6 +160,7 @@ public:
      */
     void showInRestoredState();
     bool event(QEvent *e) override;
+    void toggleCodecSettWindow();
 
 
 private:
