@@ -47,10 +47,12 @@
 #include "mainwindow.h"
 #include "qplaintextedit_my.h"
 #include "bt_project_dialog.h"
+#include "bt_project_view.h"
 
 
 
 using namespace BTCore;
+using namespace BTGui;
 using namespace std;
 
 
@@ -90,6 +92,7 @@ MainWindow::MainWindow(
     p_log_pte(new QPlainTextEdit_My(NULL)),
     p_dw_raw_data(new QDockWidget("Raw data")),
     p_dw_handlers(new QDockWidget("Handlers")),
+    p_dw_project_edit(new QDockWidget("Project edit")),
     handler_views(),
     p_event_visitor__gui_handle(std::unique_ptr<EventVisitor_GuiHandle>(
                 new EventVisitor_GuiHandle(*this)
@@ -135,6 +138,7 @@ MainWindow::MainWindow(
 
     addDockWidget(Qt::LeftDockWidgetArea, p_dw_raw_data);
     addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
+    addDockWidget(Qt::TopDockWidgetArea, p_dw_project_edit);
 
 
     connect(&appl, &Appl::event, this, &MainWindow::onEvent);
@@ -263,11 +267,17 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 
     p_dw_handlers->setWidget(p_scroll_area);
     p_dw_handlers->setObjectName("handlers_list");
+
+    p_dw_project_edit->setWidget(p_project_view->getProjectEditWidget());
+    p_dw_project_edit->setObjectName("project_edit");
+
+    
 }
 
 void MainWindow::unpopulate()
 {
     p_dw_handlers->setWidget(nullptr);
+    p_dw_project_edit->setWidget(nullptr);
 
     qDebug("size: %d", handler_views.size());
     while (handler_views.size() > 0){
@@ -454,6 +464,8 @@ void MainWindow::closeEvent(QCloseEvent *p_event)
 
 void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 {
+    p_project_view = std::make_shared<ProjectView>(p_project);
+
     populateWithProject(p_project);
 
     setWindowTitle(
@@ -490,13 +502,15 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 
 void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
 {
-    this->wp_project = std::weak_ptr<BTCore::Project>();
     std::ignore = p_project;
 
     saveProjectState();
 
     setWindowTitle(WINDOW_TITLE);
     unpopulate();
+
+    this->wp_project = std::weak_ptr<BTCore::Project>();
+    p_project_view = nullptr;
 
     p_act_close_project->setEnabled(false);
 }

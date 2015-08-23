@@ -19,6 +19,7 @@ SOURCES += \
     ../../src/main.cpp \
     ../../src/gui/mainwindow/mainwindow.cpp \
     ../../src/gui/bt_project_dialog/bt_project_dialog.cpp \
+    ../../src/gui/bt_project_view/bt_project_view.cpp \
     ../../src/gui/mainwindow/bt_event_visitor/bt_event_visitor__gui_handle.cpp \
     ../../src/appl/appl.cpp \
     ../../src/appl/bt_event_visitor/bt_event_visitor__appl_handle.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
 HEADERS += \
     ../../src/gui/mainwindow/mainwindow.h \
     ../../src/gui/bt_project_dialog/bt_project_dialog.h \
+    ../../src/gui/bt_project_view/bt_project_view.h \
     ../../src/gui/mainwindow/bt_event_visitor/bt_event_visitor__gui_handle.h \
     ../../src/appl/appl.h \
     ../../src/appl/bt_event_visitor/bt_event_visitor__appl_handle.h \
@@ -44,12 +46,14 @@ HEADERS += \
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui \
-    ../../src/gui/bt_project_dialog/bt_project_dialog.ui
+    ../../src/gui/bt_project_dialog/bt_project_dialog.ui \
+    ../../src/gui/bt_project_view/bt_project_view.ui
 
 INCLUDEPATH += \
     ../../src/gui/mainwindow \
     ../../src/gui/mainwindow/bt_event_visitor \
     ../../src/gui/bt_project_dialog \
+    ../../src/gui/bt_project_view \
     ../../src/appl/bt_iodev \
     ../../src/appl/bt_event_visitor \
     ../../src/appl \

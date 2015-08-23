@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _BT_PROJECT_DIALOG_H
-#define _BT_PROJECT_DIALOG_H
+#ifndef _BT_PROJECT_VIEW_H
+#define _BT_PROJECT_VIEW_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -13,26 +13,28 @@
 #include <QObject>
 #include <memory>
 
-#include "ui_bt_project_dialog.h"
+#include "ui_bt_project_view.h"
 
 
 
-namespace Ui {
-    class BTProjectDialog;
+class QDockWidget;
+
+/*******************************************************************************
+ * CLASS DECLARATION
+ ******************************************************************************/
+
+namespace BTGui {
+    class ProjectView;
 }
 
 namespace BTCore {
     class Project;
 }
 
-/*******************************************************************************
- * CLASS DECLARATION
- ******************************************************************************/
-
 /**
  * TODO
  */
-class BTProjectDialog : public QDialog
+class BTGui::ProjectView : public QObject
 {
    /****************************************************************************
     * TYPES
@@ -42,22 +44,18 @@ class BTProjectDialog : public QDialog
     * CONSTRUCTOR, DESTRUCTOR
     ***************************************************************************/
 public:
-
-    explicit BTProjectDialog(
-            std::shared_ptr<BTCore::Project> p_project,
-            QWidget *p_parent = nullptr,
-            Qt::WindowFlags flags = 0
+    ProjectView(
+            std::shared_ptr<BTCore::Project> p_project
             );
-
-
 
    /****************************************************************************
     * PRIVATE DATA
     ***************************************************************************/
 private:
 
-    Ui::BTProjectDialog *p_ui;
-    std::shared_ptr<BTCore::Project> p_project;
+    Ui::BTProjectView *p_project_view_ui;
+    std::weak_ptr<BTCore::Project> wp_project;
+    QWidget *p_project_edit_widg;
 
 
    /****************************************************************************
@@ -67,12 +65,27 @@ private:
    /****************************************************************************
     * METHODS
     ***************************************************************************/
+public:
+
+    QWidget *getProjectEditWidget();
+
+
+
+private:
+
+    QWidget *createProjectEditWidget();
+
 
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
 
+private slots:
+
+    void onWidgetDestroyed();
+
+
 };
 
 
-#endif // _BT_PROJECT_DIALOG_H
+#endif // _BT_PROJECT_VIEW_H

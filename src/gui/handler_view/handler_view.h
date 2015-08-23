@@ -84,13 +84,7 @@ private:
 public:
 
     QDockWidget *getEditDockWidget() const;
-    QWidget *getListItemWidget();
 
-
-
-private:
-
-    QWidget *createEditWidget();
     /**
      * NOTE: each time this function is called, the same widget is returned,
      * and the caller is responsible to delete it eventually.
@@ -98,6 +92,13 @@ private:
      * Widget will be actually created at the first call, so if this method
      * never called, then widget is not created at all.
      */
+    QWidget *getListItemWidget();
+
+
+
+private:
+
+    QWidget *createEditWidget();
     QWidget *createListItemWidget();
     //void applyReqName();
 

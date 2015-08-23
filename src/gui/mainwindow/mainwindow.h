@@ -24,6 +24,10 @@ namespace BTCore {
     class ReqHandler;
 }
 
+namespace BTGui {
+    class ProjectView;
+}
+
 namespace Ui {
     class MainWindow;
 }
@@ -84,6 +88,7 @@ private:
 
     QDockWidget      *p_dw_raw_data;
     QDockWidget      *p_dw_handlers;
+    QDockWidget      *p_dw_project_edit;
 
     QAction *p_act_open_project;
     QAction *p_act_close_project;
@@ -92,11 +97,13 @@ private:
 
     QAction *p_act_project_sett;
 
+#if 0
     //-- NOTE: we use shared_ptr here instead of raw pointers, because
     //   docs say that when we remove dockwidget from mainwindow by calling
     //   removeDockWidget(), the dockwidget is NOT deleted (unlike other GUI
     //   stuff in Qt). So, let the lifetime to be managed by shared_ptr, then.
     std::list<std::shared_ptr<QDockWidget>>   handler_docks;
+#endif
 
 
     std::vector<std::shared_ptr<HandlerView>> handler_views;
@@ -104,6 +111,7 @@ private:
     std::unique_ptr<EventVisitor_GuiHandle> p_event_visitor__gui_handle;
 
     std::weak_ptr<BTCore::Project> wp_project;
+    std::shared_ptr<BTGui::ProjectView> p_project_view;
 
 
     //-- A hack that is needed for the case when application was closed in
