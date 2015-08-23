@@ -25,7 +25,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QSpinBox" name="spinBox">
+    <widget class="QSpinBox" name="fmt_rx">
      <property name="prefix">
       <string>0x</string>
      </property>
@@ -76,7 +76,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QSpinBox" name="spinBox_2">
+    <widget class="QSpinBox" name="local_addr_rx">
      <property name="prefix">
       <string>0x</string>
      </property>
@@ -92,7 +92,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QSpinBox" name="spinBox_3">
+    <widget class="QSpinBox" name="remote_addr_rx">
      <property name="prefix">
       <string>0x</string>
      </property>
@@ -108,7 +108,7 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QSpinBox" name="spinBox_4">
+    <widget class="QSpinBox" name="fmt_tx">
      <property name="prefix">
       <string>0x</string>
      </property>
@@ -124,7 +124,7 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QSpinBox" name="spinBox_5">
+    <widget class="QSpinBox" name="local_addr_tx">
      <property name="prefix">
       <string>0x</string>
      </property>
@@ -140,7 +140,7 @@
     </widget>
    </item>
    <item row="5" column="1">
-    <widget class="QSpinBox" name="spinBox_6">
+    <widget class="QSpinBox" name="remote_addr_tx">
      <property name="prefix">
       <string>0x</string>
      </property>

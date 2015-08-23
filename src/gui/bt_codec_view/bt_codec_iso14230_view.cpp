@@ -10,6 +10,7 @@
 #include <QLabel>
 
 #include "bt_codec_iso14230_view.h"
+#include "bt_codec_iso14230.h"
 
 
 
@@ -56,6 +57,28 @@ QWidget *CodecISO14230View::createSettWidget()
 
     p_codec_iso14230_view_ui->setupUi(p_widg);
 
+    //-- set current data
+    p_codec_iso14230_view_ui->fmt_rx->setValue(
+            p_codec_iso14230->getFmtRx()
+            );
+    p_codec_iso14230_view_ui->local_addr_rx->setValue(
+            p_codec_iso14230->getOwnAddrRx()
+            );
+    p_codec_iso14230_view_ui->remote_addr_rx->setValue(
+            p_codec_iso14230->getRemoteAddrRx()
+            );
+    p_codec_iso14230_view_ui->fmt_tx->setValue(
+            p_codec_iso14230->getFmtTx()
+            );
+    p_codec_iso14230_view_ui->local_addr_tx->setValue(
+            p_codec_iso14230->getOwnAddrTx()
+            );
+    p_codec_iso14230_view_ui->remote_addr_tx->setValue(
+            p_codec_iso14230->getRemoteAddrTx()
+            );
+
+
+
 
     //-- listen for widget destroy event
     connect(
@@ -72,9 +95,6 @@ QWidget *CodecISO14230View::createSettWidget()
 
 QWidget *CodecISO14230View::getCodecSettWidget()
 {
-    //TODO
-    //return new QLabel("test iso14230");
-
     if (p_codec_sett_widg == nullptr){
         p_codec_sett_widg = createSettWidget();
     }
