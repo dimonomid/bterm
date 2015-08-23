@@ -66,6 +66,7 @@
    * [ ] instantiable ByteArrReadWrite. It is needed for the next two items:
    * [ ] some script that runs just when project is opened (may perform some init)
    * [ ] set of other functions, non-handlers. They may be called when user presses button.
+   * [ ] menu "View" with all dockwidgets. Handlers should be a submenu.
 
    * [ ] make HTDataMsg::toString() to return QString instead of std::string
 
