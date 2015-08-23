@@ -181,7 +181,7 @@ void TestCodecISO14230::decode_encoded()
     //-- create another instance of ico14230 codec for tx, with
     //   reversed own and remote addresses, we will use it
     //   for encoding messages
-    Codec_ISO14230 tx_codec{0xf1, 0x10};
+    Codec_ISO14230 tx_codec{BTCore::CodecNum::ISO_14230, 0xf1, 0x10};
 
     //-- will be filled at each loop iteration
     vector<uint8_t> user_data{};

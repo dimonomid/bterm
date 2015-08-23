@@ -13,6 +13,7 @@
 
 #include <QtTest/QtTest>
 #include "bt_codec_iso14230.h"
+#include "bt_codec_types.h"
 
 #include <queue>
 #include <iostream>
@@ -28,7 +29,7 @@ Q_OBJECT
 
 public:
     TestCodecISO14230() :
-        codec(0x01, 0x02)
+        codec(BTCore::CodecNum::ISO_14230, 0x01, 0x02)
     {
     connect(
             &codec, &BTCore::Codec_ISO14230::messageDecoded,
