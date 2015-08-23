@@ -169,7 +169,7 @@ QWidget *HandlerView::createListItemWidget()
                );
     }
 
-    //-- destroy
+    //-- widget destroy
     {
         connect(
                 p_widg, &QObject::destroyed,
