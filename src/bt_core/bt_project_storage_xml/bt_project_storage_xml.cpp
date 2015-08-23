@@ -12,8 +12,9 @@
 #include "bt_project_storage_xml.h"
 #include "bt_project.h"
 #include "bt_codec.h"
-#include "bt_codec_iso14230.h"
+#include "bt_codec_factory.h"
 #include "bt_codec_visitor__save_xml.h"
+#include "bt_codec_visitor__load_from_xml.h"
 
 
 
@@ -33,10 +34,10 @@ const QString ProjectStorageXML::XML_TAG_NAME__RH_CODE  = "code";
 
 const QString ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE = "title";
 
+const QString ProjectStorageXML::XML_ATTR_NAME__CODEC__KEY = "key";
+
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR   = "local_addr";
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR  = "remote_addr";
-
-const QString ProjectStorageXML::CODEC_NAME__ISO14230   = "iso14230";
 
 
 /*******************************************************************************
@@ -104,114 +105,37 @@ std::shared_ptr<Codec> ProjectStorageXML::readCodecFromDomElement(
     std::shared_ptr<Codec> p_codec {};
 
     QDomNamedNodeMap elem_codec_attrs = elem_codec.attributes();
-    QDomNode codec_name_node = elem_codec_attrs.namedItem(
-            XML_ATTR_NAME__COMMON__TITLE
+    QDomNode codec_key_node = elem_codec_attrs.namedItem(
+            XML_ATTR_NAME__CODEC__KEY
             );
 
-    if (codec_name_node.isNull()){
+    if (codec_key_node.isNull()){
         throw std::invalid_argument(std::string("line ")
                 + QString::number(elem_codec.lineNumber()).toStdString()
-                + ": no name specified for codec"
+                + ": no key specified for codec"
                 );
     }
 
-    QString codec_name = codec_name_node.nodeValue();
+    QString codec_key = codec_key_node.nodeValue();
 
-    if (codec_name == CODEC_NAME__ISO14230){
-        p_codec = readCodecIso14230FromDomElement(elem_codec);
-    } else {
+    {
+        CodecFactory factory {};
+        p_codec = factory.createCodecByKey(codec_key);
+    }
+
+    //TODO: use factory
+    if (p_codec == nullptr){
         throw std::invalid_argument(std::string("line ")
                 + QString::number(elem_codec.lineNumber()).toStdString()
                 + ": unsupported codec specified: "
-                + "\"" + codec_name.toStdString() + "\""
+                + "\"" + codec_key.toStdString() + "\""
                 );
     }
 
-    return p_codec;
-}
-
-/**
- * Read Codec_ISO14230 from dom element. This function is called only
- * by readCodecFromDomElement(), which first determines the codec name.
- */
-std::shared_ptr<Codec_ISO14230> ProjectStorageXML::readCodecIso14230FromDomElement(
-        const QDomElement &elem_codec_iso14230
-        )
-{
-    bool ok = true;
-
-    std::shared_ptr<Codec_ISO14230> p_codec {};
-
-    QDomNamedNodeMap elem_codec_attrs = elem_codec_iso14230.attributes();
-    QDomNode codec_local_addr_node = elem_codec_attrs.namedItem(
-            XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR
-            );
-    QDomNode codec_remote_addr_node = elem_codec_attrs.namedItem(
-            XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR
-            );
-
-    //-- make sure both addresses are specified
-    if (codec_local_addr_node.isNull()){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
-                + ": no local addr specified for codec iso14230"
-                );
+    {
+        CodecVisitor_LoadFromXML codec_visitor_load_from_xml {elem_codec};
+        p_codec->accept(codec_visitor_load_from_xml);
     }
-
-    if (codec_remote_addr_node.isNull()){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
-                + ": no remote addr specified for codec iso14230"
-                );
-    }
-
-    //-- try to parse addresses
-    unsigned int local_addr_int = codec_local_addr_node.nodeValue().toUInt(
-            &ok, 0
-            );
-    if (!ok){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
-                + ": error parsing local addr "
-                + "\"" + codec_local_addr_node.nodeValue().toStdString() + "\""
-                );
-    }
-
-    unsigned int remote_addr_int = codec_remote_addr_node.nodeValue().toUInt(
-            &ok, 0
-            );
-    if (!ok){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
-                + ": error parsing remote addr "
-                + "\"" + codec_remote_addr_node.nodeValue().toStdString() + "\""
-                );
-    }
-
-    //-- check that addresses aren't too large
-    if (local_addr_int > 0xff){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
-                + ": wrong local addr given: "
-                + "\"" + codec_local_addr_node.nodeValue().toStdString() + "\""
-                + ", it must be from 0 to 0xff"
-                );
-    }
-
-    if (remote_addr_int > 0xff){
-        throw std::invalid_argument(std::string("line ")
-                + QString::number(elem_codec_iso14230.lineNumber()).toStdString()
-                + ": wrong remote addr given: "
-                + "\"" + codec_remote_addr_node.nodeValue().toStdString() + "\""
-                + ", it must be from 0 to 0xff"
-                );
-    }
-
-    //-- after all, create the codec
-    p_codec = std::make_shared<Codec_ISO14230>(
-            local_addr_int,
-            remote_addr_int
-            );
 
     return p_codec;
 }
@@ -337,6 +261,10 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
         proj_name = QObject::tr("Untitled project");
     }
 
+    //-- now, since we have title, we can create the project
+    p_proj = std::make_shared<Project>(proj_name);
+
+
     //-- handle codec
     std::shared_ptr<Codec> p_codec {};
     {
@@ -386,9 +314,9 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
         }
     }
 
-
-    //-- now, since we have codec, we can create the project
-    p_proj = std::make_shared<Project>(proj_name, p_codec);
+    //-- add known codec to project and immediately set it as an active codec
+    p_proj->addKnownCodec(p_codec);
+    p_proj->setCodec(p_codec->getCodecNum());
 
     //-- read handlers
     {

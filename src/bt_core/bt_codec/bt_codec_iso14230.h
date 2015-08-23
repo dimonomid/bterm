@@ -48,7 +48,15 @@ public:
      * @param remote_addr
      *      see details about remote address: `#setRemoteAddr()`
      */
-    explicit Codec_ISO14230(uint8_t own_addr, uint8_t remote_addr);
+    explicit Codec_ISO14230(
+            CodecNum codec_num,
+            uint8_t own_addr,
+            uint8_t remote_addr
+            );
+
+    explicit Codec_ISO14230(
+            CodecNum codec_num
+            );
 
 
     /****************************************************************************

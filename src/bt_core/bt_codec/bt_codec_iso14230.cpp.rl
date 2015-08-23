@@ -42,19 +42,29 @@ using namespace BTCore;
  ******************************************************************************/
 
 Codec_ISO14230::Codec_ISO14230(
-      unsigned char own_addr,
-      unsigned char remote_addr
-      ) :
-   cur_rx_msg(),
-   ragel_cs(0),
-   rx_user_data_len(0),
-   rx_user_data_got_len(0),
-   own_addr(own_addr),
-   remote_addr(remote_addr),
-   raw_data(),
-   cur_raw_data_idx(0)
+        CodecNum codec_num,
+        unsigned char own_addr,
+        unsigned char remote_addr
+        ) :
+    Codec(codec_num),
+    cur_rx_msg(),
+    ragel_cs(0),
+    rx_user_data_len(0),
+    rx_user_data_got_len(0),
+    own_addr(own_addr),
+    remote_addr(remote_addr),
+    raw_data(),
+    cur_raw_data_idx(0)
 {
-   this->clearRawRxData();
+    this->clearRawRxData();
+}
+
+Codec_ISO14230::Codec_ISO14230(
+        CodecNum codec_num
+        ) :
+    Codec_ISO14230(codec_num, 0xff, 0xfe)
+{
+    this->clearRawRxData();
 }
 
 

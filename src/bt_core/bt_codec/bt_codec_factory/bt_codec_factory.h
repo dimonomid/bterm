@@ -3,20 +3,17 @@
  *
  ******************************************************************************/
 
-#ifndef _BT_CODEC_H
-#define _BT_CODEC_H
+#ifndef _BT_CODEC_FACTORY_H
+#define _BT_CODEC_FACTORY_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include <cstdint>
-
 #include <QObject>
-#include "bt_datamsg.h"
-#include "bt_codec_types.h"
+#include <memory>
 
-#include <vector>
+#include "bt_codec_types.h"
 
 
 /*******************************************************************************
@@ -24,30 +21,30 @@
  ******************************************************************************/
 
 namespace BTCore {
+    class CodecFactory;
     class Codec;
-    class CodecVisitor;
 }
 
 /**
- * Abstract codec that is used by `#BTCore::Project` to decode messages
- * (`#BTCore::DataMsg`) from raw Rx data, and encode Tx messages.
+ * TODO
  */
-class BTCore::Codec : public QObject
+class BTCore::CodecFactory
 {
-Q_OBJECT
-
     /****************************************************************************
      * TYPES
      ***************************************************************************/
+private:
+
+    struct CodecDesc {
+        QString     key;
+        QString     title;
+    };
+
 
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    Codec(CodecNum codec_num) :
-        codec_num(codec_num)
-    {
-    }
 
 
 
@@ -56,7 +53,7 @@ public:
      ***************************************************************************/
 private:
 
-    CodecNum codec_num;
+    static const CodecDesc CODEC_DESC[];
 
 
     /****************************************************************************
@@ -66,56 +63,26 @@ private:
     /****************************************************************************
      * METHODS
      ***************************************************************************/
+
 public:
 
-    /**
-     * Get codec number (see `#BTCore::CodecNum`)
-     */
-    CodecNum getCodecNum() const
-    {
-        return codec_num;
-    }
+    size_t getCodecsCnt() const;
+    QString getCodecTitle(CodecNum codec_num) const;
+    QString getCodecKey(CodecNum codec_num) const;
 
-    /**
-     * Add raw data to be parsed by codec
-     *
-     * @param data
-     *      raw data to add
-     */
-    virtual void addRawRxData   (const std::vector<uint8_t> &data) = 0;
+    CodecNum getCodecNumByKey(QString codec_key) const;
 
-    /**
-     * Drop any existing raw data, effectively resetting the codec Rx state
-     */
-    virtual void clearRawRxData () = 0;
+    std::shared_ptr<Codec> createCodec(CodecNum codec_num) const;
 
-    /**
-     * Encode the message with codec. It takes plain vector of `uint8_t`, and
-     * returns an instance of `DataMsg`.
-     */
-    virtual DataMsg encodeMessage  (const std::vector<uint8_t> &data) const = 0;
+    std::shared_ptr<Codec> createCodecByKey(QString codec_key) const;
 
-
-    /**
-     * Accept codec visitor.
-     *
-     * (if you're unfamiliar with visitor pattern, read about it somewhere; for
-     * example, on Wikipedia: https://en.wikipedia.org/wiki/Visitor_pattern )
-     */
-    virtual void accept(CodecVisitor &visitor) = 0;
 
 
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
-signals:
-
-    /**
-     * Emitted when new Rx message was decoded from raw data.
-     */
-    void messageDecoded(const DataMsg &msg);
 
 };
 
 
-#endif // _BT_CODEC_H
+#endif // _BT_CODEC_FACTORY_H

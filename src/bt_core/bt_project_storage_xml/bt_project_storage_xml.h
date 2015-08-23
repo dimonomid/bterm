@@ -24,6 +24,7 @@ namespace BTCore {
     class ReqHandler;
 
     class CodecVisitor_SaveXML;
+    class CodecVisitor_LoadFromXML;
 }
 
 class QIODevice;
@@ -47,6 +48,7 @@ class BTCore::ProjectStorageXML : public QObject
 Q_OBJECT
 
     friend CodecVisitor_SaveXML;
+    friend CodecVisitor_LoadFromXML;
 
     /****************************************************************************
      * TYPES
@@ -78,10 +80,12 @@ private:
 
     static const QString XML_ATTR_NAME__COMMON__TITLE;
 
+    static const QString XML_ATTR_NAME__CODEC__KEY;
+
     static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR;
     static const QString XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR;
 
-    static const QString CODEC_NAME__ISO14230;
+
 
     /****************************************************************************
      * STATIC METHODS
@@ -115,10 +119,6 @@ private:
             );
 
     std::shared_ptr<Codec> readCodecFromDomElement(
-            const QDomElement &elem_codec
-            );
-
-    std::shared_ptr<Codec_ISO14230> readCodecIso14230FromDomElement(
             const QDomElement &elem_codec
             );
 

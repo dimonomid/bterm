@@ -23,6 +23,7 @@
 #include "bytearr_read.h"
 #include "bytearr_read_write.h"
 #include "script_factory.h"
+#include "bt_codec_factory.h"
 
 
 using namespace BTCore;
@@ -33,13 +34,13 @@ using namespace std;
  ******************************************************************************/
 
 Project::Project(
-        QString title,
-        std::shared_ptr<Codec> p_codec
+        QString title
         ) :
     title(title),
     p_engine(std::make_shared<QJSEngine>()),
     p_script_factory(std::make_shared<ScriptFactory>()),
-    p_codec(p_codec),
+    p_codec(),
+    all_codecs({}),
     p_io_dev(),
     handlers(),
     script_ctx_jsval(p_engine->evaluate("({})"))
@@ -50,11 +51,6 @@ Project::Project(
     //   and ByteArrReadWrite as instantiable
     qmlRegisterType<ByteArrRead>     ();
     qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
-
-    connect(
-            p_codec.get(), &Codec::messageDecoded,
-            this, &Project::onMessageDecoded
-           );
 
 }
 
@@ -86,15 +82,60 @@ Project::~Project()
 
 void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
 {
+    //-- if we already have some IODev set, then unsubscribe from its events
+    if (this->p_io_dev != nullptr){
+        disconnect(
+                this->p_io_dev.get(), &IODev::readyRead,
+                this, &Project::onDataSrcReadyRead
+               );
+    }
+
     this->p_io_dev = p_io_dev;
 
     //-- get existing received data and discard it
-    p_io_dev->read();
+    this->p_io_dev->read();
 
     connect(
-            p_io_dev.get(), &IODev::readyRead,
+            this->p_io_dev.get(), &IODev::readyRead,
             this, &Project::onDataSrcReadyRead
            );
+}
+
+void Project::setCodec(CodecNum codec_num)
+{
+    //-- if we already have some Codec set, then unsubscribe from its events
+    if (p_codec != nullptr){
+        disconnect(
+                p_codec.get(), &Codec::messageDecoded,
+                this, &Project::onMessageDecoded
+                );
+    }
+
+    CodecFactory codec_factory {};
+
+    if (all_codecs[static_cast<size_t>(codec_num)] == nullptr){
+        all_codecs[static_cast<size_t>(codec_num)] =
+            codec_factory.createCodec(codec_num);
+    }
+
+    p_codec = all_codecs[static_cast<size_t>(codec_num)];
+
+    connect(
+            p_codec.get(), &Codec::messageDecoded,
+            this, &Project::onMessageDecoded
+           );
+}
+
+void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
+{
+    CodecNum new_codec_num = p_new_codec->getCodecNum();
+    all_codecs[static_cast<size_t>(new_codec_num)] = p_new_codec;
+
+    //-- refresh current p_codec, if we've just updated codec with the number
+    //   of current codec
+    if (p_codec != nullptr && p_codec->getCodecNum() == new_codec_num){
+        p_codec = all_codecs[static_cast<size_t>(new_codec_num)];
+    }
 }
 
 void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)

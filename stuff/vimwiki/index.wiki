@@ -40,6 +40,15 @@
       * [ ] aldl
 
 
+==== cleanup ====
+
+    * [ ] CodecFactory should be a singleton
+    * [ ] move all GUI stuff to BTGui
+    * [ ] rename file handler_view to bt_req_handler_view
+    * [ ] rename bt_reqhandler to bt_req_handler
+
+
+
 ==== somewhat optional ====
 
    * [ ] JS API: console.log, etc

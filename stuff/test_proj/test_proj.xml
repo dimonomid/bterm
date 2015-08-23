@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project title="My test project">
     <codecs>
-        <codec title="iso14230" remote_addr="0x11" local_addr="0x10"/>
+        <codec key="iso14230" remote_addr="0x11" local_addr="0x10"/>
     </codecs>
     <req_handlers>
         <req_handler title="test 1">

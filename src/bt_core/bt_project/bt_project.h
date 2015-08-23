@@ -16,6 +16,7 @@
 
 #include "bt_iodev.h"
 #include "bt_codec.h"
+#include "bt_codec_factory.h"
 #include "bt_reqhandler.h"
 
 
@@ -58,8 +59,7 @@ public:
      * Constructs the project with given title and codec.
      */
     explicit Project(
-            QString title,
-            std::shared_ptr<Codec> p_codec
+            QString title
             );
 
     virtual ~Project();
@@ -80,6 +80,12 @@ private:
 
     //-- codec that was given to the project's constructor
     std::shared_ptr<Codec> p_codec;
+
+    //-- all possible codecs
+    std::shared_ptr<Codec> all_codecs[
+        static_cast<size_t>(CodecNum::_COUNT)
+        ];
+
     //-- IO device being used for communication with outside world
     //   (set by `#BTCore::Project::setIODev()`)
     std::shared_ptr<IODev> p_io_dev;
@@ -106,6 +112,18 @@ public:
      * Set IO device, so that we can communicate with outside world
      */
     void setIODev(std::shared_ptr<IODev> p_io_dev);
+
+    /**
+     * Set codec
+     * TODO: explain how all_codecs array is used, and how it is created
+     * by factory if needed
+     */
+    void setCodec(CodecNum codec_num);
+
+    /**
+     * TODO
+     */
+    void addKnownCodec(std::shared_ptr<Codec> p_codec);
 
     /**
      * Add new handler to the end of the sequence of handlers.

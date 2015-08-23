@@ -7,11 +7,13 @@ QT += qml xml
 RAGEL_FILES += ../../src/bt_core/bt_codec/bt_codec_iso14230.cpp.rl
 
 SOURCES += \
+    ../../src/bt_core/bt_codec/bt_codec_factory/bt_codec_factory.cpp \
     ../../src/bt_core/bt_datamsg/bt_datapart.cpp \
     ../../src/bt_core/bt_datamsg/bt_datamsg.cpp \
     ../../src/bt_core/bt_project/bt_project.cpp \
     ../../src/bt_core/bt_project_storage_xml/bt_project_storage_xml.cpp \
     ../../src/bt_core/bt_project_storage_xml/bt_codec_visitor/bt_codec_visitor__save_xml.cpp \
+    ../../src/bt_core/bt_project_storage_xml/bt_codec_visitor/bt_codec_visitor__load_from_xml.cpp \
     ../../src/bt_core/bt_event/bt_event.cpp \
     ../../src/bt_core/bt_event/bt_event_data_raw.cpp \
     ../../src/bt_core/bt_event/bt_event_data_msg.cpp \
@@ -25,10 +27,12 @@ SOURCES += \
 HEADERS += ../../src/bt_core/bt_datamsg/bt_datapart.h \
     ../../src/bt_core/bt_codec/bt_codec.h \
     ../../src/bt_core/bt_codec/bt_codec_iso14230.h \
+    ../../src/bt_core/bt_codec/bt_codec_factory/bt_codec_factory.h \
     ../../src/bt_core/bt_iodev/bt_iodev.h \
     ../../src/bt_core/bt_project/bt_project.h \
     ../../src/bt_core/bt_project_storage_xml/bt_project_storage_xml.h \
     ../../src/bt_core/bt_project_storage_xml/bt_codec_visitor/bt_codec_visitor__save_xml.h \
+    ../../src/bt_core/bt_project_storage_xml/bt_codec_visitor/bt_codec_visitor__load_from_xml.h \
     ../../src/bt_core/bt_event/bt_event.h \
     ../../src/bt_core/bt_event/bt_event_data_raw.h \
     ../../src/bt_core/bt_event/bt_event_data_msg.h \
@@ -47,6 +51,7 @@ INCLUDEPATH += ../../src/bt_core \
                ../../src/bt_core/bt_project_storage_xml/bt_codec_visitor \
                ../../src/bt_core/bt_codec \
                ../../src/bt_core/bt_codec/bt_codec_visitor \
+               ../../src/bt_core/bt_codec/bt_codec_factory \
                ../../src/bt_core/bt_datamsg \
                ../../src/bt_core/bt_iodev \
                ../../src/bt_core/bt_event \
