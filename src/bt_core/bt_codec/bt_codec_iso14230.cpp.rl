@@ -92,14 +92,20 @@ Codec_ISO14230::Codec_ISO14230(
       this->msgReset();
    }
 
-   action got_fmt_with_len {
-      rx_user_data_len = fc & ~0x80;
-      _DEBUG("fmt with len=%d", (int)rx_user_data_len);
+   action got_fmt {
+       if (fc > 0x80){
+           //-- got fmt with len
+           rx_user_data_len = fc & ~0x80;
+           _DEBUG("fmt with len=%d", (int)rx_user_data_len);
+           fnext l_tgt;
+       } else {
+           _DEBUG("got fmt, waiting for separate len..");
+       }
    }
 
-   action got_separate_len {
-      rx_user_data_len = fc;
-      _DEBUG("separate len");
+   action got_len {
+       rx_user_data_len = fc;
+       _DEBUG("separate len=%d", (int)rx_user_data_len);
    }
 
    action got_tgt {
@@ -117,7 +123,7 @@ Codec_ISO14230::Codec_ISO14230(
    action got_service_byte {
       this->cur_rx_msg.addDataByte(DataPart::DataType::SERVICE, fc);
       this->rx_checksum += fc;
-      _DEBUG("got service byte: 0x%x", fc);
+      _DEBUG("got service byte: 0x%x, checksum: 0x%x", (unsigned int)fc, (unsigned int)this->rx_checksum);
    }
 
    action got_data_byte {
@@ -154,6 +160,14 @@ Codec_ISO14230::Codec_ISO14230(
 
 
 
+   action is_fmt_valid {
+       ((fc & 0x80) == 0x80)
+   }
+
+   action is_len_valid {
+       1
+   }
+
    action is_tgt_valid {
       //(!tgt_care || fc == tgt_needed);
       //TODO
@@ -181,8 +195,9 @@ Codec_ISO14230::Codec_ISO14230(
 
 
 
-   fmt_with_len = (0x81..0xff);
-   fmt_separate_len = (0x80 any);
+
+   fmt = (any);
+   len = (any);
    tgt = (any);
    src = (any);
    data = (any);
@@ -190,8 +205,9 @@ Codec_ISO14230::Codec_ISO14230(
 
    message = 
       (
-       (fmt_with_len @got_fmt_with_len | fmt_separate_len @got_separate_len) $got_service_byte
-       (tgt        when is_tgt_valid          @got_tgt       ) $got_service_byte
+       (fmt        when is_fmt_valid          @got_fmt       ) $got_service_byte
+       (len        when is_len_valid          @got_len       ) $got_service_byte
+l_tgt: (tgt        when is_tgt_valid          @got_tgt       ) $got_service_byte
        (src        when is_src_valid          @got_src       ) $got_service_byte
        (data       when is_waiting_for_data   @got_data_byte )*
        <:
