@@ -8,9 +8,11 @@
  ******************************************************************************/
 
 #include <QDockWidget>
+#include <QComboBox>
 
 #include "bt_project_view.h"
 #include "bt_project.h"
+#include "bt_codec_factory.h"
 
 
 using namespace BTGui;
@@ -61,15 +63,45 @@ QWidget *ProjectView::createProjectEditWidget()
     if (auto p_project = wp_project.lock()){
         p_project_view_ui->setupUi(p_widg);
 
+        //-- set current project title
         p_project_view_ui->proj_title_edit->setText(
                 p_project->getTitle()
                 );
 
+        //-- populate codec drop-down select with available codecs
+        {
+            CodecFactory codec_factory;
+            size_t codecs_cnt = codec_factory.getCodecsCnt();
+
+            for (size_t i = 0; i < codecs_cnt; i++){
+                p_project_view_ui->codec_select->addItem(
+                        codec_factory.getCodecTitle(static_cast<CodecNum>(i))
+                        );
+                p_project_view_ui->codec_select->addItem(
+                        codec_factory.getCodecTitle(static_cast<CodecNum>(i))
+                        );
+            }
+        }
+
+
+        //-- subscribe on user changes:
+        //-- project title
         connect(
                 p_project_view_ui->proj_title_edit, &QLineEdit::textChanged,
                 this, &ProjectView::onTitleChangedByUser
                );
 
+        //-- codec
+        connect(
+                p_project_view_ui->codec_select,
+                static_cast<void (QComboBox::*)(int)>(
+                    &QComboBox::currentIndexChanged
+                    ),
+                this, &ProjectView::onCodecSelectionChangedByUser
+               );
+
+
+        //-- listen for widget destroy event
         connect(
                 p_widg, &QObject::destroyed,
                 this, &ProjectView::onWidgetDestroyed
@@ -105,6 +137,11 @@ void ProjectView::onTitleChangedByUser(const QString &text)
     if (auto p_project = wp_project.lock()){
         p_project->setTitle(text);
     }
+}
+
+void ProjectView::onCodecSelectionChangedByUser(int index)
+{
+    qDebug("new codec index=%d", index);
 }
 
 void ProjectView::onWidgetDestroyed()
