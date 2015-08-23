@@ -43,6 +43,7 @@
 ==== somewhat optional ====
 
    * [ ] JS API: console.log, etc
+   * [ ] JS API: io.write(), io.encodeAndWrite()
    * [ ] JS API: setTimeout(), setInterval()
    * [ ] app settings:
        * [ ] maximum block count of msg log and raw data log
