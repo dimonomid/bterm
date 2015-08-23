@@ -93,7 +93,7 @@ MainWindow::MainWindow(
     p_raw_data_pte(new QPlainTextEdit_My(NULL)),
     p_log_pte(new QPlainTextEdit_My(NULL)),
     p_dw_raw_data(new QDockWidget("Raw data")),
-    p_dw_handlers(new QDockWidget("Handlers")),
+    p_dw_handlers(new QDockWidget("Handlers list")),
     p_dw_project_sett(new QDockWidget("Project settings")),
     p_dw_codec_sett(new QDockWidget("Codec settings")),
     handler_views(),
