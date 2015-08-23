@@ -63,11 +63,6 @@ QWidget *ProjectView::createProjectEditWidget()
     if (auto p_project = wp_project.lock()){
         p_project_view_ui->setupUi(p_widg);
 
-        //-- set current project title
-        p_project_view_ui->proj_title_edit->setText(
-                p_project->getTitle()
-                );
-
         //-- populate codec drop-down select with available codecs
         {
             CodecFactory codec_factory;
@@ -79,6 +74,11 @@ QWidget *ProjectView::createProjectEditWidget()
                         );
             }
         }
+
+        //-- set current project title
+        p_project_view_ui->proj_title_edit->setText(
+                p_project->getTitle()
+                );
 
         //-- set current codec
         p_project_view_ui->codec_select->setCurrentIndex(
