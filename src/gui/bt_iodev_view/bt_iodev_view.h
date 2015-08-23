@@ -92,6 +92,10 @@ private:
 
 private slots:
 
+    void onBaudRateChangedByUser(int value);
+    void onOpenBtnClicked();
+    void onCloseBtnClicked();
+
     void onIODevOpenStatusChanged(bool opened);
 
     void onWidgetDestroyed();

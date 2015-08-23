@@ -76,6 +76,23 @@ QWidget *IODevView::createIODevSettWidget()
                 p_iodev->getBaudRate()
                 );
 
+        //-- subscrive on user changes
+        connect(
+                p_iodev_view_ui->baudrate,
+                static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+                this, &IODevView::onBaudRateChangedByUser
+               );
+
+        connect(
+                p_iodev_view_ui->open_btn, &QPushButton::clicked,
+                this, &IODevView::onOpenBtnClicked
+               );
+
+        connect(
+                p_iodev_view_ui->close_btn, &QPushButton::clicked,
+                this, &IODevView::onCloseBtnClicked
+               );
+
 
 
         connect(
@@ -120,6 +137,34 @@ void IODevView::openedStatusApply()
  ******************************************************************************/
 
 /* private      */
+
+void IODevView::onBaudRateChangedByUser(int value)
+{
+    if (auto p_project = wp_project.lock()){
+        std::shared_ptr<IODev> p_iodev = p_project->getIODev();
+
+        p_iodev->setBaudRate(value);
+    }
+}
+
+void IODevView::onOpenBtnClicked()
+{
+    if (auto p_project = wp_project.lock()){
+        std::shared_ptr<IODev> p_iodev = p_project->getIODev();
+
+        p_iodev->open();
+    }
+}
+
+void IODevView::onCloseBtnClicked()
+{
+    if (auto p_project = wp_project.lock()){
+        std::shared_ptr<IODev> p_iodev = p_project->getIODev();
+
+        p_iodev->close();
+    }
+}
+
 
 void IODevView::onIODevOpenStatusChanged(bool opened)
 {
