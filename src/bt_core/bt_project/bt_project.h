@@ -118,7 +118,7 @@ public:
      * TODO: explain how all_codecs array is used, and how it is created
      * by factory if needed
      */
-    void setCodec(CodecNum codec_num);
+    void setCurrentCodecNum(CodecNum codec_num);
 
     /**
      * TODO
