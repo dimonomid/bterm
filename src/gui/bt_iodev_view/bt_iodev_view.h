@@ -55,6 +55,7 @@ private:
     Ui::BTIODevView *p_iodev_view_ui;
     std::weak_ptr<BTCore::Project> wp_project;
     QWidget *p_iodev_sett_widg;
+    bool opened;
 
 
 
@@ -82,6 +83,7 @@ public:
 private:
 
     QWidget *createIODevSettWidget();
+    void openedStatusApply();
 
 
     /****************************************************************************
@@ -89,6 +91,8 @@ private:
      ***************************************************************************/
 
 private slots:
+
+    void onIODevOpenStatusChanged(bool opened);
 
     void onWidgetDestroyed();
 
