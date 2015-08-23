@@ -22,12 +22,12 @@
 
    * [X] project load/save
    * [X] adding, removing, moving handlers
-   * [ ] project settings:
-       * [ ] title
+   * [o] project settings:
+       * [X] title
        * [ ] IODev to use (select from the drop-down menu)
        * [ ] IODev-specific settings
-       * [ ] codec to use (select from the drop-down menu)
-       * [ ] codec-specific settings (probably QML is what we need?)
+       * [X] codec to use (select from the drop-down menu)
+       * [X] codec-specific settings (probably QML is what we need?)
    * [ ] move codec outside of BTerm, or, conversely, move IODev to BTerm
    * [ ] new project
    * [ ] real data exchange
