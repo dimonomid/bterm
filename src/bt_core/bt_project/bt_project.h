@@ -114,6 +114,11 @@ public:
     void setIODev(std::shared_ptr<IODev> p_io_dev);
 
     /**
+     * Return IO device
+     */
+    std::shared_ptr<IODev> getIODev() const;
+
+    /**
      * Set codec
      * TODO: explain how all_codecs array is used, and how it is created
      * by factory if needed

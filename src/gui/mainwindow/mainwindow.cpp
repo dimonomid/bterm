@@ -51,6 +51,8 @@
 #include "bt_codec_visitor__view_create.h"
 #include "bt_codec_view.h"
 
+#include "bt_iodev_view.h"
+
 
 using namespace BTCore;
 using namespace BTGui;
@@ -102,6 +104,7 @@ MainWindow::MainWindow(
                 )),
     wp_project(),
     p_project_view(),
+    p_iodev_view(),
     p_codec_view(),
     need_to_restore_non_maximized_geometry(false)
 {
@@ -287,6 +290,10 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
         p_dw_handlers->setWidget(p_scroll_area);
         p_dw_handlers->setObjectName("handlers_list");
     }
+
+    //-- iodev settings
+    p_dw_iodev_sett->setWidget(p_iodev_view->getIODevSettWidget());
+    p_dw_iodev_sett->setObjectName("iodev_sett");
 
 
     //-- populate project settings window
@@ -508,6 +515,7 @@ void MainWindow::closeEvent(QCloseEvent *p_event)
 void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 {
     p_project_view = std::make_shared<ProjectView>(p_project, *this);
+    p_iodev_view = std::make_shared<IODevView>(p_project);
 
     populateWithProject(p_project);
 
@@ -557,6 +565,7 @@ void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
 
     this->wp_project = std::weak_ptr<BTCore::Project>();
     p_project_view = nullptr;
+    p_iodev_view = nullptr;
 
     updateWindowTitle();
 

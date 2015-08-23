@@ -30,15 +30,9 @@ ProjectView::ProjectView(
         ) :
     p_project_view_ui(new Ui::BTProjectView),
     wp_project(std::weak_ptr<Project>(p_project)),
-    p_project_edit_widg(),
+    p_project_sett_widg(),
     mainwindow(mainwindow)
 {
-#if 0
-    QWidget *p_project_edit_widg = createProjectEditWidget();
-    p_dock = std::make_shared<QDockWidget>("Project edit");
-    p_dock->setObjectName("project_edit");
-    p_dock->setWidget(p_project_edit_widg);
-#endif
 }
 
 
@@ -60,7 +54,7 @@ ProjectView::ProjectView(
 
 /* private      */
 
-QWidget *ProjectView::createProjectEditWidget()
+QWidget *ProjectView::createProjectSettWidget()
 {
     QWidget *p_widg = new QWidget();
 
@@ -132,11 +126,11 @@ QWidget *ProjectView::createProjectEditWidget()
 
 QWidget *ProjectView::getProjectSettWidget()
 {
-    if (p_project_edit_widg == nullptr){
-        p_project_edit_widg = createProjectEditWidget();
+    if (p_project_sett_widg == nullptr){
+        p_project_sett_widg = createProjectSettWidget();
     }
 
-    return p_project_edit_widg;
+    return p_project_sett_widg;
 }
 
 
@@ -165,7 +159,7 @@ void ProjectView::onCodecSelectionChangedByUser(int index)
 
 void ProjectView::onWidgetDestroyed()
 {
-    p_project_edit_widg = nullptr;
+    p_project_sett_widg = nullptr;
 }
 
 void ProjectView::toggleCodecSettWindow()

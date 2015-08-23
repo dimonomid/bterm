@@ -27,7 +27,8 @@ IODevDbg::IODevDbg() :
     timer(this),
     cur_data(),
     stage(0),
-    opened(false)
+    opened(false),
+    baudrate(9600)
 {
     connect(&timer, &QTimer::timeout, this, &IODevDbg::nextMsgGenerate);
 }
@@ -68,14 +69,18 @@ vector<uint8_t> IODevDbg::read()
 
 void IODevDbg::write(const vector<uint8_t> &data)
 {
-    //std::ignore = data;
     qDebug() << "write: " << MyUtil::byteArrayToHex(data);
 }
 
 void IODevDbg::setBaudRate(int32_t baud_rate)
 {
-    std::ignore = baud_rate;
+    this->baudrate = baud_rate;
     //-- do nothing
+}
+
+int32_t IODevDbg::getBaudRate()
+{
+    return baudrate;
 }
 
 void IODevDbg::open()

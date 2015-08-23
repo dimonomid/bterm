@@ -28,6 +28,7 @@ namespace BTCore {
 namespace BTGui {
     class ProjectView;
     class CodecView;
+    class IODevView;
 }
 
 namespace Ui {
@@ -108,6 +109,7 @@ private:
 
     std::weak_ptr<BTCore::Project> wp_project;
     std::shared_ptr<BTGui::ProjectView> p_project_view;
+    std::shared_ptr<BTGui::IODevView> p_iodev_view;
     std::shared_ptr<BTGui::CodecView> p_codec_view;
 
 

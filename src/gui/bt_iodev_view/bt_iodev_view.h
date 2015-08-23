@@ -1,60 +1,61 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
-#ifndef _BT_IODEV_DBG_H
-#define _BT_IODEV_DBG_H
+#ifndef _BT_IODEV_VIEW_H
+#define _BT_IODEV_VIEW_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QObject>
+#include <memory>
 
-#include <cstdint>
-#include <vector>
-
-#include <QTimer>
-
-#include "bt_iodev.h"
+#include "ui_bt_iodev_view.h"
 
 
+
+namespace BTCore {
+    class Project;
+}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
-class IODevDbg : public BTCore::IODev
+namespace BTGui {
+    class IODevView;
+}
+
+/**
+ * TODO
+ */
+class BTGui::IODevView : public QObject
 {
-Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
 
     /****************************************************************************
-     * CONSTRUCTOR, DESTRUCTOR, ASSIGNMENT
+     * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit IODevDbg();
-    virtual ~IODevDbg();
-
-    IODevDbg(const IODevDbg &other) = delete;
-    IODevDbg(IODevDbg &&other) = delete;
-
-    IODevDbg &operator=(const IODevDbg &other) = delete;
-    IODevDbg &operator=(IODevDbg &&other) = delete;
+    explicit IODevView(
+            std::shared_ptr<BTCore::Project> p_project
+            );
 
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
-    QTimer timer;
-    std::vector<uint8_t> cur_data;
 
-    int stage;
-    bool opened;
-    int baudrate;
+    Ui::BTIODevView *p_iodev_view_ui;
+    std::weak_ptr<BTCore::Project> wp_project;
+    QWidget *p_iodev_sett_widg;
+
 
 
     /****************************************************************************
@@ -64,38 +65,34 @@ private:
     /****************************************************************************
      * METHODS
      ***************************************************************************/
+
 public:
 
-    std::vector<uint8_t> read() override;
-    void write(const std::vector<uint8_t> &data) override;
-    void setBaudRate(int32_t baud_rate) override;
-    int32_t getBaudRate() override;
-    void open() override;
-    void close() override;
-    bool isOpened() override;
-    QString toString() override;
+    /**
+     * NOTE: each time this function is called, the same widget is returned,
+     * and the caller is responsible to delete it eventually.
+     *
+     * Widget will be actually created at the first call, so if this method
+     * never called, then widget is not created at all.
+     */
+    QWidget *getIODevSettWidget();
+
+
+
+private:
+
+    QWidget *createIODevSettWidget();
 
 
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
-signals:
-    //NOTE: we should NOT define signals in subclasses,
-    //      since if we do, then function pointer-based
-    //      connect() syntax will not generate any errors,
-    //      but it will just not work silently.
-    //
-    //void readyRead(int bytes_available);
 
 private slots:
-    void nextMsgGenerate();
 
-
-    /****************************************************************************
-     * OPERATORS
-     ***************************************************************************/
+    void onWidgetDestroyed();
 
 };
 
 
-#endif // _BT_IODEV_DBG_H
+#endif // _BT_IODEV_VIEW_H

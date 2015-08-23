@@ -64,6 +64,11 @@ public:
     virtual void setBaudRate(int32_t baud_rate) = 0;
 
     /**
+     * Get baud rate.
+     */
+    virtual int32_t getBaudRate() = 0;
+
+    /**
      * Open serial port
      */
     virtual void open() = 0;

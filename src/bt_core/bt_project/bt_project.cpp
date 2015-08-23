@@ -111,6 +111,11 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
     }
 }
 
+std::shared_ptr<IODev> Project::getIODev() const
+{
+    return p_io_dev;
+}
+
 void Project::setCurrentCodecNum(CodecNum codec_num)
 {
     //-- if we already have some Codec set, then unsubscribe from its events
