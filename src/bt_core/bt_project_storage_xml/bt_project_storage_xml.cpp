@@ -24,17 +24,20 @@ using namespace BTCore;
  * STATIC DATA
  ******************************************************************************/
 
-const QString ProjectStorageXML::XML_TAG_NAME__PROJECT = "project";
-const QString ProjectStorageXML::XML_TAG_NAME__CODECS  = "codecs";
-const QString ProjectStorageXML::XML_TAG_NAME__CODEC   = "codec";
+const QString ProjectStorageXML::XML_TAG_NAME__PROJECT      = "project";
+const QString ProjectStorageXML::XML_TAG_NAME__CODECS       = "codecs";
+const QString ProjectStorageXML::XML_TAG_NAME__CODEC        = "codec";
 const QString ProjectStorageXML::XML_TAG_NAME__REQ_HANDLERS = "req_handlers";
 const QString ProjectStorageXML::XML_TAG_NAME__REQ_HANDLER  = "req_handler";
-const QString ProjectStorageXML::XML_TAG_NAME__RH_CODE  = "code";
+const QString ProjectStorageXML::XML_TAG_NAME__RH_CODE      = "code";
+const QString ProjectStorageXML::XML_TAG_NAME__IODEV        = "iodev";
 
 
 const QString ProjectStorageXML::XML_ATTR_NAME__COMMON__TITLE = "title";
 
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC__KEY = "key";
+
+const QString ProjectStorageXML::XML_ATTR_NAME__IODEV__BAUDRATE = "baudrate";
 
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_TX   = "fmt_tx";
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_TX   = "local_addr_tx";
@@ -266,6 +269,24 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveReqHandlerToDomElement(
     return p_handler_elem;
 }
 
+std::shared_ptr<QDomElement> ProjectStorageXML::saveIODevToDomElement(
+        QDomDocument &doc, std::shared_ptr<IODev> p_iodev
+        )
+{
+    std::shared_ptr<QDomElement> p_iodev_elem =
+        std::make_shared<QDomElement>(
+                doc.createElement(XML_TAG_NAME__IODEV)
+                );
+
+    //-- set handler name
+    p_iodev_elem->setAttribute(
+            ProjectStorageXML::XML_ATTR_NAME__IODEV__BAUDRATE,
+            QString::number(p_iodev->getBaudRate())
+            );
+
+    return p_iodev_elem;
+}
+
 
 
 /* protected    */
@@ -437,6 +458,17 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
             saveCodecToDomElement(doc, p_codec);
 
         codecs_folder_elem.appendChild(*p_codec_elem);
+    }
+
+    //-- save iodev
+    {
+        std::shared_ptr<IODev> p_iodev = p_proj->getIODev();
+
+        //-- create iodev element
+        std::shared_ptr<QDomElement> p_iodev_elem =
+            saveIODevToDomElement(doc, p_iodev);
+
+        project_elem.appendChild(*p_iodev_elem);
     }
 
     //-- save headers

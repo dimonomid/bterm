@@ -22,6 +22,7 @@ namespace BTCore {
     class Codec;
     class Codec_ISO14230;
     class ReqHandler;
+    class IODev;
 
     class CodecVisitor_SaveXML;
     class CodecVisitor_LoadFromXML;
@@ -77,10 +78,13 @@ private:
     static const QString XML_TAG_NAME__REQ_HANDLERS;
     static const QString XML_TAG_NAME__REQ_HANDLER;
     static const QString XML_TAG_NAME__RH_CODE;
+    static const QString XML_TAG_NAME__IODEV;
 
     static const QString XML_ATTR_NAME__COMMON__TITLE;
 
     static const QString XML_ATTR_NAME__CODEC__KEY;
+
+    static const QString XML_ATTR_NAME__IODEV__BAUDRATE;
 
     static const QString XML_ATTR_NAME__CODEC_ISO14230__FMT_TX;
     static const QString XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_TX;
@@ -151,6 +155,9 @@ private:
             QDomDocument &doc, std::shared_ptr<ReqHandler> p_handler
             );
 
+    std::shared_ptr<QDomElement> saveIODevToDomElement(
+            QDomDocument &doc, std::shared_ptr<IODev> p_iodev
+            );
 
 
     /****************************************************************************
