@@ -74,9 +74,6 @@ private:
     //-- codec that was given to the project's constructor
     std::shared_ptr<Codec> p_codec;
 
-    //-- JavaScript host BTCore environment
-    std::shared_ptr<JSHost> p_jshost;
-
     //-- all possible codecs
     std::shared_ptr<Codec> all_codecs[
         static_cast<size_t>(CodecNum::_COUNT)
@@ -85,6 +82,9 @@ private:
     //-- IO device being used for communication with outside world
     //   (set by `#BTCore::Project::setIODev()`)
     std::shared_ptr<IODev> p_io_dev;
+
+    //-- JavaScript host BTCore environment
+    std::shared_ptr<JSHost> p_jshost;
 
     //-- sequence of handlers, they get executed sequentially
     //   when new message arrives

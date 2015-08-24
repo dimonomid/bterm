@@ -39,9 +39,9 @@ Project::Project(
         ) :
     title(title),
     p_codec(),
-    p_jshost(std::make_shared<JSHost>()),
     all_codecs({}),
     p_io_dev(),
+    p_jshost(std::make_shared<JSHost>()),
     handlers(),
     baudrate(9600),
     dirty(true)
