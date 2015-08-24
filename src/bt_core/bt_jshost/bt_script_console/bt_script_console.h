@@ -25,7 +25,9 @@ namespace BTCore {
 
 
 /**
- * Class that provides `console.*` methods for scripts
+ * Class that provides `console` methods for scripts:
+ *
+ * - `console.log()`
  */
 class BTCore::ScriptConsole : public QObject
 {
@@ -57,6 +59,9 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * To be used from scripts: provides `console.log()` function
+     */
     Q_INVOKABLE void log(QString text);
 
 
@@ -67,7 +72,13 @@ public:
      ***************************************************************************/
 signals:
 
-    void message(const QString &text, BTCore::MsgLevel = BTCore::MsgLevel::INFO);
+    /**
+     * Emitted when user sends message to console
+     */
+    void message(
+            const QString &text,
+            BTCore::MsgLevel level = BTCore::MsgLevel::INFO
+            );
 
 
 };
