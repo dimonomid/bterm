@@ -91,7 +91,11 @@ QJSValue JSHost::evaluate(
         int line_number
         )
 {
-    return p_engine->evaluate(program, file_name, line_number);
+    return p_engine->evaluate(
+            "'use strict'; " + program,
+            file_name,
+            line_number
+            );
 }
 
 QJSValue JSHost::getHandlerInputMsgObject(
