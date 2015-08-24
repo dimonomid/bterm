@@ -98,6 +98,9 @@ private:
     //   argument to each handler function.
     QJSValue script_ctx_jsval;
 
+    //-- baudrate that is needed for this project. Will be set to IODev.
+    int32_t baudrate;
+
 
     /****************************************************************************
      * STATIC METHODS
@@ -129,6 +132,16 @@ public:
      * TODO
      */
     void addKnownCodec(std::shared_ptr<Codec> p_codec);
+
+    /**
+     * Set needed baudrate. It will be propagated to IODev.
+     */
+    void setIODevBaudRate(int32_t baudrate);
+
+    /**
+     * Get current baudrate
+     */
+    int32_t getIODevBaudRate();
 
     /**
      * Add new handler to the end of the sequence of handlers.
@@ -244,6 +257,7 @@ signals:
 private slots:
 
     void onIODevReadyRead(int bytes_available);
+    void onIODevBaudRateChanged(int32_t baudrate);
     void onMessageDecoded(const DataMsg &msg);
 
     void onReqHandlerTitleChanged(const QString &name);

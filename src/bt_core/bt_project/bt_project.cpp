@@ -99,6 +99,11 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
                 this->p_io_dev.get(), &IODev::readyRead,
                 this, &Project::onIODevReadyRead
                );
+        disconnect(
+                this->p_io_dev.get(), &IODev::baudRateChanged,
+                this, &Project::onIODevBaudRateChanged
+               );
+
     }
 
     this->p_io_dev = p_io_dev;
@@ -111,15 +116,34 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
             this, &Project::onIODevReadyRead
            );
 
-    //-- open IO device, if it's not already opened
-    if (this->p_io_dev->isOpened()){
-        auto p_event = std::make_shared<EventSys>(
-                EventSys::Level::WARNING,
-                "IO device is opened when setting it to project. "
-                );
-        emit event(p_event);
-    } else {
-        this->p_io_dev->open();
+    //-- when baudrate of IODev changes, we want to keep our copy up-to-date
+    connect(
+            this->p_io_dev.get(), &IODev::baudRateChanged,
+            this, &Project::onIODevBaudRateChanged
+           );
+
+    //-- check if we baudrate of IODev differs from the needed one
+    if (p_io_dev->getBaudRate() != this->baudrate){
+        //-- it differs; we need to change it.
+
+        if (!this->p_io_dev->isOpened()){
+            //-- ok, port is not opened, so, set baudrate and open it.
+            this->p_io_dev->setBaudRate(this->baudrate);
+            this->p_io_dev->open();
+        } else {
+            //-- port is already opened, so we can't alter its baudrate.
+            //   For now, just echo warning. In the future, we may to close it,
+            //   set baudrate, and open it again.  The difficulty is that this
+            //   should be done asynchronously (when device is actually closed,
+            //   the signal `openStatusChanged()` is emitted)
+            auto p_event = std::make_shared<EventSys>(
+                    EventSys::Level::WARNING,
+                    QString("IO device is opened when setting it to project. ")
+                    + QString("Please change baudrate manually to ")
+                    + QString::number(this->baudrate)
+                    );
+            emit event(p_event);
+        }
     }
 }
 
@@ -166,6 +190,21 @@ void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
         p_codec = all_codecs[static_cast<size_t>(new_codec_num)];
     }
 }
+
+void Project::setIODevBaudRate(int32_t baudrate)
+{
+    this->baudrate = baudrate;
+
+    if (p_io_dev != nullptr){
+        p_io_dev->setBaudRate(baudrate);
+    }
+}
+
+int32_t Project::getIODevBaudRate()
+{
+    return this->baudrate;
+}
+
 
 void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 {
@@ -294,6 +333,11 @@ void Project::onIODevReadyRead(int bytes_available)
 
     //-- feed received data as a raw data to codec
     p_codec->addRawRxData( data );
+}
+
+void Project::onIODevBaudRateChanged(int32_t baudrate)
+{
+    this->baudrate = baudrate;
 }
 
 /**

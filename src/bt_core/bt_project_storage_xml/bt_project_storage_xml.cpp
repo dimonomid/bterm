@@ -270,7 +270,7 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveReqHandlerToDomElement(
 }
 
 std::shared_ptr<QDomElement> ProjectStorageXML::saveIODevToDomElement(
-        QDomDocument &doc, std::shared_ptr<IODev> p_iodev
+        QDomDocument &doc, std::shared_ptr<Project> p_proj
         )
 {
     std::shared_ptr<QDomElement> p_iodev_elem =
@@ -281,7 +281,7 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveIODevToDomElement(
     //-- set handler name
     p_iodev_elem->setAttribute(
             ProjectStorageXML::XML_ATTR_NAME__IODEV__BAUDRATE,
-            QString::number(p_iodev->getBaudRate())
+            QString::number(p_proj->getIODevBaudRate())
             );
 
     return p_iodev_elem;
@@ -289,7 +289,7 @@ std::shared_ptr<QDomElement> ProjectStorageXML::saveIODevToDomElement(
 
 void ProjectStorageXML::readIODevFromDomElement(
         const QDomElement &iodev_elem,
-        std::shared_ptr<IODev> p_iodev
+        std::shared_ptr<Project> p_proj
         )
 {
     bool ok = true;
@@ -317,7 +317,7 @@ void ProjectStorageXML::readIODevFromDomElement(
                 );
     }
 
-    p_iodev->setBaudRate(baudrate);
+    p_proj->setIODevBaudRate(baudrate);
 }
 
 
@@ -329,9 +329,7 @@ void ProjectStorageXML::readIODevFromDomElement(
 
 /* public       */
 
-std::shared_ptr<Project> ProjectStorageXML::readProject(
-        std::shared_ptr<IODev> p_iodev
-        )
+std::shared_ptr<Project> ProjectStorageXML::readProject()
 {
     std::shared_ptr<Project> p_proj {};
 
@@ -435,7 +433,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject(
                 elem_proj, XML_TAG_NAME__IODEV
                 );
 
-        readIODevFromDomElement(iodev_elem, p_iodev);
+        readIODevFromDomElement(iodev_elem, p_proj);
     }
 
 
@@ -508,11 +506,9 @@ void ProjectStorageXML::saveProject(std::shared_ptr<Project> p_proj)
 
     //-- save iodev
     {
-        std::shared_ptr<IODev> p_iodev = p_proj->getIODev();
-
         //-- create iodev element
         std::shared_ptr<QDomElement> p_iodev_elem =
-            saveIODevToDomElement(doc, p_iodev);
+            saveIODevToDomElement(doc, p_proj);
 
         project_elem.appendChild(*p_iodev_elem);
     }

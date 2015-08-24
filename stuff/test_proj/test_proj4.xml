@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project title="Test">
+<project title="My test project">
     <codecs>
-        <codec title="iso14230" remote_addr="0x11" local_addr="0x10"/>
+        <codec local_addr_rx="0xff" key="iso14230" remote_addr_rx="0xff" fmt_tx="0x80" local_addr_tx="0x10" remote_addr_tx="0x11" fmt_rx="0x80"/>
     </codecs>
+    <iodev baudrate="10400"/>
     <req_handlers>
         <req_handler title="test 1">
             <code>
@@ -15,6 +16,33 @@
      if (inputArr.getU08(0) === 0x03){
         outputArr = factory.createByteArr();
         outputArr.putU08(1, 0x04);
+        handled = true;
+     };
+
+     return {
+        handled: handled,
+        response: outputArr
+     };
+ })
+            </code>
+        </req_handler>
+        <req_handler title="My third">
+            <code>
+(function(inputMsg){
+     var inputArr = inputMsg.byteArr;
+     var handled = false;
+     var outputArr = null;
+     if (this.val === undefined){
+        this.val = 0;
+     }
+
+     if (inputArr.getU08(0) === 0x04){
+        outputArr = factory.createByteArr();
+        outputArr.putU16(1, this.val++);
+        outputArr.putU16(5, 0x1234, LITTLE_END);
+        if ((this.val &amp; 0x0f) == 0){
+           outputArr.putU16(10, 0x1234, BIG_END);
+        }
         handled = true;
      };
 

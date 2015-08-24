@@ -124,6 +124,11 @@ signals:
      */
     void error(QString error_msg);
 
+    /**
+     * Emitted whenever baudrate is changed by calling `setBaudRate()`
+     */
+    void baudRateChanged(int32_t baudrate);
+
 
 };
 

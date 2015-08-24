@@ -75,7 +75,8 @@ void IODevDbg::write(const vector<uint8_t> &data)
 void IODevDbg::setBaudRate(int32_t baud_rate)
 {
     this->baudrate = baud_rate;
-    //-- do nothing
+
+    emit baudRateChanged(baud_rate);
 }
 
 int32_t IODevDbg::getBaudRate()
