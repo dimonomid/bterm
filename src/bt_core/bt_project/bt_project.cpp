@@ -9,7 +9,6 @@
 
 #include <QDebug>
 #include <QtQml>
-#include <QJSEngine>
 #include <QJSValue>
 
 #include <iostream>
@@ -23,9 +22,9 @@
 
 #include "bt_bytearr_read.h"
 #include "bt_bytearr_read_write.h"
-#include "bt_script_factory.h"
 #include "bt_codec_factory.h"
 #include "bt_codec_transparent.h"
+#include "bt_jshost.h"
 
 
 using namespace BTCore;
@@ -39,13 +38,11 @@ Project::Project(
         QString title
         ) :
     title(title),
-    p_engine(std::make_shared<QJSEngine>()),
-    p_script_factory(std::make_shared<ScriptFactory>()),
     p_codec(),
+    p_jshost(std::make_shared<JSHost>()),
     all_codecs({}),
     p_io_dev(),
     handlers(),
-    script_ctx_jsval(p_engine->evaluate("({})")),
     baudrate(9600),
     dirty(true)
 {
@@ -235,8 +232,7 @@ int32_t Project::getIODevBaudRate()
 void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 {
     //-- set JavaScript engine and factory to the handler
-    p_handler->setQJSEngine(p_engine);
-    p_handler->setScriptFactory(p_script_factory);
+    p_handler->setJSHost(p_jshost);
 
     //-- add handler
     handlers.push_back(p_handler);
@@ -402,15 +398,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
     std::shared_ptr<std::vector<uint8_t>> p_req_data = msg.getUserData();
 
-    //-- create an object that will be given to handlers as input message
-    QJSValue input_msg_jsval = p_engine->newObject();
-
-    //-- actual input byte array
-    ByteArrRead ba_in {*p_req_data};
-    QJSValue ba_in_jsval = p_engine->newQObject(&ba_in);
-    QQmlEngine::setObjectOwnership(&ba_in, QQmlEngine::CppOwnership);
-
-    input_msg_jsval.setProperty("byteArr", ba_in_jsval);
+    QJSValue input_msg_jsval = p_jshost->getHandlerInputMsgObject(p_req_data);
 
     //-- iterate through all the request handlers
     for (auto p_req_handler : handlers){
@@ -418,8 +406,14 @@ void Project::onMessageDecoded(const DataMsg &msg)
         //-- try to handle the request with current handler
         ReqHandler::Result res = p_req_handler->handle(
                 input_msg_jsval,
-                script_ctx_jsval
+                p_jshost->getScriptContextValue()
                 );
+#if 0
+        ReqHandler::Result res = p_jshost->runReqHandler(
+                p_req_handler,
+                p_req_data
+                );
+#endif
 
         //-- take action depending on handling result
         switch (res){

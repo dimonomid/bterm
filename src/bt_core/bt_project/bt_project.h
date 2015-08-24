@@ -72,14 +72,11 @@ private:
     //-- project's title
     QString title;
 
-    //-- JavaScript engine, it is shared across all req handlers
-    std::shared_ptr<QJSEngine> p_engine;
-    //-- factory that is used by scripts in order to create
-    //   instances of various types.
-    std::shared_ptr<ScriptFactory> p_script_factory;
-
     //-- codec that was given to the project's constructor
     std::shared_ptr<Codec> p_codec;
+
+    //-- JavaScript host BTCore environment
+    std::shared_ptr<JSHost> p_jshost;
 
     //-- all possible codecs
     std::shared_ptr<Codec> all_codecs[
@@ -93,10 +90,6 @@ private:
     //-- sequence of handlers, they get executed sequentially
     //   when new message arrives
     std::vector<std::shared_ptr<ReqHandler>> handlers;
-
-    //-- context that is used by handlers. It is given as `this`
-    //   argument to each handler function.
-    QJSValue script_ctx_jsval;
 
     //-- baudrate that is needed for this project. Will be set to IODev.
     int32_t baudrate;

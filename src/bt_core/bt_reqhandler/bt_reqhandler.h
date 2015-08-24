@@ -17,9 +17,8 @@
 #include <memory>
 
 
-class QJSEngine;
-
 namespace BTCore {
+    class JSHost;
     class ScriptFactory;
     class ByteArrReadWrite;
 }
@@ -115,17 +114,14 @@ public:
      *
      * @param title
      *      human-readable title of the handler
-     * @param p_engine
-     *      JavaScript engine to use
-     * @param p_script_factory
-     *      Factory to use by scripts (see `#BTCore::ScriptFactory`)
+     * @param p_jshost
+     *      JavaScript host (see `#BTCore::JSHost`)
      * @param script_func_code
      *      JavaScript code to execute as a handler
      */
     ReqHandler(
             QString title,
-            std::shared_ptr<QJSEngine> p_engine,
-            std::shared_ptr<ScriptFactory> p_script_factory,
+            std::shared_ptr<JSHost> p_jshost,
             QString script_func_code
             );
 
@@ -160,9 +156,7 @@ private:
     QString title;
 
     //-- JavaScript engine
-    std::shared_ptr<QJSEngine> p_engine;
-    //-- factory that is used by scripts
-    std::shared_ptr<ScriptFactory> p_script_factory;
+    std::shared_ptr<JSHost> p_jshost;
 
     //-- JavaScript handler code
     QString script_func_code;
@@ -200,12 +194,7 @@ public:
     /**
      * Set JavaScript engine to use
      */
-    void setQJSEngine(std::shared_ptr<QJSEngine> p_engine);
-
-    /**
-     * Set script factory to use by scripts. See `#BTCore::ScriptFactory`
-     */
-    void setScriptFactory(std::shared_ptr<ScriptFactory> p_script_factory);
+    void setJSHost(std::shared_ptr<JSHost> p_jshost);
 
     /**
      * Get human-readable title of the handler

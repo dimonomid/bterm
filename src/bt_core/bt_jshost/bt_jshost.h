@@ -3,64 +3,73 @@
  *
  ******************************************************************************/
 
-#ifndef _BYTEARR_READ_H
-#define _BYTEARR_READ_H
+#ifndef _BT_JSHOST_H
+#define _BT_JSHOST_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
 #include <QObject>
+#include <QJSValue>
 
 #include <memory>
 #include <vector>
-#include <cstdint>
 
+#include "bt_reqhandler.h"
+
+
+
+class QJSEngine;
+
+namespace BTCore {
+    class ScriptFactory;
+}
 
 /*******************************************************************************
  * CLASS DECLARATION
  ******************************************************************************/
 
 namespace BTCore {
-    class ByteArrRead;
+    class JSHost;
 }
 
-/*
- * TODO: implement the fill byte
- *       implement unit tests
- */
 
 /**
- * TODO
+ * Class that represents JavaScript host environment for `BTCore`.
  */
-class BTCore::ByteArrRead : public QObject
+class BTCore::JSHost
 {
-Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
-
-public:
-    enum Endianness {
-    LITTLE_END,
-    BIG_END
-    };
 
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit ByteArrRead(const std::vector<uint8_t> &data);
-    virtual ~ByteArrRead();
+
+    explicit JSHost();
 
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
-protected:
+private:
 
-    std::shared_ptr<std::vector<uint8_t>> p_data;
+    //-- JavaScript engine
+    std::shared_ptr<QJSEngine> p_engine;
 
+    //-- factory that is used by scripts in order to create
+    //   instances of various types.
+    std::shared_ptr<ScriptFactory> p_script_factory;
+
+    //-- the same factory wrapped inside QJSValue
+    QJSValue script_factory_jsval;
+
+    //-- context that is used by script functions. It is given as `this`
+    //   argument to each function.
+    QJSValue script_ctx_jsval;
 
 
     /****************************************************************************
@@ -70,23 +79,50 @@ protected:
     /****************************************************************************
      * METHODS
      ***************************************************************************/
-
 public:
 
-    std::shared_ptr<const std::vector<uint8_t>> getData() const;
+    /**
+     * Call `QJSEngine::evaluate()` on host-specific `QJSEngine` instance.
+     */
+    QJSValue evaluate(
+            const QString &program,
+            const QString &file_name = QString(),
+            int line_number = 1
+            );
 
-    Q_INVOKABLE double getU08(unsigned int index);
-    Q_INVOKABLE double getU16(unsigned int index, int end = LITTLE_END);
-    Q_INVOKABLE double getU32(unsigned int index, int end = LITTLE_END);
+    /**
+     * Create and return JavaScript object that should be given
+     * as input message for request handler (`#BTCore::ReqHandler`)
+     */
+    QJSValue getHandlerInputMsgObject(
+            std::shared_ptr<std::vector<uint8_t>> p_req_data
+            );
 
-    Q_INVOKABLE double getS08(unsigned int index);
-    Q_INVOKABLE double getS16(unsigned int index, int end = LITTLE_END);
-    Q_INVOKABLE double getS32(unsigned int index, int end = LITTLE_END);
+    QJSValue getScriptContextValue();
+
+#if 0
+    /**
+     * Run given request handler for given p_req_data, using this JavaScript
+     * host environment.
+     */
+    ReqHandler::Result runReqHandler(
+            std::shared_ptr<ReqHandler> p_handler,
+            std::shared_ptr<std::vector<uint8_t>> p_req_data
+            );
+#endif
+
+#if 0
+    std::shared_ptr<QJSEngine> getJSEngine() const;
+#endif
 
 
-    /****************************************************************************
-     * SIGNALS, SLOTS
-     ***************************************************************************/
+
+private:
+
+    /**
+     * Put some host-specific properties on JSEngine
+     */
+    void initJSEngine();
 
 
 
@@ -98,4 +134,4 @@ public:
 };
 
 
-#endif // _BYTEARR_READ_H
+#endif // _BT_JSHOST_H

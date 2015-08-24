@@ -21,6 +21,9 @@ ByteArrRead::ByteArrRead(const std::vector<uint8_t> &data) :
 {
 }
 
+ByteArrRead::~ByteArrRead()
+{
+}
 
 
 /*******************************************************************************

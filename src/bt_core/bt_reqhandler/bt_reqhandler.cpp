@@ -8,7 +8,6 @@
  ******************************************************************************/
 
 #include <QtQml>
-#include <QJSEngine>
 #include <QJSValue>
 #include <QVariant>
 #include <QDebug>
@@ -18,6 +17,7 @@
 #include "bt_script_factory.h"
 #include "my_util.h"
 #include "bt_reqhandler.h"
+#include "bt_jshost.h"
 
 
 using namespace BTCore;
@@ -36,13 +36,11 @@ const size_t ReqHandler::INDEX_UNKNOWN = (size_t)-1;
 
 ReqHandler::ReqHandler(
         QString title,
-        std::shared_ptr<QJSEngine> p_engine,
-        std::shared_ptr<ScriptFactory> p_script_factory,
+        std::shared_ptr<JSHost> p_jshost,
         QString script_func_code
         ) :
     title(title),
-    p_engine(p_engine),
-    p_script_factory(p_script_factory),
+    p_jshost(p_jshost),
     script_func_code(script_func_code),
     last_error(Error::UNKNOWN),
     p_response(),
@@ -58,8 +56,7 @@ ReqHandler::ReqHandler(
         ) :
     ReqHandler(
             title,
-            std::shared_ptr<QJSEngine>(),
-            std::shared_ptr<ScriptFactory>(),
+            std::shared_ptr<JSHost>(),
             script_func_code
             )
 {
@@ -69,8 +66,7 @@ ReqHandler::ReqHandler(
 ReqHandler::ReqHandler() :
     ReqHandler(
             "Untitled handler",
-            std::shared_ptr<QJSEngine>(),
-            std::shared_ptr<ScriptFactory>(),
+            std::shared_ptr<JSHost>(),
             "(function(inputMsg){ \n"
             "     var handled = false;\n"
             "     var outputArr;\n"
@@ -114,16 +110,9 @@ ReqHandler::ReqHandler() :
 
 /* public       */
 
-void ReqHandler::setQJSEngine(std::shared_ptr<QJSEngine> p_engine)
+void ReqHandler::setJSHost(std::shared_ptr<JSHost> p_jshost)
 {
-    this->p_engine = p_engine;
-}
-
-void ReqHandler::setScriptFactory(
-        std::shared_ptr<ScriptFactory> p_script_factory
-        )
-{
-    this->p_script_factory = p_script_factory;
+    this->p_jshost = p_jshost;
 }
 
 QString ReqHandler::getTitle() const
@@ -153,13 +142,7 @@ ReqHandler::Result ReqHandler::handle(
         QJSValue script_ctx_jsval
         )
 {
-    QJSValue factory_jsval = p_engine->newQObject(p_script_factory.get());
-    QQmlEngine::setObjectOwnership(p_script_factory.get(), QQmlEngine::CppOwnership);
-
     //-- before handling, set global properties
-    p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
-    p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
-    p_engine->globalObject().setProperty("factory",    factory_jsval);
 
     ReqHandler::Result ret = Result::UNKNOWN;
 
@@ -173,7 +156,7 @@ ReqHandler::Result ReqHandler::handle(
 
 
     //-- try to evaluate JavaScript code
-    QJSValue func = p_engine->evaluate(script_func_code);
+    QJSValue func = p_jshost->evaluate(script_func_code);
 
     if (func.isError()){
         //-- evaluation is failed: some error in JavaScript code.
@@ -191,6 +174,7 @@ ReqHandler::Result ReqHandler::handle(
         last_error = Error::SCRIPT_IS_NOT_FUNCTION;
 
     } else {
+
         //-- ok, we have function value. Try to call it,
         //   passing the scripts context as `this`.
         QJSValue returned = func.callWithInstance(
