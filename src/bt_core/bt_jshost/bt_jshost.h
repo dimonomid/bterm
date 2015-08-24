@@ -92,6 +92,12 @@ public:
 
     /**
      * Call `QJSEngine::evaluate()` on host-specific `QJSEngine` instance.
+     *
+     * It differs from regular `QJSEngine::evaluate()` as follows:
+     *
+     * - `JSHost` specifies its own host properties, TODO: link to JS API
+     * - `JSHost` executes all scripts in strict mode
+     *   ( https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode )
      */
     QJSValue evaluate(
             const QString &program,
