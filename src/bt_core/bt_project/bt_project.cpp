@@ -176,6 +176,10 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
                 p_codec.get(), &Codec::messageDecoded,
                 this, &Project::onMessageDecoded
                 );
+        disconnect(
+                p_codec.get(), &Codec::settingsChanged,
+                this, &Project::markUnsaved
+               );
     }
 
     CodecFactory codec_factory {};
@@ -191,8 +195,13 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
             p_codec.get(), &Codec::messageDecoded,
             this, &Project::onMessageDecoded
            );
+    connect(
+            p_codec.get(), &Codec::settingsChanged,
+            this, &Project::markUnsaved
+           );
 
     emit currentCodecNumChanged(p_codec);
+    setUnsaved(true);
 }
 
 void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
@@ -209,11 +218,12 @@ void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
 
 void Project::setIODevBaudRate(int32_t baudrate)
 {
-    this->baudrate = baudrate;
-
     if (p_io_dev != nullptr){
         p_io_dev->setBaudRate(baudrate);
     }
+    //NOTE: we even don't bother setting project's
+    //      baudrate value, because it will be set
+    //      by slot `onIODevBaudRateChanged()`.
 }
 
 int32_t Project::getIODevBaudRate()
@@ -243,6 +253,7 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 
     //-- notify listeners about new handler
     emit reqHandlerAdded(p_handler, handler_index);
+    setUnsaved(true);
 }
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
@@ -276,6 +287,7 @@ void Project::removeHandler(size_t index)
 
         //-- notify listeners about removed handler
         emit reqHandlerRemoved(p_handler, index);
+        setUnsaved(true);
     }
 }
 
@@ -289,6 +301,7 @@ void Project::moveHandlerUp(size_t index)
 
         //-- notify listeners about removed handler
         emit reqHandlersReordered();
+        setUnsaved(true);
     }
 }
 
@@ -302,6 +315,7 @@ void Project::moveHandlerDown(size_t index)
 
         //-- notify listeners about removed handler
         emit reqHandlersReordered();
+        setUnsaved(true);
     }
 }
 
@@ -325,6 +339,7 @@ void Project::setTitle(QString title)
 {
     this->title = title;
     emit titleChanged(title);
+    setUnsaved(true);
 }
 
 bool Project::isUnsaved()
@@ -368,6 +383,7 @@ void Project::onIODevReadyRead(int bytes_available)
 void Project::onIODevBaudRateChanged(int32_t baudrate)
 {
     this->baudrate = baudrate;
+    setUnsaved(true);
 }
 
 /**
@@ -458,9 +474,14 @@ void Project::onMessageDecoded(const DataMsg &msg)
 void Project::onReqHandlerTitleChanged(const QString &name)
 {
     ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
+    setUnsaved(true);
     emit reqHandlerTitleChanged(p_handler, name);
 }
 
+void Project::markUnsaved()
+{
+    setUnsaved(true);
+}
 
 
 /* protected    */

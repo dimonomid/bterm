@@ -302,10 +302,16 @@ void Appl::saveProject(QString filename)
             //-- project is read successfully
             //   let's save filename and notify the listeners
 
+            p_project->setUnsaved(false);
+
             cryEventSys(
                     EventSys::Level::INFO,
                     tr("Project \"") + filename + tr("\" saved successfully")
                     );
+
+            rememberProjectFilename(fileinfo.absoluteFilePath());
+
+            emit projectSaved(proj_filename, p_project);
 
         } catch (std::invalid_argument e){
             //-- there was some error during project read
@@ -320,10 +326,6 @@ void Appl::saveProject(QString filename)
         }
 
         file->close();
-
-        rememberProjectFilename(fileinfo.absoluteFilePath());
-
-        emit projectSaved(proj_filename, p_project);
     } else {
         cryEventSys(
                 EventSys::Level::ERROR,

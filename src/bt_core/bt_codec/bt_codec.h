@@ -122,6 +122,12 @@ signals:
      */
     void messageDecoded(const DataMsg &msg);
 
+    /**
+     * Emitted when codec settings were changed
+     * (used to mark project as unsaved)
+     */
+    void settingsChanged();
+
 };
 
 

@@ -346,16 +346,19 @@ void Codec_ISO14230::accept(CodecVisitor &visitor)
 void Codec_ISO14230::setFmtRx(uint8_t fmt_rx)
 {
     this->fmt_rx = fmt_rx;
+    emit settingsChanged();
 }
 
 void Codec_ISO14230::setOwnAddrRx(uint8_t own_addr_rx)
 {
     this->own_addr_rx = own_addr_rx;
+    emit settingsChanged();
 }
 
 void Codec_ISO14230::setRemoteAddrRx(uint8_t remote_addr_rx)
 {
     this->remote_addr_rx = remote_addr_rx;
+    emit settingsChanged();
 }
 
 
@@ -363,16 +366,19 @@ void Codec_ISO14230::setRemoteAddrRx(uint8_t remote_addr_rx)
 void Codec_ISO14230::setFmtTx(uint8_t fmt_tx)
 {
     this->fmt_tx = fmt_tx;
+    emit settingsChanged();
 }
 
 void Codec_ISO14230::setOwnAddrTx(uint8_t own_addr_tx)
 {
     this->own_addr_tx = own_addr_tx;
+    emit settingsChanged();
 }
 
 void Codec_ISO14230::setRemoteAddrTx(uint8_t remote_addr_tx)
 {
     this->remote_addr_tx = remote_addr_tx;
+    emit settingsChanged();
 }
 
 

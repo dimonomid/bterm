@@ -280,6 +280,7 @@ private slots:
     void onMessageDecoded(const DataMsg &msg);
 
     void onReqHandlerTitleChanged(const QString &name);
+    void markUnsaved();
 
 
 };

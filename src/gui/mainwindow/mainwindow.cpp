@@ -563,6 +563,11 @@ void MainWindow::onProjectOpened(
             this, &MainWindow::onProjectCodecNumChanged
            );
 
+    connect(
+            p_project.get(), &Project::unsavedStatusChanged,
+            this, &MainWindow::onProjectUnsavedStatusChanged
+           );
+
     //-- store weak pointer to the project
     this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
 
@@ -708,4 +713,8 @@ void MainWindow::onReqHandlersReordered()
     refreshHandlersList();
 }
 
+void MainWindow::onProjectUnsavedStatusChanged()
+{
+    updateWindowTitle();
+}
 
