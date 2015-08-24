@@ -103,7 +103,7 @@ private:
 
     //-- true if the project is not saved in its current state;
     //   false otherwise
-    bool unsaved;
+    bool dirty;
 
     /****************************************************************************
      * STATIC METHODS
@@ -199,14 +199,14 @@ public:
     void setTitle(QString title);
 
     /**
-     * Returns whether the project is unsaved
+     * Returns whether the project is dirty
      */
-    bool isUnsaved();
+    bool isDirty();
 
     /**
-     * Set whether the project is unsaved
+     * Set whether the project is dirty
      */
-    void setUnsaved(bool unsaved);
+    void setDirty(bool dirty);
 
 private:
 
@@ -271,9 +271,9 @@ signals:
     void currentCodecNumChanged(std::shared_ptr<Codec> p_codec);
 
     /**
-     * Emitted whenever unsaved/saved status is changed
+     * Emitted whenever dirty/saved status is changed
      */
-    void unsavedStatusChanged(bool unsaved);
+    void dirtyStatusChanged(bool dirty);
 
 private slots:
 
@@ -283,7 +283,7 @@ private slots:
 
     void onReqHandlerTitleChanged(const QString &name);
     void onReqHandlerScriptChanged(const QString &script);
-    void markUnsaved();
+    void markDirty();
 
 
 };

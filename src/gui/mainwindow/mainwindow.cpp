@@ -342,7 +342,7 @@ void MainWindow::updateWindowTitle()
         setWindowTitle(
                 WINDOW_TITLE + ": "
                 + p_project->getTitle()
-                + (p_project->isUnsaved() ? "*" : "")
+                + (p_project->isDirty() ? "*" : "")
                 + " ("
                 + appl.getProjectFilename()
                 + ")"
@@ -500,11 +500,11 @@ bool MainWindow::confirmSaveCurrentProject()
     bool ret = true;
 
     if (auto p_project = wp_project.lock()){
-        if (p_project->isUnsaved()){
+        if (p_project->isDirty()){
             QMessageBox::StandardButton reply =
                 QMessageBox::question(
                         nullptr,
-                        "Project is unsaved",
+                        "Project is dirty",
                         "Save current project?",
                         (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel)
                         );
@@ -597,8 +597,8 @@ void MainWindow::onProjectOpened(
            );
 
     connect(
-            p_project.get(), &Project::unsavedStatusChanged,
-            this, &MainWindow::onProjectUnsavedStatusChanged
+            p_project.get(), &Project::dirtyStatusChanged,
+            this, &MainWindow::onProjectDirtyStatusChanged
            );
 
     //-- store weak pointer to the project
@@ -752,7 +752,7 @@ void MainWindow::onReqHandlersReordered()
     refreshHandlersList();
 }
 
-void MainWindow::onProjectUnsavedStatusChanged()
+void MainWindow::onProjectDirtyStatusChanged()
 {
     updateWindowTitle();
 }

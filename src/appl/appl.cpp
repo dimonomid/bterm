@@ -217,7 +217,7 @@ void Appl::newProject()
 
     p_project = std::make_shared<Project>();
 
-    p_project->setUnsaved(true);
+    p_project->setDirty(true);
 
     cryEventSys(
             EventSys::Level::INFO,
@@ -253,7 +253,7 @@ void Appl::openProject(QString filename)
         //-- project is read successfully
         //   let's save filename and notify the listeners
 
-        p_project->setUnsaved(false);
+        p_project->setDirty(false);
 
         cryEventSys(
                 EventSys::Level::INFO,
@@ -302,7 +302,7 @@ void Appl::saveProject(QString filename)
             //-- project is read successfully
             //   let's save filename and notify the listeners
 
-            p_project->setUnsaved(false);
+            p_project->setDirty(false);
 
             cryEventSys(
                     EventSys::Level::INFO,

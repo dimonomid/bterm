@@ -243,7 +243,7 @@ private slots:
             size_t index
             );
     void onReqHandlersReordered();
-    void onProjectUnsavedStatusChanged();
+    void onProjectDirtyStatusChanged();
 };
 
 #endif // MAINWINDOW_H

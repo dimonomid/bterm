@@ -124,7 +124,7 @@ signals:
 
     /**
      * Emitted when codec settings were changed
-     * (used to mark project as unsaved)
+     * (used to mark project as dirty)
      */
     void settingsChanged();
 

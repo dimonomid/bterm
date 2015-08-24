@@ -47,7 +47,7 @@ Project::Project(
     handlers(),
     script_ctx_jsval(p_engine->evaluate("({})")),
     baudrate(9600),
-    unsaved(true)
+    dirty(true)
 {
     //TODO: add comments about these registrations
     //
@@ -178,7 +178,7 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
                 );
         disconnect(
                 p_codec.get(), &Codec::settingsChanged,
-                this, &Project::markUnsaved
+                this, &Project::markDirty
                );
     }
 
@@ -197,11 +197,11 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
            );
     connect(
             p_codec.get(), &Codec::settingsChanged,
-            this, &Project::markUnsaved
+            this, &Project::markDirty
            );
 
     emit currentCodecNumChanged(p_codec);
-    setUnsaved(true);
+    setDirty(true);
 }
 
 void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
@@ -257,7 +257,7 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
 
     //-- notify listeners about new handler
     emit reqHandlerAdded(p_handler, handler_index);
-    setUnsaved(true);
+    setDirty(true);
 }
 
 std::shared_ptr<ReqHandler> Project::getHandler(size_t index)
@@ -291,7 +291,7 @@ void Project::removeHandler(size_t index)
 
         //-- notify listeners about removed handler
         emit reqHandlerRemoved(p_handler, index);
-        setUnsaved(true);
+        setDirty(true);
     }
 }
 
@@ -305,7 +305,7 @@ void Project::moveHandlerUp(size_t index)
 
         //-- notify listeners about removed handler
         emit reqHandlersReordered();
-        setUnsaved(true);
+        setDirty(true);
     }
 }
 
@@ -319,7 +319,7 @@ void Project::moveHandlerDown(size_t index)
 
         //-- notify listeners about removed handler
         emit reqHandlersReordered();
-        setUnsaved(true);
+        setDirty(true);
     }
 }
 
@@ -343,19 +343,19 @@ void Project::setTitle(QString title)
 {
     this->title = title;
     emit titleChanged(title);
-    setUnsaved(true);
+    setDirty(true);
 }
 
-bool Project::isUnsaved()
+bool Project::isDirty()
 {
-    return unsaved;
+    return dirty;
 }
 
-void Project::setUnsaved(bool unsaved)
+void Project::setDirty(bool dirty)
 {
-    this->unsaved = unsaved;
+    this->dirty = dirty;
 
-    emit unsavedStatusChanged(unsaved);
+    emit dirtyStatusChanged(dirty);
 }
 
 
@@ -387,7 +387,7 @@ void Project::onIODevReadyRead(int bytes_available)
 void Project::onIODevBaudRateChanged(int32_t baudrate)
 {
     this->baudrate = baudrate;
-    setUnsaved(true);
+    setDirty(true);
 }
 
 /**
@@ -478,19 +478,19 @@ void Project::onMessageDecoded(const DataMsg &msg)
 void Project::onReqHandlerTitleChanged(const QString &name)
 {
     ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
-    setUnsaved(true);
+    setDirty(true);
     emit reqHandlerTitleChanged(p_handler, name);
 }
 
 void Project::onReqHandlerScriptChanged(const QString &script)
 {
     std::ignore = script;
-    setUnsaved(true);
+    setDirty(true);
 }
 
-void Project::markUnsaved()
+void Project::markDirty()
 {
-    setUnsaved(true);
+    setDirty(true);
 }
 
 
