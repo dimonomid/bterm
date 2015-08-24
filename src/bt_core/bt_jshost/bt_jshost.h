@@ -98,6 +98,9 @@ public:
             std::shared_ptr<std::vector<uint8_t>> p_req_data
             );
 
+    /**
+     * Returns context that is used as `this` in JavaScript handler functions
+     */
     QJSValue getScriptContextValue();
 
 #if 0
