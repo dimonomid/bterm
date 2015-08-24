@@ -159,7 +159,7 @@ public:
 private:
 
     void initSettings();
-    void cryEventSys(BTCore::EventSys::Level level, QString text);
+    void cryEventSys(BTCore::MsgLevel level, QString text);
     void rememberProjectFilename(QString filename);
     void connectToCurProject();
 

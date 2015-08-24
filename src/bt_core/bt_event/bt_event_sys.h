@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 #include "bt_event.h"
+#include "bt_core.h"
 
 
 
@@ -34,21 +35,11 @@ class BTCore::EventSys : public Event
 
 public:
 
-    /**
-     * Message level
-     */
-    enum class Level {
-        DEBUG,
-        INFO,
-        WARNING,
-        ERROR,
-    };
-
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit EventSys(Level level, QString text);
+    explicit EventSys(BTCore::MsgLevel level, QString text);
     virtual ~EventSys();
 
 
@@ -57,7 +48,7 @@ public:
      ***************************************************************************/
 private:
 
-    Level level;
+    BTCore::MsgLevel level;
     QString text;
 
 
@@ -66,8 +57,8 @@ private:
      * STATIC METHODS
      ***************************************************************************/
 public:
-    static QString levelToString(Level level);
-    static Level levelFromString(QString level_str);
+    static QString levelToString(BTCore::MsgLevel level);
+    static MsgLevel levelFromString(QString level_str);
 
 
     /****************************************************************************
@@ -76,7 +67,7 @@ public:
 public:
 
     virtual const QString toString() const override;
-    Level getLevel() const;
+    BTCore::MsgLevel getLevel() const;
     virtual void accept(EventVisitor &visitor) override;
 
 

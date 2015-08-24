@@ -148,7 +148,7 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
             //   should be done asynchronously (when device is actually closed,
             //   the signal `openStatusChanged()` is emitted)
             auto p_event = std::make_shared<EventSys>(
-                    EventSys::Level::WARNING,
+                    MsgLevel::WARNING,
                     QString("IO device is opened when setting it to project. ")
                     + QString("Please change baudrate manually to ")
                     + QString::number(this->baudrate)

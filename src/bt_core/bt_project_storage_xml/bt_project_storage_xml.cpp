@@ -407,7 +407,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
                     //   this is unsupported at the moment. Generate a warning
                     //   and ignore all extra codecs.
                     auto p_event = std::make_shared<EventSys>(
-                            EventSys::Level::WARNING,
+                            MsgLevel::WARNING,
                             "XML file contains more than one codec. "
                             "Having more than one codec in the project "
                             "is not supported at the moment. Ignoring all "

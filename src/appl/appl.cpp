@@ -136,7 +136,7 @@ void Appl::initSettings()
 /**
  * Emit (cry) system event
  */
-void Appl::cryEventSys(EventSys::Level level, QString text)
+void Appl::cryEventSys(MsgLevel level, QString text)
 {
     auto p_event = std::make_shared<EventSys>(level, text);
     emit event(p_event);
@@ -186,7 +186,7 @@ void Appl::closeProject()
         //   nobody will care)
 
         cryEventSys(
-                EventSys::Level::INFO,
+                MsgLevel::INFO,
                 tr("Project \"") + proj_filename + tr("\" closed")
                 );
 
@@ -208,7 +208,7 @@ void Appl::newProject()
     p_project->setDirty(true);
 
     cryEventSys(
-            EventSys::Level::INFO,
+            MsgLevel::INFO,
             tr("New project has been created")
             );
 
@@ -244,7 +244,7 @@ void Appl::openProject(QString filename)
         p_project->setDirty(false);
 
         cryEventSys(
-                EventSys::Level::INFO,
+                MsgLevel::INFO,
                 tr("Project \"") + filename + tr("\" opened successfully")
                 );
 
@@ -256,7 +256,7 @@ void Appl::openProject(QString filename)
         //-- there was some error during project read
 
         cryEventSys(
-                EventSys::Level::ERROR,
+                MsgLevel::ERROR,
                 tr("Error during opening the project \"") 
                 + filename
                 + tr("\": ")
@@ -293,7 +293,7 @@ void Appl::saveProject(QString filename)
             p_project->setDirty(false);
 
             cryEventSys(
-                    EventSys::Level::INFO,
+                    MsgLevel::INFO,
                     tr("Project \"") + filename + tr("\" saved successfully")
                     );
 
@@ -305,7 +305,7 @@ void Appl::saveProject(QString filename)
             //-- there was some error during project read
 
             cryEventSys(
-                    EventSys::Level::ERROR,
+                    MsgLevel::ERROR,
                     tr("Error during saving the project \"") 
                     + filename
                     + tr("\": ")
@@ -316,7 +316,7 @@ void Appl::saveProject(QString filename)
         file->close();
     } else {
         cryEventSys(
-                EventSys::Level::ERROR,
+                MsgLevel::ERROR,
                 tr("Can't save current project, since there's no filename")
                 );
     }
@@ -361,7 +361,7 @@ void Appl::onIODevOpenStatusChanged(bool opened)
         msg = "IO Device \"" + p_io_dev->toString() + "\" closed";
     }
 
-    auto p_event = std::make_shared<EventSys>(EventSys::Level::INFO, msg);
+    auto p_event = std::make_shared<EventSys>(MsgLevel::INFO, msg);
     emit event(p_event);
 
     emit ioDevOpenStatusChanged(opened);
@@ -373,7 +373,7 @@ void Appl::onIODevOpenStatusChanged(bool opened)
 void Appl::onIODevError(QString error_msg)
 {
     auto p_event = std::make_shared<EventSys>(
-            EventSys::Level::ERROR,
+            MsgLevel::ERROR,
             "IO error: " + error_msg
             );
     emit event(p_event);

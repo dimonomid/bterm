@@ -17,7 +17,7 @@ using namespace BTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-EventSys::EventSys(Level level, QString text) :
+EventSys::EventSys(MsgLevel level, QString text) :
     level(level),
     text(text)
 {
@@ -40,21 +40,21 @@ EventSys::~EventSys()
 
 /* public       */
 
-QString EventSys::levelToString(Level level)
+QString EventSys::levelToString(MsgLevel level)
 {
     QString ret = "unknown";
 
     switch (level){
-        case Level::DEBUG:
+        case MsgLevel::DEBUG:
             ret = "DEBUG";
             break;
-        case Level::INFO:
+        case MsgLevel::INFO:
             ret = "INFO";
             break;
-        case Level::WARNING:
+        case MsgLevel::WARNING:
             ret = "WARNING";
             break;
-        case Level::ERROR:
+        case MsgLevel::ERROR:
             ret = "ERROR";
             break;
     }
@@ -62,18 +62,18 @@ QString EventSys::levelToString(Level level)
     return ret;
 }
 
-EventSys::Level EventSys::levelFromString(QString level_str)
+MsgLevel EventSys::levelFromString(QString level_str)
 {
-    Level level = Level::INFO;
+    MsgLevel level = MsgLevel::INFO;
 
     if (level_str == "DEBUG"){
-        level = Level::DEBUG;
+        level = MsgLevel::DEBUG;
     } else if (level_str == "INFO"){
-        level = Level::INFO;
+        level = MsgLevel::INFO;
     } else if (level_str == "WARNING"){
-        level = Level::WARNING;
+        level = MsgLevel::WARNING;
     } else if (level_str == "ERROR"){
-        level = Level::ERROR;
+        level = MsgLevel::ERROR;
     }
 
     return level;
@@ -95,7 +95,7 @@ const QString EventSys::toString() const
     return text;
 }
 
-EventSys::Level EventSys::getLevel() const
+MsgLevel EventSys::getLevel() const
 {
     return level;
 }

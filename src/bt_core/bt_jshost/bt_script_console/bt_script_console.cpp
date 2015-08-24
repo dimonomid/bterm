@@ -49,7 +49,7 @@ ScriptConsole::ScriptConsole()
 void ScriptConsole::log(QString text)
 {
     qDebug() << text;
-    emit message(text, Level::INFO);
+    emit message(text, MsgLevel::INFO);
 }
 
 

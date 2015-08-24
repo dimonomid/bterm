@@ -95,16 +95,16 @@ void EventVisitor_GuiHandle::visit(EventSys &bt_event_sys)
         QString bt_ml {};
 
         switch (bt_event_sys.getLevel()){
-            case EventSys::Level::DEBUG:
+            case MsgLevel::DEBUG:
                 bt_ml = "<font color='green'>" + bt_event_sys.toString() + "</font>";
                 break;
-            case EventSys::Level::INFO:
+            case MsgLevel::INFO:
                 bt_ml = "<font color='blue'>" + bt_event_sys.toString() + "</font>";
                 break;
-            case EventSys::Level::WARNING:
+            case MsgLevel::WARNING:
                 bt_ml = "<font color='brown'>" + bt_event_sys.toString() + "</font>";
                 break;
-            case EventSys::Level::ERROR:
+            case MsgLevel::ERROR:
                 bt_ml = "<font color='red'>" + bt_event_sys.toString() + "</font>";
                 break;
         }
