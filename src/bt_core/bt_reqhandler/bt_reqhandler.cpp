@@ -13,9 +13,9 @@
 #include <QVariant>
 #include <QDebug>
 
-#include "bytearr_read.h"
-#include "bytearr_read_write.h"
-#include "script_factory.h"
+#include "bt_bytearr_read.h"
+#include "bt_bytearr_read_write.h"
+#include "bt_script_factory.h"
 #include "my_util.h"
 #include "bt_reqhandler.h"
 

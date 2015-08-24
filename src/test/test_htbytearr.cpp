@@ -11,7 +11,7 @@
 
 //#include "test_helpers.h"
 #include "test_htbytearr.h"
-#include "bytearr_read_write.h"
+#include "bt_bytearr_read_write.h"
 
 
 using namespace BTCore;

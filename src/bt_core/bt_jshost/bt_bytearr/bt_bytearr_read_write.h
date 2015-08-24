@@ -3,14 +3,20 @@
  *
  ******************************************************************************/
 
-#ifndef _SCRIPT_FACTORY_H
-#define _SCRIPT_FACTORY_H
+#ifndef _BYTEARR_READ_WRITE_H
+#define _BYTEARR_READ_WRITE_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "bytearr_read_write.h"
+#include <QObject>
+
+#include <memory>
+#include <vector>
+#include <cstdint>
+
+#include "bt_bytearr_read.h"
 
 
 /*******************************************************************************
@@ -18,24 +24,18 @@
  ******************************************************************************/
 
 namespace BTCore {
-    class ScriptFactory;
+    class ByteArrReadWrite;
 }
 
+/*
+ * TODO: implement the fill byte
+ *       implement unit tests
+ */
 
 /**
- * Factory that is used in JavaScript scripts to create various objects,
- * namely `BTCore::ByteArrReadWrite`.
- *
- * The instance of the factory is available in scripts via `factory` property
- * of the global object.
- *
- * So, use it as follows:
- *
- * <code>
- *      var outputArr = factory.createByteArr();
- * </code>
+ * TODO
  */
-class BTCore::ScriptFactory : public QObject
+class BTCore::ByteArrReadWrite : public BTCore::ByteArrRead
 {
 Q_OBJECT
     /****************************************************************************
@@ -46,11 +46,19 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
+    Q_INVOKABLE explicit ByteArrReadWrite();
+    explicit ByteArrReadWrite(const std::vector<uint8_t> &data);
+    explicit ByteArrReadWrite(size_t size, uint8_t fill_byte);
+
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
+
+    uint8_t fill_byte;
+
+
 
     /****************************************************************************
      * STATIC METHODS
@@ -60,17 +68,29 @@ private:
      * METHODS
      ***************************************************************************/
 
+public:
+    Q_INVOKABLE void setFillByte(double fill_byte);
+
+    Q_INVOKABLE void putU08(double index, double val);
+    Q_INVOKABLE void putU16(double index, double val, double end = LITTLE_END);
+    Q_INVOKABLE void putU32(double index, double val, double end = LITTLE_END);
+
+    Q_INVOKABLE void putS08(double index, double val);
+    Q_INVOKABLE void putS16(double index, double val, double end = LITTLE_END);
+    Q_INVOKABLE void putS32(double index, double val, double end = LITTLE_END);
+
+
+
+private:
+
+    void ensureSize(size_t size_needed);
+
+
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
-public slots:
-
-    /**
-     * Create new empty `BTCore::ByteArrReadWrite`
-     */
-    BTCore::ByteArrReadWrite *createByteArr();
 
 };
 
 
-#endif // _SCRIPT_FACTORY_H
+#endif // _BYTEARR_READ_WRITE_H

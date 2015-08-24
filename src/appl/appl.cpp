@@ -32,8 +32,8 @@
 #include <QJSValue>
 #include <QVariant>
 #include <QDebug>
-#include "bytearr_read.h"
-#include "bytearr_read_write.h"
+#include "bt_bytearr_read.h"
+#include "bt_bytearr_read_write.h"
 #include "my_util.h"
 
 using namespace BTCore;
