@@ -62,6 +62,11 @@ Project::Project(
                 )
             );
     setCurrentCodecNum(BTCore::CodecNum::TRANSPARENT);
+
+    //-- if title is empty, set it to "New project"
+    if (this->title.isEmpty()){
+        this->title = "New project";
+    }
 }
 
 Project::~Project()
