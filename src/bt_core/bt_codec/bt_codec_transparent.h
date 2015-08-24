@@ -25,7 +25,8 @@ namespace BTCore {
 }
 
 /**
- * TODO
+ * Implementation of `#BTCore::Codec` for "pseudo-codec": it doesn't actually
+ * encode or decode anything, it transmits data back and forth unchanged.
  */
 class BTCore::CodecTransparent : public BTCore::Codec
 {
