@@ -23,6 +23,7 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QPushButton>
+#include <QMessageBox>
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -494,6 +495,33 @@ void MainWindow::scrollAllToBottom()
             );
 }
 
+bool MainWindow::confirmSaveCurrentProject()
+{
+    bool ret = true;
+
+    if (auto p_project = wp_project.lock()){
+        if (p_project->isUnsaved()){
+            QMessageBox::StandardButton reply =
+                QMessageBox::question(
+                        nullptr,
+                        "Project is unsaved",
+                        "Save current project?",
+                        (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel)
+                        );
+
+            //-- save project if user asked to do so
+            if (reply == QMessageBox::Yes){
+                saveProject();
+            }
+
+            //-- If user doesn't press cancel, return true
+            ret = (reply != QMessageBox::Cancel);
+        }
+    }
+
+    return ret;
+}
+
 QString MainWindow::getTagnameFromFilename(QString filename)
 {
     QRegularExpression re {"[^a-zA-Z0-9_]"};
@@ -503,10 +531,14 @@ QString MainWindow::getTagnameFromFilename(QString filename)
 
 void MainWindow::closeEvent(QCloseEvent *p_event)
 {
-    mySaveState();
-    saveProjectState();
+    if (confirmSaveCurrentProject()){
+        mySaveState();
+        saveProjectState();
 
-    QMainWindow::closeEvent(p_event);
+        QMainWindow::closeEvent(p_event);
+    } else {
+        p_event->ignore();
+    }
 }
 
 
@@ -606,17 +638,19 @@ void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
 
 void MainWindow::openProject()
 {
-    //-- get filename
-    QString wanted_filename = QFileDialog::getOpenFileName(
-            this,
-            QObject::tr("Open device protocol file"),
-            appl.getLastProjectFilename(),
-            "Xml files (*.xml)"
-            );
+    if (confirmSaveCurrentProject()){
+        //-- get filename
+        QString wanted_filename = QFileDialog::getOpenFileName(
+                this,
+                QObject::tr("Open device protocol file"),
+                appl.getLastProjectFilename(),
+                "Xml files (*.xml)"
+                );
 
-    if (!wanted_filename.isEmpty()){
-        if (QFile::exists(wanted_filename)){
-            appl.openProject(wanted_filename);
+        if (!wanted_filename.isEmpty()){
+            if (QFile::exists(wanted_filename)){
+                appl.openProject(wanted_filename);
+            }
         }
     }
 
@@ -624,7 +658,9 @@ void MainWindow::openProject()
 
 void MainWindow::newProject()
 {
-    appl.newProject();
+    if (confirmSaveCurrentProject()){
+        appl.newProject();
+    }
 }
 
 void MainWindow::saveProject()
@@ -656,7 +692,9 @@ void MainWindow::saveProjectAs()
 
 void MainWindow::closeProject()
 {
-    appl.closeProject();
+    if (confirmSaveCurrentProject()){
+        appl.closeProject();
+    }
 }
 
 void MainWindow::onEvent(std::shared_ptr<Event> p_event)

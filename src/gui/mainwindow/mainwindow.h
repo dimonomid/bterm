@@ -184,6 +184,25 @@ private:
 
     void scrollAllToBottom();
 
+    /**
+     * This function is called whenever current project is going to be closed.
+     * Shortly: if this function returned `true`, the caller should proceed
+     * and close the current project. Otherwise (function returned `false`),
+     * the caller should cancel closing project.
+     *
+     * Details:
+     *
+     * - If the project is unchanged, it just returns true.
+     * - If the project is changed ("dirty"), it asks the user whether to save
+     *   the project. There are three buttons: Yes, No, Cancel.
+     *   - If user presses Yes: project is saved, and `true` is returned.
+     *   - If user presses No: project is not saved, and `true` is returned
+     *     anyway.
+     *   - If user presses Cancel: project is not save, and `false` is
+     *     returned.
+     */
+    bool confirmSaveCurrentProject();
+
     QString getTagnameFromFilename(QString filename);
 
 private:
