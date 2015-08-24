@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 /**
- * sdf
+ * TODO
  */
 namespace BTCore {
 
@@ -26,7 +26,7 @@ namespace BTCore {
      ******************************************************************************/
 
     /**
-     * Message level
+     * Message level. Used by `#BTCore::EventSys` and `#BTCore::ScriptConsole`.
      */
     enum class MsgLevel {
         DEBUG,
