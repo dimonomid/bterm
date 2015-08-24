@@ -45,7 +45,8 @@ Project::Project(
     all_codecs({}),
     p_io_dev(),
     handlers(),
-    script_ctx_jsval(p_engine->evaluate("({})"))
+    script_ctx_jsval(p_engine->evaluate("({})")),
+    baudrate(9600)
 {
     //TODO: add comments about these registrations
     //
