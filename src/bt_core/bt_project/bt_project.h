@@ -132,7 +132,9 @@ public:
     void setCurrentCodecNum(CodecNum codec_num);
 
     /**
-     * TODO
+     * The project has an array of "known" codecs, i.e. an array of
+     * created instances of codecs.
+     * TODO: explain more
      */
     void addKnownCodec(std::shared_ptr<Codec> p_codec);
 
