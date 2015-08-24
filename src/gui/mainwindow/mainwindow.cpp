@@ -146,10 +146,11 @@ MainWindow::MainWindow(
     }
 
     addDockWidget(Qt::LeftDockWidgetArea, p_dw_raw_data);
-    addDockWidget(Qt::TopDockWidgetArea, p_dw_handlers);
-    addDockWidget(Qt::TopDockWidgetArea, p_dw_project_sett);
-    addDockWidget(Qt::TopDockWidgetArea, p_dw_codec_sett);
-    addDockWidget(Qt::TopDockWidgetArea, p_dw_iodev_sett);
+    addDockWidget(Qt::LeftDockWidgetArea, p_dw_handlers);
+    addDockWidget(Qt::LeftDockWidgetArea, p_dw_project_sett);
+    addDockWidget(Qt::LeftDockWidgetArea, p_dw_codec_sett);
+    addDockWidget(Qt::LeftDockWidgetArea, p_dw_iodev_sett);
+    p_dw_codec_sett->hide();
 
 
     connect(&appl, &Appl::event, this, &MainWindow::onEvent);
