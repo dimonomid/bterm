@@ -72,10 +72,12 @@ JSHost::JSHost() :
 
 void JSHost::initJSEngine()
 {
-    p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
-    p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
-    p_engine->globalObject().setProperty("factory",    script_factory_jsval);
-    p_engine->globalObject().setProperty("console",    script_console_jsval);
+
+    setGlobalFrozenProperty("LITTLE_END", ByteArrRead::LITTLE_END);
+    setGlobalFrozenProperty("BIG_END",    ByteArrRead::BIG_END);
+    setGlobalFrozenProperty("factory",    script_factory_jsval);
+    setGlobalFrozenProperty("console",    script_console_jsval);
+
 }
 
 

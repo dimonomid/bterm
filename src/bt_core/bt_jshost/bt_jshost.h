@@ -12,6 +12,7 @@
 
 #include <QObject>
 #include <QJSValue>
+#include <QJSEngine>
 
 #include <memory>
 #include <vector>
@@ -20,8 +21,6 @@
 #include "bt_core.h"
 
 
-
-class QJSEngine;
 
 namespace BTCore {
     class ScriptFactory;
@@ -137,6 +136,26 @@ private:
      */
     void initJSEngine();
 
+    /**
+     * Set frozen property on global object. User won't be able
+     * to do anything with this property but read it.
+     */
+    template<class T>
+    void setGlobalFrozenProperty(const QString &prop_name, T value)
+    {
+        //-- set property on global object
+        p_engine->globalObject().setProperty(prop_name, value);
+
+        //-- make it frozen (we have to evaluate script for that,
+        //   since QJSEngine doesn't expose a C++ API for that)
+        p_engine->evaluate(
+                "Object.defineProperty("
+                "   this,"
+                "   \"" + prop_name + "\","
+                "   { writable: false, enumerable: false, configurable: false }"
+                ");"
+                );
+    }
 
 
 
