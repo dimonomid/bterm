@@ -152,6 +152,8 @@ void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
                     );
             emit event(p_event);
         }
+    } else if (!this->p_io_dev->isOpened()){
+        this->p_io_dev->open();
     }
 }
 
