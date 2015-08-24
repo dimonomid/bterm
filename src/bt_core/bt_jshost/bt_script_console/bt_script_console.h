@@ -1,16 +1,16 @@
-/******************************************************************************
+/*******************************************************************************
  *   Description:   See class declaration below
  *
  ******************************************************************************/
 
-#ifndef _BT_EVENT_SYS_H
-#define _BT_EVENT_SYS_H
+#ifndef _BT_SCRIPT_CONSOLE_H
+#define _BT_SCRIPT_CONSOLE_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "bt_event.h"
+#include <QObject>
 
 
 
@@ -19,37 +19,31 @@
  ******************************************************************************/
 
 namespace BTCore {
-    class EventSys;
+    class ScriptConsole;
 }
 
+
 /**
- * Event that represents some system event, such as debug events (data rx/tx),
- * issues during project opening, etc.
+ * Class that provides `console.*` methods for scripts
  */
-class BTCore::EventSys : public Event
+class BTCore::ScriptConsole : public QObject
 {
+Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
 
-public:
-
-    /**
-     * Message level
-     */
     enum class Level {
-        DEBUG,
         INFO,
-        WARNING,
-        ERROR,
     };
+
+
 
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit EventSys(Level level, QString text);
-    virtual ~EventSys();
+    explicit ScriptConsole();
 
 
     /****************************************************************************
@@ -57,35 +51,29 @@ public:
      ***************************************************************************/
 private:
 
-    Level level;
-    QString text;
-
-
-
     /****************************************************************************
      * STATIC METHODS
      ***************************************************************************/
-public:
-    static QString levelToString(Level level);
-    static Level levelFromString(QString level_str);
-
 
     /****************************************************************************
      * METHODS
      ***************************************************************************/
 public:
 
-    virtual const QString toString() const override;
-    Level getLevel() const;
-    virtual void accept(EventVisitor &visitor) override;
+    Q_INVOKABLE void log(QString text);
+
 
 
 
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
+signals:
+
+    void message(QString text, Level = Level::INFO);
+
 
 };
 
 
-#endif // _BT_EVENT_SYS_H
+#endif // _BT_SCRIPT_CONSOLE_H

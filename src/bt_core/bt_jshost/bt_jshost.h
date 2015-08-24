@@ -24,6 +24,7 @@ class QJSEngine;
 
 namespace BTCore {
     class ScriptFactory;
+    class ScriptConsole;
 }
 
 /*******************************************************************************
@@ -66,6 +67,13 @@ private:
 
     //-- the same factory wrapped inside QJSValue
     QJSValue script_factory_jsval;
+
+    //-- console object that is used by scripts
+    std::shared_ptr<ScriptConsole> p_script_console;
+
+    //-- the same factory wrapped inside QJSValue
+    QJSValue script_console_jsval;
+
 
     //-- context that is used by script functions. It is given as `this`
     //   argument to each function.

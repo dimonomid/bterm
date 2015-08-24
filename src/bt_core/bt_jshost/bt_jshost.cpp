@@ -17,6 +17,7 @@
 
 #include "bt_jshost.h"
 #include "bt_script_factory.h"
+#include "bt_script_console.h"
 
 
 
@@ -30,6 +31,8 @@ JSHost::JSHost() :
     p_engine(std::make_shared<QJSEngine>()),
     p_script_factory(std::make_shared<ScriptFactory>()),
     script_factory_jsval(p_engine->newQObject(p_script_factory.get())),
+    p_script_console(std::make_shared<ScriptConsole>()),
+    script_console_jsval(p_engine->newQObject(p_script_console.get())),
     script_ctx_jsval(p_engine->evaluate("({})"))
 {
     //-- set ownership of p_script_factory to C++ code, so that JS engine
@@ -67,6 +70,7 @@ void JSHost::initJSEngine()
     p_engine->globalObject().setProperty("LITTLE_END", ByteArrRead::LITTLE_END);
     p_engine->globalObject().setProperty("BIG_END",    ByteArrRead::BIG_END);
     p_engine->globalObject().setProperty("factory",    script_factory_jsval);
+    p_engine->globalObject().setProperty("console",    script_console_jsval);
 }
 
 
