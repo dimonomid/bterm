@@ -246,6 +246,10 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
             p_handler.get(), &ReqHandler::titleChanged,
             this, &Project::onReqHandlerTitleChanged
            );
+    connect(
+            p_handler.get(), &ReqHandler::scriptChanged,
+            this, &Project::onReqHandlerScriptChanged
+           );
 
     size_t handler_index = handlers.size() - 1;
 
@@ -476,6 +480,12 @@ void Project::onReqHandlerTitleChanged(const QString &name)
     ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
     setUnsaved(true);
     emit reqHandlerTitleChanged(p_handler, name);
+}
+
+void Project::onReqHandlerScriptChanged(const QString &script)
+{
+    std::ignore = script;
+    setUnsaved(true);
 }
 
 void Project::markUnsaved()

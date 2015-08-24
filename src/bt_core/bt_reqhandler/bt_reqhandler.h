@@ -53,10 +53,12 @@ public:
         /** Should never be returned: the result is unknown.
          */
         UNKNOWN,
+
         /** There were no errors during execution of handler, and the request
          * was not handled by this particular handler.
          */
         OK_NOT_HANDLED,
+
         /** There were no errors during execution of handler, and the request
          * was handled by this handler. So, the caller should get generated
          * response from this handler, encode it, and send it on the wire (if
@@ -300,6 +302,11 @@ signals:
      */
     void titleChanged(const QString &title);
 
+
+    /**
+     * Emitted when script is changed by calling `setScript()`
+     */
+    void scriptChanged(const QString &script);
 };
 
 

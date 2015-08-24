@@ -134,7 +134,7 @@ QString ReqHandler::getTitle() const
 void ReqHandler::setTitle(const QString &title)
 {
     this->title = title;
-    emit titleChanged(title);
+    emit titleChanged(this->title);
 }
 
 QString ReqHandler::getScript() const
@@ -145,6 +145,7 @@ QString ReqHandler::getScript() const
 void ReqHandler::setScript(QString script_func_code)
 {
     this->script_func_code = script_func_code;
+    emit scriptChanged(this->script_func_code);
 }
 
 ReqHandler::Result ReqHandler::handle(
