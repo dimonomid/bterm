@@ -169,12 +169,6 @@ void Appl::connectToCurProject()
             this, &Appl::onEvent
            );
 
-    //-- just forward reqHandlerTitleChanged() signal
-    connect(
-            p_project.get(), &Project::reqHandlerTitleChanged,
-            this, &Appl::reqHandlerTitleChanged
-           );
-
     //-- set IODev to newly created project, so that it can talk
     p_project->setIODev(p_io_dev);
 

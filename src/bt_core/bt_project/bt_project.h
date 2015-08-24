@@ -224,16 +224,6 @@ signals:
     void event(std::shared_ptr<Event> p_event);
 
     /**
-     * Emitted when title of some request handler has changed.
-     *
-     * @param p_handler
-     *      handler whose title has changed
-     * @param name
-     *      new title
-     */
-    void reqHandlerTitleChanged(const ReqHandler *p_handler, const QString &name);
-
-    /**
      * Emitted when new handler was just added to the sequence of handlers.
      *
      * @param p_handler

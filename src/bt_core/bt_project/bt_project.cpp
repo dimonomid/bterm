@@ -477,9 +477,8 @@ void Project::onMessageDecoded(const DataMsg &msg)
  */
 void Project::onReqHandlerTitleChanged(const QString &name)
 {
-    ReqHandler *p_handler = dynamic_cast<ReqHandler *>(sender());
+    std::ignore = name;
     setDirty(true);
-    emit reqHandlerTitleChanged(p_handler, name);
 }
 
 void Project::onReqHandlerScriptChanged(const QString &script)

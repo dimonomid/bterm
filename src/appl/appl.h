@@ -198,15 +198,6 @@ signals:
     void projectBeforeClose(std::shared_ptr<BTCore::Project> p_project);
 
     /**
-     * This signal is just forwarded from `#BTCore`,
-     * see `#BTCore::Project::reqHandlerTitleChanged()`.
-     */
-    void reqHandlerTitleChanged(
-            const BTCore::ReqHandler *p_handler,
-            const QString &name
-            );
-
-    /**
      * Emitted when IODev gets opened or closed
      */
     void ioDevOpenStatusChanged(bool opened);
