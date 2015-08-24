@@ -59,7 +59,7 @@ public:
      * Constructs the project with given title and codec.
      */
     explicit Project(
-            QString title = "New project"
+            QString title = ""
             );
 
     virtual ~Project();
@@ -101,6 +101,9 @@ private:
     //-- baudrate that is needed for this project. Will be set to IODev.
     int32_t baudrate;
 
+    //-- true if the project is not saved in its current state;
+    //   false otherwise
+    bool unsaved;
 
     /****************************************************************************
      * STATIC METHODS
@@ -134,7 +137,8 @@ public:
     void addKnownCodec(std::shared_ptr<Codec> p_codec);
 
     /**
-     * Set needed baudrate. It will be propagated to IODev.
+     * Set needed baudrate. It will be propagated to IODev.:
+     *
      */
     void setIODevBaudRate(int32_t baudrate);
 
@@ -191,6 +195,16 @@ public:
      * Set project's title
      */
     void setTitle(QString title);
+
+    /**
+     * Returns whether the project is unsaved
+     */
+    bool isUnsaved();
+
+    /**
+     * Set whether the project is unsaved
+     */
+    void setUnsaved(bool unsaved);
 
 private:
 
@@ -253,6 +267,11 @@ signals:
      * Emitted when current codec is changed by calling `setCurrentCodecNum()`
      */
     void currentCodecNumChanged(std::shared_ptr<Codec> p_codec);
+
+    /**
+     * Emitted whenever unsaved/saved status is changed
+     */
+    void unsavedStatusChanged(bool unsaved);
 
 private slots:
 

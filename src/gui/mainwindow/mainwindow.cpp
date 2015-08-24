@@ -340,6 +340,7 @@ void MainWindow::updateWindowTitle()
         setWindowTitle(
                 WINDOW_TITLE + ": "
                 + p_project->getTitle()
+                + (p_project->isUnsaved() ? "*" : "")
                 + " ("
                 + appl.getProjectFilename()
                 + ")"

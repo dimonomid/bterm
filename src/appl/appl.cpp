@@ -217,6 +217,8 @@ void Appl::newProject()
 
     p_project = std::make_shared<Project>();
 
+    p_project->setUnsaved(true);
+
     cryEventSys(
             EventSys::Level::INFO,
             tr("New project has been created")
@@ -250,6 +252,8 @@ void Appl::openProject(QString filename)
         p_project = storage_xml.readProject();
         //-- project is read successfully
         //   let's save filename and notify the listeners
+
+        p_project->setUnsaved(false);
 
         cryEventSys(
                 EventSys::Level::INFO,

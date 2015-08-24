@@ -46,7 +46,8 @@ Project::Project(
     p_io_dev(),
     handlers(),
     script_ctx_jsval(p_engine->evaluate("({})")),
-    baudrate(9600)
+    baudrate(9600),
+    unsaved(true)
 {
     //TODO: add comments about these registrations
     //
@@ -320,6 +321,20 @@ void Project::setTitle(QString title)
     this->title = title;
     emit titleChanged(title);
 }
+
+bool Project::isUnsaved()
+{
+    return unsaved;
+}
+
+void Project::setUnsaved(bool unsaved)
+{
+    this->unsaved = unsaved;
+
+    emit unsavedStatusChanged(unsaved);
+}
+
+
 
 /*******************************************************************************
  * SLOTS
