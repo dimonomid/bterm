@@ -17,6 +17,7 @@
 #include <QSignalMapper>
 #include <QDockWidget>
 #include <QBoxLayout>
+#include <QFormLayout>
 #include <QTimer>
 #include <QFileDialog>
 #include <QScrollArea>
@@ -241,7 +242,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     {
         QWidget *p_handlers_list_widg = new QWidget();
 
-        QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
+        QFormLayout *p_lay = new QFormLayout();
 
         //-- add "add handler" button
         {
