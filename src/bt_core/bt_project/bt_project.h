@@ -271,8 +271,6 @@ private slots:
     void onIODevBaudRateChanged(int32_t baudrate);
     void onMessageDecoded(const DataMsg &msg);
 
-    void onReqHandlerTitleChanged(const QString &name);
-    void onReqHandlerScriptChanged(const QString &script);
     void markDirty();
 
 

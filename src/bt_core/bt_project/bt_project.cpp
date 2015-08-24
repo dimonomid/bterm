@@ -244,11 +244,11 @@ void Project::addHandler(std::shared_ptr<ReqHandler> p_handler)
     //-- subscribe for the handler events
     connect(
             p_handler.get(), &ReqHandler::titleChanged,
-            this, &Project::onReqHandlerTitleChanged
+            this, &Project::markDirty
            );
     connect(
             p_handler.get(), &ReqHandler::scriptChanged,
-            this, &Project::onReqHandlerScriptChanged
+            this, &Project::markDirty
            );
 
     size_t handler_index = handlers.size() - 1;
@@ -470,21 +470,6 @@ void Project::onMessageDecoded(const DataMsg &msg)
             break;
         }
     }
-}
-
-/**
- * Called when request handler title was changed
- */
-void Project::onReqHandlerTitleChanged(const QString &name)
-{
-    std::ignore = name;
-    setDirty(true);
-}
-
-void Project::onReqHandlerScriptChanged(const QString &script)
-{
-    std::ignore = script;
-    setDirty(true);
 }
 
 void Project::markDirty()
