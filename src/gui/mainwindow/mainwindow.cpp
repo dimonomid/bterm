@@ -42,7 +42,7 @@
 #include "bt_event_data_msg.h"
 #include "bt_event_sys.h"
 
-#include "handler_view.h"
+#include "bt_req_handler_view.h"
 
 #include "mainwindow.h"
 #include "qplaintextedit_my.h"
@@ -258,7 +258,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
         for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
 
             //-- create view
-            auto p_handler_view = make_shared<HandlerView>(
+            auto p_handler_view = make_shared<ReqHandlerView>(
                     *this,
                     p_project,
                     p_project->getHandler(i)
@@ -315,7 +315,7 @@ void MainWindow::unpopulate()
 
     qDebug("size: %d", handler_views.size());
     while (handler_views.size() > 0){
-        std::shared_ptr<HandlerView> p_handler = handler_views.back();
+        std::shared_ptr<ReqHandlerView> p_handler = handler_views.back();
 
         qDebug("remove");
         removeDockWidget(p_handler->getEditDockWidget());

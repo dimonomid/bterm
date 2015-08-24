@@ -18,7 +18,7 @@
 #include <QDockWidget>
 #include <QMessageBox>
 
-#include "handler_view.h"
+#include "bt_req_handler_view.h"
 #include "mainwindow.h"
 
 
@@ -28,12 +28,13 @@
 
 using namespace std;
 using namespace BTCore;
+using namespace BTGui;
 
 /*******************************************************************************
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-HandlerView::HandlerView(
+ReqHandlerView::ReqHandlerView(
         MainWindow &mainwindow,
         std::shared_ptr<Project> p_project,
         std::shared_ptr<ReqHandler> p_handler
@@ -56,7 +57,7 @@ HandlerView::HandlerView(
 
         connect(
                 p_handler.get(), &ReqHandler::titleChanged,
-                this, &HandlerView::onReqHandlerTitleChanged
+                this, &ReqHandlerView::onReqHandlerTitleChanged
                );
     }
 }
@@ -80,7 +81,7 @@ HandlerView::HandlerView(
 
 /* private      */
 
-QWidget *HandlerView::createEditWidget()
+QWidget *ReqHandlerView::createEditWidget()
 {
     QWidget *p_widg = new QWidget();
 
@@ -95,12 +96,12 @@ QWidget *HandlerView::createEditWidget()
 
         connect(
                 p_title, &QLineEdit::textChanged,
-                this, &HandlerView::onTitleChangedByUser
+                this, &ReqHandlerView::onTitleChangedByUser
                );
 
         connect(
                 p_script_edit, &QPlainTextEdit::textChanged,
-                this, &HandlerView::onScriptChangedByUser
+                this, &ReqHandlerView::onScriptChangedByUser
                );
 
     }
@@ -110,7 +111,7 @@ QWidget *HandlerView::createEditWidget()
     return p_widg;
 }
 
-QWidget *HandlerView::createListItemWidget()
+QWidget *ReqHandlerView::createListItemWidget()
 {
     QWidget *p_widg = new QWidget();
 
@@ -129,7 +130,7 @@ QWidget *HandlerView::createListItemWidget()
 
         connect(
                 p_edit_button, &QPushButton::clicked,
-                this, &HandlerView::onEditButtonPressed
+                this, &ReqHandlerView::onEditButtonPressed
                );
     }
 
@@ -141,7 +142,7 @@ QWidget *HandlerView::createListItemWidget()
 
         connect(
                 p_up_button, &QPushButton::clicked,
-                this, &HandlerView::onUpButtonPressed
+                this, &ReqHandlerView::onUpButtonPressed
                );
     }
 
@@ -153,7 +154,7 @@ QWidget *HandlerView::createListItemWidget()
 
         connect(
                 p_down_button, &QPushButton::clicked,
-                this, &HandlerView::onDownButtonPressed
+                this, &ReqHandlerView::onDownButtonPressed
                );
     }
 
@@ -165,7 +166,7 @@ QWidget *HandlerView::createListItemWidget()
 
         connect(
                 p_remove_button, &QPushButton::clicked,
-                this, &HandlerView::onRemoveButtonPressed
+                this, &ReqHandlerView::onRemoveButtonPressed
                );
     }
 
@@ -173,7 +174,7 @@ QWidget *HandlerView::createListItemWidget()
     {
         connect(
                 p_widg, &QObject::destroyed,
-                this, &HandlerView::onListItemWidgetDestroyed
+                this, &ReqHandlerView::onListItemWidgetDestroyed
                );
     }
 
@@ -183,20 +184,20 @@ QWidget *HandlerView::createListItemWidget()
 }
 
 #if 0
-void HandlerView::applyReqName()
+void ReqHandlerView::applyReqName()
 {
     p_dock->setWindowTitle("Handler " + p_handler->getTitle());
 }
 #endif
 
-QString HandlerView::getEditDockWidgetTitle() const
+QString ReqHandlerView::getEditDockWidgetTitle() const
 {
     return "Handler #"
         + QString::number(p_handler->getHandlerIndex() + 1) + ": "
         + p_handler->getTitle();
 }
 
-QString HandlerView::getListItemWidgetTitle() const
+QString ReqHandlerView::getListItemWidgetTitle() const
 {
     return "#"
         + QString::number(p_handler->getHandlerIndex() + 1) + ": "
@@ -208,7 +209,7 @@ QString HandlerView::getListItemWidgetTitle() const
 
 /* public       */
 
-QWidget *HandlerView::getListItemWidget()
+QWidget *ReqHandlerView::getListItemWidget()
 {
     if (p_list_item_widget == nullptr){
         p_list_item_widget = createListItemWidget();
@@ -217,7 +218,7 @@ QWidget *HandlerView::getListItemWidget()
     return p_list_item_widget;
 }
 
-QDockWidget *HandlerView::getEditDockWidget() const
+QDockWidget *ReqHandlerView::getEditDockWidget() const
 {
     return p_dock.get();
 }
@@ -230,7 +231,7 @@ QDockWidget *HandlerView::getEditDockWidget() const
 
 /* private      */
 
-void HandlerView::onEditButtonPressed()
+void ReqHandlerView::onEditButtonPressed()
 {
     if (p_dock->isHidden()){
         p_dock->show();
@@ -248,7 +249,7 @@ void HandlerView::onEditButtonPressed()
 #endif
 }
 
-void HandlerView::onRemoveButtonPressed()
+void ReqHandlerView::onRemoveButtonPressed()
 {
     QMessageBox::StandardButton reply =
         QMessageBox::question(
@@ -265,31 +266,31 @@ void HandlerView::onRemoveButtonPressed()
     }
 }
 
-void HandlerView::onUpButtonPressed()
+void ReqHandlerView::onUpButtonPressed()
 {
     if (auto p_project = wp_project.lock()){
         p_project->moveHandlerUp(p_handler->getHandlerIndex());
     }
 }
 
-void HandlerView::onDownButtonPressed()
+void ReqHandlerView::onDownButtonPressed()
 {
     if (auto p_project = wp_project.lock()){
         p_project->moveHandlerDown(p_handler->getHandlerIndex());
     }
 }
 
-void HandlerView::onTitleChangedByUser(const QString &text)
+void ReqHandlerView::onTitleChangedByUser(const QString &text)
 {
     p_handler->setTitle(text);
 }
 
-void HandlerView::onScriptChangedByUser()
+void ReqHandlerView::onScriptChangedByUser()
 {
     p_handler->setScript(p_script_edit->toPlainText());
 }
 
-void HandlerView::onReqHandlerTitleChanged(const QString &text)
+void ReqHandlerView::onReqHandlerTitleChanged(const QString &text)
 {
     std::ignore = text;
 
@@ -297,7 +298,7 @@ void HandlerView::onReqHandlerTitleChanged(const QString &text)
     p_list_item_label_name->setText(getListItemWidgetTitle());
 }
 
-void HandlerView::onListItemWidgetDestroyed()
+void ReqHandlerView::onListItemWidgetDestroyed()
 {
     p_list_item_widget = nullptr;
 }

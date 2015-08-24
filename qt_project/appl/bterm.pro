@@ -29,7 +29,7 @@ SOURCES += \
     ../../src/util/my_util.cpp \
     ../../src/gui/widgets/qplaintextedit_my.cpp \
     ../../src/appl/bt_iodev/bt_iodev_dbg.cpp \
-    ../../src/gui/handler_view/handler_view.cpp \
+    ../../src/gui/bt_req_handler_view/bt_req_handler_view.cpp \
     ../../src/util/xmlsettings/xmlsettings.cpp \
 
 
@@ -47,7 +47,7 @@ HEADERS += \
     ../../src/util/my_util.h \
     ../../src/gui/widgets/qplaintextedit_my.h \
     ../../src/appl/bt_iodev/bt_iodev_dbg.h \
-    ../../src/gui/handler_view/handler_view.h \
+    ../../src/gui/bt_req_handler_view/bt_req_handler_view.h \
     ../../src/util/xmlsettings/xmlsettings.h \
 
 
@@ -69,7 +69,7 @@ INCLUDEPATH += \
     ../../src/appl \
     ../../src/util \
     ../../src/gui/widgets \
-    ../../src/gui/handler_view \
+    ../../src/gui/bt_req_handler_view \
     ../../src/util/xmlsettings \
 
 

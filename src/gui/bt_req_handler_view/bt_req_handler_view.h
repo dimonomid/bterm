@@ -3,8 +3,8 @@
  *
  ******************************************************************************/
 
-#ifndef _HANDLER_VIEW_H
-#define _HANDLER_VIEW_H
+#ifndef _BT_REQ_HANDLER_VIEW_H
+#define _BT_REQ_HANDLER_VIEW_H
 
 /*******************************************************************************
  * INCLUDED FILES
@@ -30,10 +30,14 @@ class QPlainTextEdit;
  * CLASS DECLARATION
  ******************************************************************************/
 
+namespace BTGui {
+    class ReqHandlerView;
+}
+
 /**
  * TODO
  */
-class HandlerView : public QObject
+class BTGui::ReqHandlerView : public QObject
 {
 Q_OBJECT
     /****************************************************************************
@@ -44,7 +48,7 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    HandlerView(
+    ReqHandlerView(
             MainWindow &mainwindow,
             std::shared_ptr<BTCore::Project> p_project,
             std::shared_ptr<BTCore::ReqHandler> p_handler
@@ -64,7 +68,7 @@ private:
     //   removeDockWidget(), the dockwidget is NOT deleted (unlike other GUI
     //   stuff in Qt). So, let the lifetime to be managed by shared_ptr, then.
     //
-    //   It is created just when the instance of HandlerView is created,
+    //   It is created just when the instance of ReqHandlerView is created,
     //   for the same reason: Qt doesn't delete it.
     std::shared_ptr<QDockWidget> p_dock;
 
@@ -127,4 +131,4 @@ private slots:
 };
 
 
-#endif // _HANDLER_VIEW_H
+#endif // _BT_REQ_HANDLER_VIEW_H

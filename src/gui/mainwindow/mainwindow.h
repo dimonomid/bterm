@@ -29,6 +29,7 @@ namespace BTGui {
     class ProjectView;
     class CodecView;
     class IODevView;
+    class ReqHandlerView;
 }
 
 namespace Ui {
@@ -36,7 +37,6 @@ namespace Ui {
 }
 
 class Appl;
-class HandlerView;
 class QPlainTextEdit_My;
 class EventVisitor_GuiHandle;
 
@@ -103,7 +103,7 @@ private:
     QAction *p_act_project_sett;
 
 
-    std::vector<std::shared_ptr<HandlerView>> handler_views;
+    std::vector<std::shared_ptr<BTGui::ReqHandlerView>> handler_views;
 
     std::unique_ptr<EventVisitor_GuiHandle> p_event_visitor__gui_handle;
 
