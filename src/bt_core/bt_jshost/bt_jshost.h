@@ -66,13 +66,13 @@ private:
     //   instances of various types.
     std::shared_ptr<ScriptFactory> p_script_factory;
 
-    //-- the same factory wrapped inside QJSValue
+    //-- the same factory object wrapped inside QJSValue
     QJSValue script_factory_jsval;
 
     //-- console object that is used by scripts
     std::shared_ptr<ScriptConsole> p_script_console;
 
-    //-- the same factory wrapped inside QJSValue
+    //-- the same console object wrapped inside QJSValue
     QJSValue script_console_jsval;
 
 
