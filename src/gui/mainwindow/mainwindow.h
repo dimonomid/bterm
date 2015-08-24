@@ -197,7 +197,8 @@ private:
 
 private slots:
 
-    void onProjectOpened(std::shared_ptr<BTCore::Project> p_project);
+    void onProjectOpened(QString proj_filename, std::shared_ptr<BTCore::Project> p_project);
+    void onProjectSaved(QString proj_filename, std::shared_ptr<BTCore::Project> p_project);
     void onProjectBeforeClose(std::shared_ptr<BTCore::Project> p_project);
 
     void onEvent(std::shared_ptr<BTCore::Event> p_event);

@@ -177,7 +177,12 @@ signals:
     /**
      * Emitted just after project has been opened
      */
-    void projectOpened(std::shared_ptr<BTCore::Project> p_project);
+    void projectOpened(QString proj_filename, std::shared_ptr<BTCore::Project> p_project);
+
+    /**
+     * Emitted just after project has been saved
+     */
+    void projectSaved(QString proj_filename, std::shared_ptr<BTCore::Project> p_project);
 
     /**
      * Emitted just before closing the current project

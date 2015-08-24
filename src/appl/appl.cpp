@@ -232,7 +232,7 @@ void Appl::openProject(QString filename)
         //-- set IODev to newly created project, so that it can talk
         p_project->setIODev(p_io_dev);
 
-        emit projectOpened(p_project);
+        emit projectOpened(proj_filename, p_project);
 
     } catch (std::invalid_argument e){
         //-- there was some error during project read
@@ -292,6 +292,8 @@ void Appl::saveProject(QString filename)
         file->close();
 
         rememberProjectFilename(fileinfo.absoluteFilePath());
+
+        emit projectSaved(proj_filename, p_project);
     } else {
         cryEventSys(
                 EventSys::Level::ERROR,

@@ -155,6 +155,7 @@ MainWindow::MainWindow(
     connect(&appl, &Appl::event, this, &MainWindow::onEvent);
 
     connect(&appl, &Appl::projectOpened, this, &MainWindow::onProjectOpened);
+    connect(&appl, &Appl::projectSaved, this, &MainWindow::onProjectSaved);
 
     connect(
             &appl, &Appl::projectBeforeClose,
@@ -512,8 +513,13 @@ void MainWindow::closeEvent(QCloseEvent *p_event)
 
 /* private      */
 
-void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
+void MainWindow::onProjectOpened(
+        QString proj_filename,
+        std::shared_ptr<BTCore::Project> p_project
+        )
 {
+    std::ignore = proj_filename;
+
     p_project_view = std::make_shared<ProjectView>(p_project, *this);
     p_iodev_view = std::make_shared<IODevView>(p_project);
 
@@ -553,6 +559,17 @@ void MainWindow::onProjectOpened(std::shared_ptr<Project> p_project)
 
     updateWindowTitle();
     scrollAllToBottom();
+}
+
+void MainWindow::onProjectSaved(
+        QString proj_filename,
+        std::shared_ptr<BTCore::Project> p_project
+        )
+{
+    std::ignore = proj_filename;
+    std::ignore = p_project;
+
+    updateWindowTitle();
 }
 
 void MainWindow::onProjectBeforeClose(std::shared_ptr<Project> p_project)
