@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project title="My test project">
     <codecs>
-        <codec fmt_tx="0x80" local_addr_rx="0xff" remote_addr_rx="0xff" key="iso14230" fmt_rx="0x80" local_addr_tx="0x10" remote_addr_tx="0x11"/>
+        <codec fmt_rx="0x80" remote_addr_tx="0x11" local_addr_tx="0x10" key="iso14230" remote_addr_rx="0xff" local_addr_rx="0xff" fmt_tx="0x80"/>
     </codecs>
-    <iodev baudrate="10401"/>
+    <iodev baudrate="9600"/>
     <req_handlers>
         <req_handler title="test 1">
             <code>
@@ -11,7 +11,7 @@
      var inputArr = inputMsg.byteArr;
      var handled = false;
      var outputArr = null;
-
+console.log(1);
      //test
      if (inputArr.getU08(0) === 0x03){
         outputArr = factory.createByteArr();

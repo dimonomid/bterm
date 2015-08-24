@@ -17,6 +17,8 @@
 #include <QMainWindow>
 #include <QSignalMapper>
 
+#include "bt_core.h"
+
 
 namespace BTCore {
     class Event;
@@ -244,6 +246,7 @@ private slots:
             );
     void onReqHandlersReordered();
     void onProjectDirtyStatusChanged();
+    void onScriptMessage(const QString &message, BTCore::MsgLevel level);
 };
 
 #endif // MAINWINDOW_H

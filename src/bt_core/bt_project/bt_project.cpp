@@ -64,6 +64,11 @@ Project::Project(
     if (this->title.isEmpty()){
         this->title = "New project";
     }
+
+    connect(
+            p_jshost.get(), &JSHost::scriptMessage,
+            this, &Project::scriptMessage
+           );
 }
 
 Project::~Project()

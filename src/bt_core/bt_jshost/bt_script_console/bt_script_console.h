@@ -67,7 +67,7 @@ public:
      ***************************************************************************/
 signals:
 
-    void message(QString text, BTCore::MsgLevel = BTCore::MsgLevel::INFO);
+    void message(const QString &text, BTCore::MsgLevel = BTCore::MsgLevel::INFO);
 
 
 };

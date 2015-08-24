@@ -43,6 +43,11 @@ JSHost::JSHost() :
             );
 
     initJSEngine();
+
+    connect(
+            p_script_console.get(), &ScriptConsole::message,
+            this, &JSHost::scriptMessage
+           );
 }
 
 

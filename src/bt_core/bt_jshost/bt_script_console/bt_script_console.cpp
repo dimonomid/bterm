@@ -48,7 +48,6 @@ ScriptConsole::ScriptConsole()
 
 void ScriptConsole::log(QString text)
 {
-    qDebug() << text;
     emit message(text, MsgLevel::INFO);
 }
 

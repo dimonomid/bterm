@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "bt_reqhandler.h"
+#include "bt_core.h"
 
 
 
@@ -39,8 +40,9 @@ namespace BTCore {
 /**
  * Class that represents JavaScript host environment for `BTCore`.
  */
-class BTCore::JSHost
+class BTCore::JSHost : public QObject
 {
+Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
@@ -141,6 +143,15 @@ private:
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
+
+signals:
+
+    /**
+     * Emitted when script sends a message to the console, using, for example,
+     * `console.log()` call.
+     */
+    void scriptMessage(const QString &text, BTCore::MsgLevel level);
+
 
 };
 

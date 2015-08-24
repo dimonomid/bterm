@@ -18,6 +18,7 @@
 #include "bt_codec.h"
 #include "bt_codec_factory.h"
 #include "bt_reqhandler.h"
+#include "bt_core.h"
 
 
 
@@ -255,6 +256,14 @@ signals:
      * Emitted whenever dirty/saved status is changed
      */
     void dirtyStatusChanged(bool dirty);
+
+    /**
+     * Emitted when script sends a message to the console, using, for example,
+     * `console.log()` call.
+     *
+     * This signal is just forwarded from `#BTCore::JSHost`.
+     */
+    void scriptMessage(const QString &text, BTCore::MsgLevel level);
 
 private slots:
 

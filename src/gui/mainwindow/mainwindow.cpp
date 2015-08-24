@@ -601,6 +601,11 @@ void MainWindow::onProjectOpened(
             this, &MainWindow::onProjectDirtyStatusChanged
            );
 
+    connect(
+            p_project.get(), &Project::scriptMessage,
+            this, &MainWindow::onScriptMessage
+           );
+
     //-- store weak pointer to the project
     this->wp_project = std::weak_ptr<BTCore::Project>(p_project);
 
@@ -756,4 +761,27 @@ void MainWindow::onProjectDirtyStatusChanged()
 {
     updateWindowTitle();
 }
+
+void MainWindow::onScriptMessage(const QString &message, MsgLevel level)
+{
+    QString bt_ml {};
+
+    switch (level){
+        case MsgLevel::DEBUG:
+            bt_ml = "<font color='green'>" + message + "</font>";
+            break;
+        case MsgLevel::INFO:
+            bt_ml = "<font color='blue'>" + message + "</font>";
+            break;
+        case MsgLevel::WARNING:
+            bt_ml = "<font color='brown'>" + message + "</font>";
+            break;
+        case MsgLevel::ERROR:
+            bt_ml = "<font color='red'>" + message + "</font>";
+            break;
+    }
+
+    p_log_pte->appendHtmlNoNL("<span style='background-color: lightgray'>* " + bt_ml + "</span><br>", true);
+}
+
 
