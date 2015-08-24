@@ -7,6 +7,10 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#include <QDebug>
+#include <QFile>
+#include <QFileInfo>
+
 #include <memory>
 
 
@@ -25,16 +29,6 @@
 
 
 
-
-//TODO: remove
-#include <QtQml>
-#include <QJSEngine>
-#include <QJSValue>
-#include <QVariant>
-#include <QDebug>
-#include "bt_bytearr_read.h"
-#include "bt_bytearr_read_write.h"
-#include "my_util.h"
 
 using namespace BTCore;
 using namespace std;

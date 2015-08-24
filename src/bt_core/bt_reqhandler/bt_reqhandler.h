@@ -126,8 +126,8 @@ public:
             );
 
     /**
-     * Construct request handler without JavaScript engine and factory specified.
-     * These should be set later by calling `setQJSEngine()`
+     * Construct request handler without JavaScript host environment specified.
+     * It should be set later by calling `setJSHost()`
      * and `setScriptFactory()`.
      *
      * @param title
@@ -142,8 +142,8 @@ public:
 
     /**
      * Construct request handler with default title "Untitled handler" and
-     * script draft. JavaScript engine and factory should be set later by
-     * calling `setQJSEngine()` and `setScriptFactory()`
+     * script draft. JavaScript host environment should be set later by
+     * calling `setJSHost()`
      */
     ReqHandler();
 
