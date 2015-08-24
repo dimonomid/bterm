@@ -59,7 +59,7 @@ public:
      * Constructs the project with given title and codec.
      */
     explicit Project(
-            QString title
+            QString title = "New project"
             );
 
     virtual ~Project();

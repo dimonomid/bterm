@@ -122,7 +122,14 @@ public:
     void closeProject();
 
     /**
-     * Open project from XML file
+     * Create new project. Currently opened project (if any) will
+     * be closed.
+     */
+    void newProject();
+
+    /**
+     * Open project from XML file. Currently opened project (if any) will
+     * be closed.
      */
     void openProject(QString filename);
 
@@ -154,6 +161,7 @@ private:
     void initSettings();
     void cryEventSys(BTCore::EventSys::Level level, QString text);
     void rememberProjectFilename(QString filename);
+    void connectToCurProject();
 
 
 

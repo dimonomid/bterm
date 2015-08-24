@@ -159,6 +159,28 @@ void Appl::rememberProjectFilename(QString filename)
             );
 }
 
+/**
+ *
+ */
+void Appl::connectToCurProject()
+{
+    connect(
+            p_project.get(), &Project::event,
+            this, &Appl::onEvent
+           );
+
+    //-- just forward reqHandlerTitleChanged() signal
+    connect(
+            p_project.get(), &Project::reqHandlerTitleChanged,
+            this, &Appl::reqHandlerTitleChanged
+           );
+
+    //-- set IODev to newly created project, so that it can talk
+    p_project->setIODev(p_io_dev);
+
+    emit projectOpened(proj_filename, p_project);
+}
+
 
 /* protected    */
 
@@ -187,6 +209,24 @@ void Appl::closeProject()
     p_project = nullptr;
     proj_filename = tr("");
 }
+
+void Appl::newProject()
+{
+    //-- close currently opened project (if any)
+    closeProject();
+
+    p_project = std::make_shared<Project>();
+
+    cryEventSys(
+            EventSys::Level::INFO,
+            tr("New project has been created")
+            );
+
+    rememberProjectFilename("");
+
+    connectToCurProject();
+}
+
 
 void Appl::openProject(QString filename)
 {
@@ -218,21 +258,7 @@ void Appl::openProject(QString filename)
 
         rememberProjectFilename(fileinfo.absoluteFilePath());
 
-        connect(
-                p_project.get(), &Project::event,
-                this, &Appl::onEvent
-               );
-
-        //-- just forward reqHandlerTitleChanged() signal
-        connect(
-                p_project.get(), &Project::reqHandlerTitleChanged,
-                this, &Appl::reqHandlerTitleChanged
-               );
-
-        //-- set IODev to newly created project, so that it can talk
-        p_project->setIODev(p_io_dev);
-
-        emit projectOpened(proj_filename, p_project);
+        connectToCurProject();
 
     } catch (std::invalid_argument e){
         //-- there was some error during project read

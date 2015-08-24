@@ -358,6 +358,12 @@ void MainWindow::initMainMenu()
                 this, &MainWindow::openProject
                );
 
+        p_act_new_project = new QAction(tr("&New project"), this);
+        connect(
+                p_act_new_project, &QAction::triggered,
+                this, &MainWindow::newProject
+               );
+
         p_act_close_project = new QAction(tr("&Close project"), this);
         connect(
                 p_act_close_project, &QAction::triggered,
@@ -378,6 +384,7 @@ void MainWindow::initMainMenu()
                );
 
         QMenu *menu_file = menuBar()->addMenu(tr("&File"));
+        menu_file->addAction(p_act_new_project);
         menu_file->addAction(p_act_open_project);
         menu_file->addAction(p_act_close_project);
         menu_file->addAction(p_act_save_project);
@@ -605,6 +612,11 @@ void MainWindow::openProject()
         }
     }
 
+}
+
+void MainWindow::newProject()
+{
+    appl.newProject();
 }
 
 void MainWindow::saveProject()

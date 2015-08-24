@@ -25,6 +25,7 @@
 #include "bytearr_read_write.h"
 #include "script_factory.h"
 #include "bt_codec_factory.h"
+#include "bt_codec_transparent.h"
 
 
 using namespace BTCore;
@@ -53,6 +54,12 @@ Project::Project(
     qmlRegisterType<ByteArrRead>     ();
     qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
 
+    addKnownCodec(
+            std::make_shared<CodecTransparent>(
+                BTCore::CodecNum::TRANSPARENT
+                )
+            );
+    setCurrentCodecNum(BTCore::CodecNum::TRANSPARENT);
 }
 
 Project::~Project()

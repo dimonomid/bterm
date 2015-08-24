@@ -95,6 +95,7 @@ private:
     QDockWidget      *p_dw_codec_sett;
     QDockWidget      *p_dw_iodev_sett;
 
+    QAction *p_act_new_project;
     QAction *p_act_open_project;
     QAction *p_act_close_project;
     QAction *p_act_save_project;
@@ -203,6 +204,7 @@ private slots:
 
     void onEvent(std::shared_ptr<BTCore::Event> p_event);
 
+    void newProject();
     void openProject();
     void closeProject();
     void saveProject();
