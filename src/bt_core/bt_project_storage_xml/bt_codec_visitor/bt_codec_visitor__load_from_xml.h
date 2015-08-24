@@ -25,7 +25,7 @@ namespace BTCore {
 }
 
 /**
- * Concrete visitor for `#BTCore::Codec`, it implements `saveXML` functionality.
+ * Concrete visitor for `#BTCore::Codec`, it implements `loadFromXML` functionality.
  */
 class BTCore::CodecVisitor_LoadFromXML : public BTCore::CodecVisitor
 {

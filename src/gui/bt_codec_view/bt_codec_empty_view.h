@@ -27,7 +27,9 @@ namespace BTGui {
 }
 
 /**
- * TODO
+ * A subclass of `#BTGui::CodecView` that represents GUI object for
+ * any subclass of `#BTCore::Codec` that doesn't contain any
+ * settings.
  */
 class BTGui::CodecEmptyView : public BTGui::CodecView
 {
@@ -40,6 +42,12 @@ class BTGui::CodecEmptyView : public BTGui::CodecView
      ***************************************************************************/
 public:
 
+    /**
+     * @param codec_name
+     *      Human-readable name of the codec for which this GUI
+     *      view is created. It doesn't affect anything but the
+     *      message to the user.
+     */
     explicit CodecEmptyView(QString codec_name);
 
 

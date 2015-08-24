@@ -149,7 +149,6 @@ void ProjectView::onTitleChangedByUser(const QString &text)
 
 void ProjectView::onCodecSelectionChangedByUser(int index)
 {
-    qDebug("new codec index=%d", index);
     if (auto p_project = wp_project.lock()){
         int codec_num_int =
             p_project_view_ui->codec_select->itemData(index).toInt();

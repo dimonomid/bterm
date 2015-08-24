@@ -27,7 +27,7 @@ namespace BTGui {
 
 /**
  * Concrete visitor for `#BTCore::Codec`, it creates the view for codec
- * settings.
+ * settings, depending on exact Codec subclass.
  */
 class BTGui::CodecVisitor_ViewCreate : public BTCore::CodecVisitor
 {
@@ -63,6 +63,10 @@ public:
     virtual void visit(BTCore::Codec_ISO14230 &) override;
     virtual void visit(BTCore::CodecTransparent &) override;
 
+    /**
+     * Returns the `#BTGui::CodecView` created for the given
+     * `#BTCore::Codec` during the visitor acceptance.
+     */
     std::shared_ptr<BTGui::CodecView> getCodecView();
 };
 

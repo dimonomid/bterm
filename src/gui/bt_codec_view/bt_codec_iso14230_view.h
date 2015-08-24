@@ -31,7 +31,8 @@ namespace BTGui {
 }
 
 /**
- * TODO
+ * A subclass of `#BTGui::CodecView` that represents GUI object for
+ * `#BTCore::Codec_ISO14230`.
  */
 class BTGui::CodecISO14230View : public BTGui::CodecView
 {

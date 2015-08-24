@@ -35,7 +35,11 @@ namespace BTGui {
 }
 
 /**
- * TODO
+ * Class that represents GUI view for `#BTCore::ReqHandler`.
+ * It contains both views for:
+ *
+ * - Single row in the handlers list
+ * - Dock widget with handler edit form
  */
 class BTGui::ReqHandlerView : public QObject
 {
@@ -87,6 +91,15 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * NOTE: each time this function is called, the same DockWidget
+     * is returned, but the caller is NOT responsible to delete it:
+     * since Qt doesn't delete `DockWidget`s automatically when we
+     * call `removeDockWidget()`, this class takes care of it.
+     *
+     * So, when you delete the instance of this clas
+     * (`ReqHandlerView`), the dockwidget gets deleted as well.
+     */
     QDockWidget *getEditDockWidget() const;
 
     /**
@@ -104,7 +117,6 @@ private:
 
     QWidget *createEditWidget();
     QWidget *createListItemWidget();
-    //void applyReqName();
 
     QString getEditDockWidgetTitle() const;
     QString getListItemWidgetTitle() const;

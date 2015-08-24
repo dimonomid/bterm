@@ -27,7 +27,12 @@ namespace BTGui {
 }
 
 /**
- * TODO
+ * Abstract class that represents a GUI view for settings of some
+ * particular `#BTCore::Codec`.
+ *
+ * Not each of the `#BTCore::Codec` subclasses has corresponging
+ * view class: if some codec doesn't have any settings, then
+ * `#BTGui::CodecEmptyView` is used as a view.
  */
 class BTGui::CodecView : public QObject
 {
