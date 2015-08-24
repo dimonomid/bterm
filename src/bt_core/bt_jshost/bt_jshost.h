@@ -118,20 +118,7 @@ public:
      */
     QJSValue getScriptContextValue();
 
-#if 0
-    /**
-     * Run given request handler for given p_req_data, using this JavaScript
-     * host environment.
-     */
-    ReqHandler::Result runReqHandler(
-            std::shared_ptr<ReqHandler> p_handler,
-            std::shared_ptr<std::vector<uint8_t>> p_req_data
-            );
-#endif
 
-#if 0
-    std::shared_ptr<QJSEngine> getJSEngine() const;
-#endif
 
 
 

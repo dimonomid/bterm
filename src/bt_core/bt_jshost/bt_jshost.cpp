@@ -42,8 +42,10 @@ JSHost::JSHost() :
             QQmlEngine::CppOwnership
             );
 
+    //-- setup host-specific environment for scripts
     initJSEngine();
 
+    //-- forward `console.log()` calls with signal `scriptMessage()`
     connect(
             p_script_console.get(), &ScriptConsole::message,
             this, &JSHost::scriptMessage
@@ -125,29 +127,6 @@ QJSValue JSHost::getScriptContextValue()
 }
 
 
-#if 0
-ReqHandler::Result JSHost::runReqHandler(
-        std::shared_ptr<ReqHandler> p_handler,
-        std::shared_ptr<std::vector<uint8_t>> p_req_data
-        )
-{
-    //-- try to handle the request with current handler
-    ReqHandler::Result res = p_handler->handle(
-            getHandlerInputMsgObject(p_req_data),
-            script_ctx_jsval
-            );
-
-    return res;
-}
-#endif
-
-
-#if 0
-std::shared_ptr<QJSEngine> JSHost::getJSEngine() const
-{
-    return p_engine;
-}
-#endif
 
 
 
