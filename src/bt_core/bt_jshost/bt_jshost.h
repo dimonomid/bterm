@@ -142,6 +142,16 @@ public:
             );
 
     /**
+     * TODO
+     */
+    QJSValue callFuncWithInstance(
+            QJSValue func,
+            QJSValue script_ctx_jsval,
+            QJSValueList arguments,
+            QString descr
+            );
+
+    /**
      * Create and return JavaScript object that should be given
      * as input message for request handler (`#BTCore::ReqHandler`)
      */

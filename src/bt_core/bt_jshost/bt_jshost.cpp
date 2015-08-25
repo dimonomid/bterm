@@ -155,14 +155,27 @@ QJSValue JSHost::evaluate(
         int line_number
         )
 {
-    cur_script_descr = file_name;
-
-    //TODO: cur_script_descr doesn't work: we need to set cur_script_descr
-    //      in the returned function, not here
     QJSValue ret = p_engine->evaluate(
             "'use strict'; " + program,
             file_name,
             line_number
+            );
+
+    return ret;
+}
+
+QJSValue JSHost::callFuncWithInstance(
+        QJSValue func,
+        QJSValue script_ctx_jsval,
+        QJSValueList arguments,
+        QString descr
+        )
+{
+    cur_script_descr = descr;
+
+    QJSValue ret = func.callWithInstance(
+            script_ctx_jsval,
+            arguments
             );
 
     cur_script_descr = "";

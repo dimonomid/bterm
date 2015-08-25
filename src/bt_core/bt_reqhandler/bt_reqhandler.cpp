@@ -180,10 +180,13 @@ ReqHandler::Result ReqHandler::handle(
 
         //-- ok, we have function value. Try to call it,
         //   passing the scripts context as `this`.
-        QJSValue returned = func.callWithInstance(
+        QJSValue returned = p_jshost->callFuncWithInstance(
+                func,
                 script_ctx_jsval,
-                QJSValueList() << input_msg_jsval
+                QJSValueList() << input_msg_jsval,
+                title
                 );
+
 
         if (returned.isError()){
             //-- returned value is an error: some exception has happened
