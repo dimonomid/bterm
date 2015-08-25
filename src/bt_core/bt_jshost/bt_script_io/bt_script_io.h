@@ -32,7 +32,10 @@ namespace BTCore {
 
 
 /**
- * TODO
+ * Class that provides `io` methods for scripts:
+ *
+ * - `io.writeEncoded()`
+ * - `io.writePlain()`
  */
 class BTCore::ScriptIO : public QObject
 {
@@ -74,11 +77,30 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * Encode given byte array with current codec, and write it to
+     * serial port.
+     *
+     * @param p_bytearr
+     *      byte array to encode and write
+     * @param descr
+     *      optional description. If given, it is added to the event
+     *      text and can be read in the log window
+     */
     Q_INVOKABLE BTCore::ScriptIO *writeEncoded(
             BTCore::ByteArrReadWrite *p_bytearr,
             QString descr = ""
             );
 
+    /**
+     * Write given byte array to serial port literally.
+     *
+     * @param p_bytearr
+     *      byte array to write
+     * @param descr
+     *      optional description. If given, it is added to the event
+     *      text and can be read in the log window
+     */
     Q_INVOKABLE BTCore::ScriptIO *writePlain(
             BTCore::ByteArrReadWrite *p_bytearr,
             QString descr = ""
