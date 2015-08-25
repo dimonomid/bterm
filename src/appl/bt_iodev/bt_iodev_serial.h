@@ -54,7 +54,6 @@ private:
 
     int stage;
     bool opened;
-    int baudrate;
 
     std::unique_ptr<QSerialPort> p_port;
 

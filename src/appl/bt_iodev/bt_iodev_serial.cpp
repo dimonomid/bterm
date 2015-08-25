@@ -28,7 +28,6 @@ IODevSerial::IODevSerial() :
     cur_data(),
     stage(0),
     opened(false),
-    baudrate(9600),
 
     p_port(new QSerialPort())
 {
@@ -88,14 +87,17 @@ void IODevSerial::write(const vector<uint8_t> &data)
 
 void IODevSerial::setBaudRate(int32_t baud_rate)
 {
-    this->baudrate = baud_rate;
+    bool set_res = p_port->setBaudRate(baud_rate);
+    if (!set_res){
+        qDebug("setting baud rate failed!");
+    }
 
     emit baudRateChanged(baud_rate);
 }
 
 int32_t IODevSerial::getBaudRate()
 {
-    return baudrate;
+    return p_port->baudRate();
 }
 
 void IODevSerial::open()
