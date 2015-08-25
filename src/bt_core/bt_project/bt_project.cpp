@@ -478,29 +478,6 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
             case ReqHandler::Result::OK_HANDLED:
                 //-- request is handled
-                {
-                    //TODO: remove this "response" functionality,
-                    //      scripts should use 'io' object instead
-                    //-- get response, encode it and transmit on the wire
-                    auto p_data_tx = p_req_handler->getResponse();
-                    if (p_data_tx->size() > 0){
-                        DataMsg msg_tx = p_codec->encodeMessage(*p_data_tx);
-                        auto p_data_raw_tx = msg_tx.getRawData();
-                        p_io_dev->write(*p_data_raw_tx);
-
-                        //-- emit an event about outgoing (Tx) message
-                        auto p_event = std::make_shared<EventDataMsg>(
-                                msg_tx,
-                                EventDataMsg::Direction::TX,
-                                ""//p_req_handler
-                                );
-                        emit event(p_event);
-                    } else {
-                        //-- no response is generated. That's ok, so, we don't
-                        //   send anything, just stop iterating through
-                        //   handlers.
-                    }
-                }
                 break;
 
             case ReqHandler::Result::ERROR:

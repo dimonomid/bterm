@@ -43,7 +43,6 @@ ReqHandler::ReqHandler(
     p_jshost(p_jshost),
     script_func_code(script_func_code),
     last_error(Error::UNKNOWN),
-    p_response(),
     last_exception_details(),
     handler_index(INDEX_UNKNOWN)
 {
@@ -146,8 +145,6 @@ ReqHandler::Result ReqHandler::handle(
 
     ReqHandler::Result ret = Result::UNKNOWN;
 
-    //-- before running the handler, set response to an empty pointer.
-    p_response = std::shared_ptr<ByteArrReadWrite>();
     last_error = Error::UNKNOWN;
     last_exception_details = QVariantMap();
 
@@ -204,33 +201,6 @@ ReqHandler::Result ReqHandler::handle(
             if (handled){
                 //-- yes, request is handled
                 ret = Result::OK_HANDLED;
-
-                if (returned.property("response").isQObject()){
-                    //-- we have "response" property, which, if defined, should
-                    //   contain response to send. So, remember it: the client
-                    //   may want to get it by calling `getResponse()`.
-
-                    p_response = std::shared_ptr<ByteArrReadWrite>(
-                            dynamic_cast<ByteArrReadWrite *>(
-                                returned.property("response").toQObject()
-                                )
-                            );
-                    //-- don't forget to set ownership of this object to
-                    //   C++ code, so that JavaScript engine won't
-                    //   garbage-collect it.
-                    QQmlEngine::setObjectOwnership(
-                            p_response.get(),
-                            QQmlEngine::CppOwnership
-                            );
-
-                    //-- p_response now contains the byte array that was
-                    //   written by the script
-                } else {
-                    //-- although the request is handled, we have no response.
-                    //   Ok, response is already set to an empty pointer, so,
-                    //   leave it as it is.
-                }
-
             } else {
                 //-- request was not handled. That's ok.
                 ret = Result::OK_NOT_HANDLED;
@@ -251,15 +221,6 @@ ReqHandler::Error ReqHandler::getLastError()
 QVariantMap ReqHandler::getLastExceptionDetails()
 {
     return last_exception_details;
-}
-
-std::shared_ptr<const std::vector<uint8_t>> ReqHandler::getResponse()
-{
-    if (p_response != nullptr){
-        return p_response->getData();
-    } else {
-        return std::make_shared<const std::vector<uint8_t>>();
-    }
 }
 
 void ReqHandler::setHandlerIndex(size_t index)
