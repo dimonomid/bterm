@@ -118,6 +118,12 @@ public:
             QVariantList data
             );
 
+    Q_INVOKABLE BTCore::ByteArrReadWrite *fillU08(
+            double index,
+            double value,
+            double length
+            );
+
 
 
 private:

@@ -29,9 +29,9 @@
    * [ ] move codec outside of BTerm, or, conversely, move IODev to BTerm
    * [X] new project
    * [ ] real data exchange
-   * [ ] codec-specific standard handlers (should be called after all user's handlers)
-   * [ ] ByteArrReadWrite: add method putData(index, [0x01, 0x02, 0x03])
-   * [ ] ByteArrReadWrite: add method fill(index, length, byteToFill)
+   * [X] codec-specific standard handlers (should be called after all user's handlers)
+   * [X] ByteArrReadWrite: add method putData(index, [0x01, 0x02, 0x03])
+   * [X] ByteArrReadWrite: add method fill(index, length, byteToFill)
    * [X] ByteArrReadWrite: all put methods should return the object itself, to make chaining possible
    * [ ] other protocols:
       * [ ] mikas

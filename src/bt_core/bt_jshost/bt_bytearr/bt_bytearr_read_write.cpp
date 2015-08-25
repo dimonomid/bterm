@@ -218,6 +218,19 @@ BTCore::ByteArrReadWrite *ByteArrReadWrite::putU08Array(
     return this;
 }
 
+BTCore::ByteArrReadWrite *ByteArrReadWrite::fillU08(
+        double index,
+        double value,
+        double length
+        )
+{
+    for (size_t i = 0; i < length; i++){
+        putU08(index++, value);
+    }
+
+    return this;
+}
+
 
 
 
