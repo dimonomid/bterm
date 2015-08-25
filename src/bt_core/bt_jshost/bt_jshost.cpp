@@ -116,6 +116,7 @@ void JSHost::init(
  * Put some host-specific properties on JSEngine
  */
 void JSHost::initJSEngine()
+{
 
     //-- We need to register types that are used as return or argument types
     //   in `Q_INVOKABLE` methods.
