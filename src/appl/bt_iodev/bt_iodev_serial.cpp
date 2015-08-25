@@ -125,7 +125,10 @@ bool IODevSerial::isOpened()
 
 QString IODevSerial::toString()
 {
-    return "Debug IO device";
+    return "Serial Port '"
+        + p_port->portName()
+        + "', " + QString::number(p_port->baudRate())
+        ;
 }
 
 
