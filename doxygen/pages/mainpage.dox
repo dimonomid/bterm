@@ -5,6 +5,10 @@
 
 Bot Terminal is an utility that performs binary data exchange via serial port. It allows one to set up flexible rules about how to reply to different requests. So, it listens for data, parses it, and replies as necessary.
 
+I developed this tool in order to reverse-engineer various binary protocols of car ECUs (Engine Control Unit). I connect some car diagnostic tool (tester) to the computer with Bot Terminal running, and it pretends to be an ECU. By replying different responses on the tester's requests, and by analyzing tester's behavior, I can make some assumptions about the protocol. That's easy.
+
+I'm not sure whether it can be used for anything else. Anyway, it is published with the hope that it can.
+
 Here is an overview of the workflow:
 
 - New raw data comes from the serial port
@@ -54,20 +58,23 @@ The code is self-explanatory: we perform some arbitrary checks on received messa
 
 Why JavaScript?
 
-- Well, the first and main reason is that Qt has built-in first-class support of JavaScript: [QJSEngine](http://doc.qt.io/qt-5/qjsengine.html).
+- Well, the first and main reason is that Qt has built-in first-class support of JavaScript: [QJSEngine](http://doc.qt.io/qt-5/qjsengine.html). Implementing support of other scripting language to the same degree of interconnection with Qt's meta object system would take <b>a lot</b> more effort.
 - Secondly, I know JavaScript very well and I even kind of like it. So, implementing handlers in JavaScript was a lot of fun.
 
 You don't have to have deep understanding of JavaScript in order to use the Bot Terminal. Here is a very brief overview of JavaScript that you should know: \ref js_overview; and here is a host-specific API that you can use in handlers: \ref js_api.
 
-In case anyone is willing to actually learn JavaScript, here's a couple of books that I personally recommend:
+Just in case you're willing to actually learn JavaScript (for whatever reason), here's a couple of books that I personally recommend:
 
 - [JavaScript: The Good Parts](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) by Douglas Crockford. It focuses on a subset of JavaScript (a good subset), it teaches you very useful patterns, and it isn't huge at all: less than 200 pages. Great read.
 - [JavaScript: The Definitive Guide](http://www.amazon.com/JavaScript-Definitive-Guide-Activate-Guides/dp/0596805527) by David Flanagan. It is much larger (1000+ pages), and it explains each and every detail of JavaScript. Great for getting deep understanding of the language.
 
-But, again, if the only JavaScript application that you have is to use Bot Terminal, then you probably have better ways to spend your time rather than diving that deeply into JavaScript. Just read my brief overview.
+But, again, if the only JavaScript application you have is to use Bot Terminal, then you probably have something better to do rather than spending your valuable time on diving that deeply into JavaScript. Just read my brief overview.
 
 And again, in any case, you need to know host-specific API that is exposed to handlers: \ref js_api.
 
+The graphics interface of the application looks like this:
+
+TODO
 
 */
 
