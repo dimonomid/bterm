@@ -46,6 +46,7 @@ Project::Project(
     //   call `getSharedPtr()` from constructor
     p_jshost(),
     handlers(),
+    codec_specific_handlers(),
     baudrate(9600),
     dirty(true)
 {
@@ -111,6 +112,41 @@ void Project::init()
             p_jshost.get(), &JSHost::scriptMessage,
             this, &Project::scriptMessage
            );
+}
+
+ReqHandler::Result Project::runHandler(
+        std::shared_ptr<ReqHandler> p_handler,
+        QJSValue input_msg_jsval
+        )
+{
+    //-- try to handle the request with current handler
+    ReqHandler::Result res = p_handler->handle(
+            input_msg_jsval
+            );
+
+    //-- take action depending on handling result
+    switch (res){
+        case ReqHandler::Result::UNKNOWN:
+            qDebug("unknown result: should never be here");
+            break;
+
+        case ReqHandler::Result::OK_NOT_HANDLED:
+            //-- this handler did not handle the request.
+            //   Ok, we will proceed to the next handler (if any)
+            break;
+
+        case ReqHandler::Result::OK_HANDLED:
+            //-- request is handled
+            break;
+
+        case ReqHandler::Result::ERROR:
+            //-- some error has happened during executing the handler.
+            //   (this is error in JavaScript handler code)
+            qDebug() << "error";
+            break;
+    }
+
+    return res;
 }
 
 
@@ -266,6 +302,7 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
     }
 
     p_codec = all_codecs[static_cast<size_t>(codec_num)];
+    codec_specific_handlers = p_codec->getStdHandlers();
 
     connect(
             p_codec.get(), &Codec::messageDecoded,
@@ -480,36 +517,9 @@ void Project::onMessageDecoded(const DataMsg &msg)
     QJSValue input_msg_jsval = p_jshost->getHandlerInputMsgObject(p_req_data);
 
     //-- iterate through all the request handlers
-    for (auto p_req_handler : handlers){
+    for (auto p_handler : handlers){
 
-        //-- try to handle the request with current handler
-        ReqHandler::Result res = p_req_handler->handle(
-                input_msg_jsval
-                );
-
-        //-- take action depending on handling result
-        switch (res){
-            case ReqHandler::Result::UNKNOWN:
-                qDebug("unknown result: should never be here");
-                break;
-
-            case ReqHandler::Result::OK_NOT_HANDLED:
-                //-- this handler did not handle the request.
-                //   Ok, we will proceed to the next handler (if any)
-                break;
-
-            case ReqHandler::Result::OK_HANDLED:
-                //-- request is handled
-                break;
-
-            case ReqHandler::Result::ERROR:
-                //-- some error has happened during executing the handler.
-                //   (this is error in JavaScript handler code)
-                qDebug() << "error";
-                break;
-        }
-
-
+        ReqHandler::Result res = runHandler(p_handler, input_msg_jsval);
 
         if (res == ReqHandler::Result::OK_HANDLED){
             //-- if request was handled, then stop iterating handlers,

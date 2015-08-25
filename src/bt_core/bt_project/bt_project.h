@@ -104,6 +104,10 @@ private:
     //   when new message arrives
     std::vector<std::shared_ptr<ReqHandler>> handlers;
 
+    //-- sequence of codec-specific handlers, they get executed sequentially
+    //   after user-defined handlers
+    std::vector<std::shared_ptr<ReqHandler>> codec_specific_handlers;
+
     //-- baudrate that is needed for this project. Will be set to IODev.
     int32_t baudrate;
 
@@ -254,6 +258,11 @@ private:
      * by `create()` static method
      */
     void init();
+
+    ReqHandler::Result runHandler(
+            std::shared_ptr<ReqHandler> p_handler,
+            QJSValue input_msg_jsval
+            );
 
 
     /****************************************************************************
