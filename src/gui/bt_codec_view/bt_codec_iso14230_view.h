@@ -55,6 +55,7 @@ public:
      ***************************************************************************/
 private:
 
+    //-- auto-generated UI class (by Qt Designer)
     Ui::BTCodecISO14230View *p_codec_iso14230_view_ui;
     std::shared_ptr<BTCore::Codec_ISO14230> p_codec_iso14230;
     QWidget *p_codec_sett_widg;

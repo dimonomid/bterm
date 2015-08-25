@@ -30,7 +30,7 @@ namespace BTGui {
 }
 
 /**
- * TODO
+ * Class that represents GUI view for IO device (`#BTCore::IODev`).
  */
 class BTGui::IODevView : public QObject
 {
@@ -52,9 +52,12 @@ public:
      ***************************************************************************/
 private:
 
+
+    //-- auto-generated UI class (by Qt Designer)
     Ui::BTIODevView *p_iodev_view_ui;
     std::weak_ptr<BTCore::Project> wp_project;
     QWidget *p_iodev_sett_widg;
+    //-- represents whether IO device is currently opened
     bool opened;
 
 

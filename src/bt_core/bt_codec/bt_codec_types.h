@@ -20,7 +20,7 @@ namespace BTCore {
      ***************************************************************************/
 
     /**
-     * Codec number, used to identify codecs
+     * Codec index (number), used to identify codecs
      */
     enum class CodecNum {
         /** Transparent (that is, no codec at all: all data is "encoded" and
@@ -32,7 +32,7 @@ namespace BTCore {
          */
         ISO_14230,
 
-        /** Not actually a number of particular codec, but total count of codecs
+        /** Not actually an index of particular codec, but total count of codecs
          */
         _COUNT
     };

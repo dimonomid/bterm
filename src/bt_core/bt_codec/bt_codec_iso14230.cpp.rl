@@ -1,5 +1,7 @@
 /******************************************************************************
- *   Description:   TODO
+ *   Description:   This file should be first parsed by Ragel.
+ *
+ *                  See class declaration in header file
  *
  ******************************************************************************/
 
