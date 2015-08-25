@@ -68,8 +68,13 @@ private:
      ***************************************************************************/
 public:
 
-    Q_INVOKABLE BTCore::ScriptIO *writeEncoded(ByteArrReadWrite *p_bytearr);
-    Q_INVOKABLE BTCore::ScriptIO *writePlain(ByteArrReadWrite *p_bytearr);
+    Q_INVOKABLE BTCore::ScriptIO *writeEncoded(
+            BTCore::ByteArrReadWrite *p_bytearr
+            );
+
+    Q_INVOKABLE BTCore::ScriptIO *writePlain(
+            BTCore::ByteArrReadWrite *p_bytearr
+            );
 
 
     /****************************************************************************

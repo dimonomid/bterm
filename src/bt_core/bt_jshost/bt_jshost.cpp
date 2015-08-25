@@ -92,8 +92,12 @@ void JSHost::initJSEngine()
     //   but `BTCore::ByteArrRead`. Otherwise, QJSEngine complains about
     //   unknown type.
     qmlRegisterType<ByteArrRead>     ();
+
+    //-- register instantiable type: it should have default ctor
     qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
-    //qmlRegisterType<ScriptIO>        ("", 1, 0, "ScriptIO");
+
+    //-- register non-instantiable type ScriptIO
+    qmlRegisterType<ScriptIO>        ();
 
     //-- set host properties
     setGlobalFrozenProperty("LITTLE_END", ByteArrRead::LITTLE_END);
