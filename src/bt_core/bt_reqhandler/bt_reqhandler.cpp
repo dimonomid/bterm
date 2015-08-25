@@ -198,13 +198,7 @@ ReqHandler::Result ReqHandler::handle(
             //   whether the request was handled or not.
 
             bool handled = returned.property("handled").toBool();
-            if (handled){
-                //-- yes, request is handled
-                ret = Result::OK_HANDLED;
-            } else {
-                //-- request was not handled. That's ok.
-                ret = Result::OK_NOT_HANDLED;
-            }
+            ret = handled ? Result::OK_HANDLED : Result::OK_NOT_HANDLED;
 
         }
 
