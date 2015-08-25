@@ -95,6 +95,7 @@ signals:
 private slots:
 
     void onReadyRead();
+    void onPortError(QSerialPort::SerialPortError error);
 
 
 

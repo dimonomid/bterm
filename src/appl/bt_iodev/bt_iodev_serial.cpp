@@ -39,6 +39,12 @@ IODevSerial::IODevSerial() :
             p_port.get(), &QSerialPort::readyRead,
             this, &IODevSerial::onReadyRead
            );
+
+    connect(
+            p_port.get(),
+            static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(&QSerialPort::error),
+            this, &IODevSerial::onPortError
+           );
 }
 
 IODevSerial::~IODevSerial()
@@ -165,6 +171,19 @@ void IODevSerial::onReadyRead()
     }
 
     emit readyRead(cur_data.size());
+}
+
+void IODevSerial::onPortError(QSerialPort::SerialPortError error)
+{
+    qDebug() << "port error" << (int)error;
+
+    switch (error){
+        case QSerialPort::ResourceError:
+            close();
+            break;
+        default:
+            break;
+    }
 }
 
 
