@@ -524,9 +524,23 @@ void Project::onMessageDecoded(const DataMsg &msg)
         if (res == ReqHandler::Result::OK_HANDLED){
             //-- if request was handled, then stop iterating handlers,
             //   and exit immediately
-            break;
+            goto handling_finished;
         }
     }
+
+    for (auto p_handler : codec_specific_handlers){
+
+        ReqHandler::Result res = runHandler(p_handler, input_msg_jsval);
+
+        if (res == ReqHandler::Result::OK_HANDLED){
+            //-- if request was handled, then stop iterating handlers,
+            //   and exit immediately
+            goto handling_finished;
+        }
+    }
+
+handling_finished:
+    return;
 }
 
 void Project::markDirty()
