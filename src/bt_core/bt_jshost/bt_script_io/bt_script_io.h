@@ -34,8 +34,8 @@ namespace BTCore {
 /**
  * Class that provides `io` methods for scripts:
  *
- * - `io.writeEncoded()`
- * - `io.writePlain()`
+ * - `io.#writeEncoded()`
+ * - `io.#writePlain()`
  */
 class BTCore::ScriptIO : public QObject
 {
@@ -81,6 +81,8 @@ public:
      * Encode given byte array with current codec, and write it to
      * serial port.
      *
+     * To be used from scripts.
+     *
      * @param p_bytearr
      *      byte array to encode and write
      * @param descr
@@ -94,6 +96,8 @@ public:
 
     /**
      * Write given byte array to serial port literally.
+     *
+     * To be used from scripts.
      *
      * @param p_bytearr
      *      byte array to write
