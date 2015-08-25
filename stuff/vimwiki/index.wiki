@@ -86,6 +86,7 @@
 * Event (abstract, has timestamp)
     * Rx (abstract, has nothing special)
         * DataRaw (has raw data)
+        * DataMsg (has msg)
     * Tx (abstract, has descr)
         * DataRaw (has raw data)
         * DataMsg (has msg)
