@@ -357,19 +357,15 @@ std::vector<std::shared_ptr<ReqHandler>> Codec_ISO14230::getStdHandlers() const
 
                 // KB1: 0xEA: length in fmt byte is NOT supported
                 //      0xEB: length in fmt byte is supported
-                "        outputArr.putU08(0, (mode | 0x40));\n"
-                "        outputArr.putU08(1, 0xea/*KB1*/);\n"
-                "        outputArr.putU08(2, 0x8f/*KB2*/);\n"
+                "        outputArr.putU08Array(0, [ (mode | 0x40), 0xea/*KB1*/, 0x8f/*KB2*/ ]);\n"
                 "        descr = 'STC';\n"
                 "    } else if (mode === 0x83){\n"
                 "        outputArr = factory.createByteArr();\n"
-                "        outputArr.putU08(0, (mode | 0x50));\n"
-                "        outputArr.putU08(1, 0x00);\n"
+                "        outputArr.putU08Array(0, [ (mode | 0x50), 0x00 ]);\n"
                 "        descr = 'ACP (access communication param)';\n"
                 "    } else if (mode === 0x10){\n"
                 "        outputArr = factory.createByteArr();\n"
-                "        outputArr.putU08(0, (mode | 0x50));\n"
-                "        outputArr.putU08(1, 0x00);\n"
+                "        outputArr.putU08Array(0, [ (mode | 0x50), 0x00 ]);\n"
                 "        descr = 'STDS';\n"
                 "    } else if (mode === 0x3e){\n"
                 "        outputArr = factory.createByteArr();\n"

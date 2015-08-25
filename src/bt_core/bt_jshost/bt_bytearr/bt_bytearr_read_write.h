@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 #include <QObject>
+#include <QVariant>
 
 #include <memory>
 #include <vector>
@@ -110,6 +111,11 @@ public:
             double index,
             double val,
             double end = LITTLE_END
+            );
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putU08Array(
+            double index,
+            QVariantList data
             );
 
 

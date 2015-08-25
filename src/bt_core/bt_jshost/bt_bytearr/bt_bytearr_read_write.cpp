@@ -206,6 +206,18 @@ ByteArrReadWrite *ByteArrReadWrite::putS32(
     return this;
 }
 
+BTCore::ByteArrReadWrite *ByteArrReadWrite::putU08Array(
+        double index,
+        QVariantList data
+        )
+{
+    for (QVariant item : data){
+        putU08(index++, item.toDouble());
+    }
+
+    return this;
+}
+
 
 
 
