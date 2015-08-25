@@ -79,3 +79,16 @@
       * [X] ByteArrReadWrite
       * [X] ReqHandler
 
+
+
+=== ideas about events ===
+
+* Event (abstract, has timestamp)
+    * Rx (abstract, has nothing special)
+        * DataRaw (has raw data)
+    * Tx (abstract, has descr)
+        * DataRaw (has raw data)
+        * DataMsg (has msg)
+
+
+

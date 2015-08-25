@@ -67,19 +67,24 @@ ReqHandler::ReqHandler() :
             "Untitled handler",
             std::shared_ptr<JSHost>(),
             "(function(inputMsg){ \n"
-            "     var handled = false;\n"
-            "     var outputArr;\n"
-
-            "     if (false){\n"
+            "    var handled = false;\n"
+            "    var outputArr;\n"
+            "\n"
+            "    if (false /*inputMsg.byteArr.getU08(0) === 0x01*/){\n"
             "        outputArr = factory.createByteArr();\n"
-            "        outputArr.putU08(1, 0x04);\n"
+            "        outputArr\n"
+            "            .putU08(1, 0x04)\n"
+            "            .putU16(4, 0x1234)\n"
+            "            ;\n"
+            "\n"
+            "        io.writeEncoded(outputArr);\n"
+            "\n"
             "        handled = true;\n"
-            "     };\n"
-
-            "     return {\n"
-            "        handled: handled,\n"
-            "        response: outputArr\n"
-            "     };\n"
+            "    };\n"
+            "\n"
+            "    return {\n"
+            "       handled: handled\n"
+            "    };\n"
             " })\n"
             )
 {
