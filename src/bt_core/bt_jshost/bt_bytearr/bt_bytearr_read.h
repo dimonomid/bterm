@@ -75,6 +75,8 @@ public:
 
     std::shared_ptr<const std::vector<uint8_t>> getData() const;
 
+    Q_INVOKABLE double getLength();
+
     Q_INVOKABLE double getU08(unsigned int index);
     Q_INVOKABLE double getU16(unsigned int index, int end = LITTLE_END);
     Q_INVOKABLE double getU32(unsigned int index, int end = LITTLE_END);

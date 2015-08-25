@@ -47,6 +47,11 @@ ByteArrRead::~ByteArrRead()
 
 /* public       */
 
+double ByteArrRead::getLength()
+{
+    return p_data->size();
+}
+
 double ByteArrRead::getU08(unsigned int index)
 {
     uint8_t ret;
