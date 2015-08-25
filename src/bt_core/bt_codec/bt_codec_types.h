@@ -22,7 +22,7 @@ namespace BTCore {
     /**
      * Codec index (number), used to identify codecs
      */
-    enum class CodecNum {
+    enum class CodecIdx {
         /** Transparent (that is, no codec at all: all data is "encoded" and
          * "decoded" literally)
          */

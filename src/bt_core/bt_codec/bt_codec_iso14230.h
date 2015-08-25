@@ -43,7 +43,7 @@ Q_OBJECT
      ***************************************************************************/
 public:
     explicit Codec_ISO14230(
-            CodecNum codec_num
+            CodecIdx codec_idx
             );
 
 

@@ -60,7 +60,7 @@ void CodecVisitor_SaveXML::visit(Codec_ISO14230 &codec)
 
     p_codec_elem->setAttribute(
             ProjectStorageXML::XML_ATTR_NAME__CODEC__KEY,
-            factory.getCodecKey(CodecNum::ISO_14230)
+            factory.getCodecKey(CodecIdx::ISO_14230)
             );
 
     p_codec_elem->setAttribute(
@@ -105,7 +105,7 @@ void CodecVisitor_SaveXML::visit(CodecTransparent &codec)
 
     p_codec_elem->setAttribute(
             ProjectStorageXML::XML_ATTR_NAME__CODEC__KEY,
-            factory.getCodecKey(CodecNum::TRANSPARENT)
+            factory.getCodecKey(CodecIdx::TRANSPARENT)
             );
 }
 

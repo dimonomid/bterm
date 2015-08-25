@@ -47,8 +47,8 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    Codec(CodecNum codec_num) :
-        codec_num(codec_num)
+    Codec(CodecIdx codec_idx) :
+        codec_idx(codec_idx)
     {
     }
 
@@ -59,7 +59,7 @@ public:
      ***************************************************************************/
 private:
 
-    CodecNum codec_num;
+    CodecIdx codec_idx;
 
 
     /****************************************************************************
@@ -72,11 +72,11 @@ private:
 public:
 
     /**
-     * Get codec number (see `#BTCore::CodecNum`)
+     * Get codec index (see `#BTCore::CodecIdx`)
      */
-    CodecNum getCodecNum() const
+    CodecIdx getCodecIdx() const
     {
-        return codec_num;
+        return codec_idx;
     }
 
     /**

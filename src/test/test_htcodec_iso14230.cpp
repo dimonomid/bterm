@@ -326,7 +326,7 @@ void TestCodecISO14230::decode_encoded()
     //-- create another instance of ico14230 codec for tx, with
     //   reversed own and remote addresses, we will use it
     //   for encoding messages
-    Codec_ISO14230 tx_codec{BTCore::CodecNum::ISO_14230};
+    Codec_ISO14230 tx_codec{BTCore::CodecIdx::ISO_14230};
     tx_codec.setOwnAddrTx(0xf1);
     tx_codec.setRemoteAddrTx(0x10);
 

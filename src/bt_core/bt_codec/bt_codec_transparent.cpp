@@ -18,8 +18,8 @@ using namespace BTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-CodecTransparent::CodecTransparent(CodecNum codec_num) :
-    Codec(codec_num)
+CodecTransparent::CodecTransparent(CodecIdx codec_idx) :
+    Codec(codec_idx)
 {
 }
 

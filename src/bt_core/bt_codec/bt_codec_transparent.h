@@ -38,7 +38,7 @@ class BTCore::CodecTransparent : public BTCore::Codec
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
-    explicit CodecTransparent(CodecNum codec_num);
+    explicit CodecTransparent(CodecIdx codec_idx);
 
 
     /****************************************************************************

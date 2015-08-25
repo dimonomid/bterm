@@ -22,19 +22,19 @@ using namespace BTCore;
 
 const CodecFactory::CodecDesc CodecFactory::CODEC_DESC[] = {
 
-    [static_cast<int>(CodecNum::TRANSPARENT)] =
+    [static_cast<int>(CodecIdx::TRANSPARENT)] =
     {
         .key = "transparent",
         .title = "Transparent (no codec)"
     },
 
-    [static_cast<int>(CodecNum::ISO_14230)] =
+    [static_cast<int>(CodecIdx::ISO_14230)] =
     {
         .key = "iso14230",
         .title = "ISO 14230"
     },
 
-    //[static_cast<int>(CodecFactory::CodecNum::ISO_14230)]
+    //[static_cast<int>(CodecFactory::CodecIdx::ISO_14230)]
     //= { "iso", "sddf" },
 };
 
@@ -68,57 +68,57 @@ const CodecFactory::CodecDesc CodecFactory::CODEC_DESC[] = {
 
 size_t CodecFactory::getCodecsCnt() const
 {
-    return static_cast<size_t>( CodecNum::_COUNT );
+    return static_cast<size_t>( CodecIdx::_COUNT );
 }
 
 
-QString CodecFactory::getCodecTitle(CodecNum codec_num) const
+QString CodecFactory::getCodecTitle(CodecIdx codec_idx) const
 {
-    return CODEC_DESC[ static_cast<int>(codec_num) ].title;
+    return CODEC_DESC[ static_cast<int>(codec_idx) ].title;
 }
 
-QString CodecFactory::getCodecKey(CodecNum codec_num) const
+QString CodecFactory::getCodecKey(CodecIdx codec_idx) const
 {
-    return CODEC_DESC[ static_cast<int>(codec_num) ].key;
+    return CODEC_DESC[ static_cast<int>(codec_idx) ].key;
 }
 
-CodecNum CodecFactory::getCodecNumByKey(QString codec_key) const
+CodecIdx CodecFactory::getCodecIdxByKey(QString codec_key) const
 {
-    CodecNum codec_num = CodecNum::_COUNT;
+    CodecIdx codec_idx = CodecIdx::_COUNT;
 
     for (
-            size_t codec_num_int = 0;
-            codec_num_int < static_cast<size_t>(CodecNum::_COUNT);
-            ++codec_num_int
+            size_t codec_idx_int = 0;
+            codec_idx_int < static_cast<size_t>(CodecIdx::_COUNT);
+            ++codec_idx_int
         )
     {
-        if (CODEC_DESC[ codec_num_int ].key == codec_key){
-            codec_num = static_cast<CodecNum>(codec_num_int);
+        if (CODEC_DESC[ codec_idx_int ].key == codec_key){
+            codec_idx = static_cast<CodecIdx>(codec_idx_int);
             break;
         }
     }
 
-    return codec_num;
+    return codec_idx;
 }
 
-std::shared_ptr<Codec> CodecFactory::createCodec(CodecNum codec_num) const
+std::shared_ptr<Codec> CodecFactory::createCodec(CodecIdx codec_idx) const
 {
     std::shared_ptr<Codec> p_ret {};
 
-    switch (codec_num){
-        case CodecNum::ISO_14230:
-            p_ret = std::make_shared<Codec_ISO14230>(codec_num);
+    switch (codec_idx){
+        case CodecIdx::ISO_14230:
+            p_ret = std::make_shared<Codec_ISO14230>(codec_idx);
             break;
-        case CodecNum::TRANSPARENT:
-            p_ret = std::make_shared<CodecTransparent>(codec_num);
+        case CodecIdx::TRANSPARENT:
+            p_ret = std::make_shared<CodecTransparent>(codec_idx);
             break;
-        case CodecNum::_COUNT:
+        case CodecIdx::_COUNT:
             break;
     }
 
     if (p_ret == nullptr){
         qDebug("error: no codec was created for number=%d",
-                static_cast<int>(codec_num)
+                static_cast<int>(codec_idx)
                 );
     }
 
@@ -127,7 +127,7 @@ std::shared_ptr<Codec> CodecFactory::createCodec(CodecNum codec_num) const
 
 std::shared_ptr<Codec> CodecFactory::createCodecByKey(QString codec_key) const
 {
-    return createCodec( getCodecNumByKey(codec_key) );
+    return createCodec( getCodecIdxByKey(codec_key) );
 }
 
 

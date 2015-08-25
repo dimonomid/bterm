@@ -592,8 +592,8 @@ void MainWindow::onProjectOpened(
            );
 
     connect(
-            p_project.get(), &Project::currentCodecNumChanged,
-            this, &MainWindow::onProjectCodecNumChanged
+            p_project.get(), &Project::currentCodecIdxChanged,
+            this, &MainWindow::onProjectCodecIdxChanged
            );
 
     connect(
@@ -722,7 +722,7 @@ void MainWindow::onProjectTitleChanged(const QString &title)
     updateWindowTitle();
 }
 
-void MainWindow::onProjectCodecNumChanged(std::shared_ptr<Codec> p_codec)
+void MainWindow::onProjectCodecIdxChanged(std::shared_ptr<Codec> p_codec)
 {
     std::ignore = p_codec;
     if (auto p_project = wp_project.lock()){

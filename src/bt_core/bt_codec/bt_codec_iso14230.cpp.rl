@@ -45,9 +45,9 @@ using namespace BTCore;
  ******************************************************************************/
 
 Codec_ISO14230::Codec_ISO14230(
-        CodecNum codec_num
+        CodecIdx codec_idx
         ) :
-    Codec(codec_num),
+    Codec(codec_idx),
     cur_rx_msg(),
     ragel_cs(0),
     rx_user_data_len(0),

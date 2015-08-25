@@ -234,7 +234,7 @@ private slots:
     void onAddHandlerButtonPressed();
 
     void onProjectTitleChanged(const QString &title);
-    void onProjectCodecNumChanged(std::shared_ptr<BTCore::Codec> p_codec);
+    void onProjectCodecIdxChanged(std::shared_ptr<BTCore::Codec> p_codec);
 
     void onReqHandlerAdded(
             std::shared_ptr<BTCore::ReqHandler> p_handler,

@@ -68,7 +68,7 @@ QWidget *ProjectView::createProjectSettWidget()
 
             for (size_t i = 0; i < codecs_cnt; i++){
                 p_project_view_ui->codec_select->addItem(
-                        codec_factory.getCodecTitle(static_cast<CodecNum>(i)),
+                        codec_factory.getCodecTitle(static_cast<CodecIdx>(i)),
                         QVariant(i)
                         );
             }
@@ -81,7 +81,7 @@ QWidget *ProjectView::createProjectSettWidget()
 
         //-- set current codec
         p_project_view_ui->codec_select->setCurrentIndex(
-                static_cast<int>(p_project->getCodec()->getCodecNum())
+                static_cast<int>(p_project->getCodec()->getCodecIdx())
                 );
 
 
@@ -150,9 +150,9 @@ void ProjectView::onTitleChangedByUser(const QString &text)
 void ProjectView::onCodecSelectionChangedByUser(int index)
 {
     if (auto p_project = wp_project.lock()){
-        int codec_num_int =
+        int codec_idx_int =
             p_project_view_ui->codec_select->itemData(index).toInt();
-        p_project->setCurrentCodecNum(static_cast<CodecNum>(codec_num_int));
+        p_project->setCurrentCodecIdx(static_cast<CodecIdx>(codec_idx_int));
     }
 }
 

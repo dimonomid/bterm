@@ -52,10 +52,10 @@ Project::Project(
 {
     addKnownCodec(
             std::make_shared<CodecTransparent>(
-                BTCore::CodecNum::TRANSPARENT
+                BTCore::CodecIdx::TRANSPARENT
                 )
             );
-    setCurrentCodecNum(BTCore::CodecNum::TRANSPARENT);
+    setCurrentCodecIdx(BTCore::CodecIdx::TRANSPARENT);
 
     //-- if title is empty, set it to "New project"
     if (this->title.isEmpty()){
@@ -280,7 +280,7 @@ std::shared_ptr<IODev> Project::getIODev() const
     return p_io_dev;
 }
 
-void Project::setCurrentCodecNum(CodecNum codec_num)
+void Project::setCurrentCodecIdx(CodecIdx codec_idx)
 {
     //-- if we already have some Codec set, then unsubscribe from its events
     if (p_codec != nullptr){
@@ -296,12 +296,12 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
 
     CodecFactory codec_factory {};
 
-    if (all_codecs[static_cast<size_t>(codec_num)] == nullptr){
-        all_codecs[static_cast<size_t>(codec_num)] =
-            codec_factory.createCodec(codec_num);
+    if (all_codecs[static_cast<size_t>(codec_idx)] == nullptr){
+        all_codecs[static_cast<size_t>(codec_idx)] =
+            codec_factory.createCodec(codec_idx);
     }
 
-    p_codec = all_codecs[static_cast<size_t>(codec_num)];
+    p_codec = all_codecs[static_cast<size_t>(codec_idx)];
     codec_specific_handlers = p_codec->getStdHandlers();
 
     //-- set JSHost to each codec-specific handler
@@ -318,19 +318,19 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
             this, &Project::markDirty
            );
 
-    emit currentCodecNumChanged(p_codec);
+    emit currentCodecIdxChanged(p_codec);
     setDirty(true);
 }
 
 void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
 {
-    CodecNum new_codec_num = p_new_codec->getCodecNum();
-    all_codecs[static_cast<size_t>(new_codec_num)] = p_new_codec;
+    CodecIdx new_codec_idx = p_new_codec->getCodecIdx();
+    all_codecs[static_cast<size_t>(new_codec_idx)] = p_new_codec;
 
     //-- refresh current p_codec, if we've just updated codec with the number
     //   of current codec
-    if (p_codec != nullptr && p_codec->getCodecNum() == new_codec_num){
-        p_codec = all_codecs[static_cast<size_t>(new_codec_num)];
+    if (p_codec != nullptr && p_codec->getCodecIdx() == new_codec_idx){
+        p_codec = all_codecs[static_cast<size_t>(new_codec_idx)];
     }
 }
 

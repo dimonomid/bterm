@@ -90,7 +90,7 @@ private:
 
     //-- all possible codecs
     std::shared_ptr<Codec> all_codecs[
-        static_cast<size_t>(CodecNum::_COUNT)
+        static_cast<size_t>(CodecIdx::_COUNT)
         ];
 
     //-- IO device being used for communication with outside world
@@ -155,7 +155,7 @@ public:
      * TODO: explain how all_codecs array is used, and how it is created
      * by factory if needed
      */
-    void setCurrentCodecNum(CodecNum codec_num);
+    void setCurrentCodecIdx(CodecIdx codec_idx);
 
     /**
      * The project has an array of "known" codecs, i.e. an array of
@@ -309,9 +309,9 @@ signals:
     void titleChanged(const QString &title);
 
     /**
-     * Emitted when current codec is changed by calling `setCurrentCodecNum()`
+     * Emitted when current codec is changed by calling `setCurrentCodecIdx()`
      */
-    void currentCodecNumChanged(std::shared_ptr<Codec> p_codec);
+    void currentCodecIdxChanged(std::shared_ptr<Codec> p_codec);
 
     /**
      * Emitted whenever dirty/saved status is changed

@@ -27,7 +27,7 @@ namespace BTCore {
 
 /**
  * Factory that creates `#BTCore::Codec` by codec index (see
- * `#BTCore::CodecNum`).
+ * `#BTCore::CodecIdx`).
  */
 class BTCore::CodecFactory
 {
@@ -64,7 +64,7 @@ public:
 private:
 
     /** Array of codec descriptors, there is a descriptor for each available
-     * codec (see `#BTCore::CodecNum`)
+     * codec (see `#BTCore::CodecIdx`)
      */
     static const CodecDesc CODEC_DESC[];
 
@@ -82,31 +82,31 @@ public:
 
     /**
      * Returns total count of codecs (basically, returns
-     * `#BTCore::CodecNum::_COUNT`)
+     * `#BTCore::CodecIdx::_COUNT`)
      */
     size_t getCodecsCnt() const;
 
     /**
      * Returns human-readable codec title by codec index (see
-     * `#BTCore::CodecNum`)
+     * `#BTCore::CodecIdx`)
      */
-    QString getCodecTitle(CodecNum codec_num) const;
+    QString getCodecTitle(CodecIdx codec_idx) const;
 
     /**
-     * Returns unique codec string key by codec index (see `#BTCore::CodecNum`)
+     * Returns unique codec string key by codec index (see `#BTCore::CodecIdx`)
      */
-    QString getCodecKey(CodecNum codec_num) const;
+    QString getCodecKey(CodecIdx codec_idx) const;
 
     /**
      * Returns codec index by its unique string key (needed when loading
      * project from XML file)
      */
-    CodecNum getCodecNumByKey(QString codec_key) const;
+    CodecIdx getCodecIdxByKey(QString codec_key) const;
 
     /**
      * Create codec by its index
      */
-    std::shared_ptr<Codec> createCodec(CodecNum codec_num) const;
+    std::shared_ptr<Codec> createCodec(CodecIdx codec_idx) const;
 
     /**
      * Create codec by its unique string key

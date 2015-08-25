@@ -439,7 +439,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
 
     //-- add known codec to project and immediately set it as an active codec
     p_proj->addKnownCodec(p_codec);
-    p_proj->setCurrentCodecNum(p_codec->getCodecNum());
+    p_proj->setCurrentCodecIdx(p_codec->getCodecIdx());
 
     //-- read handlers
     {
