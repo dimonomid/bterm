@@ -17,7 +17,6 @@
 #include <QSignalMapper>
 #include <QDockWidget>
 #include <QBoxLayout>
-#include <QFormLayout>
 #include <QTimer>
 #include <QFileDialog>
 #include <QScrollArea>
@@ -243,7 +242,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     {
         QWidget *p_handlers_list_widg = new QWidget();
 
-        QFormLayout *p_lay = new QFormLayout();
+        QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
         //-- add "add handler" button
         {
@@ -283,6 +282,10 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
             handler_views.push_back(p_handler_view);
         }
 
+        //-- we don't want the contents to expand as we expand the widget,
+        //   so, add "stretch" element as the bottom element, so, only this
+        //   bottom "nothing" will be expanded as we expand the widget.
+        p_lay->addStretch(0);
 
         p_handlers_list_widg->setLayout(p_lay);
 

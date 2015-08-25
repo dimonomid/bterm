@@ -115,18 +115,19 @@ QWidget *ReqHandlerView::createListItemWidget()
 {
     QWidget *p_widg = new QWidget();
 
-    QBoxLayout *p_vert_lay = new QBoxLayout(QBoxLayout::LeftToRight);
+    QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::LeftToRight);
+    p_lay->setContentsMargins(0, 0, 0, 0);
 
     {
         p_list_item_label_name = new QLabel(getListItemWidgetTitle());
-        p_vert_lay->addWidget(p_list_item_label_name);
+        p_lay->addWidget(p_list_item_label_name);
     }
 
     //-- edit button
     {
         QPushButton *p_edit_button = new QPushButton("Edit");
         p_edit_button->setMinimumWidth(5);
-        p_vert_lay->addWidget(p_edit_button);
+        p_lay->addWidget(p_edit_button);
 
         connect(
                 p_edit_button, &QPushButton::clicked,
@@ -138,7 +139,7 @@ QWidget *ReqHandlerView::createListItemWidget()
     {
         QPushButton *p_up_button = new QPushButton("Up");
         p_up_button->setMinimumWidth(5);
-        p_vert_lay->addWidget(p_up_button);
+        p_lay->addWidget(p_up_button);
 
         connect(
                 p_up_button, &QPushButton::clicked,
@@ -150,7 +151,7 @@ QWidget *ReqHandlerView::createListItemWidget()
     {
         QPushButton *p_down_button = new QPushButton("Down");
         p_down_button->setMinimumWidth(5);
-        p_vert_lay->addWidget(p_down_button);
+        p_lay->addWidget(p_down_button);
 
         connect(
                 p_down_button, &QPushButton::clicked,
@@ -162,7 +163,7 @@ QWidget *ReqHandlerView::createListItemWidget()
     {
         QPushButton *p_remove_button = new QPushButton("x");
         p_remove_button->setMinimumWidth(5);
-        p_vert_lay->addWidget(p_remove_button);
+        p_lay->addWidget(p_remove_button);
 
         connect(
                 p_remove_button, &QPushButton::clicked,
@@ -178,7 +179,7 @@ QWidget *ReqHandlerView::createListItemWidget()
                );
     }
 
-    p_widg->setLayout(p_vert_lay);
+    p_widg->setLayout(p_lay);
 
     return p_widg;
 }
