@@ -75,12 +75,21 @@ private:
 public:
 
     Q_INVOKABLE BTCore::ScriptIO *writeEncoded(
-            BTCore::ByteArrReadWrite *p_bytearr
+            BTCore::ByteArrReadWrite *p_bytearr,
+            QString descr = ""
             );
 
     Q_INVOKABLE BTCore::ScriptIO *writePlain(
-            BTCore::ByteArrReadWrite *p_bytearr
+            BTCore::ByteArrReadWrite *p_bytearr,
+            QString descr = ""
             );
+
+
+
+
+private:
+
+    QString createWriteDescr(QString descr);
 
 
     /****************************************************************************
