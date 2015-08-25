@@ -455,15 +455,8 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
         //-- try to handle the request with current handler
         ReqHandler::Result res = p_req_handler->handle(
-                input_msg_jsval,
-                p_jshost->getScriptContextValue()
+                input_msg_jsval
                 );
-#if 0
-        ReqHandler::Result res = p_jshost->runReqHandler(
-                p_req_handler,
-                p_req_data
-                );
-#endif
 
         //-- take action depending on handling result
         switch (res){

@@ -137,8 +137,7 @@ void ReqHandler::setScript(QString script_func_code)
 }
 
 ReqHandler::Result ReqHandler::handle(
-        QJSValue input_msg_jsval,
-        QJSValue script_ctx_jsval
+        QJSValue input_msg_jsval
         )
 {
     //-- before handling, set global properties
@@ -179,7 +178,7 @@ ReqHandler::Result ReqHandler::handle(
         //   passing the scripts context as `this`.
         QJSValue returned = p_jshost->callFuncWithInstance(
                 func,
-                script_ctx_jsval,
+                p_jshost->getScriptContextValue(),
                 QJSValueList() << input_msg_jsval,
                 title
                 );

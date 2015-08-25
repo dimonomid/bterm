@@ -184,6 +184,9 @@ public:
     /**
      * Create and return JavaScript object that should be given
      * as input message for request handler (`#BTCore::ReqHandler`)
+     *
+     * @param p_req_data
+     *      request data that was received from serial port
      */
     QJSValue getHandlerInputMsgObject(
             std::shared_ptr<std::vector<uint8_t>> p_req_data

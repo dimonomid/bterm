@@ -223,19 +223,9 @@ public:
      *
      *      It may also have some other codec-specific properties, so that
      *      handlers have access to them.
-     *
-     * @param script_ctx_jsval
-     *      Scripts context. All handler JavaScript functions are called with
-     *      `this` set to this object. This context is preserved across
-     *      different message handling and all handlers, so, we can use it for
-     *      information exchange between handlers.
-     *
-     *      Initially, this context is just an empty JavaScript object.
-     *      The way it is used is completely up to the handlers.
      */
     Result handle(
-            QJSValue input_msg_jsval,
-            QJSValue script_ctx_jsval
+            QJSValue input_msg_jsval
             );
 
     /**
