@@ -177,14 +177,21 @@ void IODevSerial::onReadyRead()
     emit readyRead(cur_data.size());
 }
 
-void IODevSerial::onPortError(QSerialPort::SerialPortError error)
+void IODevSerial::onPortError(QSerialPort::SerialPortError error_code)
 {
-    qDebug() << "port error" << (int)error;
+    qDebug() << "port error" << (int)error_code;
 
-    switch (error){
+    switch (error_code){
+
+        case QSerialPort::DeviceNotFoundError:
+            emit error("Device not found");
+            break;
+
         case QSerialPort::ResourceError:
+            emit error("Port resource is gone");
             close();
             break;
+
         default:
             break;
     }

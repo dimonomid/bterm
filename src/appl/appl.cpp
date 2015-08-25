@@ -376,7 +376,7 @@ void Appl::onIODevError(QString error_msg)
 {
     auto p_event = std::make_shared<EventSys>(
             MsgLevel::ERROR,
-            "IO error: " + error_msg
+            "IO error (" + p_io_dev->toString() + "): " + error_msg
             );
     emit event(p_event);
 }
