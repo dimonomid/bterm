@@ -139,7 +139,17 @@ void JSHost::initJSEngine()
 }
 
 
+
 /* protected    */
+
+QString JSHost::getCurrentScriptDescr()
+{
+    return cur_script_descr;
+}
+
+
+
+
 
 /* public       */
 
@@ -216,11 +226,6 @@ QJSValue JSHost::getHandlerInputMsgObject(
     input_msg_jsval.setProperty("byteArr", ba_in_jsval);
 
     return input_msg_jsval;
-}
-
-QString JSHost::getCurrentScriptDescr()
-{
-    return cur_script_descr;
 }
 
 

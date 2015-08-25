@@ -47,6 +47,11 @@ class BTCore::JSHost :
 {
 Q_OBJECT
 
+    //-- calls only protected method `getCurrentScriptDescr()`,
+    //   which we don't want to expose as public
+    friend ScriptIO;
+
+
     /****************************************************************************
      * TYPES
      ***************************************************************************/
@@ -202,8 +207,14 @@ public:
             );
 
 
+
+
+
+protected:
+
     /**
-     * Returns description of currently executing script (if any)
+     * Returns description of currently executing script (if any).
+     * Used by `ScriptIO` and probably other friend classes.
      */
     QString getCurrentScriptDescr();
 
