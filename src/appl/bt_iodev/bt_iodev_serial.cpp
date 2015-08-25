@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration in header file
  *
  ******************************************************************************/
 
@@ -26,7 +26,6 @@ using namespace std;
 
 IODevSerial::IODevSerial() :
     cur_data(),
-    stage(0),
     opened(false),
 
     p_port(new QSerialPort())

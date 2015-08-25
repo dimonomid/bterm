@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
@@ -25,6 +25,10 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
+/**
+ * Implementation of `#BTCore::IODev` that works with real serial port
+ * by means of `QSerialPort`.
+ */
 class IODevSerial : public BTCore::IODev
 {
 Q_OBJECT
@@ -50,11 +54,13 @@ public:
      * PRIVATE DATA
      ***************************************************************************/
 private:
+    //-- currently received data that wasn't yet read by client
     std::vector<uint8_t> cur_data;
 
-    int stage;
+    //-- represents whether IO device is currently opened
     bool opened;
 
+    //-- actual serial port instance
     std::unique_ptr<QSerialPort> p_port;
 
 
@@ -67,6 +73,18 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * Set port name:
+     *
+     * - on Linux, it may be something like `/dev/tty1`
+     * - on Windows, it may be something like `COM4`
+     */
+    void setPortName(QString name);
+
+
+
+    //-- overridden methods from `#BTCore::IODev`
+
     std::vector<uint8_t> read() override;
     void write(const std::vector<uint8_t> &data) override;
     void setBaudRate(int32_t baud_rate) override;
@@ -77,19 +95,10 @@ public:
     QString toString() override;
 
 
-    void setPortName(QString name);
-
-
     /****************************************************************************
      * SIGNALS, SLOTS
      ***************************************************************************/
 signals:
-    //NOTE: we should NOT define signals in subclasses,
-    //      since if we do, then function pointer-based
-    //      connect() syntax will not generate any errors,
-    //      but it will just not work silently.
-    //
-    //void readyRead(int bytes_available);
 
 private slots:
 

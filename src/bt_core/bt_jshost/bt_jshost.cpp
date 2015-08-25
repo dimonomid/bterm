@@ -38,7 +38,7 @@ JSHost::JSHost(
     p_script_console(std::make_shared<ScriptConsole>()),
     script_console_jsval(p_engine->newQObject(p_script_console.get())),
 
-    //TODO: will be initialized later
+    //-- will be initialized later, in `init()` method
     p_script_io(),
     script_io_jsval(),
 
@@ -116,24 +116,22 @@ void JSHost::init(
  * Put some host-specific properties on JSEngine
  */
 void JSHost::initJSEngine()
-{
-    //TODO: add comments about these registrations
-    //
-    //   It seems, we register ByteArrRead as non-instantiable type,
-    //   and ByteArrReadWrite as instantiable
 
     //-- We need to register types that are used as return or argument types
     //   in `Q_INVOKABLE` methods.
+    //
     //   NOTE that in the header file, you must specify these types
     //   as fully-qualified ones: so, not just `ByteArrRead`,
     //   but `BTCore::ByteArrRead`. Otherwise, QJSEngine complains about
     //   unknown type.
+
+    //-- register non-instantiable type `ByteArrRead`
     qmlRegisterType<ByteArrRead>     ();
 
-    //-- register instantiable type: it should have default ctor
+    //-- register instantiable type: it should have default constructor
     qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
 
-    //-- register non-instantiable type ScriptIO
+    //-- register non-instantiable type `ScriptIO`
     qmlRegisterType<ScriptIO>        ();
 
     //-- set host properties

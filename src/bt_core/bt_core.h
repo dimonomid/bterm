@@ -17,7 +17,8 @@
  ******************************************************************************/
 
 /**
- * TODO
+ * Namespace `BTCore` contains everything related to Bot Terminal back-end
+ * functionality. It doesn't contain any GUI (see `#BTGui`).
  */
 namespace BTCore {
 

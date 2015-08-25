@@ -181,7 +181,6 @@ std::shared_ptr<Codec> ProjectStorageXML::readCodecFromDomElement(
         p_codec = factory.createCodecByKey(codec_key);
     }
 
-    //TODO: use factory
     if (p_codec == nullptr){
         throw std::invalid_argument(std::string("line ")
                 + QString::number(elem_codec.lineNumber()).toStdString()

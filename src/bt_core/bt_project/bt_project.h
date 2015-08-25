@@ -151,16 +151,41 @@ public:
     std::shared_ptr<IODev> getIODev() const;
 
     /**
-     * Set codec
-     * TODO: explain how all_codecs array is used, and how it is created
-     * by factory if needed
+     * Set index of current codec. If the codec being selected was
+     * already used during this program run, then existing instance
+     * will be used. Otherwise, new instance will be created.
+     *
+     * You may want to check `setCurrentCodecIdx()` for some details.
      */
     void setCurrentCodecIdx(CodecIdx codec_idx);
 
     /**
      * The project has an array of "known" codecs, i.e. an array of
      * created instances of codecs.
-     * TODO: explain more
+     *
+     * By using this function, we set particular instance of codec
+     * for its index (determined by `#BTCore::Codec::getCodecIdx()`),
+     * and when `setCurrentCodecIdx()` will be called next time,
+     * exactly this instance will be used.
+     *
+     * If codec with the same index already exists as a "known" one,
+     * then after calling this method old instance is removed.
+     *
+     * This method is primarily needed to make the project behave more
+     * friendly in the following situation:
+     *
+     * - User has set up its codec as he/she wants
+     * - User selected different codec (i.e. with different index, see
+     *   `#BTCore::CodecIdx`), probably accidentally
+     * - User switches back to previously used codec
+     *
+     * Without the collection of "known" codecs, after the sequence above,
+     * settings of the first codec are lost, which is frustrating.
+     *
+     * But with known codecs, settings will be kept.
+     *
+     * This known codecs collection is kept only in runtime, it isn't
+     * stored to the XML file.
      */
     void addKnownCodec(std::shared_ptr<Codec> p_codec);
 

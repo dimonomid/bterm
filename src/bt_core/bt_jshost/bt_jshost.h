@@ -40,6 +40,8 @@ namespace BTCore {
 
 /**
  * Class that represents JavaScript host environment for `BTCore`.
+ * It provides running scripts with host object, like `io`, `factory`, etc.
+ * TODO: link to JS API
  */
 class BTCore::JSHost :
     public QObject,
