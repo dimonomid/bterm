@@ -304,6 +304,11 @@ void Project::setCurrentCodecNum(CodecNum codec_num)
     p_codec = all_codecs[static_cast<size_t>(codec_num)];
     codec_specific_handlers = p_codec->getStdHandlers();
 
+    //-- set JSHost to each codec-specific handler
+    for (auto p_handler : codec_specific_handlers){
+        p_handler->setJSHost(p_jshost);
+    }
+
     connect(
             p_codec.get(), &Codec::messageDecoded,
             this, &Project::onMessageDecoded

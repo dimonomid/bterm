@@ -9,6 +9,7 @@
 
 #include "bt_codec_iso14230.h"
 #include "bt_codec_visitor.h"
+#include "bt_reqhandler.h"
 
 #include <iostream>
 
@@ -338,6 +339,42 @@ std::vector<std::shared_ptr<ReqHandler>> Codec_ISO14230::getStdHandlers() const
 {
     //-- just return empty vector
     auto ret = std::vector<std::shared_ptr<ReqHandler>>{};
+
+
+    {
+        std::shared_ptr<ReqHandler> p_handler = std::make_shared<ReqHandler>(
+                "ISO14230 Std",
+                "(function(inputMsg){ \n"
+                "    var handled = false;\n"
+                "    var outputArr;\n"
+                "    var descr;\n"
+                "    var mode = inputMsg.byteArr.getU08(0);\n"
+                "\n"
+                "    if (mode === 0x3e){\n"
+                "        outputArr = factory.createByteArr();\n"
+                "        outputArr.putU08(0, (mode | 0x40));\n"
+                "        descr = 'TP';\n"
+                "    } else if (mode === 0x10){\n"
+                "        outputArr = factory.createByteArr();\n"
+                "        outputArr.putU08(0, (mode | 0x50));\n"
+                "        outputArr.putU08(1, 0x00);\n"
+                "        descr = 'STDS';\n"
+                "    };\n"
+                "\n"
+                "    if (outputArr !== undefined){\n"
+                "        io.writeEncoded(outputArr, descr);\n"
+                "\n"
+                "        handled = true;\n"
+                "    };\n"
+                "\n"
+                "    return {\n"
+                "       handled: handled\n"
+                "    };\n"
+                " })\n"
+                );
+
+        ret.push_back(p_handler);
+    }
 
     return ret;
 }

@@ -133,10 +133,18 @@ void IODevDbg::nextMsgGenerate()
         case 2:
             new_data = {0x04, 0x05, 0x06, 0x95,   0x07};
             break;
+        case 3:
+            //-- TP
+            new_data = {0x81, 0x03, 0x02, 0x3e, 0xc4};
+            break;
+        case 4:
+            //-- STDS
+            new_data = {0x81, 0x03, 0x02, 0x10, 0x96};
+            break;
     }
 
     stage++;
-    if (stage > 2){
+    if (stage > 4){
         stage = 0;
     }
 
