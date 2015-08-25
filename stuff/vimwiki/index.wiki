@@ -57,7 +57,8 @@
    * [ ] app settings:
        * [ ] maximum block count of msg log and raw data log
    * [ ] list of non-handler scripts, with buttons to fire each of them
-   * [ ] ask whether to save project before exit (if it is changed)
+       * [ ] and additionally the script with "__init" title should run when project is just opened
+   * [X] ask whether to save project before exit (if it is changed)
    * [ ] indicate script errors
    * [ ] ability to switch some particular handler off (probably with checkbox at the very left)
    * [ ] codec should emit protocol-specific data when message is decoded, this data should be given to handlers

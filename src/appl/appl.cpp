@@ -23,6 +23,7 @@
 
 #include "bt_iodev.h"
 #include "bt_iodev_dbg.h"
+#include "bt_iodev_serial.h"
 
 #include "bt_datamsg.h"
 #include "bt_project_storage_xml.h"
@@ -62,7 +63,8 @@ Appl::Appl() :
     //-- create debug IO device
     //   TODO: change to real
     {
-        p_io_dev = std::make_shared<IODevDbg>();
+        //p_io_dev = std::make_shared<IODevDbg>();
+        p_io_dev = std::make_shared<IODevSerial>();
 
         connect(
                 this->p_io_dev.get(), &IODev::openStatusChanged,

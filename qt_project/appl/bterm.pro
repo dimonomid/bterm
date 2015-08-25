@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml
+QT       += core gui xml serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,6 +29,7 @@ SOURCES += \
     ../../src/util/my_util.cpp \
     ../../src/gui/widgets/qplaintextedit_my.cpp \
     ../../src/appl/bt_iodev/bt_iodev_dbg.cpp \
+    ../../src/appl/bt_iodev/bt_iodev_serial.cpp \
     ../../src/gui/bt_req_handler_view/bt_req_handler_view.cpp \
     ../../src/util/xmlsettings/xmlsettings.cpp \
 
@@ -47,6 +48,7 @@ HEADERS += \
     ../../src/util/my_util.h \
     ../../src/gui/widgets/qplaintextedit_my.h \
     ../../src/appl/bt_iodev/bt_iodev_dbg.h \
+    ../../src/appl/bt_iodev/bt_iodev_serial.h \
     ../../src/gui/bt_req_handler_view/bt_req_handler_view.h \
     ../../src/util/xmlsettings/xmlsettings.h \
 
