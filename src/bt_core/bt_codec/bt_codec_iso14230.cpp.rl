@@ -334,6 +334,15 @@ DataMsg Codec_ISO14230::encodeMessage(const vector<uint8_t> &data) const
    return ret;
 }
 
+std::vector<std::shared_ptr<ReqHandler>> Codec_ISO14230::getStdHandlers() const
+{
+    //-- just return empty vector
+    auto ret = std::vector<std::shared_ptr<ReqHandler>>{};
+
+    return ret;
+}
+
+
 void Codec_ISO14230::accept(CodecVisitor &visitor)
 {
     visitor.visit(*this);

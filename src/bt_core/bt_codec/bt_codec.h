@@ -26,6 +26,7 @@
 namespace BTCore {
     class Codec;
     class CodecVisitor;
+    class ReqHandler;
 }
 
 /**
@@ -97,6 +98,12 @@ public:
      */
     virtual DataMsg encodeMessage  (const std::vector<uint8_t> &data) const = 0;
 
+    /**
+     * Returns the sequence of the codec-specific handlers, they should be
+     * called after all user handlers (if no user handler have handled the
+     * request)
+     */
+    virtual std::vector<std::shared_ptr<ReqHandler>> getStdHandlers() const = 0;
 
     /**
      * Accept codec visitor.

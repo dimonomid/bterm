@@ -62,6 +62,13 @@ DataMsg CodecTransparent::encodeMessage(const std::vector<uint8_t> &data) const
     return msg;
 }
 
+std::vector<std::shared_ptr<ReqHandler>> CodecTransparent::getStdHandlers() const
+{
+    //-- just return empty vector
+    return std::vector<std::shared_ptr<ReqHandler>>{};
+}
+
+
 void CodecTransparent::accept(CodecVisitor &visitor)
 {
     visitor.visit(*this);

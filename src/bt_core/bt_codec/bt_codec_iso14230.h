@@ -111,6 +111,7 @@ public:
     virtual void clearRawRxData () override;
 
     virtual DataMsg encodeMessage  (const std::vector<uint8_t> &data) const override;
+    virtual std::vector<std::shared_ptr<ReqHandler>> getStdHandlers() const override;
     virtual void accept(CodecVisitor &visitor) override;
 
 
