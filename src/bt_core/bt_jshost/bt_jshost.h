@@ -93,6 +93,8 @@ private:
     //   argument to each function.
     QJSValue script_ctx_jsval;
 
+    //-- description of currently executing script
+    QString cur_script_descr;
 
     /****************************************************************************
      * STATIC METHODS
@@ -132,6 +134,10 @@ public:
     QJSValue getScriptContextValue();
 
 
+    /**
+     * Returns description of currently executing script (if any)
+     */
+    QString getCurrentScriptDescr();
 
 
 

@@ -8,6 +8,8 @@
  ******************************************************************************/
 
 #include "bt_script_io.h"
+#include "bt_project.h"
+#include "bt_bytearr_read_write.h"
 
 
 
@@ -54,6 +56,13 @@ ScriptIO *ScriptIO::writeEncoded(
 {
     if (auto p_project = wp_project.lock()){
         qDebug("write called");
+
+        auto p_data = p_bytearr->getData();
+
+        p_project->writeEncoded(
+                *p_data,
+                "sdf"//TODO: JSHost::getCurrentScriptDescr
+                );
     }
 
     return this;

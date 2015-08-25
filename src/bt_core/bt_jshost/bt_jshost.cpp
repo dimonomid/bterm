@@ -119,11 +119,17 @@ QJSValue JSHost::evaluate(
         int line_number
         )
 {
-    return p_engine->evaluate(
+    cur_script_descr = file_name;
+
+    QJSValue ret = p_engine->evaluate(
             "'use strict'; " + program,
             file_name,
             line_number
             );
+
+    cur_script_descr = "";
+
+    return ret;
 }
 
 QJSValue JSHost::getHandlerInputMsgObject(
@@ -152,6 +158,10 @@ QJSValue JSHost::getScriptContextValue()
     return script_ctx_jsval;
 }
 
+QString JSHost::getCurrentScriptDescr()
+{
+    return cur_script_descr;
+}
 
 
 

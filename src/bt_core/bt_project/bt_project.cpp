@@ -117,6 +117,30 @@ void Project::init()
 
 /* protected    */
 
+void Project::writeEncoded(
+        const std::vector<uint8_t> &data,
+        QString descr
+        )
+{
+    if (data.size() > 0){
+        DataMsg msg_tx = p_codec->encodeMessage(data);
+        auto p_data_raw_tx = msg_tx.getRawData();
+        p_io_dev->write(*p_data_raw_tx);
+
+        //-- emit an event about outgoing (Tx) message
+        auto p_event = std::make_shared<EventDataMsg>(
+                msg_tx,
+                EventDataMsg::Direction::TX,
+                descr
+                );
+        emit event(p_event);
+    } else {
+        //-- nothing to send
+    }
+}
+
+
+
 /* public       */
 
 std::shared_ptr<Project> Project::getSharedPtr()
@@ -455,6 +479,8 @@ void Project::onMessageDecoded(const DataMsg &msg)
             case ReqHandler::Result::OK_HANDLED:
                 //-- request is handled
                 {
+                    //TODO: remove this "response" functionality,
+                    //      scripts should use 'io' object instead
                     //-- get response, encode it and transmit on the wire
                     auto p_data_tx = p_req_handler->getResponse();
                     if (p_data_tx->size() > 0){
@@ -466,7 +492,7 @@ void Project::onMessageDecoded(const DataMsg &msg)
                         auto p_event = std::make_shared<EventDataMsg>(
                                 msg_tx,
                                 EventDataMsg::Direction::TX,
-                                p_req_handler
+                                ""//p_req_handler
                                 );
                         emit event(p_event);
                     } else {

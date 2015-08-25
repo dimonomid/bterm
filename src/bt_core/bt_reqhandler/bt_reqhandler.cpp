@@ -156,7 +156,10 @@ ReqHandler::Result ReqHandler::handle(
 
 
     //-- try to evaluate JavaScript code
-    QJSValue func = p_jshost->evaluate(script_func_code);
+    QJSValue func = p_jshost->evaluate(
+            script_func_code,
+            title
+            );
 
     if (func.isError()){
         //-- evaluation is failed: some error in JavaScript code.

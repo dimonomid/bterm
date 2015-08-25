@@ -72,7 +72,7 @@ void EventVisitor_GuiHandle::visit(EventDataMsg &bt_event_data_msg)
         case EventDataMsg::Direction::TX:
             dir_text = "Tx";
             color = "blue";
-            handler_text = " (" + bt_event_data_msg.getHandler()->getTitle() + ")";
+            handler_text = " (" + bt_event_data_msg.getDescr() + ")";
             break;
         case EventDataMsg::Direction::RX:
             dir_text = "Rx";

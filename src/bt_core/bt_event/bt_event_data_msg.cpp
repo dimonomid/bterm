@@ -24,12 +24,12 @@ using namespace BTCore;
 EventDataMsg::EventDataMsg(
         const DataMsg &msg,
         Direction dir,
-        std::shared_ptr<ReqHandler> p_handler
+        QString descr
         )
     :
     msg(msg),
     dir(dir),
-    p_handler(p_handler)
+    descr(descr)
 {
 }
 
@@ -66,9 +66,9 @@ EventDataMsg::Direction EventDataMsg::getDir() const
     return dir;
 }
 
-std::shared_ptr<ReqHandler> EventDataMsg::getHandler() const
+QString EventDataMsg::getDescr() const
 {
-    return p_handler;
+    return descr;
 }
 
 

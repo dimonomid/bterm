@@ -26,6 +26,7 @@ namespace BTCore {
     class Event;
     class DataMsg;
     class ScriptFactory;
+    class ScriptIO;
 }
 
 /*******************************************************************************
@@ -47,6 +48,9 @@ class BTCore::Project :
     public std::enable_shared_from_this<BTCore::Project>
 {
 Q_OBJECT
+
+    friend ScriptIO;
+
 
     /****************************************************************************
      * TYPES
@@ -223,6 +227,16 @@ public:
      * Set whether the project is dirty
      */
     void setDirty(bool dirty);
+
+
+
+protected:
+
+    void writeEncoded(
+            const std::vector<uint8_t> &data,
+            QString descr
+            );
+
 
 private:
 
