@@ -183,6 +183,20 @@ QJSValue JSHost::callFuncWithInstance(
     return ret;
 }
 
+QJSValue JSHost::callFuncWithCommonContext(
+        QJSValue func,
+        QJSValueList arguments,
+        QString descr
+        )
+{
+    return callFuncWithInstance(
+            func,
+            script_ctx_jsval,
+            arguments,
+            descr
+            );
+}
+
 QJSValue JSHost::getHandlerInputMsgObject(
         std::shared_ptr<std::vector<uint8_t>> p_req_data
         )
@@ -202,11 +216,6 @@ QJSValue JSHost::getHandlerInputMsgObject(
     input_msg_jsval.setProperty("byteArr", ba_in_jsval);
 
     return input_msg_jsval;
-}
-
-QJSValue JSHost::getScriptContextValue()
-{
-    return script_ctx_jsval;
 }
 
 QString JSHost::getCurrentScriptDescr()

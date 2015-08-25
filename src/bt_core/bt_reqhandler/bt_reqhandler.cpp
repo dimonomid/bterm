@@ -154,7 +154,7 @@ ReqHandler::Result ReqHandler::handle(
     //-- try to evaluate JavaScript code
     QJSValue func = p_jshost->evaluate(
             script_func_code,
-            title
+            this->title
             );
 
     if (func.isError()){
@@ -176,11 +176,10 @@ ReqHandler::Result ReqHandler::handle(
 
         //-- ok, we have function value. Try to call it,
         //   passing the scripts context as `this`.
-        QJSValue returned = p_jshost->callFuncWithInstance(
+        QJSValue returned = p_jshost->callFuncWithCommonContext(
                 func,
-                p_jshost->getScriptContextValue(),
                 QJSValueList() << input_msg_jsval,
-                title
+                this->title
                 );
 
 

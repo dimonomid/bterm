@@ -182,6 +182,15 @@ public:
             );
 
     /**
+     * TODO
+     */
+    QJSValue callFuncWithCommonContext(
+            QJSValue func,
+            QJSValueList arguments,
+            QString descr
+            );
+
+    /**
      * Create and return JavaScript object that should be given
      * as input message for request handler (`#BTCore::ReqHandler`)
      *
@@ -191,11 +200,6 @@ public:
     QJSValue getHandlerInputMsgObject(
             std::shared_ptr<std::vector<uint8_t>> p_req_data
             );
-
-    /**
-     * Returns context that is used as `this` in JavaScript handler functions
-     */
-    QJSValue getScriptContextValue();
 
 
     /**

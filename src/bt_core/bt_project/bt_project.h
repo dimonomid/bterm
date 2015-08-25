@@ -49,6 +49,8 @@ class BTCore::Project :
 {
 Q_OBJECT
 
+    //-- `ScriptIO` only calls protected methods that write to IO:
+    //   `writeEncoded()` and others
     friend ScriptIO;
 
 
