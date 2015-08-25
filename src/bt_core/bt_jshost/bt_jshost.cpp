@@ -166,7 +166,7 @@ QJSValue JSHost::evaluate(
 
 QJSValue JSHost::callFuncWithInstance(
         QJSValue func,
-        QJSValue script_ctx_jsval,
+        QJSValue instance,
         QJSValueList arguments,
         QString descr
         )
@@ -174,7 +174,7 @@ QJSValue JSHost::callFuncWithInstance(
     cur_script_descr = descr;
 
     QJSValue ret = func.callWithInstance(
-            script_ctx_jsval,
+            instance,
             arguments
             );
 
