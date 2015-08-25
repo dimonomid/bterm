@@ -17,6 +17,7 @@
 
 namespace BTCore {
     class Project;
+    class JSHost;
 }
 
 
@@ -45,7 +46,8 @@ Q_OBJECT
      ***************************************************************************/
 public:
     explicit ScriptIO(
-            std::shared_ptr<Project> p_project
+            std::shared_ptr<Project> p_project,
+            std::shared_ptr<JSHost> p_jshost
             );
 
 
@@ -56,6 +58,9 @@ private:
 
     //-- weak pointer to Project that was given to constructor
     std::weak_ptr<Project> wp_project;
+
+    //-- weak pointer to JSHost that was given to constructor
+    std::weak_ptr<JSHost> wp_jshost;
 
 
 

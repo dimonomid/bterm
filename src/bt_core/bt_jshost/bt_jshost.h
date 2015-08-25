@@ -41,9 +41,12 @@ namespace BTCore {
 /**
  * Class that represents JavaScript host environment for `BTCore`.
  */
-class BTCore::JSHost : public QObject
+class BTCore::JSHost :
+    public QObject,
+    public std::enable_shared_from_this<BTCore::JSHost>
 {
 Q_OBJECT
+
     /****************************************************************************
      * TYPES
      ***************************************************************************/
@@ -51,7 +54,7 @@ Q_OBJECT
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
-public:
+private:
 
     explicit JSHost(
             std::shared_ptr<Project> p_project
@@ -96,14 +99,32 @@ private:
     //-- description of currently executing script
     QString cur_script_descr;
 
+
+
+
     /****************************************************************************
      * STATIC METHODS
      ***************************************************************************/
+public:
+
+    /**
+     * Creates the project with given title.
+     */
+    static std::shared_ptr<JSHost> create(
+            std::shared_ptr<Project> p_project
+            );
+
+
 
     /****************************************************************************
      * METHODS
      ***************************************************************************/
 public:
+
+    /**
+     * Returns shared pointer to this instance of `JSHost`
+     */
+    std::shared_ptr<JSHost> getSharedPtr();
 
     /**
      * Call `QJSEngine::evaluate()` on host-specific `QJSEngine` instance.
@@ -142,6 +163,14 @@ public:
 
 
 private:
+
+    /**
+     * Should be called right after construction, this is done automatically
+     * by `create()` static method
+     */
+    void init(
+            std::shared_ptr<Project> p_project
+            );
 
     /**
      * Put some host-specific properties on JSEngine

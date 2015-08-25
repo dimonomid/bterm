@@ -105,7 +105,7 @@ std::shared_ptr<Project> Project::create(
 
 void Project::init()
 {
-    p_jshost = std::make_shared<JSHost>( getSharedPtr() );
+    p_jshost = JSHost::create( getSharedPtr() );
 
     connect(
             p_jshost.get(), &JSHost::scriptMessage,

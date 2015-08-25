@@ -37,10 +37,59 @@ JSHost::JSHost(
     script_factory_jsval(p_engine->newQObject(p_script_factory.get())),
     p_script_console(std::make_shared<ScriptConsole>()),
     script_console_jsval(p_engine->newQObject(p_script_console.get())),
-    p_script_io(std::make_shared<ScriptIO>(p_project)),
-    script_io_jsval(p_engine->newQObject(p_script_io.get())),
+
+    //TODO: will be initialized later
+    p_script_io(),
+    script_io_jsval(),
+
     script_ctx_jsval(p_engine->evaluate("({})"))
 {
+    //-- real initialization will be done later, in `init()` method,
+    //   called by factory static method `create()`
+}
+
+
+
+
+/*******************************************************************************
+ * STATIC METHODS
+ ******************************************************************************/
+
+/* private      */
+
+/* protected    */
+
+/* public       */
+
+std::shared_ptr<JSHost> JSHost::create(
+        std::shared_ptr<Project> p_project
+        )
+{
+    //-- NOTE: we can't use std::make_shared, since Project constructor
+    //   is private
+    std::shared_ptr<JSHost> p_jshost {new JSHost(p_project)};
+    p_jshost->init(p_project);
+
+    return p_jshost;
+}
+
+
+
+
+
+/*******************************************************************************
+ * METHODS
+ ******************************************************************************/
+
+/* private      */
+
+void JSHost::init(
+        std::shared_ptr<Project> p_project
+        )
+{
+    p_script_io = std::make_shared<ScriptIO>(p_project, getSharedPtr());
+    script_io_jsval = p_engine->newQObject(p_script_io.get());
+
     //-- set ownership of p_script_factory to C++ code, so that JS engine
     //   will never garbage-collect it
     QQmlEngine::setObjectOwnership(
@@ -58,25 +107,6 @@ JSHost::JSHost(
            );
 }
 
-
-
-
-/*******************************************************************************
- * STATIC METHODS
- ******************************************************************************/
-
-/* private      */
-
-/* protected    */
-
-/* public       */
-
-
-/*******************************************************************************
- * METHODS
- ******************************************************************************/
-
-/* private      */
 
 void JSHost::initJSEngine()
 {
@@ -113,6 +143,12 @@ void JSHost::initJSEngine()
 
 /* public       */
 
+std::shared_ptr<JSHost> JSHost::getSharedPtr()
+{
+    return shared_from_this();
+}
+
+
 QJSValue JSHost::evaluate(
         const QString &program,
         const QString &file_name,
@@ -121,6 +157,8 @@ QJSValue JSHost::evaluate(
 {
     cur_script_descr = file_name;
 
+    //TODO: cur_script_descr doesn't work: we need to set cur_script_descr
+    //      in the returned function, not here
     QJSValue ret = p_engine->evaluate(
             "'use strict'; " + program,
             file_name,

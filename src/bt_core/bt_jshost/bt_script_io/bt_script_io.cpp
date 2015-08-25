@@ -9,6 +9,7 @@
 
 #include "bt_script_io.h"
 #include "bt_project.h"
+#include "bt_jshost.h"
 #include "bt_bytearr_read_write.h"
 
 
@@ -20,9 +21,11 @@ using namespace BTCore;
  ******************************************************************************/
 
 ScriptIO::ScriptIO(
-        std::shared_ptr<Project> p_project
+        std::shared_ptr<Project> p_project,
+        std::shared_ptr<JSHost> p_jshost
         ) :
-    wp_project(p_project)
+    wp_project(p_project),
+    wp_jshost(p_jshost)
 {
 
 }
@@ -55,14 +58,16 @@ ScriptIO *ScriptIO::writeEncoded(
         )
 {
     if (auto p_project = wp_project.lock()){
-        qDebug("write called");
+        if (auto p_jshost = wp_jshost.lock()){
+            qDebug("write called");
 
-        auto p_data = p_bytearr->getData();
+            auto p_data = p_bytearr->getData();
 
-        p_project->writeEncoded(
-                *p_data,
-                "sdf"//TODO: JSHost::getCurrentScriptDescr
-                );
+            p_project->writeEncoded(
+                    *p_data,
+                    p_jshost->getCurrentScriptDescr()
+                    );
+        }
     }
 
     return this;

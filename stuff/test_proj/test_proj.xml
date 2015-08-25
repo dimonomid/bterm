@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project title="My test project">
     <codecs>
-        <codec local_addr_rx="0xff" fmt_rx="0x80" remote_addr_rx="0xff" local_addr_tx="0x10" key="iso14230" fmt_tx="0x80" remote_addr_tx="0x11"/>
+        <codec remote_addr_rx="0xff" fmt_rx="0x80" key="iso14230" local_addr_tx="0x10" local_addr_rx="0xff" remote_addr_tx="0x11" fmt_tx="0x80"/>
     </codecs>
     <iodev baudrate="9600"/>
     <req_handlers>
@@ -41,6 +41,8 @@
         outputArr
            .putU16(1, this.val++)
            .putU16(5, 0x1234, LITTLE_END);
+
+        io.writeEncoded(outputArr);
 
         if ((this.val &amp; 0x0f) == 0){
            outputArr.putU16(10, 0x1234, BIG_END);
