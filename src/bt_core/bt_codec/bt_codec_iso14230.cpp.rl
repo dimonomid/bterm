@@ -344,6 +344,7 @@ std::vector<std::shared_ptr<ReqHandler>> Codec_ISO14230::getStdHandlers() const
     {
         std::shared_ptr<ReqHandler> p_handler = std::make_shared<ReqHandler>(
                 "ISO14230 Std",
+
                 "(function(inputMsg){ \n"
                 "    var handled = false;\n"
                 "    var outputArr;\n"
