@@ -239,6 +239,11 @@ protected:
             QString descr
             );
 
+    void writePlain(
+            const std::vector<uint8_t> &data,
+            QString descr
+            );
+
 
 private:
 

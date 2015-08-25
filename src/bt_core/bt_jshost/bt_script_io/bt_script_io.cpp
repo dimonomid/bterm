@@ -59,8 +59,6 @@ ScriptIO *ScriptIO::writeEncoded(
 {
     if (auto p_project = wp_project.lock()){
         if (auto p_jshost = wp_jshost.lock()){
-            qDebug("write called");
-
             auto p_data = p_bytearr->getData();
 
             p_project->writeEncoded(
@@ -78,7 +76,14 @@ ScriptIO *ScriptIO::writePlain(
         )
 {
     if (auto p_project = wp_project.lock()){
-        qDebug("writePlain called");
+        if (auto p_jshost = wp_jshost.lock()){
+            auto p_data = p_bytearr->getData();
+
+            p_project->writePlain(
+                    *p_data,
+                    p_jshost->getCurrentScriptDescr()
+                    );
+        }
     }
 
     return this;

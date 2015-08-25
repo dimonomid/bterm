@@ -139,6 +139,35 @@ void Project::writeEncoded(
     }
 }
 
+void Project::writePlain(
+        const std::vector<uint8_t> &data,
+        QString descr
+        )
+{
+    if (data.size() > 0){
+        DataMsg msg_tx;
+
+        msg_tx.addData(DataPart::DataType::USER, data);
+
+        auto p_data_raw_tx = msg_tx.getRawData();
+        p_io_dev->write(*p_data_raw_tx);
+
+        //-- emit an event about outgoing (Tx) message
+        //
+        //   TODO: probably, create new kind of event, like,
+        //   EventDataRawTx? Then, we won't need to create dummy
+        //   DataMsg above
+        auto p_event = std::make_shared<EventDataMsg>(
+                msg_tx,
+                EventDataMsg::Direction::TX,
+                descr
+                );
+        emit event(p_event);
+    } else {
+        //-- nothing to send
+    }
+}
+
 
 
 /* public       */
