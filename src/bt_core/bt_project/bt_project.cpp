@@ -46,13 +46,6 @@ Project::Project(
     baudrate(9600),
     dirty(true)
 {
-    //TODO: add comments about these registrations
-    //
-    //   It seems, we register ByteArrRead as non-instantiable type,
-    //   and ByteArrReadWrite as instantiable
-    qmlRegisterType<ByteArrRead>     ();
-    qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
-
     addKnownCodec(
             std::make_shared<CodecTransparent>(
                 BTCore::CodecNum::TRANSPARENT

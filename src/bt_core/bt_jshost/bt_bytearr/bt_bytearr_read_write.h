@@ -69,15 +69,48 @@ private:
      ***************************************************************************/
 
 public:
-    Q_INVOKABLE void setFillByte(double fill_byte);
 
-    Q_INVOKABLE void putU08(double index, double val);
-    Q_INVOKABLE void putU16(double index, double val, double end = LITTLE_END);
-    Q_INVOKABLE void putU32(double index, double val, double end = LITTLE_END);
+    /*
+     * NOTE: we have to specify fully-qualified type name
+     * `BTCore::ByteArrReadWrite`, because otherwise QJSEngine doesn't
+     * recognize the type name.
+     */
 
-    Q_INVOKABLE void putS08(double index, double val);
-    Q_INVOKABLE void putS16(double index, double val, double end = LITTLE_END);
-    Q_INVOKABLE void putS32(double index, double val, double end = LITTLE_END);
+    Q_INVOKABLE BTCore::ByteArrReadWrite *setFillByte(double fill_byte);
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putU08(
+            double index,
+            double val
+            );
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putU16(
+            double index,
+            double val,
+            double end = LITTLE_END
+            );
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putU32(
+            double index,
+            double val,
+            double end = LITTLE_END
+            );
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putS08(
+            double index,
+            double val
+            );
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putS16(
+            double index,
+            double val,
+            double end = LITTLE_END
+            );
+
+    Q_INVOKABLE BTCore::ByteArrReadWrite *putS32(
+            double index,
+            double val,
+            double end = LITTLE_END
+            );
 
 
 

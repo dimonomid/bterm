@@ -74,7 +74,14 @@ JSHost::JSHost() :
 
 void JSHost::initJSEngine()
 {
+    //TODO: add comments about these registrations
+    //
+    //   It seems, we register ByteArrRead as non-instantiable type,
+    //   and ByteArrReadWrite as instantiable
+    qmlRegisterType<ByteArrRead>     ();
+    qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
 
+    //-- set host properties
     setGlobalFrozenProperty("LITTLE_END", ByteArrRead::LITTLE_END);
     setGlobalFrozenProperty("BIG_END",    ByteArrRead::BIG_END);
     setGlobalFrozenProperty("factory",    script_factory_jsval);
