@@ -32,6 +32,9 @@ namespace BTCore {
 /**
  * Abstract codec that is used by `#BTCore::Project` to decode messages
  * (`#BTCore::DataMsg`) from raw Rx data, and encode Tx messages.
+ *
+ * See subclasses for concrete codecs implementation. It is relatively
+ * easy to write your own as well.
  */
 class BTCore::Codec :
     public QObject,

@@ -1,9 +1,73 @@
 /**
-\mainpage Implementation overview
+\mainpage Bot Terminal overview
 
-\section impl_overview Implementation overview
+\section overview Bot Terminal overview
 
-TODO
+Bot Terminal is an utility that performs binary data exchange via serial port. It allows one to set up flexible rules about how to reply to different requests. So, it listens for data, parses it, and replies as necessary.
+
+Here is an overview of the workflow:
+
+- New raw data comes from the serial port
+- Raw data is parsed into messages, by means of \ref `#BTCore::Codec`
+- For each received message, the sequence of the user-defined handlers is executed. Each handler may:
+  - Analyze input request message
+  - Build and send response message (which is usually, again, encoded with `#BTCore::Codec`, but the handler is free to send raw data as well)
+  - Stop further handlers execution (typically this is done when handler sends a response, but this is not mandatory)
+
+Handlers are written in JavaScript. Typical handler may look as follows:
+
+\code{.js}
+
+(function(inputMsg){
+    //-- inputMsg contains the received request data.
+    //   at the very least, it contains "byteArr" property
+    //   with actual received message.
+
+    var inputArr = inputMsg.byteArr;
+    var handled = false;
+    var outputArr = null;
+
+    //-- check if we should handle this request
+    if (inputArr.getU08(0) === 0x07){
+        //-- yes, so, build the response
+        outputArr = factory.createByteArr();
+        outputArr
+            .putU08(0, 0xc7)
+            .putU16(2, 0x1234)
+            ;
+        handled = true;
+
+        //-- encode and send response via serial port
+        io.writeEncoded(outputArr);
+    };
+
+    //-- if "handled" property in the returned object is true,
+    //   the rest of handlers won't be executed
+    return {
+        handled: handled
+    };
+})
+
+\endcode
+
+The code is self-explanatory: we perform some arbitrary checks on received message, and generate and send the response if necessary.
+
+Why JavaScript?
+
+- Well, the first and main reason is that Qt has built-in first-class support of JavaScript: [QJSEngine](http://doc.qt.io/qt-5/qjsengine.html).
+- Secondly, I know JavaScript very well and I even kind of like it. So, implementing handlers in JavaScript was a lot of fun.
+
+You don't have to have deep understanding of JavaScript in order to use the Bot Terminal. Here is a very brief overview of JavaScript that you should know: \ref js_overview; and here is a host-specific API that you can use in handlers: \ref js_api.
+
+In case anyone is willing to actually learn JavaScript, here's a couple of books that I personally recommend:
+
+- [JavaScript: The Good Parts](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) by Douglas Crockford. It focuses on a subset of JavaScript (a good subset), it teaches you very useful patterns, and it isn't huge at all: less than 200 pages. Great read.
+- [JavaScript: The Definitive Guide](http://www.amazon.com/JavaScript-Definitive-Guide-Activate-Guides/dp/0596805527) by David Flanagan. It is much larger (1000+ pages), and it explains each and every detail of JavaScript. Great for getting deep understanding of the language.
+
+But, again, if the only JavaScript application that you have is to use Bot Terminal, then you probably have better ways to spend your time rather than diving that deeply into JavaScript. Just read my brief overview.
+
+And again, in any case, you need to know host-specific API that is exposed to handlers: \ref js_api.
+
 
 */
 

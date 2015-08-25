@@ -28,6 +28,9 @@ namespace BTCore {
  * CLASS DECLARATION
  ******************************************************************************/
 
+/**
+ * Namespace that contains GUI-related Bot Terminal classes
+ */
 namespace BTGui {
     class ProjectView;
 }
