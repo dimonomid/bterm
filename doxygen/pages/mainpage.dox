@@ -65,7 +65,7 @@ You don't have to have deep understanding of JavaScript in order to use the Bot 
 
 Just in case you're willing to actually learn JavaScript (for whatever reason), here's a couple of books that I personally recommend:
 
-- [JavaScript: The Good Parts](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) by Douglas Crockford. It focuses on a subset of JavaScript (a good subset), it teaches you very useful patterns, and it isn't huge at all: less than 200 pages. Great read.
+- [JavaScript: The Good Parts](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) by Douglas Crockford. It focuses on a subset of JavaScript (a good subset), it teaches you very useful patterns, and it is very concise: lots of material in less than 200 pages. Great read.
 - [JavaScript: The Definitive Guide](http://www.amazon.com/JavaScript-Definitive-Guide-Activate-Guides/dp/0596805527) by David Flanagan. It is much larger (1000+ pages), and it explains each and every detail of JavaScript. Great for getting deep understanding of the language.
 
 But, again, if the only JavaScript application you have is to use Bot Terminal, then you probably have something better to do rather than spending your valuable time on diving that deeply into JavaScript. Just read my brief overview.
