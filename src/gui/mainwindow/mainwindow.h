@@ -50,7 +50,7 @@ class EventVisitor_GuiHandle;
 
 /**
  * Class that represents main application window. It listens for events from
- * `#Appl` and behaves accordingly.
+ * `#Appl` and `#BTCore::Project` and behaves accordingly.
  */
 class MainWindow : public QMainWindow
 {

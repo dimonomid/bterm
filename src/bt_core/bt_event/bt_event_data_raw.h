@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
@@ -26,6 +26,10 @@ namespace BTCore {
     class EventDataRaw;
 }
 
+/**
+ * Class that represents data raw event: it is emitted when new raw data
+ * is received
+ */
 class BTCore::EventDataRaw : public BTCore::Event
 {
     /****************************************************************************
@@ -57,7 +61,15 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * Get received data
+     */
     const std::vector<uint8_t> getData() const;
+
+
+    /*
+     * Overridden methods from `#BTCore::Event`
+     */
 
     virtual const QString toString() const override;
     virtual void accept(EventVisitor &visitor) override;

@@ -27,6 +27,10 @@ namespace BTCore {
         class EventsAcc;
 }
 
+/**
+ * Events accumulator: it allows one to collect events and query events
+ * starting from specified index.
+ */
 template<typename T>
 class BTCore::EventsAcc
 {
@@ -39,6 +43,15 @@ class BTCore::EventsAcc
      ***************************************************************************/
 public:
 
+    /**
+     * @param max_events_cnt
+     *      Specify maximum count of events to be stored at the moment.
+     *      When newly added events cause total number of events to exceed
+     *      the maximum number, the oldest events will be removed.
+     *
+     *      Note that index of newly added events are constantly growing,
+     *      independently of `max_events_cnt`.
+     */
     explicit EventsAcc(size_t max_events_cnt) :
         max_events_cnt(max_events_cnt),
         events(),
@@ -74,6 +87,16 @@ private:
      * METHODS
      ***************************************************************************/
 public:
+
+    /**
+     * Retrieve events from collection, beginning from specified index.
+     *
+     * @param start_event_num
+     *      Event index starting from which events should be returned
+     * @param p_last_event_num
+     *      Pointer to the location where current last event index
+     *      should be stored
+     */
     std::vector<std::shared_ptr<T>> getEvents(
             unsigned long start_event_num,
             unsigned long *p_last_event_num
@@ -109,6 +132,9 @@ public:
     }
 
 
+    /**
+     * Add new event to collection
+     */
     void addEvent(std::shared_ptr<T> p_event)
     {
         events.push_back(p_event);

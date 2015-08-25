@@ -24,6 +24,10 @@ using namespace BTCore;
  * STATIC DATA
  ******************************************************************************/
 
+/*
+ * Various tag names, attribute names, etc, to be used in XML file
+ */
+
 const QString ProjectStorageXML::XML_TAG_NAME__PROJECT      = "project";
 const QString ProjectStorageXML::XML_TAG_NAME__CODECS       = "codecs";
 const QString ProjectStorageXML::XML_TAG_NAME__CODEC        = "codec";
@@ -46,6 +50,8 @@ const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_TX  
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__FMT_RX   = "fmt_rx";
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__LOCAL_ADDR_RX   = "local_addr_rx";
 const QString ProjectStorageXML::XML_ATTR_NAME__CODEC_ISO14230__REMOTE_ADDR_RX  = "remote_addr_rx";
+
+
 
 
 /*******************************************************************************

@@ -68,6 +68,13 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * NOTE: each time this function is called, the same widget is returned,
+     * and the caller is responsible to delete it eventually.
+     *
+     * Widget will be actually created at the first call, so if this method
+     * never called, then widget is not created at all.
+     */
     virtual QWidget *getCodecSettWidget() override;
 
 

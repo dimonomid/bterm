@@ -263,11 +263,21 @@ public:
 
 protected:
 
+    /**
+     * Encode given data with current codec, and write it to IO device.
+     *
+     * Used by `#BTCore::ScriptIO`.
+     */
     void writeEncoded(
             const std::vector<uint8_t> &data,
             QString descr
             );
 
+    /**
+     * Write given data literally to IO device.
+     *
+     * Used by `#BTCore::ScriptIO`.
+     */
     void writePlain(
             const std::vector<uint8_t> &data,
             QString descr
@@ -350,6 +360,8 @@ signals:
      * This signal is just forwarded from `#BTCore::JSHost`.
      */
     void scriptMessage(const QString &text, BTCore::MsgLevel level);
+
+
 
 private slots:
 

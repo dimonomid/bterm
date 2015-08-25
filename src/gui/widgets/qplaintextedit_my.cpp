@@ -1,9 +1,5 @@
 /*****************************************************************************************
- *   Description:
- *
- *   FIXME: this class is actually a dirty hack: we shouldn't inherit
- *   QPlainTextEdit. I hope I'll have some time in the future to fix that
- *   (at least, we may use composition instead)
+ *   Description:   See class declaration in header file
  *
  *****************************************************************************************/
 
@@ -56,16 +52,7 @@ QPlainTextEdit_My::QPlainTextEdit_My(const QString &text, QWidget *parent) :
 
 /* public       */
 
-/**
- * append text without adding new line (new paragraph)
- *
- * @param text       bt_ml text to append
- * @param check_nl   if true, then text will be splitted by \n char,
- *                   and each substring will be added as separate QTextBlock.
- *                   NOTE: this important: if you set this to false,
- *                   then you should append new blocks manually (say, by calling appendNL() )
- *                   because one huge block will significantly slow down your widget.
- */
+
 void QPlainTextEdit_My::appendPlainTextNoNL(const QString &text, bool check_nl)
 {
     QScrollBar *p_scroll_bar = this->verticalScrollBar();
@@ -104,16 +91,7 @@ void QPlainTextEdit_My::appendPlainTextNoNL(const QString &text, bool check_nl)
     }
 }
 
-/**
- * append bt_ml without adding new line (new paragraph)
- *
- * @param bt_ml       bt_ml text to append
- * @param check_br   if true, then text will be splitted by "<br>" tag,
- *                   and each substring will be added as separate QTextBlock.
- *                   NOTE: this important: if you set this to false,
- *                   then you should append new blocks manually (say, by calling appendNL() )
- *                   because one huge block will significantly slow down your widget.
- */
+
 void QPlainTextEdit_My::appendHtmlNoNL(const QString &bt_ml, bool check_br)
 {
     QScrollBar *p_scroll_bar = this->verticalScrollBar();
@@ -151,10 +129,7 @@ void QPlainTextEdit_My::appendHtmlNoNL(const QString &bt_ml, bool check_br)
     }
 }
 
-/**
- * Just insert new QTextBlock to the text.
- * (in fact, adds new paragraph)
- */
+
 void QPlainTextEdit_My::insertNL()
 {
     QScrollBar *p_scroll_bar = this->verticalScrollBar();

@@ -72,6 +72,11 @@ private:
     std::shared_ptr<QIODevice> p_device;
 
 
+
+    /*
+     * Various tag names, attribute names, etc, to be used in XML file
+     */
+
     static const QString XML_TAG_NAME__PROJECT;
     static const QString XML_TAG_NAME__CODECS;
     static const QString XML_TAG_NAME__CODEC;

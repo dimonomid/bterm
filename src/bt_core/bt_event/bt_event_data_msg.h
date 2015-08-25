@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   Description:   TODO
+ *   Description:   See class declaration below
  *
  ******************************************************************************/
 
@@ -25,6 +25,10 @@ namespace BTCore {
 }
 
 
+/**
+ * Class that represents data message event: it is emitted when new message
+ * is received or transmitted.
+ */
 class BTCore::EventDataMsg : public BTCore::Event
 {
     /****************************************************************************
@@ -83,9 +87,27 @@ private:
      ***************************************************************************/
 public:
 
+    /**
+     * Get wrapped message
+     */
     const DataMsg getMsg() const;
+
+    /**
+     * Get message direction (Rx or Tx)
+     */
     Direction getDir() const;
+
+    /**
+     * Get description (used only for Tx messages)
+     */
     QString getDescr() const;
+
+
+
+
+    /*
+     * Overridden methods from `#BTCore::Event`
+     */
 
     virtual const QString toString() const override;
     virtual void accept(EventVisitor &visitor) override;
