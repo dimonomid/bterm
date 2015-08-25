@@ -8,6 +8,7 @@
  ******************************************************************************/
 
 #include <QLabel>
+#include <QBoxLayout>
 
 #include "bt_codec_empty_view.h"
 //#include "ui_bt_codec_empty_view.h"
@@ -51,9 +52,21 @@ CodecEmptyView::CodecEmptyView(QString codec_name) :
 
 QWidget *CodecEmptyView::getCodecSettWidget()
 {
-    return new QLabel(
-            "The codec \"" + codec_name + "\" doesn't have any settings"
+    QWidget *p_ret = new QWidget();
+
+    QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
+
+    p_lay->addWidget(
+            new QLabel(
+                "The codec \"" + codec_name + "\" doesn't have any settings"
+                )
             );
+
+    p_lay->addStretch(0);
+
+    p_ret->setLayout(p_lay);
+
+    return p_ret;
 }
 
 
