@@ -18,6 +18,7 @@
 #include "bt_jshost.h"
 #include "bt_script_factory.h"
 #include "bt_script_console.h"
+#include "bt_script_io.h"
 
 
 
@@ -27,12 +28,17 @@ using namespace BTCore;
  * CONSTRUCTOR, DESTRUCTOR
  ******************************************************************************/
 
-JSHost::JSHost() :
+JSHost::JSHost(
+        std::shared_ptr<Project> p_project
+        ) :
+    wp_project(p_project),
     p_engine(std::make_shared<QJSEngine>()),
     p_script_factory(std::make_shared<ScriptFactory>()),
     script_factory_jsval(p_engine->newQObject(p_script_factory.get())),
     p_script_console(std::make_shared<ScriptConsole>()),
     script_console_jsval(p_engine->newQObject(p_script_console.get())),
+    p_script_io(std::make_shared<ScriptIO>(p_project)),
+    script_io_jsval(p_engine->newQObject(p_script_io.get())),
     script_ctx_jsval(p_engine->evaluate("({})"))
 {
     //-- set ownership of p_script_factory to C++ code, so that JS engine
@@ -78,14 +84,23 @@ void JSHost::initJSEngine()
     //
     //   It seems, we register ByteArrRead as non-instantiable type,
     //   and ByteArrReadWrite as instantiable
+
+    //-- We need to register types that are used as return or argument types
+    //   in `Q_INVOKABLE` methods.
+    //   NOTE that in the header file, you must specify these types
+    //   as fully-qualified ones: so, not just `ByteArrRead`,
+    //   but `BTCore::ByteArrRead`. Otherwise, QJSEngine complains about
+    //   unknown type.
     qmlRegisterType<ByteArrRead>     ();
     qmlRegisterType<ByteArrReadWrite>("", 1, 0, "ByteArrReadWrite");
+    //qmlRegisterType<ScriptIO>        ("", 1, 0, "ScriptIO");
 
     //-- set host properties
     setGlobalFrozenProperty("LITTLE_END", ByteArrRead::LITTLE_END);
     setGlobalFrozenProperty("BIG_END",    ByteArrRead::BIG_END);
     setGlobalFrozenProperty("factory",    script_factory_jsval);
     setGlobalFrozenProperty("console",    script_console_jsval);
+    setGlobalFrozenProperty("io",         script_io_jsval);
 
 }
 

@@ -42,7 +42,9 @@ namespace BTCore {
  * name of the codec that is being used (see `#BTCore::Codec`),
  * request handlers, and other things.
  */
-class BTCore::Project : public QObject
+class BTCore::Project :
+    public QObject,
+    public std::enable_shared_from_this<BTCore::Project>
 {
 Q_OBJECT
 
@@ -53,14 +55,20 @@ Q_OBJECT
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
-public:
+private:
     /**
-     * Constructs the project with given title and codec.
+     * NOTE: this constructor is private, since we have to use additional
+     * initialization right after construction, which can't be done right in
+     * the constructor (because it involves shared_ptr to this Project). Use
+     * `#BTCore::Project::create()` static method instead.
+     *
+     * Constructs the project with given title.
      */
     explicit Project(
             QString title = ""
             );
 
+public:
     virtual ~Project();
 
     /****************************************************************************
@@ -100,11 +108,27 @@ private:
     /****************************************************************************
      * STATIC METHODS
      ***************************************************************************/
+public:
+
+    /**
+     * Creates the project with given title.
+     */
+    static std::shared_ptr<Project> create(
+            QString title = ""
+            );
+
+
+
 
     /****************************************************************************
      * METHODS
      ***************************************************************************/
 public:
+
+    /**
+     * Returns shared pointer to this instance of `Project`
+     */
+    std::shared_ptr<Project> getSharedPtr();
 
     /**
      * Set IO device, so that we can communicate with outside world
@@ -202,6 +226,13 @@ public:
 
 private:
 
+
+
+    /**
+     * Should be called right after construction, this is done automatically
+     * by `create()` static method
+     */
+    void init();
 
 
     /****************************************************************************

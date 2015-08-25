@@ -3,14 +3,21 @@
  *
  ******************************************************************************/
 
-#ifndef _SCRIPT_FACTORY_H
-#define _SCRIPT_FACTORY_H
+#ifndef _BT_SCRIPT_IO_H
+#define _BT_SCRIPT_IO_H
 
 /*******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
 
-#include "bt_bytearr_read_write.h"
+#include <QObject>
+#include <memory>
+
+
+
+namespace BTCore {
+    class Project;
+}
 
 
 /*******************************************************************************
@@ -18,24 +25,15 @@
  ******************************************************************************/
 
 namespace BTCore {
-    class ScriptFactory;
+    class ScriptIO;
+    class ByteArrReadWrite;
 }
 
 
 /**
- * Factory that is used in JavaScript scripts to create various objects,
- * namely `BTCore::ByteArrReadWrite`.
- *
- * The instance of the factory is available in scripts via `factory` property
- * of the global object.
- *
- * So, use it as follows:
- *
- * <code>
- *      var outputArr = factory.createByteArr();
- * </code>
+ * TODO
  */
-class BTCore::ScriptFactory : public QObject
+class BTCore::ScriptIO : public QObject
 {
 Q_OBJECT
     /****************************************************************************
@@ -46,11 +44,20 @@ Q_OBJECT
      * CONSTRUCTOR, DESTRUCTOR
      ***************************************************************************/
 public:
+    explicit ScriptIO(
+            std::shared_ptr<Project> p_project
+            );
+
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
+
+    //-- weak pointer to Project that was given to constructor
+    std::weak_ptr<Project> wp_project;
+
+
 
     /****************************************************************************
      * STATIC METHODS
@@ -61,10 +68,8 @@ private:
      ***************************************************************************/
 public:
 
-    /**
-     * Create new empty `BTCore::ByteArrReadWrite`
-     */
-    Q_INVOKABLE BTCore::ByteArrReadWrite *createByteArr();
+    Q_INVOKABLE BTCore::ScriptIO *writeEncoded(ByteArrReadWrite *p_bytearr);
+    Q_INVOKABLE BTCore::ScriptIO *writePlain(ByteArrReadWrite *p_bytearr);
 
 
     /****************************************************************************
@@ -74,4 +79,4 @@ public:
 };
 
 
-#endif // _SCRIPT_FACTORY_H
+#endif // _BT_SCRIPT_IO_H

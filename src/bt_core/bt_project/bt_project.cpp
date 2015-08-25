@@ -41,7 +41,10 @@ Project::Project(
     p_codec(),
     all_codecs({}),
     p_io_dev(),
-    p_jshost(std::make_shared<JSHost>()),
+
+    //-- JSHost will be actually created later, in `init()`, since we can't
+    //   call `getSharedPtr()` from constructor
+    p_jshost(),
     handlers(),
     baudrate(9600),
     dirty(true)
@@ -58,10 +61,6 @@ Project::Project(
         this->title = "New project";
     }
 
-    connect(
-            p_jshost.get(), &JSHost::scriptMessage,
-            this, &Project::scriptMessage
-           );
 }
 
 Project::~Project()
@@ -85,6 +84,18 @@ Project::~Project()
 
 /* public       */
 
+std::shared_ptr<Project> Project::create(
+        QString title
+        )
+{
+    //-- NOTE: we can't use std::make_shared, since Project constructor
+    //   is private
+    std::shared_ptr<Project> p_proj {new Project(title)};
+    p_proj->init();
+
+    return p_proj;
+}
+
 
 /*******************************************************************************
  * METHODS
@@ -92,9 +103,26 @@ Project::~Project()
 
 /* private      */
 
+void Project::init()
+{
+    p_jshost = std::make_shared<JSHost>( getSharedPtr() );
+
+    connect(
+            p_jshost.get(), &JSHost::scriptMessage,
+            this, &Project::scriptMessage
+           );
+}
+
+
+
 /* protected    */
 
 /* public       */
+
+std::shared_ptr<Project> Project::getSharedPtr()
+{
+    return shared_from_this();
+}
 
 void Project::setIODev(std::shared_ptr<IODev> p_io_dev)
 {

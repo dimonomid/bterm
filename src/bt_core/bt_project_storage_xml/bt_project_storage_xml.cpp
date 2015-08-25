@@ -374,7 +374,7 @@ std::shared_ptr<Project> ProjectStorageXML::readProject()
     }
 
     //-- now, since we have title, we can create the project
-    p_proj = std::make_shared<Project>(proj_name);
+    p_proj = Project::create(proj_name);
 
 
     //-- handle codec

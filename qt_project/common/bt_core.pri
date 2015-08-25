@@ -25,6 +25,7 @@ SOURCES += \
     ../../src/bt_core/bt_jshost/bt_bytearr/bt_bytearr_read_write.cpp \
     ../../src/bt_core/bt_jshost/bt_script_factory/bt_script_factory.cpp \
     ../../src/bt_core/bt_jshost/bt_script_console/bt_script_console.cpp \
+    ../../src/bt_core/bt_jshost/bt_script_io/bt_script_io.cpp \
     ../../src/bt_core/bt_jshost/bt_jshost.cpp \
 
 
@@ -49,6 +50,7 @@ HEADERS += ../../src/bt_core/bt_datamsg/bt_datapart.h \
     ../../src/bt_core/bt_jshost/bt_bytearr/bt_bytearr_read_write.h \
     ../../src/bt_core/bt_jshost/bt_script_factory/bt_script_factory.h \
     ../../src/bt_core/bt_jshost/bt_script_console/bt_script_console.h \
+    ../../src/bt_core/bt_jshost/bt_script_io/bt_script_io.h \
     ../../src/bt_core/bt_jshost/bt_jshost.h \
 
 
@@ -68,5 +70,6 @@ INCLUDEPATH += ../../src/bt_core \
                ../../src/bt_core/bt_jshost/bt_bytearr \
                ../../src/bt_core/bt_jshost/bt_script_factory \
                ../../src/bt_core/bt_jshost/bt_script_console \
+               ../../src/bt_core/bt_jshost/bt_script_io \
 
 

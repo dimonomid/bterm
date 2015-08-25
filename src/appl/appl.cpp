@@ -203,7 +203,7 @@ void Appl::newProject()
     //-- close currently opened project (if any)
     closeProject();
 
-    p_project = std::make_shared<Project>();
+    p_project = Project::create();
 
     p_project->setDirty(true);
 

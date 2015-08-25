@@ -25,6 +25,8 @@
 namespace BTCore {
     class ScriptFactory;
     class ScriptConsole;
+    class Project;
+    class ScriptIO;
 }
 
 /*******************************************************************************
@@ -51,13 +53,18 @@ Q_OBJECT
      ***************************************************************************/
 public:
 
-    explicit JSHost();
+    explicit JSHost(
+            std::shared_ptr<Project> p_project
+            );
 
 
     /****************************************************************************
      * PRIVATE DATA
      ***************************************************************************/
 private:
+
+    //-- weak pointer to Project that was given to constructor
+    std::weak_ptr<Project> wp_project;
 
     //-- JavaScript engine
     std::shared_ptr<QJSEngine> p_engine;
@@ -74,6 +81,12 @@ private:
 
     //-- the same console object wrapped inside QJSValue
     QJSValue script_console_jsval;
+
+    //-- io object that is used by scripts
+    std::shared_ptr<ScriptIO> p_script_io;
+
+    //-- the same io object wrapped inside QJSValue
+    QJSValue script_io_jsval;
 
 
     //-- context that is used by script functions. It is given as `this`
