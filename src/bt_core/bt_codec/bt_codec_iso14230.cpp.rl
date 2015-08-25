@@ -341,6 +341,9 @@ std::vector<std::shared_ptr<ReqHandler>> Codec_ISO14230::getStdHandlers() const
     auto ret = std::vector<std::shared_ptr<ReqHandler>>{};
 
 
+    //-- standard ISO-14230 request handler that takes care of
+    //   STC, ACP, STDS, TP requests. It is called after user-defined handlers,
+    //   so, user can "shadow" this one, if he/she wants.
     {
         std::shared_ptr<ReqHandler> p_handler = std::make_shared<ReqHandler>(
                 "ISO14230 Std",
