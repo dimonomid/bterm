@@ -521,6 +521,8 @@ void Project::onMessageDecoded(const DataMsg &msg)
 
     QJSValue input_msg_jsval = p_jshost->getHandlerInputMsgObject(p_req_data);
 
+    //QThread::msleep(60);
+
     //-- iterate through all the request handlers
     for (auto p_handler : handlers){
 

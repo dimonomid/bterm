@@ -31,7 +31,7 @@ IODevSerial::IODevSerial() :
     p_port(new QSerialPort())
 {
     //TODO: configurable
-    setPortName("/dev/USB_logger");
+    setPortName("/dev/USB_ecu_emulator");
 
     connect(
             p_port.get(), &QSerialPort::readyRead,
@@ -82,6 +82,8 @@ vector<uint8_t> IODevSerial::read()
 void IODevSerial::write(const vector<uint8_t> &data)
 {
     qDebug() << "write: " << MyUtil::byteArrayToHex(data);
+    int32_t written_cnt = p_port->write(reinterpret_cast<const char *>(data.data()), data.size());
+    qDebug() << "written: " << written_cnt;
 }
 
 void IODevSerial::setBaudRate(int32_t baud_rate)

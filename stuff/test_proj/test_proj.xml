@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project title="My test project">
     <codecs>
-        <codec fmt_tx="0x80" local_addr_tx="0x10" remote_addr_tx="0x11" fmt_rx="0x80" local_addr_rx="0xff" remote_addr_rx="0xff" key="iso14230"/>
+        <codec local_addr_rx="0xff" fmt_rx="0x80" remote_addr_rx="0xff" key="iso14230" local_addr_tx="0x10" fmt_tx="0x80" remote_addr_tx="0xf1"/>
     </codecs>
-    <iodev baudrate="9600"/>
+    <iodev baudrate="10400"/>
     <req_handlers>
         <req_handler title="test 1">
             <code>
