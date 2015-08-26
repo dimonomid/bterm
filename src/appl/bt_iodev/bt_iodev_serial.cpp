@@ -81,9 +81,9 @@ vector<uint8_t> IODevSerial::read()
 
 void IODevSerial::write(const vector<uint8_t> &data)
 {
-    qDebug() << "write: " << MyUtil::byteArrayToHex(data);
+    //qDebug() << "write: " << MyUtil::byteArrayToHex(data);
     int32_t written_cnt = p_port->write(reinterpret_cast<const char *>(data.data()), data.size());
-    qDebug() << "written: " << written_cnt;
+    //qDebug() << "written: " << written_cnt;
 }
 
 void IODevSerial::setBaudRate(int32_t baud_rate)
@@ -104,7 +104,7 @@ int32_t IODevSerial::getBaudRate()
 void IODevSerial::open()
 {
     bool open_res = p_port->open(QIODevice::ReadWrite);
-    qDebug() << "open_res" << open_res;
+    //qDebug() << "open_res" << open_res;
 
     if (open_res != opened){
         opened = open_res;
@@ -152,7 +152,7 @@ void IODevSerial::setPortName(QString name)
 
 void IODevSerial::onReadyRead()
 {
-    qDebug("ready read");
+    //qDebug("ready read");
 
     uint32_t avail_size = 0;
 
