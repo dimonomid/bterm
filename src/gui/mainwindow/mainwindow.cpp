@@ -54,6 +54,8 @@
 
 #include "bt_iodev_view.h"
 
+#include "appl_sett_dialog.h"
+
 
 using namespace BTCore;
 using namespace BTGui;
@@ -399,6 +401,19 @@ void MainWindow::initMainMenu()
     }
     // }}}
 
+    //-- Settings menu {{{
+    {
+        p_act_appl_sett = new QAction(tr("&Application settings"), this);
+        connect(
+                p_act_appl_sett, &QAction::triggered,
+                this, &MainWindow::applSettOpen
+               );
+
+        QMenu *menu_sett = menuBar()->addMenu(tr("&Settings"));
+        menu_sett->addAction(p_act_appl_sett);
+    }
+    // }}}
+
 }
 
 void MainWindow::mySaveState()
@@ -695,6 +710,17 @@ void MainWindow::saveProjectAs()
     if (!wanted_filename.isEmpty()){
         appl.saveProject(wanted_filename);
     }
+
+}
+
+void MainWindow::applSettOpen()
+{
+
+    ApplSettDialog *p_dialog = new ApplSettDialog(this);
+    p_dialog->setAttribute(Qt::WA_DeleteOnClose);
+
+    p_dialog->exec();
+    qDebug("done");
 
 }
 

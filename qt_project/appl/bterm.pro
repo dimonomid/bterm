@@ -32,6 +32,7 @@ SOURCES += \
     ../../src/appl/bt_iodev/bt_iodev_serial.cpp \
     ../../src/gui/bt_req_handler_view/bt_req_handler_view.cpp \
     ../../src/util/xmlsettings/xmlsettings.cpp \
+    ../../src/gui/appl_sett_dialog/appl_sett_dialog.cpp \
 
 
 HEADERS += \
@@ -51,13 +52,15 @@ HEADERS += \
     ../../src/appl/bt_iodev/bt_iodev_serial.h \
     ../../src/gui/bt_req_handler_view/bt_req_handler_view.h \
     ../../src/util/xmlsettings/xmlsettings.h \
+    ../../src/gui/appl_sett_dialog/appl_sett_dialog.h \
 
 
 FORMS    += \
     ../../src/gui/mainwindow/mainwindow.ui \
     ../../src/gui/bt_project_view/bt_project_view.ui \
     ../../src/gui/bt_codec_view/bt_codec_iso14230_view.ui \
-    ../../src/gui/bt_iodev_view/bt_iodev_view.ui
+    ../../src/gui/bt_iodev_view/bt_iodev_view.ui \
+    ../../src/gui/appl_sett_dialog/appl_sett_dialog.ui
 
 INCLUDEPATH += \
     ../../src/gui/mainwindow \
@@ -73,5 +76,6 @@ INCLUDEPATH += \
     ../../src/gui/widgets \
     ../../src/gui/bt_req_handler_view \
     ../../src/util/xmlsettings \
+    ../../src/gui/appl_sett_dialog \
 
 

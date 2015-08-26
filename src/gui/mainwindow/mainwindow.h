@@ -103,7 +103,7 @@ private:
     QAction *p_act_save_project;
     QAction *p_act_save_project_as;
 
-    QAction *p_act_project_sett;
+    QAction *p_act_appl_sett;
 
 
     std::vector<std::shared_ptr<BTGui::ReqHandlerView>> handler_views;
@@ -230,6 +230,8 @@ private slots:
     void closeProject();
     void saveProject();
     void saveProjectAs();
+
+    void applSettOpen();
 
     void onAddHandlerButtonPressed();
 
