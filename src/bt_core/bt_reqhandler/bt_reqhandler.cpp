@@ -41,12 +41,12 @@ ReqHandler::ReqHandler(
         ) :
     title(title),
     p_jshost(p_jshost),
-    script_func_code(script_func_code),
+    script_func_code(),
     last_error(Error::UNKNOWN),
     last_exception_details(),
     handler_index(INDEX_UNKNOWN)
 {
-
+    setScript(script_func_code);
 }
 
 ReqHandler::ReqHandler(
@@ -138,6 +138,11 @@ QString ReqHandler::getScript() const
 void ReqHandler::setScript(QString script_func_code)
 {
     this->script_func_code = script_func_code;
+
+    //-- set handler_func to default (undefined) value, so that next time
+    //   the handler is called, it will be evaluated from `script_func_code`
+    handler_func = QJSValue();
+
     emit scriptChanged(this->script_func_code);
 }
 
@@ -156,21 +161,24 @@ ReqHandler::Result ReqHandler::handle(
 
 
 
-    //-- try to evaluate JavaScript code
-    QJSValue func = p_jshost->evaluate(
-            script_func_code,
-            this->title
-            );
+    //-- check if we already have evaluated handler function
+    if (!handler_func.isCallable()){
+        //-- no, so, try to evaluate JavaScript code
+        handler_func = p_jshost->evaluate(
+                script_func_code,
+                this->title
+                );
+    }
 
-    if (func.isError()){
+    if (handler_func.isError()){
         //-- evaluation is failed: some error in JavaScript code.
 
         ret = Result::ERROR;
         last_error = Error::EXCEPTION;
-        last_exception_details = MyUtil::qjsErrorToVariant(func);
+        last_exception_details = MyUtil::qjsErrorToVariant(handler_func);
         qDebug() << "exception 1: " << last_exception_details;
 
-    } else if (!func.isCallable()){
+    } else if (!handler_func.isCallable()){
         //-- evaluation has succeed, but the script has evaluated to
         //   non-function value.
 
@@ -182,7 +190,7 @@ ReqHandler::Result ReqHandler::handle(
         //-- ok, we have function value. Try to call it,
         //   passing the scripts context as `this`.
         QJSValue returned = p_jshost->callFuncWithCommonContext(
-                func,
+                handler_func,
                 QJSValueList() << input_msg_jsval,
                 this->title
                 );

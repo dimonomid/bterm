@@ -176,6 +176,9 @@ private:
     //   `setHandlerIndex()`.
     size_t handler_index;
 
+    //-- actual handler function. It is evaluated from `script_func_code`.
+    QJSValue handler_func;
+
     /****************************************************************************
      * STATIC METHODS
      ***************************************************************************/
