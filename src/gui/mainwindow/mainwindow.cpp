@@ -246,17 +246,6 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
 
         QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
-        //-- add "add handler" button
-        {
-            QPushButton *p_add_handler_btn = new QPushButton("Add handler");
-            p_lay->addWidget(p_add_handler_btn);
-            connect(
-                    p_add_handler_btn, &QPushButton::clicked,
-                    this, &MainWindow::onAddHandlerButtonPressed
-                   );
-        }
-
-
         //-- iterate all handlers: 
         //   for each of them, create the view and display it:
         //   add a row in the handlers view, and create (hidden) dockwidget
@@ -283,6 +272,17 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
             //-- store the handler in the vector
             handler_views.push_back(p_handler_view);
         }
+
+        //-- add "add handler" button
+        {
+            QPushButton *p_add_handler_btn = new QPushButton("Add handler");
+            p_lay->addWidget(p_add_handler_btn);
+            connect(
+                    p_add_handler_btn, &QPushButton::clicked,
+                    this, &MainWindow::onAddHandlerButtonPressed
+                   );
+        }
+
 
         //-- we don't want the contents to expand as we expand the widget,
         //   so, add "stretch" element as the bottom element, so, only this
