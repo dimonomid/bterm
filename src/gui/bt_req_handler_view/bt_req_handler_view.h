@@ -47,6 +47,29 @@ Q_OBJECT
     /****************************************************************************
      * TYPES
      ***************************************************************************/
+public:
+
+    /**
+     * The struct represents a set of widgets that are used as a row in
+     * handlers list.
+     */
+    struct ListRowWidgets {
+        QWidget *p_handler_title;
+        QWidget *p_edit_btn;
+        QWidget *p_up_btn;
+        QWidget *p_down_btn;
+        QWidget *p_del_btn;
+
+        ListRowWidgets() :
+            p_handler_title(),
+            p_edit_btn(),
+            p_up_btn(),
+            p_down_btn(),
+            p_del_btn()
+        {
+        }
+    };
+
 
     /****************************************************************************
      * CONSTRUCTOR, DESTRUCTOR
@@ -76,7 +99,9 @@ private:
     //   for the same reason: Qt doesn't delete it.
     std::shared_ptr<QDockWidget> p_dock;
 
-    QWidget *p_list_item_widget;
+    QWidget *p_list_item_widget;//TODO: remove
+
+    std::shared_ptr<ListRowWidgets> p_list_row;
     QLabel *p_list_item_label_name;
     QPlainTextEdit *p_script_edit;
     std::weak_ptr<BTCore::Project> wp_project;
@@ -103,6 +128,7 @@ public:
     QDockWidget *getEditDockWidget() const;
 
     /**
+     * TODO: remove
      * NOTE: each time this function is called, the same widget is returned,
      * and the caller is responsible to delete it eventually.
      *
@@ -111,12 +137,22 @@ public:
      */
     QWidget *getListItemWidget();
 
+    /**
+     * NOTE: each time this function is called, shared pointer to the same
+     * structure is returned, with the same pointers to widgets. And the caller
+     * is responsible for deletion of all of these widgets.
+     *
+     * Structure (and widgets) will be actually created at the first call, so
+     * if this method never called, then widgets are not created at all.
+     */
+    std::shared_ptr<ListRowWidgets> getListRow();
 
 
 private:
 
     QWidget *createEditWidget();
-    QWidget *createListItemWidget();
+    QWidget *createListItemWidget();//TODO: remove
+    std::shared_ptr<ListRowWidgets> createListRow();
 
     QString getEditDockWidgetTitle() const;
     QString getListItemWidgetTitle() const;
@@ -136,7 +172,7 @@ private slots:
     void onTitleChangedByUser(const QString &text);
     void onScriptChangedByUser();
     void onReqHandlerTitleChanged(const QString &text);
-    void onListItemWidgetDestroyed();
+    void onListItemWidgetDestroyed();//TODO: remove
 
 
 

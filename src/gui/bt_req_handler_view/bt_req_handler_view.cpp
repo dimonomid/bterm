@@ -43,6 +43,7 @@ ReqHandlerView::ReqHandlerView(
     p_handler(p_handler),
     p_dock(),
     p_list_item_widget(nullptr),
+    p_list_row(nullptr),
     wp_project(std::weak_ptr<Project>(p_project))
 {
 
@@ -184,6 +185,67 @@ QWidget *ReqHandlerView::createListItemWidget()
     return p_widg;
 }
 
+std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::createListRow()
+{
+    std::shared_ptr<ListRowWidgets> p_ret = std::make_shared<ListRowWidgets>();
+
+    //-- title
+    {
+        p_list_item_label_name = new QLabel(getListItemWidgetTitle());
+        p_ret->p_handler_title = p_list_item_label_name;
+    }
+
+    //-- edit button
+    {
+        QPushButton *p_edit_button = new QPushButton("Edit");
+        p_edit_button->setMinimumWidth(5);
+        p_ret->p_edit_btn = p_edit_button;
+
+        connect(
+                p_edit_button, &QPushButton::clicked,
+                this, &ReqHandlerView::onEditButtonPressed
+               );
+    }
+
+    //-- up button
+    {
+        QPushButton *p_up_button = new QPushButton("Up");
+        p_up_button->setMinimumWidth(5);
+        p_ret->p_up_btn = p_up_button;
+
+        connect(
+                p_up_button, &QPushButton::clicked,
+                this, &ReqHandlerView::onUpButtonPressed
+               );
+    }
+
+    //-- down button
+    {
+        QPushButton *p_down_button = new QPushButton("Down");
+        p_down_button->setMinimumWidth(5);
+        p_ret->p_down_btn = p_down_button;
+
+        connect(
+                p_down_button, &QPushButton::clicked,
+                this, &ReqHandlerView::onDownButtonPressed
+               );
+    }
+
+    //-- remove button
+    {
+        QPushButton *p_remove_button = new QPushButton("x");
+        p_remove_button->setMinimumWidth(5);
+        p_ret->p_del_btn = p_remove_button;
+
+        connect(
+                p_remove_button, &QPushButton::clicked,
+                this, &ReqHandlerView::onRemoveButtonPressed
+               );
+    }
+
+    return p_ret;
+}
+
 #if 0
 void ReqHandlerView::applyReqName()
 {
@@ -217,6 +279,15 @@ QWidget *ReqHandlerView::getListItemWidget()
     }
 
     return p_list_item_widget;
+}
+
+std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::getListRow()
+{
+    if (p_list_row == nullptr){
+        p_list_row = createListRow();
+    }
+
+    return p_list_row;
 }
 
 QDockWidget *ReqHandlerView::getEditDockWidget() const

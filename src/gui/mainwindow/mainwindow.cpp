@@ -244,6 +244,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     {
         QWidget *p_handlers_list_widg = new QWidget();
 
+#if 0
         QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
 
         //-- iterate all handlers: 
@@ -288,8 +289,103 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
         //   so, add "stretch" element as the bottom element, so, only this
         //   bottom "nothing" will be expanded as we expand the widget.
         p_lay->addStretch(0);
+#endif
 
-        p_handlers_list_widg->setLayout(p_lay);
+        QBoxLayout *p_boxlay = new QBoxLayout(QBoxLayout::TopToBottom);
+
+        QGridLayout *p_lay = new QGridLayout();
+        p_lay->setColumnStretch(
+                static_cast<int>(HandlerListColumnNum::STRETCH),
+                1
+                );
+        p_lay->setVerticalSpacing(1);
+
+        //-- iterate all handlers:
+        //   for each of them, create the view and display it:
+        //   add a row in the handlers view, and create (hidden) dockwidget
+        for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
+
+            //-- create view
+            auto p_handler_view = make_shared<ReqHandlerView>(
+                    *this,
+                    p_project,
+                    p_project->getHandler(i)
+                    );
+
+            //-- create row view
+            std::shared_ptr<ReqHandlerView::ListRowWidgets> p_row =
+                p_handler_view->getListRow();
+
+            p_lay->addWidget(
+                    p_row->p_handler_title,
+                    i,
+                    static_cast<int>(HandlerListColumnNum::TITLE)
+                    );
+
+            p_lay->addWidget(
+                    p_row->p_edit_btn,
+                    i,
+                    static_cast<int>(HandlerListColumnNum::EDIT)
+                    );
+
+            p_lay->addWidget(
+                    p_row->p_up_btn,
+                    i,
+                    static_cast<int>(HandlerListColumnNum::UP)
+                    );
+
+            p_lay->addWidget(
+                    p_row->p_down_btn,
+                    i,
+                    static_cast<int>(HandlerListColumnNum::DOWN)
+                    );
+
+            p_lay->addWidget(
+                    p_row->p_del_btn,
+                    i,
+                    static_cast<int>(HandlerListColumnNum::DEL)
+                    );
+
+
+            //-- create and add hidden dockwidget
+            {
+                QDockWidget *p_dock = p_handler_view->getEditDockWidget();
+                addDockWidget(Qt::TopDockWidgetArea, p_dock);
+                p_dock->hide();
+            }
+
+            //-- store the handler in the vector
+            handler_views.push_back(p_handler_view);
+        }
+
+        //-- add "add handler" button
+        {
+            QPushButton *p_add_handler_btn = new QPushButton("Add handler");
+            connect(
+                    p_add_handler_btn, &QPushButton::clicked,
+                    this, &MainWindow::onAddHandlerButtonPressed
+                   );
+
+            QBoxLayout *p_add_btn_lay = new QBoxLayout(QBoxLayout::LeftToRight);
+            p_add_btn_lay->addWidget(p_add_handler_btn);
+            p_add_btn_lay->addStretch(0);
+
+            p_lay->addLayout(
+                    p_add_btn_lay,
+                    p_project->getHandlersCnt(),    //-- row
+                    0,  //-- column
+                    1,  //-- rowspan
+                    static_cast<int>(HandlerListColumnNum::_COUNT) //-- columnspan
+                    );
+        }
+
+        p_boxlay->addLayout(p_lay);
+        p_boxlay->addStretch(0);
+
+
+
+
+        p_handlers_list_widg->setLayout(p_boxlay);
 
         QScrollArea *p_scroll_area = new QScrollArea();
         p_scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
