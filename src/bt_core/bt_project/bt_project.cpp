@@ -336,12 +336,19 @@ void Project::addKnownCodec(std::shared_ptr<Codec> p_new_codec)
 
 void Project::setIODevBaudRate(int32_t baudrate)
 {
+    if (this->baudrate != baudrate){
+        this->baudrate = baudrate;
+        setDirty(true);
+    }
+
     if (p_io_dev != nullptr){
         p_io_dev->setBaudRate(baudrate);
+
+        //NOTE: baudrate will be updated again very soon,
+        //      in the slot `onIODevBaudRateChanged()`.
+        //      But NOTE that it doesn't happen if p_io_dev
+        //      is nullptr, of course.
     }
-    //NOTE: we even don't bother setting project's
-    //      baudrate value, because it will be set
-    //      by slot `onIODevBaudRateChanged()`.
 }
 
 int32_t Project::getIODevBaudRate()
@@ -503,8 +510,10 @@ void Project::onIODevReadyRead(int bytes_available)
 
 void Project::onIODevBaudRateChanged(int32_t baudrate)
 {
-    this->baudrate = baudrate;
-    setDirty(true);
+    if (this->baudrate != baudrate){
+        this->baudrate = baudrate;
+        setDirty(true);
+    }
 }
 
 /**
