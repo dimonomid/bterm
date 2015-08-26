@@ -41,7 +41,8 @@ namespace BTCore {
 /**
  * Class that represents JavaScript host environment for `BTCore`.
  * It provides running scripts with host object, like `io`, `factory`, etc.
- * TODO: link to JS API
+ *
+ * see \ref js_api
  */
 class BTCore::JSHost :
     public QObject,
@@ -138,7 +139,7 @@ public:
      *
      * It differs from regular `QJSEngine::evaluate()` as follows:
      *
-     * - `JSHost` specifies its own host properties, TODO: link to JS API
+     * - `JSHost` specifies its own host properties, see \ref js_api
      * - `JSHost` executes all scripts in strict mode
      *   ( https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode )
      */

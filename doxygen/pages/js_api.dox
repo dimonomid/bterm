@@ -1,0 +1,133 @@
+/**
+\page js_api JavaScript host API
+
+\tableofcontents
+
+By *host API*, I mean API specific to Bot Terminal (which is a JavaScript host in this context). And by *host object*, I mean some object that is specific to Bot Terminal.
+
+
+\section js_api__object_creation Object creation
+
+To provide scripts with a way to create host objects, the object `factory` is exposed. It currently provides the following methods:
+
+- `createByteArr()` : creates new read-write byte array (see \ref js_api__bytearr_read_write)
+
+Usage example:
+
+\code{.js}
+var outputArr = factory.createByteArr();
+outputArr.putU08(0, 0xc7);
+\endcode
+
+For C++ class that represents the `factory` functionality, see `#BTCore::ScriptFactory`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
+
+
+
+\section js_api__bytearr_read Read-only byte array
+
+Input data is passed to user's JavaScript handlers as read-only byte arrays. Each such array provides the following API:
+
+- `getLength()` : returns the length of the array
+- `getU08(index)` : returns unsigned 8-bit value from byte array by index. If index is too large, `0xff` is returned.
+- `getU16(index)` : returns unsigned 16-bit value from byte array by index. If index is too large, `0xffff` is returned.
+- `getU32(index)` : returns unsigned 32-bit value from byte array by index. If index is too large, `0xffffffff` is returned.
+- `getS08(index)` : returns signed 8-bit value from byte array by index. If index is too large, `0xff` is returned.
+- `getS16(index)` : returns signed 16-bit value from byte array by index. If index is too large, `0xffff` is returned.
+- `getS32(index)` : returns signed 32-bit value from byte array by index. If index is too large, `0xffffffff` is returned.
+
+Such an array can't be created from script.
+
+Usage example:
+
+\code{.js}
+//-- assume we have read-only byte array inputArr
+if (inputArr.getU08(0) === 0x07){
+    // ...
+}
+\endcode
+
+For C++ class that represents this functionality, see `#BTCore::ByteArrRead`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
+
+
+
+
+\section js_api__bytearr_read_write Read-write byte array
+
+Read-write byte arrays inherit all methods from \ref js_api__bytearr_read "read-only byte arrays", and additionally provide the following API:
+
+- `setFillByte(fill_byte)` : set the byte value with which byte array should be filled when it is being extended by some `put...` methods.
+- `putU08(index, val, end = LITTLE_END)` : put unsigned 8-bit value to byte array at specified index. If index is too large, array will be extended as necessary, and newly allocated data will be filled with `fill_byte` (see `setFillByte()` above)
+- `putU16(index, val, end = LITTLE_END)` : put unsigned 16-bit value to byte array at specified index. If index is too large, array will be extended as necessary, and newly allocated data will be filled with `fill_byte` (see `setFillByte()` above)
+- `putU32(index, val, end = LITTLE_END)` : put unsigned 32-bit value to byte array at specified index. If index is too large, array will be extended as necessary, and newly allocated data will be filled with `fill_byte` (see `setFillByte()` above)
+- `putS08(index, val, end = LITTLE_END)` : put signed 8-bit value to byte array at specified index. If index is too large, array will be extended as necessary, and newly allocated data will be filled with `fill_byte` (see `setFillByte()` above)
+- `putS16(index, val, end = LITTLE_END)` : put signed 16-bit value to byte array at specified index. If index is too large, array will be extended as necessary, and newly allocated data will be filled with `fill_byte` (see `setFillByte()` above)
+- `putS32(index, val, end = LITTLE_END)` : put signed 32-bit value to byte array at specified index. If index is too large, array will be extended as necessary, and newly allocated data will be filled with `fill_byte` (see `setFillByte()` above)
+
+Note that all the `put...` and `set...` methods above return the object itself, so it's possible to chain these calls, like this:
+
+\code{.js}
+    //-- create empty read-write byte array
+    outputArr = factory.createByteArr();
+
+    //-- put some data inside (notice the chaining syntax)
+    outputArr
+        .setFillByte(0x55)
+        .putU08(0, 0xc7)
+        .putU16(5, 0x1234)
+        .putU16(7, 0x1234, BIG_END)
+        ;
+
+    //-- now, outputArr keeps the following data:
+    //   [ 0xc7, 0x55, 0x55, 0x55, 0x55, 0x34, 0x12, 0x12, 0x34 ]
+\endcode
+
+You might have noticed the `LITTLE_END` and `BIG_END` global symbols. Obviously, they specify whether multi-byte value should be written in little-endian or big-endian format. By default, little-endian is used.
+
+Such an array be created from script by calling `factory.createByteArr()` (see \ref js_api__object_creation)
+
+For C++ class that represents this functionality, see `#BTCore::ByteArrReadWrite`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
+
+\section js_api__io IO
+
+For input-output, an object `io` is exposed.
+
+- `writeEncoded(byteArr, descr = "")` : encode given byte array, and send via serial port. If description is provided, is is shown in the application log together with the output message.
+- `writePlain(byteArr, descr = "")` : The same as `writeEncoded()`, but don't encode message, and send it as it is instead.
+
+Usage example:
+
+\code{.js}
+    //-- build some byte array
+    outputArr = factory.createByteArr();
+    outputArr
+        .putU08(0, 0xc7)
+        .putU16(2, 0x1234)
+        ;
+
+    //-- encode and send response via serial port
+    io.writeEncoded(outputArr);
+\endcode
+
+For C++ class that represents this functionality, see `#BTCore::ScriptIO`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
+
+
+\section js_api__console_output Console output
+
+For now, only one method is exposed, and it is very simple:
+
+- `console.log(value)` : echo some arbitrary value to the application's log. This implementation is much simpler than you probably have already worked with in browsers or Node.js: it accepts just a single value, calls `toString()` on it and prints the result.
+
+Usage example:
+
+\code{.js}
+console.log("hello world!");
+
+//-- assume we have inputArr
+console.log(inputArr.getU08(0));
+\endcode
+
+For C++ class that represents this functionality, see `#BTCore::ScriptConsole`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
+
+*/
+
+
