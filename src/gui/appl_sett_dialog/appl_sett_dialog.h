@@ -13,6 +13,7 @@
 #include <QObject>
 #include <memory>
 
+#include "appl.h"
 #include "ui_appl_sett_dialog.h"
 
 
@@ -44,6 +45,7 @@ class ApplSettDialog : public QDialog
 public:
 
     explicit ApplSettDialog(
+            Appl &appl,
             QWidget *p_parent = nullptr,
             Qt::WindowFlags flags = 0
             );
@@ -55,6 +57,7 @@ public:
     ***************************************************************************/
 private:
 
+    Appl &appl;
     Ui::ApplSettDialog *ui;
 
 
@@ -69,6 +72,11 @@ private:
    /****************************************************************************
     * SIGNALS, SLOTS
     ***************************************************************************/
+
+private slots:
+
+    void onOkPressed();
+    void onCancelPressed();
 
 };
 

@@ -29,6 +29,7 @@
 
 
 class XmlSettings;
+class IODevSerial;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -73,7 +74,7 @@ private:
     std::shared_ptr<XmlSettings> p_sett;
 
     //-- IO device (serial port implementation)
-    std::shared_ptr<BTCore::IODev> p_io_dev;
+    std::shared_ptr<IODevSerial> p_io_dev;
 
     //-- current project
     std::shared_ptr<BTCore::Project> p_project;
@@ -98,12 +99,19 @@ private:
 
 
 
+    /****************************************************************************
+     * STATIC DATA
+     ***************************************************************************/
+
+private:
     /*
      * String keys for xml settings file (used when working with `p_sett`)
      */
 
     static const QString SETT_KEY__APPL;
     static const QString SETT_KEY__APPL__LAST_PROJECT_FILENAME;
+    static const QString SETT_KEY__APPL__IO;
+    static const QString SETT_KEY__APPL__IO__PORT_NAME;
 
 
     /****************************************************************************
@@ -155,6 +163,25 @@ public:
      * it is saved in settings)
      */
     QString getLastProjectFilename() const;
+
+    /**
+     * Returns IO port name, like "/dev/ttyUSB0" on linux, or "COM1" on Windows
+     */
+    QString getIOPortName() const;
+
+    /**
+     * Set IO port name, like "/dev/ttyUSB0" on linux, or "COM1" on Windows.
+     *
+     * @return `true` if setting was successful, `false` otherwise.
+     */
+    bool setIOPortName(QString port_name);
+
+    /**
+     * Returns whether IO device is currently opened
+     */
+    bool isIODevOpened() const;
+
+
 
 private:
 

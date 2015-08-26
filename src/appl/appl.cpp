@@ -41,6 +41,8 @@ using namespace std;
 const QString Appl::SETT_KEY__APPL = "appl";
 const QString Appl::SETT_KEY__APPL__LAST_PROJECT_FILENAME =
 SETT_KEY__APPL + "/last_project_filename";
+const QString Appl::SETT_KEY__APPL__IO = Appl::SETT_KEY__APPL + "/io";
+const QString Appl::SETT_KEY__APPL__IO__PORT_NAME = Appl::SETT_KEY__APPL__IO + "/port_name";
 
 
 
@@ -63,8 +65,15 @@ Appl::Appl() :
     //-- create debug IO device
     //   TODO: change to real
     {
-        //p_io_dev = std::make_shared<IODevDbg>();
+#if 0
+        p_io_dev = std::make_shared<IODevDbg>();
+#endif
+
+#if 1
         p_io_dev = std::make_shared<IODevSerial>();
+        p_io_dev->setPortName( getIOPortName() );
+#endif
+
 
         connect(
                 this->p_io_dev.get(), &IODev::openStatusChanged,
@@ -133,6 +142,13 @@ Appl::~Appl()
 void Appl::initSettings()
 {
     this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME,  "");
+
+#if defined(Q_OS_UNIX)
+    this->p_sett->value(SETT_KEY__APPL__IO__PORT_NAME,  "/dev/ttyUSB0");
+#elif defined(Q_OS_WINDOWS)
+    this->p_sett->value(SETT_KEY__APPL__IO__PORT_NAME,  "COM1");
+#endif
+
 }
 
 /**
@@ -332,6 +348,29 @@ QString Appl::getProjectFilename() const
 QString Appl::getLastProjectFilename() const
 {
     return this->p_sett->value(SETT_KEY__APPL__LAST_PROJECT_FILENAME).toString();
+}
+
+QString Appl::getIOPortName() const
+{
+    return this->p_sett->value(SETT_KEY__APPL__IO__PORT_NAME).toString();
+}
+
+bool Appl::setIOPortName(QString port_name)
+{
+    bool ret = false;
+
+    if (!p_io_dev->isOpened()){
+        p_io_dev->setPortName( port_name );
+        this->p_sett->setValue(SETT_KEY__APPL__IO__PORT_NAME, port_name);
+        ret = true;
+    }
+
+    return ret;
+}
+
+bool Appl::isIODevOpened() const
+{
+    return p_io_dev->isOpened();
 }
 
 
