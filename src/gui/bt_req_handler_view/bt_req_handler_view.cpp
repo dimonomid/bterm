@@ -42,7 +42,6 @@ ReqHandlerView::ReqHandlerView(
     mainwindow(mainwindow),
     p_handler(p_handler),
     p_dock(),
-    p_list_item_widget(nullptr),
     p_list_row(nullptr),
     wp_project(std::weak_ptr<Project>(p_project))
 {
@@ -108,79 +107,6 @@ QWidget *ReqHandlerView::createEditWidget()
     }
 
     p_widg->setLayout(p_vert_lay);
-
-    return p_widg;
-}
-
-QWidget *ReqHandlerView::createListItemWidget()
-{
-    QWidget *p_widg = new QWidget();
-
-    QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::LeftToRight);
-    p_lay->setContentsMargins(0, 0, 0, 0);
-
-    {
-        p_list_item_label_name = new QLabel(getListItemWidgetTitle());
-        p_lay->addWidget(p_list_item_label_name);
-    }
-
-    //-- edit button
-    {
-        QPushButton *p_edit_button = new QPushButton("Edit");
-        p_edit_button->setMinimumWidth(5);
-        p_lay->addWidget(p_edit_button);
-
-        connect(
-                p_edit_button, &QPushButton::clicked,
-                this, &ReqHandlerView::onEditButtonPressed
-               );
-    }
-
-    //-- up button
-    {
-        QPushButton *p_up_button = new QPushButton("Up");
-        p_up_button->setMinimumWidth(5);
-        p_lay->addWidget(p_up_button);
-
-        connect(
-                p_up_button, &QPushButton::clicked,
-                this, &ReqHandlerView::onUpButtonPressed
-               );
-    }
-
-    //-- down button
-    {
-        QPushButton *p_down_button = new QPushButton("Down");
-        p_down_button->setMinimumWidth(5);
-        p_lay->addWidget(p_down_button);
-
-        connect(
-                p_down_button, &QPushButton::clicked,
-                this, &ReqHandlerView::onDownButtonPressed
-               );
-    }
-
-    //-- remove button
-    {
-        QPushButton *p_remove_button = new QPushButton("x");
-        p_remove_button->setMinimumWidth(5);
-        p_lay->addWidget(p_remove_button);
-
-        connect(
-                p_remove_button, &QPushButton::clicked,
-                this, &ReqHandlerView::onRemoveButtonPressed
-               );
-    }
-
-    //-- widget destroy
-    {
-        connect(
-                p_widg, &QObject::destroyed,
-                this, &ReqHandlerView::onListItemWidgetDestroyed
-               );
-    }
-
-    p_widg->setLayout(p_lay);
 
     return p_widg;
 }
@@ -272,15 +198,6 @@ QString ReqHandlerView::getListItemWidgetTitle() const
 
 /* public       */
 
-QWidget *ReqHandlerView::getListItemWidget()
-{
-    if (p_list_item_widget == nullptr){
-        p_list_item_widget = createListItemWidget();
-    }
-
-    return p_list_item_widget;
-}
-
 std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::getListRow()
 {
     if (p_list_row == nullptr){
@@ -368,11 +285,6 @@ void ReqHandlerView::onReqHandlerTitleChanged(const QString &text)
 
     p_dock->setWindowTitle(getEditDockWidgetTitle());
     p_list_item_label_name->setText(getListItemWidgetTitle());
-}
-
-void ReqHandlerView::onListItemWidgetDestroyed()
-{
-    p_list_item_widget = nullptr;
 }
 
 

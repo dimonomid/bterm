@@ -244,53 +244,8 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
     {
         QWidget *p_handlers_list_widg = new QWidget();
 
-#if 0
-        QBoxLayout *p_lay = new QBoxLayout(QBoxLayout::TopToBottom);
-
-        //-- iterate all handlers: 
-        //   for each of them, create the view and display it:
-        //   add a row in the handlers view, and create (hidden) dockwidget
-        for (size_t i = 0; i < p_project->getHandlersCnt(); i++){
-
-            //-- create view
-            auto p_handler_view = make_shared<ReqHandlerView>(
-                    *this,
-                    p_project,
-                    p_project->getHandler(i)
-                    );
-
-            //-- create row view
-            QWidget *p_cur_widg = p_handler_view->getListItemWidget();
-            p_lay->addWidget(p_cur_widg);
-
-            //-- create and add hidden dockwidget
-            {
-                QDockWidget *p_dock = p_handler_view->getEditDockWidget();
-                addDockWidget(Qt::TopDockWidgetArea, p_dock);
-                p_dock->hide();
-            }
-
-            //-- store the handler in the vector
-            handler_views.push_back(p_handler_view);
-        }
-
-        //-- add "add handler" button
-        {
-            QPushButton *p_add_handler_btn = new QPushButton("Add handler");
-            p_lay->addWidget(p_add_handler_btn);
-            connect(
-                    p_add_handler_btn, &QPushButton::clicked,
-                    this, &MainWindow::onAddHandlerButtonPressed
-                   );
-        }
-
-
-        //-- we don't want the contents to expand as we expand the widget,
-        //   so, add "stretch" element as the bottom element, so, only this
-        //   bottom "nothing" will be expanded as we expand the widget.
-        p_lay->addStretch(0);
-#endif
-
+        //-- we need the box layout that wraps grid layout, because
+        //   QGridLayout::setRowStretch() doesn't seems not working
         QBoxLayout *p_boxlay = new QBoxLayout(QBoxLayout::TopToBottom);
 
         QGridLayout *p_lay = new QGridLayout();
@@ -379,10 +334,10 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
                     );
         }
 
+        //-- just add gridlayout, and then bottom stretch, so that actual
+        //   content will be kept at the top
         p_boxlay->addLayout(p_lay);
         p_boxlay->addStretch(0);
-
-
 
 
         p_handlers_list_widg->setLayout(p_boxlay);
