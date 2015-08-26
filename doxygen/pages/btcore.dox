@@ -1,0 +1,74 @@
+/**
+\page btcore Bot Terminal core: implementation overview
+
+\tableofcontents
+
+\section btcore__project Project data organization
+
+Project data is organized as follows:
+
+- There is a project (represented by `#BTCore::Project`)
+- Project contains:
+  - The sequence of request handlers (represented by `#BTCore::ReqHandler`). There are two collections of handlers:
+    - User's handlers (the ones set by user in this project);
+    - Codec-specific standard handlers, which are called for if no user handler is able to handle each particular request.
+  - Codec to use (represented by `#BTCore::Codec`);
+  - IO device (represented by `#BTCore::IODev`)
+- Each request handler (`#BTCore::ReqHandler`) contains:
+  - Handler function JavaScript code (For the API exposed to handlers, see \ref js_api)
+
+\image html project_data_uml_class_diagram.png
+
+
+
+\section btcore__events Events
+
+When something happens, an event is generated inside `#BTCore`. Regular events are represented by the abstract class `#DMCore::Event`, and are emitted by the signal `#BTCore::Project::event()`.
+
+Application as well as GUI listen for this signal, and interpret it in an appropriate way.
+
+
+\subsection btcore__events__types Event types
+
+There are various kinds of events (i.e. various subclasses of abstract `#BTCore::Event`) depending on what exactly has happened.
+
+\image html events_hierarchy_uml_class_diagram.png
+
+- `#BTCore::EventSys`: represents some system event, such as debug events (data rx/tx), issues during project opening, etc.
+- `#BTCore::EventDataRaw`: represents new raw data received
+- `#BTCore::EventDataMsg`: represents received or transmitted message
+
+
+
+\section btcore__project_loading Project loading
+
+The `#BTCore::Project` doesn't know how to load itself from somewhere or save itself to somewhere; there is a separate class for it: `#BTCore::ProjectStorageXML`. As is obvious from its name, it reads/stores project from and to XML file.
+
+During loading, the storage instance can emit events (`#BTCore::EventSys`) when something non-critical happens, or throw `std::invalid_argument` exception if something went really wrong. Caller should listen for events and be prepared to catch the exception.
+
+So, when application wants to load the project from file, it creates an instance of storage class, connects its signals to some slots, and calls `#BTCore::ProjectStorageXML::readProject()` inside the try-catch block.
+
+
+
+\section btcore__data_msg Data message implementation
+
+The single data message is represented by `#BTCore::DataMsg`. Each data message contains data parts: `#BTCore::DataPart`. Each data part can contain data of two types (`#BTCore::DataPart::DataType`) :
+
+- Service data `#BTCore::DataPart::DataType::SERVICE`. It is needed only to transmit a message on the wire. It is never used when we want to get the payload of the message.
+- User data `#BTCore::DataPart::DataType::USER`. The payload of the message. It is always used when we get the payload of the message, and it *may* be used when we transmit data on the wire as well. (see `#BTCore::DataMsg::getRawData()`)
+
+The data part can actually contain data of both types: this happens when actual payload of the message is represented by different sequence of data on the wire.
+
+
+\section btcore__data_rx_tx Data Rx/Tx
+
+Data Rx/Tx happens as follows:
+
+\image html data_rx_uml_seq_diagram.png
+
+So, the Project never actually decides to send anything to IODev. There are request handlers who do.
+
+
+
+*/
+

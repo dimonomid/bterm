@@ -27,10 +27,10 @@ namespace BTCore {
  * Abstract class that represents IO device: arbitrary data can be read from it
  * and written to it.
  *
- * A pointer to an instance of concrete implementation of this abstract class
- * should be given to `#BTCore::Project` via `#BTCore::Project::setIODev()`,
- * and all communication with remote device will be done through that IO
- * device.
+ * Concrete implementation of this abstract class is up to the application. A
+ * pointer to an instance of concrete implementation should be given to
+ * `#BTCore::Project` via `#BTCore::Project::setIODev()`, and all communication
+ * with remote device will be done through that IO device.
  */
 class BTCore::IODev : public QObject
 {

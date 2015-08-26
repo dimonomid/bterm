@@ -9,6 +9,14 @@ I developed this tool in order to reverse-engineer various binary protocols of c
 
 I'm not sure whether it can be used for anything else. Anyway, it is published with the hope that it can.
 
+A couple of useful links:
+
+- User's documentation:
+  - \ref js_api
+- Developer's documentation:
+  - \ref btcore
+
+
 Here is an overview of the workflow:
 
 - New raw data comes from the serial port

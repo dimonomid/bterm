@@ -1,0 +1,81 @@
+@startuml
+
+participant IODev
+participant Project
+participant Codec
+participant ReqHandler
+participant Appl
+
+IODev -> Project: emit readyRead()
+activate Project
+Project -> IODev: call read()
+activate IODev
+IODev --> Project: raw data
+deactivate IODev
+
+Project -> Appl: emit event(EventDataRaw)
+Project -> Codec: call addRawRxData()
+deactivate Project
+activate Codec
+Codec -> Codec: feed data to Rx buffer, \n check if message is ready. \n no messages.
+deactivate Codec
+
+IODev -> Project: emit readyRead()
+activate Project
+Project -> IODev: call read()
+activate IODev
+IODev --> Project: raw data
+deactivate IODev
+Project -> Appl: emit event(EventDataRaw)
+Project -> Codec: call addRawRxData()
+deactivate Project
+activate Codec
+Codec -> Codec: feed data to Rx buffer, \n check if message is ready. \n no messages.
+deactivate Codec
+
+IODev -> Project: emit readyRead()
+activate Project
+Project -> IODev: call read()
+activate IODev
+IODev --> Project: raw data
+deactivate IODev
+Project -> Appl: emit event(EventDataRaw)
+Project -> Codec: call addRawRxData()
+deactivate Project
+activate Codec
+Codec -> Codec: feed data to Rx buffer, \n check if message is ready. \n Yes.
+
+Codec -> Project: emit messageDecoded(DataMsg)
+deactivate Codec
+activate Project
+Project -> Appl: emit event(EventDataMsg) (rx)
+
+Project -> ReqHandler: execute handler #1
+activate ReqHandler
+ReqHandler -> ReqHandler: check if we should\n respond anything. No.
+ReqHandler --> Project: request not handled
+deactivate ReqHandler
+
+Project -> ReqHandler: execute handler #2
+activate ReqHandler
+ReqHandler -> ReqHandler: check if we should\n respond anything. Yes.
+ReqHandler -> Project: call writeEncoded()
+activate Project
+Project -> Codec: call encodeMessage()
+activate Codec
+Codec --> Project: DataMsg
+deactivate Codec
+Project -> Appl: emit event(EventDataMsg) (tx)
+Project -> Project: get data from DataMsg\n to be sent on the wire
+Project -> IODev: call write(data)
+deactivate Project
+activate IODev
+IODev -> IODev: send data on the wire
+deactivate IODev
+ReqHandler --> Project: request handled
+deactivate ReqHandler
+Project -> Project: stopping execution\n of handlers
+deactivate Project
+
+@enduml
+

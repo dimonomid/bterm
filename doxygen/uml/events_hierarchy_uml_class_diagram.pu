@@ -1,0 +1,26 @@
+@startuml
+
+package DMCore {
+    class Event {
+        +toString() : QString
+    }
+
+    class EventSys {
+        +toString() : QString
+    }
+
+    class EventDataRaw {
+        +toString() : QString
+    }
+
+    class EventDataMsg {
+        +toString() : QString
+    }
+
+    Event <|-- EventSys
+    Event <|-- EventDataRaw
+    Event <|-- EventDataMsg
+}
+
+@enduml
+

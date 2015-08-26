@@ -83,6 +83,7 @@ void IODevSerial::write(const vector<uint8_t> &data)
 {
     //qDebug() << "write: " << MyUtil::byteArrayToHex(data);
     int32_t written_cnt = p_port->write(reinterpret_cast<const char *>(data.data()), data.size());
+    std::ignore = written_cnt;
     //qDebug() << "written: " << written_cnt;
 }
 

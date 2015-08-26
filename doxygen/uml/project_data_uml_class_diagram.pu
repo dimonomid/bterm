@@ -1,0 +1,65 @@
+@startuml
+
+package "BTCore" {
+
+' Project {{{
+class Project {
+   -handlers : vector<ReqHandler *>
+   -codec_specific_handlers : vector<ReqHandler *>
+}
+' }}}
+
+' ReqHandler {{{
+class ReqHandler {
+   -title : QString
+   -script_func_code : QString
+
+   +handle()
+}
+' }}}
+
+
+
+' Codec {{{
+class Codec <<interface>> {
+   +addRawRxData() : void
+   +clearRawRxData() : void
+   +encodeMessage() : DataMsg
+}
+
+class CodecISO14230 {
+}
+Codec <|-- CodecISO14230
+
+class CodecTransparent {
+}
+Codec <|-- CodecTransparent
+
+class SomeOtherCodec {
+}
+Codec <|-- SomeOtherCodec
+
+' }}}
+
+
+
+' IODev {{{
+class IODev <<interface>> {
+   +read() : vector<uint8_t>
+   +write(vector<uint8_t>) : void
+}
+
+class ApplSpecificIODev {
+}
+IODev <|-- ApplSpecificIODev
+
+' }}}
+
+
+Project o-- "*" ReqHandler : handlers,\ncodec_specific_handlers
+
+Project o-- "1" Codec : p_codec
+Project o-- "1" IODev : p_iodev
+}
+
+@enduml

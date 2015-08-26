@@ -763,6 +763,7 @@ WARN_LOGFILE           =
 INPUT                  =   ../src                                       \
                            pages/mainpage.dox                           \
                            pages/js_api.dox                             \
+                           pages/btcore.dox                             \
 
 
 # This tag can be used to specify the character encoding of the source files
