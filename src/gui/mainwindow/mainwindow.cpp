@@ -719,8 +719,8 @@ void MainWindow::applSettOpen()
     ApplSettDialog *p_dialog = new ApplSettDialog(this);
     p_dialog->setAttribute(Qt::WA_DeleteOnClose);
 
-    p_dialog->exec();
-    qDebug("done");
+    int diag_res = p_dialog->exec();
+    qDebug() << "diag closed" << diag_res;
 
 }
 
