@@ -82,7 +82,9 @@ And again, in any case, you need to know host-specific API that is exposed to ha
 
 The graphics interface of the application looks like this:
 
-TODO
+\image html bterm_large.png
+
+The GUI is actually very flexible: main window contains an application log, and a number of dock widgets, which can be moved around, shown docked or undocked, or hidden. For example, there are a couple of other dock widgets that are not shown at the screenshot above: the project settings (title and codec selection), and codec settings (which, of course, depend on codec).
 
 */
 
