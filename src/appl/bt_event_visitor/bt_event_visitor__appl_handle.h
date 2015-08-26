@@ -28,7 +28,7 @@ namespace BTCore {
 
 
 /**
- * Concrete visitor for `#BTCore::Event`. Implements `applHandle()` method:
+ * Concrete visitor for `#BTCore::Event`, implements `applHandle()` method:
  * for `#BTCore::EventDataRaw` and `#BTCore::EventDataMsg` it adds the event
  * to the accumulator (see `#BTCore::EventsAcc`)
  *

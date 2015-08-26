@@ -28,7 +28,7 @@ namespace BTCore {
 
 
 /**
- * Concrete visitor for `#BTCore::Event`. Implements `guiHandle()` method: it
+ * Concrete visitor for `#BTCore::Event`, implements `guiHandle()` method: it
  * reflects the event in the GUI. Usually this means adding new message to the
  * log.
  */
