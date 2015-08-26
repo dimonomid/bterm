@@ -254,6 +254,7 @@ void MainWindow::populateWithProject(std::shared_ptr<Project> p_project)
                 1
                 );
         p_lay->setVerticalSpacing(1);
+        p_lay->setHorizontalSpacing(1);
 
         //-- iterate all handlers:
         //   for each of them, create the view and display it:

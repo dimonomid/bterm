@@ -123,8 +123,8 @@ std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::createListRow()
 
     //-- edit button
     {
-        QPushButton *p_edit_button = new QPushButton("Edit");
-        p_edit_button->setMinimumWidth(5);
+        QPushButton *p_edit_button = new QPushButton();
+        p_edit_button->setIcon(QIcon(":/icons/edit.png"));
         p_ret->p_edit_btn = p_edit_button;
 
         connect(
@@ -135,8 +135,8 @@ std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::createListRow()
 
     //-- up button
     {
-        QPushButton *p_up_button = new QPushButton("Up");
-        p_up_button->setMinimumWidth(5);
+        QPushButton *p_up_button = new QPushButton();
+        p_up_button->setIcon(QIcon(":/icons/arrow-up.png"));
         p_ret->p_up_btn = p_up_button;
 
         connect(
@@ -147,8 +147,8 @@ std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::createListRow()
 
     //-- down button
     {
-        QPushButton *p_down_button = new QPushButton("Down");
-        p_down_button->setMinimumWidth(5);
+        QPushButton *p_down_button = new QPushButton();
+        p_down_button->setIcon(QIcon(":/icons/arrow-down.png"));
         p_ret->p_down_btn = p_down_button;
 
         connect(
@@ -159,12 +159,12 @@ std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::createListRow()
 
     //-- remove button
     {
-        QPushButton *p_remove_button = new QPushButton("x");
-        p_remove_button->setMinimumWidth(5);
-        p_ret->p_del_btn = p_remove_button;
+        QPushButton *p_del_button = new QPushButton();
+        p_del_button->setIcon(QIcon(":/icons/del.png"));
+        p_ret->p_del_btn = p_del_button;
 
         connect(
-                p_remove_button, &QPushButton::clicked,
+                p_del_button, &QPushButton::clicked,
                 this, &ReqHandlerView::onRemoveButtonPressed
                );
     }

@@ -78,4 +78,9 @@ INCLUDEPATH += \
     ../../src/util/xmlsettings \
     ../../src/gui/appl_sett_dialog \
 
+DISTFILES +=
+
+RESOURCES += \
+    ../../resources/res.qrc
+
 
