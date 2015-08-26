@@ -3,7 +3,7 @@
 
 \section overview Bot Terminal overview
 
-Bot Terminal is an utility that performs binary data exchange via serial port. It allows one to set up flexible rules about how to reply to different requests. So, it listens for data, parses it, and replies as necessary.
+Bot Terminal is a crossplatform utility that performs binary data exchange via serial port. It allows one to set up flexible rules about how to reply to different requests. So, it listens for data, parses it, and replies as necessary.
 
 I developed this tool in order to reverse-engineer various binary protocols of car ECUs (Engine Control Unit). I connect some car diagnostic tool (tester) to the computer with Bot Terminal running, and it pretends to be an ECU. By replying different responses on the tester's requests, and by analyzing tester's behavior, I can make some assumptions about the protocol. That's easy.
 
