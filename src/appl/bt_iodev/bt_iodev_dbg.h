@@ -24,6 +24,12 @@
  * CLASS DECLARATION
  ******************************************************************************/
 
+/**
+ * Debug implementation of `#BTCore::IODev`: it merely emits some debug data,
+ * currently there are ISO-14230 messages, plus some garbage.
+ *
+ * This class isn't used in production.
+ */
 class IODevDbg : public BTCore::IODev
 {
 Q_OBJECT

@@ -27,6 +27,14 @@ namespace BTCore {
  ******************************************************************************/
 
 
+/**
+ * Concrete visitor for `#BTCore::Event`. Implements `applHandle()` method:
+ * for `#BTCore::EventDataRaw` and `#BTCore::EventDataMsg` it adds the event
+ * to the accumulator (see `#BTCore::EventsAcc`)
+ *
+ * (if you're unfamiliar with visitor pattern, read about it somewhere; for
+ * example, on Wikipedia: https://en.wikipedia.org/wiki/Visitor_pattern )
+ */
 class EventVisitor_ApplHandle : public BTCore::EventVisitor
 {
 Q_OBJECT

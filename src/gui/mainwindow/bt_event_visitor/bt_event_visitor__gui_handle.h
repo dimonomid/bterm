@@ -27,6 +27,11 @@ namespace BTCore {
  ******************************************************************************/
 
 
+/**
+ * Concrete visitor for `#BTCore::Event`. Implements `guiHandle()` method: it
+ * reflects the event in the GUI. Usually this means adding new message to the
+ * log.
+ */
 class EventVisitor_GuiHandle : public BTCore::EventVisitor
 {
 Q_OBJECT

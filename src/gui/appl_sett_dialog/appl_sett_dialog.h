@@ -31,7 +31,9 @@ namespace BTCore {
  ******************************************************************************/
 
 /**
- * TODO
+ * GUI dialog with application settings.
+ *
+ * Currently it only has text field for IO serial port name.
  */
 class ApplSettDialog : public QDialog
 {
