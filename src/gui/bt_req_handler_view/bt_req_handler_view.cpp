@@ -43,7 +43,9 @@ ReqHandlerView::ReqHandlerView(
     p_handler(p_handler),
     p_dock(),
     p_list_row(nullptr),
-    wp_project(std::weak_ptr<Project>(p_project))
+    wp_project(std::weak_ptr<Project>(p_project)),
+    map_dock_to_edit_btn(),
+    p_edit_button()
 {
 
 
@@ -58,6 +60,11 @@ ReqHandlerView::ReqHandlerView(
         connect(
                 p_handler.get(), &ReqHandler::titleChanged,
                 this, &ReqHandlerView::onReqHandlerTitleChanged
+               );
+
+        connect(
+                p_dock.get(), &QDockWidget::visibilityChanged,
+                this, &ReqHandlerView::dockVisChanged
                );
     }
 }
@@ -123,13 +130,19 @@ std::shared_ptr<ReqHandlerView::ListRowWidgets> ReqHandlerView::createListRow()
 
     //-- edit button
     {
-        QPushButton *p_edit_button = new QPushButton();
+        p_edit_button = new QPushButton();
         p_edit_button->setIcon(QIcon(":/icons/edit.png"));
+        p_edit_button->setCheckable(true);
         p_ret->p_edit_btn = p_edit_button;
 
         connect(
                 p_edit_button, &QPushButton::clicked,
                 this, &ReqHandlerView::onEditButtonPressed
+               );
+
+        connect(
+                p_edit_button, &QObject::destroyed,
+                this, &ReqHandlerView::onEditButtonDestroyed
                );
     }
 
@@ -238,6 +251,11 @@ void ReqHandlerView::onEditButtonPressed()
 #endif
 }
 
+void ReqHandlerView::onEditButtonDestroyed()
+{
+    p_edit_button = nullptr;
+}
+
 void ReqHandlerView::onRemoveButtonPressed()
 {
     QMessageBox::StandardButton reply =
@@ -285,6 +303,13 @@ void ReqHandlerView::onReqHandlerTitleChanged(const QString &text)
 
     p_dock->setWindowTitle(getEditDockWidgetTitle());
     p_list_item_label_name->setText(getListItemWidgetTitle());
+}
+
+void ReqHandlerView::dockVisChanged(bool visible)
+{
+    if (p_edit_button != nullptr){
+        p_edit_button->setChecked(visible);
+    }
 }
 
 

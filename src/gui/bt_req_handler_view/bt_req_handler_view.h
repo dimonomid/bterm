@@ -25,6 +25,7 @@ class MainWindow;
 class QDockWidget;
 class QLabel;
 class QPlainTextEdit;
+class QPushButton;
 
 /*******************************************************************************
  * CLASS DECLARATION
@@ -103,6 +104,8 @@ private:
     QLabel *p_list_item_label_name;
     QPlainTextEdit *p_script_edit;
     std::weak_ptr<BTCore::Project> wp_project;
+    std::map<std::shared_ptr<QDockWidget>, QPushButton *> map_dock_to_edit_btn;
+    QPushButton *p_edit_button;
 
 
     /****************************************************************************
@@ -153,12 +156,14 @@ private:
 private slots:
 
     void onEditButtonPressed();
+    void onEditButtonDestroyed();
     void onRemoveButtonPressed();
     void onUpButtonPressed();
     void onDownButtonPressed();
     void onTitleChangedByUser(const QString &text);
     void onScriptChangedByUser();
     void onReqHandlerTitleChanged(const QString &text);
+    void dockVisChanged(bool visible);
 
 
 
