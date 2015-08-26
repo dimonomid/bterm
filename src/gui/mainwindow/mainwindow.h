@@ -63,9 +63,12 @@ Q_OBJECT
      ***************************************************************************/
 private:
 
+    /**
+     * Numbers of columns in handlers list
+     */
     enum class HandlerListColumnNum {
         TITLE,
-        STRETCH,
+        STRETCH,    /// It is the only column that stretches
         EDIT,
         UP,
         DOWN,
