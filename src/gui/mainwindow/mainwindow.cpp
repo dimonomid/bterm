@@ -715,13 +715,10 @@ void MainWindow::saveProjectAs()
 
 void MainWindow::applSettOpen()
 {
-
     ApplSettDialog *p_dialog = new ApplSettDialog(appl, this);
     p_dialog->setAttribute(Qt::WA_DeleteOnClose);
 
-    int diag_res = p_dialog->exec();
-    qDebug() << "diag closed" << diag_res;
-
+    p_dialog->exec();
 }
 
 void MainWindow::closeProject()
