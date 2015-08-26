@@ -3,12 +3,17 @@
 
 \tableofcontents
 
+Concise description of JavaScript host API.
+
 By *host API*, I mean API specific to Bot Terminal (which is a JavaScript host in this context). And by *host object*, I mean some object that is specific to Bot Terminal.
 
 
-\section js_api__object_creation Object creation
 
-To provide scripts with a way to create host objects, the object `factory` is exposed. It currently provides the following methods:
+\section js_api__general General JavaScript host API
+
+\subsection js_api__object_creation Object creation
+
+To provide scripts with a way to create host objects, the global symbol `factory` is exposed. It currently provides the following methods:
 
 - `createByteArr()` : creates new read-write byte array (see \ref js_api__bytearr_read_write)
 
@@ -23,7 +28,7 @@ For C++ class that represents the `factory` functionality, see `#BTCore::ScriptF
 
 
 
-\section js_api__bytearr_read Read-only byte array
+\subsection js_api__bytearr_read Read-only byte array
 
 Input data is passed to user's JavaScript handlers as read-only byte arrays. Each such array provides the following API:
 
@@ -51,7 +56,7 @@ For C++ class that represents this functionality, see `#BTCore::ByteArrRead`. On
 
 
 
-\section js_api__bytearr_read_write Read-write byte array
+\subsection js_api__bytearr_read_write Read-write byte array
 
 Read-write byte arrays inherit all methods from \ref js_api__bytearr_read "read-only byte arrays", and additionally provide the following API:
 
@@ -87,9 +92,9 @@ Such an array be created from script by calling `factory.createByteArr()` (see \
 
 For C++ class that represents this functionality, see `#BTCore::ByteArrReadWrite`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
 
-\section js_api__io IO
+\subsection js_api__io IO
 
-For input-output, an object `io` is exposed.
+For input-output, a global symbol `io` is exposed.
 
 - `writeEncoded(byteArr, descr = "")` : encode given byte array, and send via serial port. If description is provided, is is shown in the application log together with the output message.
 - `writePlain(byteArr, descr = "")` : The same as `writeEncoded()`, but don't encode message, and send it as it is instead.
@@ -111,11 +116,11 @@ Usage example:
 For C++ class that represents this functionality, see `#BTCore::ScriptIO`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
 
 
-\section js_api__console_output Console output
+\subsection js_api__console_output Console output
 
-For now, only one method is exposed, and it is very simple:
+For console output, a global symbol `console` is exposed. For now, it only has one method, and it is very simple:
 
-- `console.log(value)` : echo some arbitrary value to the application's log. This implementation is much simpler than you probably have already worked with in browsers or Node.js: it accepts just a single value, calls `toString()` on it and prints the result.
+- `log(value)` : echo some arbitrary value to the application's log. This implementation is much simpler than you probably have already worked with in browsers or Node.js: it accepts just a single value, calls `toString()` on it and prints the result.
 
 Usage example:
 
@@ -127,6 +132,101 @@ console.log(inputArr.getU08(0));
 \endcode
 
 For C++ class that represents this functionality, see `#BTCore::ScriptConsole`. Only methods marked with `Q_INVOKABLE` macro can be called from scripts.
+
+
+
+\section js_api__handler Handlers API
+
+When some message is received, Bot Terminal executes the sequence of the handlers. Each handler, if it wants to, can perform some actions in response, and probably stop handlers sequence execution.
+
+
+A handler should be written in a well-defined manner:
+
+- The handler expression should evaluate to a function value;
+- This function should take an input message argument (see details below);
+- This function should return an object that designates handling result (see details below).
+
+
+
+\subsection js_api__handler__input_msg Input message argument
+
+When handler's function is called, it is given the input message argument. It looks as follows:
+
+\code{.js}
+{
+   byteArr: <read-only byte array with received request data>
+}
+\endcode
+
+As you see, currently there is just a single property `byteArr`, which contains a reference to the request data byte array. I have some plans to add other data to the input message object: at least, codec-specific data about decoded message, such as target address (if any), source address (if any), etc.
+
+So, the handler code may look as follows:
+
+\code{.js}
+(function(inputMsg){
+    //-- store byte array in separate variable, for easier access
+    var inputArr = inputMsg.byteArr;
+
+    //-- ... perform some actions and return handling result
+    //       (see below)
+})
+\endcode
+
+
+\subsection js_api__handler__handling_result Handling result
+
+The handler function is expected to return an object which contains the following properties:
+
+\code{.js}
+{
+   handled: <bool value indicating whether the request was successfully handled>
+}
+\endcode
+
+The only property `handled` indicates whether the handler has succeed in handling the request. If it is `false`, the next handler (if any) gets executed. If, hovewer, it is set to `true`, then handlers sequence execution stops.
+
+The handler is not obliged to actually do something (say, send some data via `io`). It is pretty much legal for the handler to do nothing and just return `{handled: true}`, so that the request message actually gets ignored by Bot Terminal.
+
+A complete example of handler may look as follows:
+
+\code{.js}
+(function(inputMsg){
+    //-- store byte array in separate variable, for easier access
+    var inputArr = inputMsg.byteArr;
+
+    //-- for convenience, declare local variable "handled"
+    //   which indicates whether the request was handled
+    var handled = false;
+
+    //-- if we need to generate response, this variable will be set
+    //   to read-write bytearray later
+    var outputArr = null;
+
+    //-- check if we should handle this request
+    //   (here, we check the value of the first byte)
+    if (inputArr.getU08(0) === 0x07){
+        //-- yes, so, build the response
+        outputArr = factory.createByteArr();
+        outputArr
+            .putU08(0, 0xc7)
+            .putU16(2, 0x1234)
+            ;
+
+        //-- indicate that we've handled the request
+        //   (this value will be returned later)
+        handled = true;
+
+        //-- encode and send response via serial port
+        io.writeEncoded(outputArr);
+    };
+
+    //-- finally, return the handling result object
+    return {
+        handled: handled
+    };
+})
+\endcode
+
 
 */
 
