@@ -100,11 +100,22 @@ QWidget *ReqHandlerView::createEditWidget()
         p_vert_lay->addWidget(p_title);
 
         p_script_edit = new QPlainTextEdit(p_handler->getScript());
+
+        //-- Set monospaced font.
+        //   NOTE: there is no clear way to set up some system-specific
+        //   monospaced font, so, we pass dummy font title to the constructor,
+        //   and then call setStyleHint(). It looks like a hack, but I've got
+        //   no other way.
+        //
+        //   The solution is from here:
+        //   http://forum.qt.io/topic/35999/solved-qplaintextedit-how-to-change-the-font-to-be-monospaced
         QFont font {"monospace"};
         font.setStyleHint(QFont::Monospace);
         p_script_edit->setFont(font);
+
         p_vert_lay->addWidget(p_script_edit);
 
+        //-- propagate user's changes to the backend
         connect(
                 p_title, &QLineEdit::textChanged,
                 this, &ReqHandlerView::onTitleChangedByUser
