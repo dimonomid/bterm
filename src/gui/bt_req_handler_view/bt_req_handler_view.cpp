@@ -14,6 +14,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QPlainTextEdit>
+#include <QFont>
 #include <QLineEdit>
 #include <QDockWidget>
 #include <QMessageBox>
@@ -99,6 +100,9 @@ QWidget *ReqHandlerView::createEditWidget()
         p_vert_lay->addWidget(p_title);
 
         p_script_edit = new QPlainTextEdit(p_handler->getScript());
+        QFont font {"monospace"};
+        font.setStyleHint(QFont::Monospace);
+        p_script_edit->setFont(font);
         p_vert_lay->addWidget(p_script_edit);
 
         connect(
