@@ -93,14 +93,7 @@ Codec_ISO14230::Codec_ISO14230(
    }
 
    action got_fmt {
-       if (fc > this->fmt_rx){
-           //-- got fmt with len
-           rx_user_data_len = fc & ~this->fmt_rx;
-           _DEBUG("fmt with len=%d", (int)rx_user_data_len);
-           fnext l_tgt;
-       } else {
-           _DEBUG("got fmt, waiting for separate len..");
-       }
+       rx_user_data_len = fc & ~this->fmt_rx;
    }
 
    action got_len {
@@ -118,6 +111,15 @@ Codec_ISO14230::Codec_ISO14230(
        //src = fc;
        //TODO
        _DEBUG("src");
+
+       if (rx_user_data_len > 0){
+           //-- fmt contained len, so, jump to data
+           _DEBUG("skipping separate len");
+           fnext l_data;
+       } else {
+           //-- fmt did not contain len, so, need to receive it as a separate byte
+           _DEBUG("going to receive separate len");
+       }
    }
 
    action got_service_byte {
@@ -200,10 +202,10 @@ Codec_ISO14230::Codec_ISO14230(
    message = 
       (
        (fmt        when is_fmt_valid          @got_fmt       ) $got_service_byte
-       (len        when is_len_valid          @got_len       ) $got_service_byte
-l_tgt: (tgt        when is_tgt_valid          @got_tgt       ) $got_service_byte
+       (tgt        when is_tgt_valid          @got_tgt       ) $got_service_byte
        (src        when is_src_valid          @got_src       ) $got_service_byte
-       (data       when is_waiting_for_data   @got_data_byte )*
+       (len        when is_len_valid          @got_len       ) $got_service_byte
+l_data:(data       when is_waiting_for_data   @got_data_byte )*
        <:
        (checksum   when is_checksum_correct   $got_service_byte @message_received)
       ) >to(message_reset) $err(message_error)
@@ -310,7 +312,6 @@ DataMsg Codec_ISO14230::encodeMessage(const vector<uint8_t> &data) const
    //-- put length
    if (data.size() >= 0x40){
       ret.addDataByte(DataPart::DataType::SERVICE, this->fmt_tx);
-      ret.addDataByte(DataPart::DataType::SERVICE, data.size());
    } else {
       ret.addDataByte(DataPart::DataType::SERVICE, this->fmt_tx | data.size());
    }
@@ -318,6 +319,11 @@ DataMsg Codec_ISO14230::encodeMessage(const vector<uint8_t> &data) const
    //-- push target and source addresses
    ret.addDataByte(DataPart::DataType::SERVICE, remote_addr_tx);
    ret.addDataByte(DataPart::DataType::SERVICE, own_addr_tx);
+
+   if (data.size() >= 0x40){
+      ret.addDataByte(DataPart::DataType::SERVICE, data.size());
+   }
+
 
    //-- push user data
    for (auto user_byte : data){
