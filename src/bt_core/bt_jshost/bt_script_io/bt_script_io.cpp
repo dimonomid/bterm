@@ -85,13 +85,18 @@ ScriptIO *ScriptIO::writeEncoded(
         )
 {
     if (auto p_project = wp_project.lock()){
-        auto p_data = p_bytearr->getData();
+        if (p_bytearr != nullptr){
+            auto p_data = p_bytearr->getData();
 
 
-        p_project->writeEncoded(
-                *p_data,
-                createWriteDescr(descr)
-                );
+            p_project->writeEncoded(
+                    *p_data,
+                    createWriteDescr(descr)
+                    );
+        } else {
+            //TODO: write to user-readable console
+            qDebug("error: writeEncoded() called with nullptr");
+        }
     }
 
     return this;
@@ -103,12 +108,17 @@ ScriptIO *ScriptIO::writePlain(
         )
 {
     if (auto p_project = wp_project.lock()){
-        auto p_data = p_bytearr->getData();
+        if (p_bytearr != nullptr){
+            auto p_data = p_bytearr->getData();
 
-        p_project->writePlain(
-                *p_data,
-                createWriteDescr(descr)
-                );
+            p_project->writePlain(
+                    *p_data,
+                    createWriteDescr(descr)
+                    );
+        } else {
+            //TODO: write to user-readable console
+            qDebug("error: writePlain() called with nullptr");
+        }
     }
 
     return this;
