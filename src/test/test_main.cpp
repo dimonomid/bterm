@@ -41,10 +41,12 @@ int main(int argc, char **argv)
         status |= QTest::qExec(&tc, argc, argv);
     }
 
+#if 0
     {
         TestReqHandler tc;
         status |= QTest::qExec(&tc, argc, argv);
     }
+#endif
 
     return status;
 }

@@ -7,6 +7,8 @@
 #define _TEST_HTREQHANDLER_H
 
 
+#if 0
+
 /******************************************************************************
  * INCLUDED FILES
  ******************************************************************************/
@@ -22,9 +24,9 @@
 
 namespace BTCore {
     class ScriptFactory;
+    class JSHost;
 }
 
-class QJSEngine;
 
 /*******************************************************************************
  * TESTS CLASS
@@ -38,7 +40,7 @@ public:
     explicit TestReqHandler();
 
 private:
-    std::shared_ptr<QJSEngine> p_engine;
+    std::shared_ptr<BTCore::JSHost> p_jshost;
     std::shared_ptr<BTCore::ScriptFactory> p_script_factory;
 
 private:
@@ -52,6 +54,7 @@ private slots:
 
 };
 
+#endif
 
 #endif
 

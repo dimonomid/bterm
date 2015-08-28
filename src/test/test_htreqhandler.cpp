@@ -7,9 +7,10 @@
  * INCLUDED FILES
  ******************************************************************************/
 
+#if 0
+
 #include <QtTest/QtTest>
 #include <QtQml>
-#include <QJSEngine>
 
 #include "test_htreqhandler.h"
 #include "bt_reqhandler.h"
@@ -17,6 +18,7 @@
 #include "bt_bytearr_read.h"
 #include "bt_bytearr_read_write.h"
 #include "bt_script_factory.h"
+#include "bt_jshost.h"
 
 
 using namespace BTCore;
@@ -27,7 +29,7 @@ using namespace std;
  ******************************************************************************/
 
 TestReqHandler::TestReqHandler() :
-    p_engine(std::make_shared<QJSEngine>()),
+    p_jshost(std::make_shared<QJSEngine>()),
     p_script_factory(std::make_shared<ScriptFactory>())
 {
     qmlRegisterType<ByteArrRead>     ();
@@ -47,12 +49,12 @@ TestReqHandler::TestReqHandler() :
 QJSValue TestReqHandler::createInputMsgFromInputData(vector<uint8_t> input_data)
 {
     //-- create an object that will be given to handlers as input message
-    QJSValue input_msg_jsval = p_engine->newObject();
+    QJSValue input_msg_jsval = p_jshost->newObject();
 
     //-- actual input byte array
     //ByteArrRead ba_in {input_data};
     ByteArrRead *p_ba_in = new ByteArrRead(input_data);
-    QJSValue ba_in_jsval = p_engine->newQObject(p_ba_in);
+    QJSValue ba_in_jsval = p_jshost->newQObject(p_ba_in);
     //QQmlEngine::setObjectOwnership(p_ba_in, QQmlEngine::CppOwnership);
 
     input_msg_jsval.setProperty("byteArr", ba_in_jsval);
@@ -68,8 +70,8 @@ QJSValue TestReqHandler::createInputMsgFromInputData(vector<uint8_t> input_data)
 
 void TestReqHandler::generalTest()
 {
-    ReqHandler handler("handler", p_engine, p_script_factory, "");
-    QJSValue script_ctx = p_engine->evaluate("({})");
+    ReqHandler handler("handler", p_jshost, p_script_factory, "");
+    QJSValue script_ctx = p_jshost->evaluate("({})");
     ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
     handler.setScript(
@@ -126,8 +128,8 @@ void TestReqHandler::generalTest()
  */
 void TestReqHandler::noResponseTest()
 {
-    ReqHandler handler("handler", p_engine, p_script_factory, "");
-    QJSValue script_ctx = p_engine->evaluate("({})");
+    ReqHandler handler("handler", p_jshost, p_script_factory, "");
+    QJSValue script_ctx = p_jshost->evaluate("({})");
     ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
     handler.setScript(
@@ -156,8 +158,8 @@ void TestReqHandler::noResponseTest()
 
 void TestReqHandler::errorsTest()
 {
-    ReqHandler handler("handler", p_engine, p_script_factory, "");
-    QJSValue script_ctx = p_engine->evaluate("({})");
+    ReqHandler handler("handler", p_jshost, p_script_factory, "");
+    QJSValue script_ctx = p_jshost->evaluate("({})");
     ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
     handler.setScript(
@@ -226,14 +228,14 @@ void TestReqHandler::errorsTest()
 
 void TestReqHandler::scriptCtxTest()
 {
-    QJSValue script_ctx = p_engine->evaluate("({})");
+    QJSValue script_ctx = p_jshost->evaluate("({})");
     ReqHandler::Result result = ReqHandler::Result::UNKNOWN;
 
     vector<uint8_t> input_data = {};
 
     //-- sets variable testValue in "this"
     {
-        ReqHandler handler("handler", p_engine, p_script_factory, "");
+        ReqHandler handler("handler", p_jshost, p_script_factory, "");
         handler.setScript(
                 "(function(inputMsg){ "
                 "     var inputArr = inputMsg.byteArr;\n"
@@ -255,7 +257,7 @@ void TestReqHandler::scriptCtxTest()
 
     //-- sets variable testValue2 in "this"
     {
-        ReqHandler handler("handler", p_engine, p_script_factory, "");
+        ReqHandler handler("handler", p_jshost, p_script_factory, "");
         handler.setScript(
                 "(function(inputMsg){ "
                 "     var inputArr = inputMsg.byteArr;\n"
@@ -278,7 +280,7 @@ void TestReqHandler::scriptCtxTest()
     //-- uses both variables testValue and testValue2, that were set
     //   in previous handlers
     {
-        ReqHandler handler("handler", p_engine, p_script_factory, "");
+        ReqHandler handler("handler", p_jshost, p_script_factory, "");
         handler.setScript(
                 "(function(inputMsg){ "
                 "     var inputArr = inputMsg.byteArr;\n"
@@ -312,5 +314,6 @@ void TestReqHandler::scriptCtxTest()
 
 }
 
+#endif
 
 
